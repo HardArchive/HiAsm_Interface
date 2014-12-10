@@ -3,19 +3,40 @@
 
 #include <QBitArray>
 
-//TODO Подробно изучить флаги и составить описание.
 #ifdef BUILDING_DLL
 #ifndef HIASM_5
+//ru Флаги элемента
 enum ElementFlags {
+    //ru Элемент выбран
     ELEMENT_FLG_IS_SELECT   = 0x100,
+    
+    //ru С элементом нельзя взаимодействовать с помощью мыши?
+    //TODO Нужна дополнительная информация по этому флагу.
     ELEMENT_FLG_IS_NOMOUSE  = 0x2000,
+    
+    //ru Родитель для элементов текущей SDK 
     ELEMENT_FLG_IS_PARENT   = 0x200,
+    
+    //ru Элемент является базовым
     ELEMENT_FLG_IS_CORE     = 0x400,
+    
+    //ru Элемент замарожен (нельзя перемещать)
     ELEMENT_FLG_IS_FREEZE   = 0x0,
+    
+    //ru Элемент нельзя удалить
     ELEMENT_FLG_IS_NODELETE = 0x2,
+    
+    //ru Элемент является контейнером
     ELEMENT_FLG_IS_MULTI    = 0x40,
+    
+    //ru Элемент является виджетом (контролом)
     ELEMENT_FLG_ONE_WIDGET  = 0x1,
+    
+    //ru Элементы редактирования?
     ELEMENT_FLG_IS_EDIT     = 0x20,
+    
+    //ru Элемент является системным
+    //ru Например: CI_HubEx, CI_GetDataEx, ElementInfoTip 
     ELEMENT_FLG_IS_SYSTEM   = 0x400,
 };
 typedef QFlags<ElementFlags> ElementFlgs;
