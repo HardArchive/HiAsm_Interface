@@ -50,10 +50,17 @@ typedef QFlags<ElementFlags> ElementFlgs;
 
 //ru Типы точек
 enum PointsTypes {
-    pt_Work  = 1, //ru Метод
-    pt_Event = 2, //ru Событие
-    pt_Var   = 3, //ru Переменная
-    pt_Data  = 4, //ru Данные
+    //ru Метод
+    pt_Work  = 1,
+    
+    //ru Событие
+    pt_Event = 2,
+    
+    //ru Переменная
+    pt_Var   = 3,
+    
+    //ru Данные
+    pt_Data  = 4, 
 };
 
 //ru Типы данных
@@ -535,7 +542,8 @@ struct TCodeGenTools {
     //ru ???
     call bool (*elIsDefProperty)(id_element e, id_prop p);
 #endif
-
+    
+    //TODO Тут стоит переписать функции и добавить описание.
     //!~~~~~~~~~~~~~~~~~~~~~~~~~ пользовательские ф-ции ~~~~~~~~~~~~~~~~~~~~~~~~~
 	//ru ???
 	int ReadIntParam(int Index) {
