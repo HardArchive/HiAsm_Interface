@@ -112,22 +112,49 @@ enum DataTypes {
 };
 
 //ru Классы элемента (elGetClassIndex)
+//TODO Дополнить описание.
 enum ElementClasses {
+    //ru Простой элемент
+    CI_Element    = 0,
+    
     CI_DPElement    = 1,
+    
     CI_MultiElement = 2,
+    
+    //ru Простой контейнер
     CI_EditMulti    = 3,
+    
+    //ru Динамический контейнер
     CI_EditMultiEx  = 4,
+    
+    //ru Вставка кода
     CI_InlineCode   = 5,
+    
     CI_DrawElement  = 6,
+    
     CI_AS_Special   = 7,
+    
     CI_DPLElement   = 8,
+    
     CI_UseHiDLL     = 9,
+    
     CI_WinElement   = 10,
+    
     CI_PointHint    = 11,
+    
     CI_PointElement = 12,
+    
+    //ru Разрыв
     CI_LineBreak    = 13,
+    
+    //ru Разрыв связи
     CI_LineBreakEx  = 14,
+    
+    //ru Пользовательский элемент
     CI_UserElement  = 15,
+    
+    //ru Полиморфный контейнер
+    CI_PolyMulti    = 17,
 };
 
 //ru Индексы параметров среды
@@ -324,7 +351,7 @@ struct TCodeGenTools {
     call ElementClasses (*elGetClassIndex)(id_element e);
     
     //ru Получаем идентификатор внутренней схемы для контейнеров
-    //ru и идентификатор родителя(id_element) для редактора контейнера
+    //ru и идентификатор родителя id_element для редактора контейнера
     call id_sdk (*elGetSDK)(id_element e);
     
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются
@@ -342,7 +369,7 @@ struct TCodeGenTools {
     //ru Неизвестно для чего это функция.
     //ru Возможно, возвращает уникальное число.
     //ru Можно считать её - deprecated.
-    call int (*elGetEID)(id_element e);
+    call int  (*elGetEID)(id_element e);
     
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает идентификатор точки, с которой соеденена данная
