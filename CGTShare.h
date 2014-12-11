@@ -32,11 +32,12 @@ enum ElementFlags {
     //ru Элемент является виджетом (контролом)?
     ELEMENT_FLG_ONE_WIDGET  = 0x1,
     
-    //ru Элементы редактирования?
+    //ru Элемент является полиморфным (динамическим) контейнером
+    //ru Например: EditMultiEx
     ELEMENT_FLG_IS_EDIT     = 0x20,
     
     //ru Элемент является системным
-    //ru Например: CI_HubEx, CI_GetDataEx, ElementInfoTip 
+    //ru Например: CI_HubEx, CI_GetDataEx, ElementInfoTip, HCButton
     ELEMENT_FLG_IS_SYSTEM   = 0x400,
 };
 typedef QFlags<ElementFlags> ElementFlgs;
@@ -338,8 +339,9 @@ struct TCodeGenTools {
     //ru Помещаем в переменные "W" и "H", размеры элемента в редакторе схем
     call void (*elGetSize)(id_element e, int &W, int &H);
     
-    //??
-    //TODO Что возвращает данная функция? Дополнить описание.
+    //ru Неизвестно для чего это функция.
+    //ru Возможно, возвращает уникальное число.
+    //ru Можно считать её - deprecated.
     call int (*elGetEID)(id_element e);
     
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
