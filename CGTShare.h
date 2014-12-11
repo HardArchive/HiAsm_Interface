@@ -32,8 +32,8 @@ enum ElementFlags {
     //ru Элемент является графическим контром (виджетом)
     ELEMENT_FLG_ONE_WIDGET  = 0x8,
     
-    //ru Элемент является редактором точек динамического\полиморфного контейнера
-    //ru Например: EditMultiEx
+    //ru Элемент является редактором контейнера
+    //ru Например: EditMulti, EditMultiEx, EditPoliMulti
     ELEMENT_FLG_IS_EDIT     = 0x20,
     
     //ru Элемент является системным
