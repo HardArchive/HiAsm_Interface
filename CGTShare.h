@@ -5,7 +5,7 @@
 
 #ifdef BUILDING_DLL
 #ifndef HIASM_5
-//ru Флаги элемента
+//!ru Флаги элемента
 enum ElementFlags {
     //ru Элемент выбран
     ELEMENT_FLG_IS_SELECT   = 0x100,
@@ -85,7 +85,7 @@ enum PointsTypes {
     pt_Data  = 4,
 };
 
-//ru Типы данных
+//!ru Типы данных
 enum DataTypes {
     data_null    = 0,
     data_int     = 1,
@@ -111,11 +111,11 @@ enum DataTypes {
     data_flags   = 21,
 };
 
-//ru Классы элемента (elGetClassIndex)
+//!ru Классы элемента (elGetClassIndex)
 //TODO Дополнить описание.
 enum ElementClasses {
     //ru Простой элемент
-    CI_Element    = 0,
+    CI_Element      = 0,
     
     CI_DPElement    = 1,
     
@@ -157,7 +157,7 @@ enum ElementClasses {
     CI_PolyMulti    = 17,
 };
 
-//ru Индексы параметров среды
+//!ru Индексы параметров среды
 //TODO Что за индексы параметов среды? Дополнить описание.
 enum ParamsIde {
     PARAM_CODE_PATH         = 0,
@@ -174,7 +174,7 @@ enum ParamsIde {
     PARAM_COMPILER          = 11,
 };
 
-//ru Ошибки при работе с библиотекой кодогенератора
+//!ru Ошибки при работе с библиотекой кодогенератора
 enum CgResult {
     //ru Успешное завершение
     CG_SUCCESS         = 0,
@@ -201,7 +201,7 @@ enum CgResult {
     CG_APP_NOT_FOUND   = 20,
 };
 
-//ru Параметры проекта
+//!ru Параметры проекта
 enum ParamsProject {
     //ru Поддерживает сжатие
     //TODO Подробнее изучить этот параметр и дополнить описание.
@@ -217,15 +217,23 @@ enum ParamsProject {
     CGMP_FORM_EDIT  = 0x08,
 };
 
-//ru Типы, используемые в интерфейсе
+//!ru Типы, используемые в интерфейсе
+//ru Контейнер (уровень схемы)
 typedef void* id_sdk;
+//ru Элемент
 typedef void* id_element;
+//ru Точка
 typedef void* id_point;
+//ru Свойство
 typedef void* id_prop;
-typedef void* id_array;
-typedef void* id_data;
-typedef void* id_font;
+//ru Список свойств
 typedef void* id_proplist;
+//ru Массив
+typedef void* id_array;
+//ru Данные
+typedef void* id_data;
+//ru Шрифт
+typedef void* id_font;
 
 struct TCodeGenTools;
 
@@ -366,7 +374,7 @@ struct TCodeGenTools {
     //ru Помещаем в переменные "W" и "H", размеры элемента в редакторе схем
     call void (*elGetSize)(id_element e, int &W, int &H);
     
-    //ru Неизвестно для чего это функция.
+    //ru Неизвестно для чего эта функция.
     //ru Возможно, возвращает уникальное число.
     //ru Можно считать её - deprecated.
     call int  (*elGetEID)(id_element e);
