@@ -29,7 +29,7 @@ enum ElementFlags {
     //ru Элемент является контейнером
     ELEMENT_FLG_IS_MULTI    = 0x40,
     
-    //ru Элемент является виджетом (контролом)
+    //ru Элемент является виджетом (контролом)?
     ELEMENT_FLG_ONE_WIDGET  = 0x1,
     
     //ru Элементы редактирования?
@@ -207,49 +207,49 @@ typedef TCodeGenTools *PCodeGenTools;
 //!en CodeGen types and entry point interfaces
 //TODO Составить описание для данных структур.
 
-typedef struct{
+struct THiAsmVersion{
     short int major;
     short int minor;
     short int build;
-} THiAsmVersion;
+};
 
-typedef struct {
+struct TBuildPrepareRec{
     // none
-} TBuildPrepareRec;
+};
 
-typedef struct {
+struct TBuildProcessRec {
     PCodeGenTools cgt;
     id_sdk sdk;
     void *result;
-} TBuildProcessRec;
+};
 
-typedef struct {
+struct TBuildMakePrjRec{
     void *result;
     char *prjFilename;
     char *compiler;
-} TBuildMakePrjRec;
+};
 
-typedef struct {
+struct TBuildCompliteRec{
     char *prjFilename;
     char *appFilename;
-} TBuildCompliteRec;
+};
 
-typedef struct {
+struct TBuildParams{
     int flags;
-} TBuildParams;
+};
 
-typedef struct {
+struct TBuildRunRec{
     char *FileName;
     int Mode;
     int ServerPort;
     int ClientPort;
     void *data;
-} TBuildRunRec;
+};
 
 //!ru Дополнительные структуры
 //TODO Выяснить, для чего эти структуры нужны.
 
-typedef struct {
+struct TSynParams{
     //ru Имя текущего элемента
     char *elName;
 
@@ -261,20 +261,21 @@ typedef struct {
 
     //ru Список, отображаемый во всплывающей подсказке
     char *disp_list;
-} TSynParams;
+};
 
-typedef struct {
+struct THintParams{
     id_point point;
     id_sdk sdk;
     PCodeGenTools cgt;
     char *hint;
-} THintParams;
+};
 
 struct TCodeGenTools {
     #define call __stdcall
     
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает общее количество элементов в схеме
+    //ru Возвращает количество элементов в схеме.
+    //ru Элементы в контейнерах не считаются
     call int (*sdkGetCount)(id_sdk SDK);
     
     //ru Возвращает идентификатор элемента по его Z-координате(индексу)
@@ -309,8 +310,7 @@ struct TCodeGenTools {
     //TODO Выяснить, что за "просто содержимое" поля Sub и дополнить описание.
     call char* (*elGetInfSub)(id_element e);
     
-    //ru Получаем количество точек у элемента
-    //TODO Общее к-во точек? Дополнить описание.
+    //ru Получаем общее количество точек у элемента
     call int (*elGetPtCount)(id_element e);
     
     //ru Получаем идентификатор точки по её индексу
