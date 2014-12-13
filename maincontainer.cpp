@@ -1,9 +1,7 @@
 //STL
-#include <memory>
 
 //Qt
 #include <QDebug>
-#include <QSharedPointer>
 
 //Project
 #include "maincontainer.h"
@@ -30,8 +28,8 @@ MainContainer::~MainContainer()
 PContainer MainContainer::getContainerFromSDK(id_sdk sdk)
 {
     int countElements = m_cgt->sdkGetCount(sdk);
-    PContainer container = make_shared<Container>();
-    
+    PContainer container = PContainer::create();
+
     for(int i = 0; i < countElements; ++i)
     {
         id_element eId = m_cgt->sdkGetElement(sdk, i);
@@ -39,8 +37,8 @@ PContainer MainContainer::getContainerFromSDK(id_sdk sdk)
         ElementFlgs eFlags = m_cgt->elGetFlag(eId);
         
         //ru Создаём элемент
-        PElement element = make_shared<Element>(m_cgt, eId);
-
+        PElement element = PElement::create(m_cgt, eId);
+        
         //ru Элемент содержит контейнер(ы)
         if( cgt::isMulti(eFlags) )
         {

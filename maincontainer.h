@@ -9,7 +9,6 @@
 #include "CGTShare.h"
 #include "element.h"
 
-
 class MainContainer
 {
     

@@ -18,7 +18,7 @@ Element::Element(PCodeGenTools cgt, id_element eId) :
 void Element::append(PContainer container)
 {
     if( m_arrayContainers == nullptr )
-        m_arrayContainers = make_shared<ArrayPContainers>();
+        m_arrayContainers = PArrayPContainers::create();
     
     m_arrayContainers->append( container );
 }

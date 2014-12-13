@@ -7,6 +7,7 @@
 //Qt
 #include <QString>
 #include <QVector>
+#include <QSharedPointer>
 
 //Project
 #include "CGTShare.h"
@@ -14,11 +15,11 @@
 using namespace std;
 
 class Element;
-typedef shared_ptr<Element> PElement;
+typedef QSharedPointer<Element> PElement;
 typedef QVector<PElement> Container;
-typedef shared_ptr<Container> PContainer;
+typedef QSharedPointer<Container> PContainer;
 typedef QVector<PContainer> ArrayPContainers; 
-typedef shared_ptr<ArrayPContainers> PArrayPContainers; 
+typedef QSharedPointer<ArrayPContainers> PArrayPContainers; 
 
 class Element
 {
