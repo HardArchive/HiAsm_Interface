@@ -1,7 +1,12 @@
 #ifndef _CGTSHARE_H_
 #define _CGTSHARE_H_
 
+//STL
+
+//Qt
 #include <QBitArray>
+
+//Project
 
 #ifdef BUILDING_DLL
 #ifndef HIASM_5
@@ -70,7 +75,7 @@ enum ElementFlags {
 typedef QFlags<ElementFlags> ElementFlgs;
 #endif
 
-//ru Типы точек
+//!ru Типы точек
 enum PointsTypes {
     //ru Метод
     pt_Work  = 1,
