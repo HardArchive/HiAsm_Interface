@@ -28,8 +28,9 @@ MainContainer::~MainContainer()
 PContainer MainContainer::getContainerFromSDK(id_sdk sdk)
 {
     int countElements = m_cgt->sdkGetCount(sdk);
+    m_countElements += countElements;
     PContainer container = PContainer::create();
-
+    
     for(int i = 0; i < countElements; ++i)
     {
         id_element eId = m_cgt->sdkGetElement(sdk, i);

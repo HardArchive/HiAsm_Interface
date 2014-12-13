@@ -4,15 +4,19 @@
 
 //Project
 #include "element.h"
+#include "cgtsharewrapper.h"
 
 Element::Element(PCodeGenTools cgt, id_element eId) :
     m_cgt(cgt),
     m_eId(eId)
 {
-    m_className = m_cgt->elGetClassName(eId);
-    m_classIndex = m_cgt->elGetClassIndex(eId);
+    receiptElementData();
     
-    
+}
+
+Element::~Element()
+{
+
 }
 
 void Element::append(PContainer container)
@@ -21,4 +25,23 @@ void Element::append(PContainer container)
         m_arrayContainers = PArrayPContainers::create();
     
     m_arrayContainers->append( container );
+}
+
+void Element::receiptElementData()
+{
+    m_className = m_cgt->elGetClassName(m_eId);
+    m_classIndex = m_cgt->elGetClassIndex(m_eId);
+    m_flags = m_cgt->elGetFlag(m_eId);
+    m_inherit = m_cgt->elGetInherit(m_eId);
+    m_SDKCount = m_cgt->elGetSDKCount(m_eId);
+    m_group = m_cgt->elGetGroup(m_eId);
+    m_interface = m_cgt->elGetInterface(m_eId);
+    m_infSub = m_cgt->elGetInfSub(m_eId);
+    m_propCount = m_cgt->elGetPropCount(m_eId);
+    m_propertyListCount = m_cgt->elGetPropertyListCount(m_eId);
+    m_ptCount = m_cgt->elGetPtCount(m_eId);
+    m_linkIs = m_cgt->elLinkIs(m_eId);
+    m_linkMain = m_cgt->elLinkMain(m_eId);
+    m_cgt->elGetPos(m_eId, m_posX, m_posY);
+    m_cgt->elGetSize(m_eId, m_sizeW, m_sizeH);
 }

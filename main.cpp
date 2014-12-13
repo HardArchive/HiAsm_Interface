@@ -55,9 +55,9 @@ DLLIMPORT int buildPrepareProc(TBuildPrepareRec *params)
 
 DLLIMPORT int buildProcessProc(TBuildProcessRec *params)
 {
-    qInstallMessageHandler(myMessageOutput);
+    qInstallMessageHandler( myMessageOutput );
     setlocale( LC_ALL, "Russian" );
-    while(true)
+
     MainContainer mainContainer( params );
     
     return CG_SUCCESS;

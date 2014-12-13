@@ -31,12 +31,30 @@ private:
     //ru Данные элемента
     QString m_className{};
     ElementClasses m_classIndex{};
+    ElementFlgs m_flags{};
+    QString m_inherit{};
+    int m_SDKCount{};
+    int m_group;
+    QString m_interface{};
+    QString m_infSub{};
+    int m_propCount{};
+    int m_propertyListCount{};
+    int m_ptCount{};
+    bool m_linkIs{};
+    id_element m_linkMain{};
+    int m_posX{};
+    int m_posY{};
+    int m_sizeW{};
+    int m_sizeH{};
     
 public:
     explicit Element(PCodeGenTools cgt, id_element eId);
-    
+            ~Element();
     //ru Добавляем в элемент указатель на контейнер
     void append(PContainer container);
+
+private:
+    void receiptElementData();
     
 };
 
