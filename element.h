@@ -52,7 +52,10 @@ public:
             ~Element();
     //ru Добавляем в элемент указатель на контейнер
     void append(PContainer container);
-
+    
+    //ru Возвращаем данные элемента в текстовом формате (для тестов).
+    QString getDataText(uchar inc = 0);
+    
 private:
     void receiptElementData();
     

@@ -2,6 +2,7 @@
 
 //Qt
 #include <QDebug>
+#include <QFile>
 
 //Project
 #include "maincontainer.h"
@@ -18,11 +19,25 @@ MainContainer::MainContainer(TBuildProcessRec *params)
 
     //ru Получаеим контейнер c элементами из SDK
     m_container = getContainerFromSDK(m_sdk);
+    saveToFile();
 }
 
 MainContainer::~MainContainer()
 {
     
+}
+
+void MainContainer::saveToFile()
+{
+    QString buf;
+    QTextStream out(&buf);
+    
+    for(const PElement e: *m_container)
+    {
+        out << e->getDataText() << endl;
+    }
+    
+    qDebug() << buf;
 }
 
 PContainer MainContainer::getContainerFromSDK(id_sdk sdk)

@@ -21,7 +21,7 @@ private:
 public:
     MainContainer(TBuildProcessRec *params);
     ~MainContainer();
-    
+    void saveToFile();
 private:
     PContainer getContainerFromSDK(id_sdk sdk);
     
