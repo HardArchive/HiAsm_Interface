@@ -2,7 +2,6 @@
 #define ELEMENT_H
 
 //STL
-#include "memory"
 
 //Qt
 #include <QString>

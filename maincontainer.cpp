@@ -10,8 +10,6 @@
 #include "cgtsharewrapper.h"
 #include "CGTShare.h"
 
-using namespace std;
-
 MainContainer::MainContainer(TBuildProcessRec *params)
 {
     m_cgt = params->cgt;
@@ -19,6 +17,7 @@ MainContainer::MainContainer(TBuildProcessRec *params)
 
     //ru Получаеим контейнер c элементами из SDK
     m_container = getContainerFromSDK(m_sdk);
+    
     saveToFile();
 }
 
