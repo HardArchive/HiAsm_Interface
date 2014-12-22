@@ -16,14 +16,14 @@ private:
     id_point m_ptId;
 
     //ru Данные точки
-    DataTypes m_dataType = m_cgt->ptGetDataType(m_ptId);
-    int m_index = m_cgt->ptGetIndex(m_ptId);
-    QString m_info = m_cgt->ptGetInfo(m_ptId);
-    id_point m_linkPoint = m_cgt->ptGetLinkPoint(m_ptId);
-    QString m_name = m_cgt->ptGetName(m_ptId);
-    id_element m_parent = m_cgt->ptGetParent(m_ptId);
-    id_point m_RLinkPoint = m_cgt->ptGetRLinkPoint(m_ptId);
-    QString m_dpeName = m_cgt->pt_dpeGetName(m_ptId);
+    DataTypes m_dataType{};
+    int m_index{};
+    QString m_info{};
+    id_point m_linkPoint{};
+    QString m_name{};
+    id_element m_parent{};
+    id_point m_RLinkPoint{};
+    QString m_dpeName{};
 
 public:
     explicit Point(PCodeGenTools cgt, id_point pt);
