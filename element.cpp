@@ -2,39 +2,39 @@
 
 //Qt
 #include <QTextStream>
+#include <QDebug>
 
 //Project
 #include "element.h"
+#include "point.h"
 #include "cgtsharewrapper.h"
 
-Element::Element(PCodeGenTools cgt, id_element eId) :
-    m_cgt(cgt),
-    m_eId(eId)
+Element::Element(PCodeGenTools cgt, id_element eId)
+    : m_cgt(cgt)
+    , m_eId(eId)
 {
     receiptElementData();
-    
 }
 
 Element::~Element()
 {
-
 }
 
 void Element::append(PContainer container)
 {
-    if( m_arrayContainers == nullptr )
+    if (m_arrayContainers == nullptr)
         m_arrayContainers = PArrayPContainers::create();
-    
-    m_arrayContainers->append( container );
+
+    m_arrayContainers->append(container);
 }
 
-QString Element::getDataText(uchar inc)
+QString Element::getDataText(uchar inc) const
 {
     QString space;
-    space.fill(' ', inc*5);
-    
+    space.fill(' ', inc * 5);
+
     ++inc;
-    
+
     QString buff;
     QTextStream stream(&buff);
     stream << space << "m_className: " << m_className << endl;
@@ -54,18 +54,15 @@ QString Element::getDataText(uchar inc)
     stream << space << "m_posY: " << m_posY << endl;
     stream << space << "m_sizeW: " << m_sizeW << endl;
     stream << space << "m_sizeH: " << m_sizeH << endl;
-    
-    if( m_arrayContainers != nullptr )
-    {
-        for(const PContainer c: *m_arrayContainers)
-        {
-            for(const PElement e: *c)
-            {
+
+    if (m_arrayContainers != nullptr) {
+        for (const PContainer c : *m_arrayContainers) {
+            for (const PElement e : *c) {
                 stream << e->getDataText(inc);
             }
         }
     }
-    
+
     return buff;
 }
 
@@ -84,6 +81,11 @@ void Element::receiptElementData()
     m_ptCount = m_cgt->elGetPtCount(m_eId);
     m_linkIs = m_cgt->elLinkIs(m_eId);
     m_linkMain = m_cgt->elLinkMain(m_eId);
+
     m_cgt->elGetPos(m_eId, m_posX, m_posY);
     m_cgt->elGetSize(m_eId, m_sizeW, m_sizeH);
+
+    for (int i = 0; i < m_ptCount; ++i) {
+        Point pt(m_cgt, m_cgt->elGetPt(m_eId, i));
+    }
 }

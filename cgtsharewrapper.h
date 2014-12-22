@@ -8,20 +8,18 @@
 //Project
 #include "CGTShare.h"
 
-namespace cgt
-{
-    bool isSelect(ElementFlgs flags);
-    bool isParent(ElementFlgs flags);
-    bool isCore(ElementFlgs flags);
-    bool isNoDelete(ElementFlgs flags);
-    bool isMulti(ElementFlgs flags);
-    bool isEdit(ElementFlgs flags);
-    bool isSystem(ElementFlgs flags);
+namespace cgt {
 
-    bool isEditMultiEx(ElementClasses eClass);
-    bool isPolyMulti(ElementClasses eClass);
+bool isSelect(const ElementFlgs& flags);
+bool isParent(const ElementFlgs& flags);
+bool isCore(const ElementFlgs& flags);
+bool isNoDelete(const ElementFlgs& flags);
+bool isMulti(const ElementFlgs& flags);
+bool isEdit(const ElementFlgs& flags);
+bool isSystem(const ElementFlgs& flags);
+
+bool isEditMultiEx(const ElementClasses& eClass);
+bool isPolyMulti(const ElementClasses& eClass);
 }
-
-
 
 #endif // CGTSHAREWRAPPER_H

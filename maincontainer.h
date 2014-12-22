@@ -9,22 +9,22 @@
 #include "CGTShare.h"
 #include "element.h"
 
-class MainContainer
-{
-    
+class MainContainer {
+
 private:
     PCodeGenTools m_cgt{};
     id_sdk m_sdk{};
     int m_countElements{};
     PContainer m_container;
-    
+
 public:
-    MainContainer(TBuildProcessRec *params);
+    explicit MainContainer(TBuildProcessRec* params);
     ~MainContainer();
-    void saveToFile();
-private:
-    PContainer getContainerFromSDK(id_sdk sdk);
     
+    void saveToFile() const;
+
+private:
+    PContainer getContainerFromSDK(id_sdk sdk) const;
 };
 
 #endif // CONTAINER_H
