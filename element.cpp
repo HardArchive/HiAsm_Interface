@@ -13,7 +13,7 @@ Element::Element(PCodeGenTools cgt, id_element eId)
     : m_cgt(cgt)
     , m_eId(eId)
 {
-    receiptElementData();
+    getElementData();
 }
 
 Element::~Element()
@@ -37,6 +37,7 @@ QString Element::getDataText(uchar inc) const
 
     QString buff;
     QTextStream stream(&buff);
+    
     stream << space << "m_className: " << m_className << endl;
     stream << space << "m_classIndex: " << m_classIndex << endl;
     stream << space << "m_flags: " << m_flags << endl;
@@ -66,7 +67,7 @@ QString Element::getDataText(uchar inc) const
     return buff;
 }
 
-void Element::receiptElementData()
+void Element::getElementData()
 {
     m_className = m_cgt->elGetClassName(m_eId);
     m_classIndex = m_cgt->elGetClassIndex(m_eId);

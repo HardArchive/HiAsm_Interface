@@ -4,14 +4,14 @@ Point::Point(PCodeGenTools cgt, id_point pt)
     : m_cgt(cgt)
     , m_ptId(pt)
 {
-    receiptPointData();
+    getPointData();
 }
 
 Point::~Point()
 {
 }
 
-void Point::receiptPointData()
+void Point::getPointData()
 {
     m_dataType = m_cgt->ptGetDataType(m_ptId);
     m_index = m_cgt->ptGetIndex(m_ptId);
@@ -20,5 +20,6 @@ void Point::receiptPointData()
     m_name = m_cgt->ptGetName(m_ptId);
     m_parent = m_cgt->ptGetParent(m_ptId);
     m_RLinkPoint = m_cgt->ptGetRLinkPoint(m_ptId);
+    m_type = m_cgt->ptGetType(m_ptId);
     m_dpeName = m_cgt->pt_dpeGetName(m_ptId);
 }

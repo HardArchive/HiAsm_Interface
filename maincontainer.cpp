@@ -27,17 +27,15 @@ MainContainer::~MainContainer()
 
 void MainContainer::saveToFile() const
 {
-    
+
     QString buf;
     QTextStream out(&buf);
-    
-    for(const PElement e: *m_container)
-    {
+
+    for (const PElement e : *m_container) {
         out << e->getDataText() << endl;
     }
-    
+
     //qDebug() << buf;
-    
 }
 
 PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const
@@ -49,8 +47,7 @@ PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const
         id_element eId = m_cgt->sdkGetElement(sdk, i);
         ElementClasses eClass = m_cgt->elGetClassIndex(eId);
         ElementFlgs eFlags = m_cgt->elGetFlag(eId);
-        
-        
+
         //ru Создаём элемент
         PElement element = PElement::create(m_cgt, eId);
 

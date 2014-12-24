@@ -8,9 +8,9 @@
 //Project
 
 #ifdef BUILDING_DLL
-#define DLLIMPORT extern "C" __cdecl
+#define DLLEXPORT extern "C" __cdecl
 #else
-#define DLLIMPORT extern "C"
+#define DLLEXPORT extern "C"
 #endif
 
 #endif // GLOBAL_H

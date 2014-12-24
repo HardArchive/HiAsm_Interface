@@ -44,14 +44,14 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext& context, const QS
     }
 }
 
-DLLIMPORT int buildPrepareProc(TBuildPrepareRec* params)
+DLLEXPORT int buildPrepareProc(TBuildPrepareRec* params)
 {
     Q_UNUSED(params)
 
     return CG_SUCCESS;
 }
 
-DLLIMPORT int buildProcessProc(TBuildProcessRec* params)
+DLLEXPORT int buildProcessProc(TBuildProcessRec* params)
 {
     qInstallMessageHandler(myMessageOutput);
     setlocale(LC_ALL, "Russian");
@@ -61,7 +61,7 @@ DLLIMPORT int buildProcessProc(TBuildProcessRec* params)
     return CG_SUCCESS;
 }
 
-DLLIMPORT int CheckVersionProc(THiAsmVersion* params)
+DLLEXPORT int CheckVersionProc(THiAsmVersion* params)
 {
     Q_UNUSED(params)
 

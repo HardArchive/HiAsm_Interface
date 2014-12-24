@@ -16,13 +16,15 @@ HEADERS += \
     element.h \
     cgtsharewrapper.h \
     maincontainer.h \
-    point.h
+    point.h \
+    property.h
 
 SOURCES += \
     main.cpp \
     element.cpp \
     cgtsharewrapper.cpp \
     maincontainer.cpp \
-    point.cpp
+    point.cpp \
+    property.cpp
 
 DISTFILES +=

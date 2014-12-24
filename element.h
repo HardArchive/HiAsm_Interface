@@ -56,7 +56,7 @@ public:
     QString getDataText(uchar inc = 0) const;
 
 private:
-    void receiptElementData();
+    void getElementData();
 };
 
 #endif // ELEMENT_H
