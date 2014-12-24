@@ -10,6 +10,9 @@
 
 //Project
 #include "CGTShare.h"
+#include "point.h"
+#include "property.h"
+#include "cgtsharewrapper.h"
 
 using namespace std;
 
@@ -18,14 +21,15 @@ typedef QSharedPointer<Element> PElement;
 typedef QVector<PElement> Container;
 typedef QSharedPointer<Container> PContainer;
 typedef QVector<PContainer> ArrayPContainers;
-typedef QSharedPointer<ArrayPContainers> PArrayPContainers;
 
 class Element {
 private:
     PCodeGenTools m_cgt{};
     id_element m_eId{};
-    PArrayPContainers m_arrayContainers;
-
+    ArrayPContainers m_arrayContainers;
+    ArrayPPoints m_arrayPoints;
+    ArrayPProperties m_arrayProperties;
+    
     //ru Данные элемента
     QString m_className{};
     ElementClasses m_classIndex{};

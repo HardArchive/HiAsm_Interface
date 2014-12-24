@@ -14,13 +14,12 @@ class MainContainer {
 private:
     PCodeGenTools m_cgt{};
     id_sdk m_sdk{};
-    int m_countElements{};
-    PContainer m_container;
+    PContainer m_container{};
 
 public:
     explicit MainContainer(TBuildProcessRec* params);
     ~MainContainer();
-    
+
     void saveToFile() const;
 
 private:

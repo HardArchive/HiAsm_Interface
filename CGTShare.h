@@ -229,9 +229,9 @@ typedef void* id_sdk;
 typedef void* id_element;
 //ru Точка
 typedef void* id_point;
-//ru Свойство
+//ru Значение свойства
 typedef void* id_prop;
-//ru Список свойств
+//ru Свойство
 typedef void* id_proplist;
 //ru Массив
 typedef void* id_array;
@@ -410,7 +410,7 @@ struct TCodeGenTools {
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип параметра
-    call int (*propGetType)(id_prop prop);
+    call DataTypes (*propGetType)(id_prop prop);
 
     //ru Возвращает имя параметра
     call char* (*propGetName)(id_prop prop);

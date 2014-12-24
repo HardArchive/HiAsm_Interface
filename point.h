@@ -10,10 +10,14 @@
 #include "CGTShare.h"
 #include "cgtsharewrapper.h"
 
+class Point;
+typedef QSharedPointer<Point> PPoint;
+typedef QVector<PPoint> ArrayPPoints;
+
 class Point {
 private:
-    PCodeGenTools m_cgt;
-    id_point m_ptId;
+    PCodeGenTools m_cgt{};
+    id_point m_ptId{};
 
     //ru Данные точки
     DataTypes m_dataType{};

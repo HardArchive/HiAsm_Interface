@@ -6,8 +6,6 @@
 
 //Project
 #include "element.h"
-#include "point.h"
-#include "cgtsharewrapper.h"
 
 Element::Element(PCodeGenTools cgt, id_element eId)
     : m_cgt(cgt)
@@ -22,10 +20,7 @@ Element::~Element()
 
 void Element::append(PContainer container)
 {
-    if (m_arrayContainers == nullptr)
-        m_arrayContainers = PArrayPContainers::create();
-
-    m_arrayContainers->append(container);
+    m_arrayContainers.append(container);
 }
 
 QString Element::getDataText(uchar inc) const
@@ -37,7 +32,7 @@ QString Element::getDataText(uchar inc) const
 
     QString buff;
     QTextStream stream(&buff);
-    
+
     stream << space << "m_className: " << m_className << endl;
     stream << space << "m_classIndex: " << m_classIndex << endl;
     stream << space << "m_flags: " << m_flags << endl;
@@ -56,11 +51,9 @@ QString Element::getDataText(uchar inc) const
     stream << space << "m_sizeW: " << m_sizeW << endl;
     stream << space << "m_sizeH: " << m_sizeH << endl;
 
-    if (m_arrayContainers != nullptr) {
-        for (const PContainer c : *m_arrayContainers) {
-            for (const PElement e : *c) {
-                stream << e->getDataText(inc);
-            }
+    for (const PContainer c : m_arrayContainers) {
+        for (const PElement e : *c) {
+            stream << e->getDataText(inc);
         }
     }
 
@@ -86,7 +79,15 @@ void Element::getElementData()
     m_cgt->elGetPos(m_eId, m_posX, m_posY);
     m_cgt->elGetSize(m_eId, m_sizeW, m_sizeH);
 
+    //ru Получаем информацию о точках
     for (int i = 0; i < m_ptCount; ++i) {
-        Point pt(m_cgt, m_cgt->elGetPt(m_eId, i));
+        m_arrayPoints.append(PPoint::create(m_cgt, m_cgt->elGetPt(m_eId, i)));
     }
+
+    //ru Получаем информацию о свойствах
+    for (int i = 0; i < m_propertyListCount; ++i) {
+        id_proplist tmpPropList = m_cgt->elGetPropertyListItem(m_eId, i);
+        m_arrayProperties.append(PProperty::create(m_cgt, tmpPropList, m_eId));
+    }
+    qDebug() << "test";
 }
