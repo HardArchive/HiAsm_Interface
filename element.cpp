@@ -62,14 +62,14 @@ QString Element::getDataText(uchar inc) const
 
 void Element::getElementData()
 {
-    m_className = m_cgt->elGetClassName(m_eId);
+    m_className = QString::fromLocal8Bit(m_cgt->elGetClassName(m_eId));
     m_classIndex = m_cgt->elGetClassIndex(m_eId);
     m_flags = m_cgt->elGetFlag(m_eId);
-    m_inherit = m_cgt->elGetInherit(m_eId);
+    m_inherit = QString::fromLocal8Bit(m_cgt->elGetInherit(m_eId));
     m_SDKCount = m_cgt->elGetSDKCount(m_eId);
     m_group = m_cgt->elGetGroup(m_eId);
-    m_interface = m_cgt->elGetInterface(m_eId);
-    m_infSub = m_cgt->elGetInfSub(m_eId);
+    m_interface = QString::fromLocal8Bit(m_cgt->elGetInterface(m_eId));
+    m_infSub = QString::fromLocal8Bit(m_cgt->elGetInfSub(m_eId));
     m_propCount = m_cgt->elGetPropCount(m_eId);
     m_propertyListCount = m_cgt->elGetPropertyListCount(m_eId);
     m_ptCount = m_cgt->elGetPtCount(m_eId);
@@ -81,13 +81,12 @@ void Element::getElementData()
 
     //ru Получаем информацию о точках
     for (int i = 0; i < m_ptCount; ++i) {
-        m_arrayPoints.append(PPoint::create(m_cgt, m_cgt->elGetPt(m_eId, i)));
+        m_listPoints << Point(m_cgt, m_cgt->elGetPt(m_eId, i));
     }
 
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propertyListCount; ++i) {
         id_proplist tmpPropList = m_cgt->elGetPropertyListItem(m_eId, i);
-        m_arrayProperties.append(PProperty::create(m_cgt, tmpPropList, m_eId));
+        m_listProperties << Property(m_cgt, tmpPropList, m_eId);
     }
-    qDebug() << "test";
 }

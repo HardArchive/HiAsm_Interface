@@ -27,8 +27,8 @@ private:
     PCodeGenTools m_cgt{};
     id_element m_eId{};
     ArrayPContainers m_arrayContainers;
-    ArrayPPoints m_arrayPoints;
-    ArrayPProperties m_arrayProperties;
+    ListPoints m_listPoints;
+    ListProperties m_listProperties;
     
     //ru Данные элемента
     QString m_className{};

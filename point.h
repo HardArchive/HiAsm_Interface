@@ -11,8 +11,7 @@
 #include "cgtsharewrapper.h"
 
 class Point;
-typedef QSharedPointer<Point> PPoint;
-typedef QVector<PPoint> ArrayPPoints;
+typedef QList<Point> ListPoints;
 
 class Point {
 private:

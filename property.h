@@ -6,14 +6,17 @@
 
 //Qt
 #include <QDebug>
+#include <QSharedPointer>
 
 //Project
 #include "CGTShare.h"
 #include "cgtsharewrapper.h"
 
 class Property;
-typedef QSharedPointer<Property> PProperty;
-typedef QVector<PProperty> ArrayPProperties;
+typedef QList<Property> ListProperties;
+
+typedef QPair<QVariant, DataTypes> PropValue;
+typedef QList<PropValue> ListPropValue;
 
 class Property {
 private:
@@ -22,12 +25,10 @@ private:
     id_element m_elId{};
 
     //ru Данные свойства
+    ListPropValue m_listPropValue;
     id_prop m_propId{};
-    id_element m_linkedElement{};
-    id_element m_linkedElementInfo{};
-    QString m_name{};
+    QString m_name;
     DataTypes m_type{};
-    void* m_value{};
     int m_isTranslate{};
 
 public:
@@ -36,7 +37,7 @@ public:
 
 private:
     void getPropertyData();
-    
+    void getValues();
 };
 
 #endif // PROPERTY_H

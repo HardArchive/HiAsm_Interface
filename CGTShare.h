@@ -231,6 +231,7 @@ typedef void* id_element;
 typedef void* id_point;
 //ru Значение свойства
 typedef void* id_prop;
+typedef void* id_value;
 //ru Свойство
 typedef void* id_proplist;
 //ru Массив
@@ -433,7 +434,12 @@ struct TCodeGenTools {
     call char* (*propToString)(id_prop prop);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //TODO Что возвращается данными функциями? Выяснить и дополнить описание.
+    /*
+     *ru Функции resAdd* возвращают имя временного файла, в который сохраняется ресурс.
+     *ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
+     *ru работы с библиотекой.
+     * 
+     */
 
     //ru Добавляет имя файла в общий список временных файлов для последующего удаления
     call int (*resAddFile)(const char* Name);
@@ -471,7 +477,7 @@ struct TCodeGenTools {
     call int (*arrCount)(id_array a);
 
     //ru Возвращает тип элементов в массиве а
-    call int (*arrType)(id_array a);
+    call DataTypes (*arrType)(id_array a);
 
     //ru Возвращает имя элемента с индексом Index
     call char* (*arrItemName)(id_array a, int Index);
@@ -482,7 +488,7 @@ struct TCodeGenTools {
     //ru ???
     //TODO Выяснить предназначение данной функции.
     //p.s. Возможно, тут производится работа со свойствов... чего?
-    call id_prop (*arrGetItem)(id_array a, int Index);
+    call id_data (*arrGetItem)(id_array a, int Index);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru ???
