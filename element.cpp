@@ -81,12 +81,12 @@ void Element::getElementData()
 
     //ru Получаем информацию о точках
     for (int i = 0; i < m_ptCount; ++i) {
-        m_listPoints << Point(m_cgt, m_cgt->elGetPt(m_eId, i));
+        m_arrayPoints << PPoint::create(m_cgt, m_cgt->elGetPt(m_eId, i));
     }
 
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propCount; ++i) {
-        id_prop propId= m_cgt->elGetProperty(m_eId, i);
-        m_listProperties << Property(m_cgt, propId, m_eId);
+        id_prop propId = m_cgt->elGetProperty(m_eId, i);
+        m_arrayProperties << PProperty::create(m_cgt, propId, m_eId);
     }
 }

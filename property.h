@@ -13,7 +13,8 @@
 #include "cgtsharewrapper.h"
 
 class Property;
-typedef QList<Property> ListProperties;
+typedef QSharedPointer<Property> PProperty;
+typedef QVector<PProperty> ArrayPProperties;
 
 typedef QPair<QVariant, DataTypes> PropValue;
 typedef QList<PropValue> ListPropValue;
@@ -23,7 +24,7 @@ private:
     PCodeGenTools m_cgt{};
     id_prop m_propId{};
     id_element m_elId{};
-    
+
     //ru Данные свойства
     ListPropValue m_listPropValue;
     QString m_name;
