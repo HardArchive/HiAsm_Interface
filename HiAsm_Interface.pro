@@ -7,8 +7,8 @@ CONFIG += c++14
 
 DEFINES += BUILDING_DLL
 
-#DESTDIR += D:/MyProgs/HiAsm_AltBuild/Elements/CNET
-DESTDIR += D:/MyProgs/HiAsm_AltBuild/Elements/delphi
+DESTDIR += D:/MyProgs/HiAsm_AltBuild/Elements/CNET
+#DESTDIR += D:/MyProgs/HiAsm_AltBuild/Elements/delphi
 
 HEADERS += \
     CGTShare.h \

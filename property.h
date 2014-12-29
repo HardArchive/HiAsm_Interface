@@ -21,18 +21,17 @@ typedef QList<PropValue> ListPropValue;
 class Property {
 private:
     PCodeGenTools m_cgt{};
-    id_proplist m_proplist{};
+    id_prop m_propId{};
     id_element m_elId{};
-
+    
     //ru Данные свойства
     ListPropValue m_listPropValue;
-    id_prop m_propId{};
     QString m_name;
     DataTypes m_type{};
     int m_isTranslate{};
 
 public:
-    Property(PCodeGenTools cgt, id_proplist proplist, id_element elementId);
+    Property(PCodeGenTools cgt, id_prop propId, id_element elementId);
     ~Property();
 
 private:

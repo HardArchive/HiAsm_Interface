@@ -1,8 +1,8 @@
 #include "property.h"
 
-Property::Property(PCodeGenTools cgt, id_proplist proplist, id_element elementId)
+Property::Property(PCodeGenTools cgt, id_prop propId, id_element elementId)
     : m_cgt(cgt)
-    , m_proplist(proplist)
+    , m_propId(propId)
     , m_elId(elementId)
 {
     getPropertyData();
@@ -14,11 +14,9 @@ Property::~Property()
 
 void Property::getPropertyData()
 {
-    m_propId = m_cgt->plGetProperty(m_proplist);
-
     m_name = QString::fromLocal8Bit(m_cgt->propGetName(m_propId));
     m_type = m_cgt->propGetType(m_propId);
-
+    
     getValues();
 }
 
@@ -96,14 +94,14 @@ void Property::getValues()
                                               subType);
                 break;
             default:
-                ;
+                break;
             }
         }
         break;
     }
     case data_element: {
-        char* tmp = new char[m_name.toStdString().size() + 1];
-        qstrcpy(tmp, m_name.toStdString().c_str());
+        //FIXME Какого хрена неработает?
+        char* tmp = m_cgt->propGetName(m_propId);
         qintptr linkedElement = reinterpret_cast<qintptr>(m_cgt->propGetLinkedElement(m_elId, tmp));
         m_listPropValue << PropValue(linkedElement, data_element);
         break;

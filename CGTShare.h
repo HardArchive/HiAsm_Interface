@@ -532,6 +532,7 @@ struct TCodeGenTools {
     call id_sdk (*elGetParent)(id_element e);
 
     //ru Возвращает количество элементов в списке св-тв(из панели св-ва)
+    //ru В RTCG используется аналогичный метод - elGetPropCount
     call int (*elGetPropertyListCount)(id_element e);
 
     //ru Возвращает элемент списка св-тв (PropertyList)

@@ -85,8 +85,8 @@ void Element::getElementData()
     }
 
     //ru Получаем информацию о свойствах
-    for (int i = 0; i < m_propertyListCount; ++i) {
-        id_proplist tmpPropList = m_cgt->elGetPropertyListItem(m_eId, i);
-        m_listProperties << Property(m_cgt, tmpPropList, m_eId);
+    for (int i = 0; i < m_propCount; ++i) {
+        id_prop propId= m_cgt->elGetProperty(m_eId, i);
+        m_listProperties << Property(m_cgt, propId, m_eId);
     }
 }
