@@ -16,7 +16,7 @@ void Property::getPropertyData()
 {
     m_name = QString::fromLocal8Bit(m_cgt->propGetName(m_propId));
     m_type = m_cgt->propGetType(m_propId);
-    
+
     getValues();
 }
 
@@ -41,7 +41,7 @@ void Property::getValues()
     }
     case data_str: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->propToString(m_propId)),
-                                      data_str);
+                                     data_str);
         break;
     }
     case data_real: {
@@ -50,7 +50,7 @@ void Property::getValues()
     }
     case data_comboEx: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->propToString(m_propId)),
-                                      data_comboEx);
+                                     data_comboEx);
         break;
     }
     case data_data: {
@@ -61,7 +61,7 @@ void Property::getValues()
             break;
         case data_str:
             m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->dtStr(data)),
-                                          data_str);
+                                         data_str);
             break;
         case data_real:
             m_listPropValue << PropValue(m_cgt->dtReal(data), data_real);
@@ -73,7 +73,7 @@ void Property::getValues()
     }
     case data_list: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->propToString(m_propId)),
-                                      data_list);
+                                     data_list);
         break;
     }
     case data_array: {
@@ -83,15 +83,15 @@ void Property::getValues()
             switch (subType) {
             case data_int:
                 m_listPropValue << PropValue(m_cgt->propToInteger(m_cgt->arrGetItem(array, i)),
-                                              subType);
+                                             subType);
                 break;
             case data_str:
                 m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->propToString(m_cgt->arrGetItem(array, i))),
-                                              subType);
+                                             subType);
                 break;
             case data_real:
                 m_listPropValue << PropValue(m_cgt->propToReal(m_cgt->arrGetItem(array, i)),
-                                              subType);
+                                             subType);
                 break;
             default:
                 break;
@@ -100,35 +100,33 @@ void Property::getValues()
         break;
     }
     case data_element: {
-        //FIXME Какого хрена неработает?
-        char* tmp = m_cgt->propGetName(m_propId);
-        qintptr linkedElement = reinterpret_cast<qintptr>(m_cgt->propGetLinkedElement(m_elId, tmp));
+        qintptr linkedElement = reinterpret_cast<qintptr>(m_cgt->propGetLinkedElement(m_elId, m_name.toStdString().c_str()));
         m_listPropValue << PropValue(linkedElement, data_element);
         break;
     }
     case data_bitmap: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->resAddBitmap(m_propId)),
-                                      data_bitmap);
+                                     data_bitmap);
         break;
     }
     case data_stream: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->resAddStream(m_propId)),
-                                      data_stream);
+                                     data_stream);
         break;
     }
     case data_icon: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->resAddIcon(m_propId)),
-                                      data_icon);
+                                     data_icon);
         break;
     }
     case data_wave: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->resAddWave(m_propId)),
-                                      data_wave);
+                                     data_wave);
         break;
     }
     case data_menu: {
         m_listPropValue << PropValue(QString::fromLocal8Bit(m_cgt->resAddMenu(m_propId)),
-                                      data_menu);
+                                     data_menu);
         break;
     }
     default:
