@@ -50,7 +50,7 @@ QString Element::getDataText(uchar inc) const
     stream << space << "m_posY: " << m_posY << endl;
     stream << space << "m_sizeW: " << m_sizeW << endl;
     stream << space << "m_sizeH: " << m_sizeH << endl;
-
+    
     for (const PContainer c : m_arrayContainers) {
         for (const PElement e : *c) {
             stream << e->getDataText(inc);
