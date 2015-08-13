@@ -2,6 +2,7 @@
 
 //Qt
 #include <QDebug>
+#include <QFlags>
 
 //Project
 #include "cgtsharewrapper.h"

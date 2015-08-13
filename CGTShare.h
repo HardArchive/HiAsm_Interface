@@ -1,13 +1,12 @@
-﻿#ifndef _CGTSHARE_H_
-#define _CGTSHARE_H_
+﻿#pragma once
+
+//Project
 
 //STL
 
 //Qt
 #include <QtCore>
 #include <QBitArray>
-
-//Project
 
 #ifdef BUILDING_DLL
 #ifndef HIASM_5
@@ -690,5 +689,3 @@ struct TCodeGenTools {
     CALLBACK bool (*elIsDefProperty)(id_element e, id_prop p);
 #endif
 };
-
-#endif // _CGTSHARE_H_

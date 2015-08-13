@@ -1,13 +1,12 @@
-#ifndef CONTAINER_H
-#define CONTAINER_H
-
-//STL
-
-//Qt
+#pragma once
 
 //Project
 #include "CGTShare.h"
 #include "element.h"
+
+//STL
+
+//Qt
 
 class MainContainer {
 
@@ -25,5 +24,3 @@ public:
 private:
     PContainer getContainerFromSDK(id_sdk sdk) const;
 };
-
-#endif // CONTAINER_H

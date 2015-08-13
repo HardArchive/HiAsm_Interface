@@ -1,3 +1,8 @@
+//STL
+
+//Qt
+
+//Project
 #include "point.h"
 
 Point::Point(PCodeGenTools cgt, id_point pt)

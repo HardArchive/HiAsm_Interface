@@ -1,5 +1,4 @@
-#ifndef POINT_H
-#define POINT_H
+#pragma once
 
 //Project
 #include "CGTShare.h"
@@ -37,5 +36,3 @@ public:
 private:
     void getPointData();
 };
-
-#endif // POINT_H

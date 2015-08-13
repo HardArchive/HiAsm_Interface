@@ -1,5 +1,10 @@
-#ifndef ELEMENT_H
-#define ELEMENT_H
+#pragma once
+
+//Project
+#include "CGTShare.h"
+#include "point.h"
+#include "property.h"
+#include "cgtsharewrapper.h"
 
 //STL
 
@@ -7,12 +12,6 @@
 #include <QString>
 #include <QVector>
 #include <QSharedPointer>
-
-//Project
-#include "CGTShare.h"
-#include "point.h"
-#include "property.h"
-#include "cgtsharewrapper.h"
 
 using namespace std;
 
@@ -62,5 +61,3 @@ public:
 private:
     void getElementData();
 };
-
-#endif // ELEMENT_H

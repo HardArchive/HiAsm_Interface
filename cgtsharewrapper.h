@@ -1,12 +1,11 @@
-#ifndef CGTSHAREWRAPPER_H
-#define CGTSHAREWRAPPER_H
+#pragma once
+
+//Project
+#include "CGTShare.h"
 
 //STL
 
 //Qt
-
-//Project
-#include "CGTShare.h"
 
 namespace cgt
 {
@@ -28,5 +27,3 @@ namespace cgt
     PCodeGenTools getOriginalCgt();
     PCodeGenTools getProxyCgt();
 }
-
-#endif // CGTSHAREWRAPPER_H

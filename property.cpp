@@ -1,3 +1,8 @@
+//STL
+
+//Qt
+
+//Project
 #include "property.h"
 
 Property::Property(PCodeGenTools cgt, id_prop propId, id_element elementId)

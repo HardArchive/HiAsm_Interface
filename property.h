@@ -1,5 +1,8 @@
-#ifndef PROPERTY_H
-#define PROPERTY_H
+#pragma once
+
+//Project
+#include "CGTShare.h"
+#include "cgtsharewrapper.h"
 
 //STL
 #include <windows.h>
@@ -7,10 +10,6 @@
 //Qt
 #include <QDebug>
 #include <QSharedPointer>
-
-//Project
-#include "CGTShare.h"
-#include "cgtsharewrapper.h"
 
 class Property;
 typedef QSharedPointer<Property> PProperty;
@@ -39,5 +38,3 @@ private:
     void getPropertyData();
     void getValues();
 };
-
-#endif // PROPERTY_H
