@@ -62,7 +62,7 @@ namespace cgt
 static PCodeGenTools m_cgt = nullptr;
 
 //Константы
-const char CALL_STR[] = "  Call func:";
+const char CALL_STR[] = "  Call:";
 const char ARG_STR[] = "  Arg";
 const char RESULT_STR[] = "  Result:";
 

@@ -17,7 +17,7 @@
 #define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
 
 //Константы
-const char CALL_STR[] = "Call func:";
+const char CALL_STR[] = "Call:";
 const char ARG_STR[] = "Arg";
 const char RESULT_STR[] = "Result:";
 
