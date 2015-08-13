@@ -1,14 +1,14 @@
 #ifndef POINT_H
 #define POINT_H
 
+//Project
+#include "CGTShare.h"
+#include "cgtsharewrapper.h"
+
 //STL
 
 //Qt
 #include <QDebug>
-
-//Project
-#include "CGTShare.h"
-#include "cgtsharewrapper.h"
 
 class Point;
 typedef QSharedPointer<Point> PPoint;

@@ -100,7 +100,7 @@ void Property::getValues()
         break;
     }
     case data_element: {
-        qintptr linkedElement = reinterpret_cast<qintptr>(m_cgt->propGetLinkedElement(m_elId, m_name.toStdString().c_str()));
+        quintptr linkedElement = reinterpret_cast<quintptr>(m_cgt->propGetLinkedElement(m_elId, m_name.toStdString().c_str()));
         m_listPropValue << PropValue(linkedElement, data_element);
         break;
     }

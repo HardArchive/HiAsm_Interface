@@ -5,7 +5,7 @@ QT += core
 
 CONFIG += c++14
 
-DEFINES += BUILDING_DLL CNET
+DEFINES += BUILDING_DLL #CNET
 
 #ru Путь до пакетов HiAsm
 HIASM_PACKAGES = "D:/MyProgs/HiAsm_AltBuild/Elements"

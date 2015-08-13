@@ -224,26 +224,26 @@ enum ParamsProject {
 
 //!ru Типы, используемые в интерфейсе
 //ru Контейнер (уровень схемы)
-typedef void* id_sdk;
+typedef quintptr id_sdk;
 //ru Элемент
-typedef void* id_element;
+typedef quintptr id_element;
 //ru Точка
-typedef void* id_point;
+typedef quintptr id_point;
 //ru Значение свойства
-typedef void* id_prop;
-typedef void* id_value;
+typedef quintptr id_prop;
+typedef quintptr id_value;
 //ru Свойство
-typedef void* id_proplist;
+typedef quintptr id_proplist;
 //ru Массив
-typedef void* id_array;
+typedef quintptr id_array;
 //ru Данные
-typedef void* id_data;
+typedef quintptr id_data;
 //ru Шрифт
-typedef void* id_font;
+typedef quintptr id_font;
 
 struct TCodeGenTools;
 
-typedef TCodeGenTools* PCodeGenTools;
+typedef TCodeGenTools *PCodeGenTools;
 
 //!ru Структуры кодогенератора и интерфейсы точки входа
 //!en CodeGen types and entry point interfaces
@@ -262,18 +262,18 @@ struct TBuildPrepareRec {
 struct TBuildProcessRec {
     PCodeGenTools cgt;
     id_sdk sdk;
-    void* result;
+    quintptr result;
 };
 
 struct TBuildMakePrjRec {
-    void* result;
-    char* prjFilename;
-    char* compiler;
+    quintptr result;
+    char *prjFilename;
+    char *compiler;
 };
 
 struct TBuildCompliteRec {
-    char* prjFilename;
-    char* appFilename;
+    char *prjFilename;
+    char *appFilename;
 };
 
 struct TBuildParams {
@@ -281,11 +281,11 @@ struct TBuildParams {
 };
 
 struct TBuildRunRec {
-    char* FileName;
+    char *FileName;
     int Mode;
     int ServerPort;
     int ClientPort;
-    void* data;
+    quintptr data;
 };
 
 //!ru Дополнительные структуры
@@ -293,422 +293,346 @@ struct TBuildRunRec {
 
 struct TSynParams {
     //ru Имя текущего элемента
-    char* elName;
+    char *elName;
 
     //ru Имя объекта
-    char* objName;
+    char *objName;
 
     //ru Список методов и полей для вставки в редактор
-    char* inst_list;
+    char *inst_list;
 
     //ru Список, отображаемый во всплывающей подсказке
-    char* disp_list;
+    char *disp_list;
 };
 
 struct THintParams {
     id_point point;
     id_sdk sdk;
     PCodeGenTools cgt;
-    char* hint;
+    char *hint;
+};
+
+struct TRFD_Rec {
+    char *name;
+    char *className;
+    char *inherit;
+    char *interfaces;
+    char *sub;
 };
 
 struct TCodeGenTools {
-#define call __stdcall
+#define CALLBACK __stdcall
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает количество элементов в схеме.
     //ru Элементы в контейнерах не считаются
-    call int (*sdkGetCount)(id_sdk SDK);
+    CALLBACK int (*sdkGetCount)(id_sdk SDK);
 
     //ru Возвращает идентификатор элемента по его Z-координате(индексу)
-    call id_element (*sdkGetElement)(id_sdk SDK, int Index);
+    CALLBACK id_element(*sdkGetElement)(id_sdk SDK, int Index);
 
     //ru Возвращает идентификатор элемента по имени его класса
-    call id_element (*sdkGetElementName)(id_sdk SDK, char* Name);
+    CALLBACK id_element(*sdkGetElementName)(id_sdk SDK, char *Name);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает флаги элемента по его идентификатору
-    call ElementFlags (*elGetFlag)(id_element e);
+    CALLBACK ElementFlags(*elGetFlag)(id_element e);
 
     //ru Возвращает кол-во св-в элемента
-    call int (*elGetPropCount)(id_element e);
+    CALLBACK int (*elGetPropCount)(id_element e);
 
     //ru Возвращает целую структуру для конкретного св-ва с порядковым номером из INI
-    call id_prop (*elGetProperty)(id_element e, int Index);
+    CALLBACK id_prop(*elGetProperty)(id_element e, int Index);
 
     //ru Возвращает True, если значение св-ва совпадает с заданным в INI файле, иначе False
-    call bool (*elIsDefProp)(id_element e, int Index);
+    CALLBACK bool (*elIsDefProp)(id_element e, int Index);
 
     //ru Присваиваем элементу уникальное имя
-    call id_element (*elSetCodeName)(id_element e, char* Name);
+    CALLBACK id_element(*elSetCodeName)(id_element e, char *Name);
 
     //ru Получаем уникальное имя элемента
-    call char* (*elGetCodeName)(id_element e);
+    CALLBACK char *(*elGetCodeName)(id_element e);
 
     //ru Получаем имя класса элемента
-    call char* (*elGetClassName)(id_element e);
+    CALLBACK char *(*elGetClassName)(id_element e);
 
     //ru Просто содержимое поля Sub из INI-файла элемента
     //TODO Выяснить, что за "просто содержимое" поля Sub и дополнить описание.
-    call char* (*elGetInfSub)(id_element e);
+    CALLBACK char *(*elGetInfSub)(id_element e);
 
     //ru Получаем общее количество точек у элемента
-    call int (*elGetPtCount)(id_element e);
+    CALLBACK int (*elGetPtCount)(id_element e);
 
     //ru Получаем идентификатор точки по её индексу
-    call id_point (*elGetPt)(id_element e, int i);
+    CALLBACK id_point(*elGetPt)(id_element e, int i);
 
     //ru Получаем идентификатор точки по её имени
-    call id_point (*elGetPtName)(id_element e, const char* Name);
+    CALLBACK id_point(*elGetPtName)(id_element e, const char *Name);
 
     //ru Получаем подкласс элемента
-    call ElementClasses (*elGetClassIndex)(id_element e);
+    CALLBACK ElementClasses(*elGetClassIndex)(id_element e);
 
     //ru Получаем идентификатор внутренней схемы для контейнеров
     //ru и идентификатор родителя id_element для редактора контейнера
-    call id_sdk (*elGetSDK)(id_element e);
+    CALLBACK id_sdk(*elGetSDK)(id_element e);
 
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются
-    call bool (*elLinkIs)(id_element e);
+    CALLBACK bool (*elLinkIs)(id_element e);
 
     //ru Возвращает идент главного элемента(тот, на который ссылаются другие)
-    call id_element (*elLinkMain)(id_element e);
+    CALLBACK id_element(*elLinkMain)(id_element e);
 
     //ru Помещаем в переменные "X" и "Y", позицию элемента в редакторе схем
-    call void (*elGetPos)(id_element e, int& X, int& Y);
+    CALLBACK void (*elGetPos)(id_element e, int &X, int &Y);
 
     //ru Помещаем в переменные "W" и "H", размеры элемента в редакторе схем
-    call void (*elGetSize)(id_element e, int& W, int& H);
+    CALLBACK void (*elGetSize)(id_element e, int &W, int &H);
 
     //ru Неизвестно для чего эта функция.
     //ru Возможно, возвращает уникальное число.
     //ru Можно считать её - deprecated.
-    call int (*elGetEID)(id_element e);
+    CALLBACK int (*elGetEID)(id_element e);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает идентификатор точки, с которой соеденена данная
-    call id_point (*ptGetLinkPoint)(id_point p);
+    CALLBACK id_point(*ptGetLinkPoint)(id_point p);
 
     //ru Возвращает идентификатор точки, с которой соеденена данная точка,
     //ru без учета точек разрыва и хабов
-    call id_point (*ptGetRLinkPoint)(id_point p);
+    CALLBACK id_point(*ptGetRLinkPoint)(id_point p);
 
     //ru Возвращает тип точек(константы pt_XXX)
-    call PointsTypes (*ptGetType)(id_point p);
+    CALLBACK PointsTypes(*ptGetType)(id_point p);
 
     //ru Возвращает имя точки
-    call char* (*ptGetName)(id_point p);
+    CALLBACK char *(*ptGetName)(id_point p);
 
     //ru Возвращает идентификатор элемента, которому принадлежит точка
-    call id_element (*ptGetParent)(id_point p);
+    CALLBACK id_element(*ptGetParent)(id_point p);
 
     //ru Возвращает относительный индекс точки по принадлежности к одной из 4х групп
     //TODO Выяснить, что представлять из себя "относительный индекс точки" и дополнить описание.
-    call int (*ptGetIndex)(id_point p);
+    CALLBACK int (*ptGetIndex)(id_point p);
 
     //ru Возвращает базовую часть имени динамических точек(для CI_DPElement)
-    call char* (*pt_dpeGetName)(id_point p);
+    CALLBACK char *(*pt_dpeGetName)(id_point p);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип параметра
-    call DataTypes (*propGetType)(id_prop prop);
+    CALLBACK DataTypes(*propGetType)(id_prop prop);
 
     //ru Возвращает имя параметра
-    call char* (*propGetName)(id_prop prop);
+    CALLBACK char *(*propGetName)(id_prop prop);
 
     //ru Возвращает значение параметра
-    call void* (*propGetValue)(id_prop prop);
+    CALLBACK quintptr(*propGetValue)(id_prop prop);
 
     //TODO propTo функции, возвращают свойство в указанном типе? Дополнить описание.
 
     //ru ???
-    call unsigned char (*propToByte)(id_prop prop);
+    CALLBACK unsigned char (*propToByte)(id_prop prop);
 
     //ru ???
-    call int (*propToInteger)(id_prop prop);
+    CALLBACK int (*propToInteger)(id_prop prop);
 
     //ru ???
-    call float (*propToReal)(id_prop prop);
+    CALLBACK float (*propToReal)(id_prop prop);
 
     //ru ???
-    call char* (*propToString)(id_prop prop);
+    CALLBACK char *(*propToString)(id_prop prop);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     /*
      *ru Функции resAdd* возвращают имя временного файла, в который сохраняется ресурс.
      *ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
      *ru работы с библиотекой.
-     * 
+     *
      */
 
     //ru Добавляет имя файла в общий список временных файлов для последующего удаления
-    call int (*resAddFile)(const char* Name);
+    CALLBACK int (*resAddFile)(const char *Name);
 
     //ru Добавляет иконку в ресурсы и в список временных файлов
-    call char* (*resAddIcon)(id_prop p);
+    CALLBACK char *(*resAddIcon)(id_prop p);
 
     //ru Добавляет строку в ресурсы и в список временных файлов
-    call char* (*resAddStr)(const char* p);
+    CALLBACK char *(*resAddStr)(const char *p);
 
     //ru Добавляет поток в ресурсы и в список временных файлов
-    call char* (*resAddStream)(id_prop p);
+    CALLBACK char *(*resAddStream)(id_prop p);
 
     //ru Добавляет звук в ресурсы и в список временных файлов
-    call char* (*resAddWave)(id_prop p);
+    CALLBACK char *(*resAddWave)(id_prop p);
 
     //ru Добавляет картинку в ресурсы и в список временных файлов
-    call char* (*resAddBitmap)(id_prop p);
+    CALLBACK char *(*resAddBitmap)(id_prop p);
 
     //ru Добавляет меню в ресурсы и в список временных файлов
-    call char* (*resAddMenu)(id_prop p);
+    CALLBACK char *(*resAddMenu)(id_prop p);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Выводит строку Text в окно Отладка цветом Color
     //TODO Что возвращается данной функцией? Выяснить и дополнить описание.
-    call int (*_Debug)(const char* Text, int Color);
+    CALLBACK int (*_Debug)(const char *Text, int Color);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TODO Выяснить предназначение этой функции.
     //ru Возвращает значение параметра среды по его индексу
-    call int (*GetParam)(short int index, void* value);
+    CALLBACK int (*GetParam)(short int index, char *value);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массивы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает кол-во элементов в массиве а
-    call int (*arrCount)(id_array a);
+    CALLBACK int (*arrCount)(id_array a);
 
     //ru Возвращает тип элементов в массиве а
-    call DataTypes (*arrType)(id_array a);
+    CALLBACK DataTypes(*arrType)(id_array a);
 
     //ru Возвращает имя элемента с индексом Index
-    call char* (*arrItemName)(id_array a, int Index);
+    CALLBACK char *(*arrItemName)(id_array a, int Index);
 
     //ru Возвращает значение элемента с индексом Index
-    call void* (*arrItemData)(id_array a, int Index);
+    CALLBACK quintptr(*arrItemData)(id_array a, int Index);
 
     //ru ???
     //TODO Выяснить предназначение данной функции.
     //p.s. Возможно, тут производится работа со свойствов... чего?
-    call id_data (*arrGetItem)(id_array a, int Index);
+    CALLBACK id_data(*arrGetItem)(id_array a, int Index);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru ???
     //TODO Выяснить предназначение данной функции.
-    call bool (*isDebug)(id_sdk e);
+    CALLBACK bool (*isDebug)(id_sdk e);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ данные ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TODO Преобразование данные?
     //TODO Или просто возращаем в нужном типе?
     //TODO id_data? Где он берётся?
 
-    call unsigned char (*dtType)(id_data d);
-    call char* (*dtStr)(id_data d);
-    call int (*dtInt)(id_data d);
-    call double (*dtReal)(id_data d);
+    CALLBACK unsigned char (*dtType)(id_data d);
+    CALLBACK char *(*dtStr)(id_data d);
+    CALLBACK int (*dtInt)(id_data d);
+    CALLBACK double (*dtReal)(id_data d);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TODO Возвращает название шрифта по идентификатору?
     //TODO id_font? Где он берётся?
-    call char* (*fntName)(id_font f);
-    call int (*fntSize)(id_font f);
-    call unsigned char (*fntStyle)(id_font f);
-    call int (*fntColor)(id_font f);
-    call unsigned char (*fntCharSet)(id_font f);
+    CALLBACK char *(*fntName)(id_font f);
+    CALLBACK int (*fntSize)(id_font f);
+    CALLBACK unsigned char (*fntStyle)(id_font f);
+    CALLBACK int (*fntColor)(id_font f);
+    CALLBACK unsigned char (*fntCharSet)(id_font f);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TODO Пользовательские данные? Выяснить и дополнить описание.
     //ru Получает пользовательские данные элемента
-    call void* (*elGetData)(id_element e);
+    CALLBACK quintptr(*elGetData)(id_element e);
 
     //TODO Пользовательские данные? Выяснить и дополнить описание.
     //ru Устанавливает пользовательские данные элемента
-    call void (*elSetData)(id_element e, void* data);
+    CALLBACK void (*elSetData)(id_element e, char *data);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки
-    call DataTypes (*ptGetDataType)(id_point p);
+    CALLBACK DataTypes(*ptGetDataType)(id_point p);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает идентификатор родителя
-    call id_sdk (*elGetParent)(id_element e);
+    CALLBACK id_sdk(*elGetParent)(id_element e);
 
     //ru Возвращает количество элементов в списке св-тв(из панели св-ва)
     //ru В RTCG используется аналогичный метод - elGetPropCount
-    call int (*elGetPropertyListCount)(id_element e);
+    CALLBACK int (*elGetPropertyListCount)(id_element e);
 
     //ru Возвращает элемент списка св-тв (PropertyList)
-    call id_proplist (*elGetPropertyListItem)(id_element e, int i);
+    CALLBACK id_proplist(*elGetPropertyListItem)(id_element e, int i);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ список свойств элемента ~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает имя св-ва
-    call char* (*plGetName)(id_proplist p);
+    CALLBACK char *(*plGetName)(id_proplist p);
 
     //ru Возвращает описание св-ва
-    call char* (*plGetInfo)(id_proplist p);
+    CALLBACK char *(*plGetInfo)(id_proplist p);
 
     //ru Возвращает группу св-ва
-    call char* (*plGetGroup)(id_proplist p);
+    CALLBACK char *(*plGetGroup)(id_proplist p);
 
     //ru Возвращает значение св-ва
-    call id_prop (*plGetProperty)(id_proplist p);
+    CALLBACK id_prop(*plGetProperty)(id_proplist p);
 
     //ru Возвращает родительский элемент даного св-ва
-    call id_element (*plGetOwner)(id_proplist p);
+    CALLBACK id_element(*plGetOwner)(id_proplist p);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает описание точки
-    call char* (*ptGetInfo)(id_point p);
+    CALLBACK char *(*ptGetInfo)(id_point p);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает идентификатор элемента, прилинкованного к указанному св-ву
     //TODO Как это? Выяснить и дополнить описание.
-    call id_element (*propGetLinkedElement)(id_element e, const char* propName);
+    CALLBACK id_element(*propGetLinkedElement)(id_element e, const char *propName);
 
     //ru Возвращает 1 если св-во помечено на перевод
     //TODO Выяснить, где в среде можно помечать свойства на перевод.
-    call int (*propIsTranslate)(id_element e, id_prop p);
+    CALLBACK int (*propIsTranslate)(id_element e, id_prop p);
 
     //ru ???
     //TODO Выяснить, для чего предназначена данная функция.
-    call id_element (*propGetLinkedElementInfo)(id_element e, id_prop prop, const char* _int);
+    CALLBACK id_element(*propGetLinkedElementInfo)(id_element e, id_prop prop, const char *_int);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает SDK полиморфного контейнера по его индексу
-    call id_sdk (*elGetSDKByIndex)(id_element e, int index);
+    CALLBACK id_sdk(*elGetSDKByIndex)(id_element e, int index);
 
     //ru Возвращает количаство сабклассов полиморфного контейнера
-    call int (*elGetSDKCount)(id_element e);
+    CALLBACK int (*elGetSDKCount)(id_element e);
 
     //ru Возвращает имя контейнера?
     //TODO Выяснить, точно ли данная функция возвращает имя текущего(?) контейнера.
-    call char* (*elGetSDKName)(id_element e, int index);
+    CALLBACK char *(*elGetSDKName)(id_element e, int index);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает элемент родитель для данного SDK
-    call id_element (*sdkGetParent)(id_sdk SDK);
+    CALLBACK id_element(*sdkGetParent)(id_sdk SDK);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает интерфейсы, предоставляемые элементом
-    call char* (*elGetInterface)(id_element e);
+    CALLBACK char *(*elGetInterface)(id_element e);
 
     //ru Возвращает классы, от которых наследуется элемент
-    call char* (*elGetInherit)(id_element e);
+    CALLBACK char *(*elGetInherit)(id_element e);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает 1 если список ресурсов пуст, и 0 в противном случае
-    call int (*resEmpty)();
+    CALLBACK int (*resEmpty)();
 
     //ru Устанавливает префикс для имен ресурсов
-    call int (*resSetPref)(const char* pref);
+    CALLBACK int (*resSetPref)(const char *pref);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Добавляет информацию в панель ошибок
-    call int (*_Error)(int line, id_element e, const char* text);
+    CALLBACK int (*_Error)(int line, id_element e, const char *text);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID группы, к которой принадлежит элемент и 0, если группа отсутствует
-    call int (*elGetGroup)(id_element e);
+    CALLBACK int (*elGetGroup)(id_element e);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru ???
     //TODO Выяснить, для чего предназначена данная функция.
-    call int (*propSaveToFile)(id_prop p, const char* fileName);
+    CALLBACK int (*propSaveToFile)(id_prop p, const char *fileName);
 
-//ru "MSDK" - определение вызовов, оптимизирующих производительность.
-//ru Вызовы реализованы в стороннем проекте HiAsm SDK.
-//ru http://forum.hiasm.com/forum.html?q=3&p=273676#p273676
-//TODO Нужно будет решить, что с ними делать.
+    //ru "MSDK" - определение вызовов, оптимизирующих производительность.
+    //ru Вызовы реализованы в стороннем проекте HiAsm SDK.
+    //ru http://forum.hiasm.com/forum.html?q=3&p=273676#p273676
+    //TODO Нужно будет решить, что с ними делать.
 #ifdef MSDK
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru ???
-    call id_prop (*elGetPropertyName)(id_element e, const char* name);
+    CALLBACK id_prop(*elGetPropertyName)(id_element e, const char *name);
 
     //ru ???
-    call bool (*elIsDefProperty)(id_element e, id_prop p);
+    CALLBACK bool (*elIsDefProperty)(id_element e, id_prop p);
 #endif
-
-    //TODO Тут возможно стоит переписать функции и добавить описание.
-    //!~~~~~~~~~~~~~~~~~~~~~~~~~ пользовательские ф-ции ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    int ReadIntParam(int Index)
-    {
-        int i = 0;
-        GetParam(Index, &i);
-        return i;
-    }
-
-    char* ReadStrParam(int Index, id_element e = NULL)
-    {
-        char* c;
-        c = new char[256];
-        *((id_element*)c) = e; //TODO: V206 http://www.viva64.com/en/V206 Explicit conversion from 'char *' to 'type **'.
-        GetParam(Index, c);
-        return c;
-    }
-
-    inline void trace(const char* text)
-    {
-        _Debug(text, 0xFF00FF);
-    }
-
-    void trace(int value)
-    {
-        char text[32];
-        sprintf(text, "%d", value);
-        _Debug(text, 0xFF00FF);
-    }
-
-    void error(const char* text)
-    {
-        _Debug(text, 0x0000FF);
-    }
-
-    id_point getPointByType(id_element e, int type, int index)
-    {
-        int c = 0;
-        for (int i = 0; i < elGetPtCount(e); i++) {
-            id_point point = elGetPt(e, i);
-            if (ptGetType(point) == type) {
-                if (c == index)
-                    return point;
-                c++;
-            }
-        }
-        return NULL;
-    }
-
-    id_prop getPropByName(id_element e, const char* name)
-    {
-#ifdef MSDK
-        return elGetPropertyName(e, name);
-#else
-        for (int i = 0; i < elGetPropCount(e); i++) {
-            id_prop p = elGetProperty(e, i);
-            if (strcasecmp(name, propGetName(p)) == 0)
-                return p;
-        }
-        return NULL;
-#endif
-    }
-
-    bool isDefProp(id_element e, id_prop p)
-    {
-#ifdef MSDK
-        return elIsDefProperty(e, p);
-#else
-        for (int i = 0; i < elGetPropCount(e); i++) {
-            if (elGetProperty(e, i) == p) {
-                if (propGetType(p) == data_array) {
-                    if (arrCount((id_array)propGetValue(p)))
-                        return false;
-                    else
-                        return true;
-                }
-                return elIsDefProp(e, i);
-            }
-        }
-        return false;
-#endif
-    }
 };
 
 #endif // _CGTSHARE_H_
