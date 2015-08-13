@@ -8,8 +8,14 @@
 
 //Qt
 
+
 class MainContainer
 {
+
+private:
+    struct  {
+
+    } m_params;
 
 private:
     const PCodeGenTools m_cgt {};

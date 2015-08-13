@@ -17,8 +17,8 @@ namespace cgt
     bool isEdit(const ElementFlgs &flags);
     bool isSystem(const ElementFlgs &flags);
 
-    bool isEditMultiEx(const ElementClasses &eClass);
-    bool isPolyMulti(const ElementClasses &eClass);
+    bool isEditMultiEx(const ClassesElements &eClass);
+    bool isPolyMulti(const ClassesElements &eClass);
 }
 
 namespace cgt

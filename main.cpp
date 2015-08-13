@@ -98,7 +98,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::saveOriginalCgt(params.cgt);
     params.cgt = cgt::getProxyCgt();
 
-//#define MAINCONTAINER
+#define MAINCONTAINER
 #ifdef MAINCONTAINER
     MainContainer mainContainer(params);
     return CG_SUCCESS;

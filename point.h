@@ -26,7 +26,7 @@ private:
     QString m_name{};
     id_element m_parent{};
     id_point m_RLinkPoint{};
-    PointsTypes m_type{};
+    PointTypes m_type{};
     QString m_dpeName{};
 
 public:

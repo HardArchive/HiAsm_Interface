@@ -41,7 +41,7 @@ PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const
 
     for(int i = 0; i < countElements; ++i) {
         id_element eId = m_cgt->sdkGetElement(sdk, i);
-        ElementClasses eClass = m_cgt->elGetClassIndex(eId);
+        ClassesElements eClass = m_cgt->elGetClassIndex(eId);
         ElementFlgs eFlags = m_cgt->elGetFlag(eId);
 
         //ru Создаём элемент

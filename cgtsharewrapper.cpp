@@ -45,12 +45,12 @@ bool isSystem(const ElementFlgs &flags)
     return flags & ELEMENT_FLG_IS_SYSTEM;
 }
 
-bool isEditMultiEx(const ElementClasses &eClass)
+bool isEditMultiEx(const ClassesElements &eClass)
 {
     return eClass == CI_EditMultiEx;
 }
 
-bool isPolyMulti(const ElementClasses &eClass)
+bool isPolyMulti(const ClassesElements &eClass)
 {
     return eClass == CI_PolyMulti;
 }
@@ -247,12 +247,12 @@ EXPORT id_point elGetPtName(id_element e, const char *Name)
 }
 
 //ru Получаем подкласс элемента
-EXPORT ElementClasses elGetClassIndex(id_element e)
+EXPORT ClassesElements elGetClassIndex(id_element e)
 {
     PRINT_FUNC_INFO
-    ElementClasses res = m_cgt->elGetClassIndex(e);
+    ClassesElements res = m_cgt->elGetClassIndex(e);
     printArgs({e});
-    qDebug().noquote() << RESULT_STR << ElementClassesMap[res];
+    qDebug().noquote() << RESULT_STR << ClassesElementsMap[res];
 
     return res;
 }
@@ -345,12 +345,12 @@ EXPORT id_point ptGetRLinkPoint(id_point p)
 }
 
 //ru Возвращает тип точек(константы pt_XXX)
-EXPORT PointsTypes ptGetType(id_point p)
+EXPORT PointTypes ptGetType(id_point p)
 {
     PRINT_FUNC_INFO
-    PointsTypes res = m_cgt->ptGetType(p);
+    PointTypes res = m_cgt->ptGetType(p);
     printArgs({p});
-    qDebug().noquote() << RESULT_STR << PointsTypesMap[res];
+    qDebug().noquote() << RESULT_STR << PointTypesMap[res];
 
     return res;
 }
@@ -580,12 +580,13 @@ EXPORT int _Debug(const char *Text, int Color)
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
 //ru Возвращает значение параметра среды по его индексу?
-EXPORT int GetParam(ParamsIde index, const char *value)
+EXPORT int GetParam(CgtParams index, const char *value)
 {
     PRINT_FUNC_INFO
     int res = m_cgt->GetParam(index, value);
-    printArgs({ParamsIdeMap[index], value});
+    printArgs({CgtParamsMap[index], value});
     qDebug() << RESULT_STR << res;
+
 
     return res;
 }

@@ -23,7 +23,7 @@ private:
     
     //ru Данные элемента
     QString m_className{};
-    ElementClasses m_classIndex{};
+    ClassesElements m_classIndex{};
     ElementFlgs m_flags{};
     QString m_inherit{};
     int m_SDKCount{};

@@ -76,7 +76,7 @@ typedef QFlags<ElementFlags> ElementFlgs;
 #endif
 
 //!ru Типы точек
-enum PointsTypes {
+enum PointTypes {
     //ru Метод
     pt_Work = 1,
 
@@ -89,7 +89,7 @@ enum PointsTypes {
     //ru Данные
     pt_Data = 4,
 };
-const static QMap<int, QString> PointsTypesMap{
+const static QMap<int, QString> PointTypesMap{
     {pt_Work, "pt_Work"},
     {pt_Event, "pt_Event"},
     {pt_Var, "pt_Var"},
@@ -148,7 +148,7 @@ const static QMap<int, QString> DataTypesMap{
 
 //!ru Классы элемента (elGetClassIndex)
 //TODO Дополнить описание.
-enum ElementClasses {
+enum ClassesElements {
     //ru Простой элемент
     CI_Element = 0,
 
@@ -191,7 +191,7 @@ enum ElementClasses {
     //ru Полиморфный контейнер
     CI_PolyMulti = 17,
 };
-const static QMap<int, QString> ElementClassesMap{
+const static QMap<int, QString> ClassesElementsMap{
     {CI_Element, "CI_Element"},
     {CI_DPElement, "CI_DPElement"},
     {CI_MultiElement, "CI_MultiElement"},
@@ -213,7 +213,7 @@ const static QMap<int, QString> ElementClassesMap{
 
 //!ru Индексы параметров среды
 //TODO Что за индексы параметов среды? Дополнить описание.
-enum ParamsIde {
+enum CgtParams {
     PARAM_CODE_PATH = 0,
     PARAM_DEBUG_MODE = 1,
     PARAM_DEBUG_SERVER_PORT = 2,
@@ -225,9 +225,10 @@ enum ParamsIde {
     PARAM_PROJECT_NAME = 8,
     PARAM_SDE_WIDTH = 9,
     PARAM_SDE_HEIGHT = 10,
-    PARAM_COMPILER = 11,
+    PARAM_COMPILER = 11
 };
-const static QMap<int, QString> ParamsIdeMap{
+
+const static QMap<int, QString> CgtParamsMap{
     {PARAM_CODE_PATH, "PARAM_CODE_PATH"},
     {PARAM_DEBUG_MODE, "PARAM_DEBUG_MODE"},
     {PARAM_DEBUG_SERVER_PORT, "PARAM_DEBUG_SERVER_PORT"},
@@ -270,7 +271,7 @@ enum CgResult {
 };
 
 //!ru Параметры проекта
-enum ParamsProject {
+enum ProjectParams {
     //ru Поддерживает сжатие
     //TODO Подробнее изучить этот параметр и дополнить описание.
     CGMP_COMPRESSED = 0x01,
@@ -439,7 +440,7 @@ struct TCodeGenTools {
     CALLBACK id_point(*elGetPtName)(id_element e, const char *Name);
 
     //ru Получаем подкласс элемента
-    CALLBACK ElementClasses(*elGetClassIndex)(id_element e);
+    CALLBACK ClassesElements(*elGetClassIndex)(id_element e);
 
     //ru Получаем идентификатор внутренней схемы для контейнеров
     //ru и идентификатор родителя id_element для редактора контейнера
@@ -471,7 +472,7 @@ struct TCodeGenTools {
     CALLBACK id_point(*ptGetRLinkPoint)(id_point p);
 
     //ru Возвращает тип точек(константы pt_XXX)
-    CALLBACK PointsTypes(*ptGetType)(id_point p);
+    CALLBACK PointTypes(*ptGetType)(id_point p);
 
     //ru Возвращает имя точки
     CALLBACK char *(*ptGetName)(id_point p);
@@ -547,7 +548,7 @@ struct TCodeGenTools {
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TODO Выяснить предназначение этой функции.
     //ru Возвращает значение параметра среды по его индексу
-    CALLBACK int (*GetParam)(ParamsIde index, const char *value);
+    CALLBACK int (*GetParam)(CgtParams index, const char *value);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массивы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает кол-во элементов в массиве а
