@@ -5,9 +5,16 @@
 //STL
 
 //Qt
+#include <QVector>
+#include <QSharedPointer>
 
-#ifdef BUILDING_DLL
+//Дефайны
 #define DLLEXPORT extern "C" __cdecl
-#else
-#define DLLEXPORT extern "C"
-#endif
+#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
+
+// Типы данных
+class Element;
+typedef QSharedPointer<Element> PElement;
+typedef QVector<PElement> Container;
+typedef QSharedPointer<Container> PContainer;
+typedef QVector<PContainer> ArrayPContainers;

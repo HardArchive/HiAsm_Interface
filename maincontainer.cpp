@@ -13,10 +13,9 @@
 MainContainer::MainContainer(TBuildProcessRec &params)
     : m_cgt(params.cgt)
     , m_sdk(params.sdk)
-      //ru Получаеим контейнер c элементами из SDK
-    , m_container(getContainerFromSDK(m_sdk))
 {
-    saveToFile();
+    //ru Получаеим контейнер c элементами из SDK
+    m_container = getContainerFromSDK(m_sdk);
 }
 
 MainContainer::~MainContainer()
@@ -32,7 +31,7 @@ void MainContainer::saveToFile() const
         out << e->getDataText() << endl;
     }
 
-    //qDebug() << buf;
+    qDebug() << buf;
 }
 
 PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const

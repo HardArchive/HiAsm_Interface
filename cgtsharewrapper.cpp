@@ -1,11 +1,12 @@
-﻿//STL
+﻿//Project
+#include "cgtsharewrapper.h"
+#include "global.h"
+
+//STL
 
 //Qt
 #include <QDebug>
 #include <QFlags>
-
-//Project
-#include "cgtsharewrapper.h"
 
 namespace cgt
 {
@@ -67,7 +68,6 @@ const char ARG_STR[] = "  Arg";
 const char RESULT_STR[] = "  Result:";
 
 //Дефайны
-#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
 #define PRINT_RESULT_STR(X) \
         qDebug().noquote() << RESULT_STR << '"'+QString::fromLocal8Bit(X)+'"';
 #define EXPORT __stdcall
@@ -580,7 +580,7 @@ EXPORT int _Debug(const char *Text, int Color)
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
 //ru Возвращает значение параметра среды по его индексу?
-EXPORT int GetParam(short int index, char *value)
+EXPORT int GetParam(ParamsIde index, const char *value)
 {
     PRINT_FUNC_INFO
     int res = m_cgt->GetParam(index, value);

@@ -13,9 +13,6 @@
 #include <QDebug>
 #include <QDateTime>
 
-//Дефайны
-#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
-
 //Константы
 const char CALL_STR[] = "Call:";
 const char ARG_STR[] = "Arg";
@@ -101,14 +98,14 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::saveOriginalCgt(params.cgt);
     params.cgt = cgt::getProxyCgt();
 
-#define MAINCONTAINER
+//#define MAINCONTAINER
 #ifdef MAINCONTAINER
     MainContainer mainContainer(params);
     return CG_SUCCESS;
 #else
-    //int res = proxy_buildProcessProc(params);
-    //qDebug() << RESULT_STR << res;
-    //return res;
+    int res = proxy_buildProcessProc(params);
+    qDebug() << RESULT_STR << res;
+    return res;
 #endif
 }
 

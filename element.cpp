@@ -25,6 +25,7 @@ void Element::append(PContainer container)
 
 QString Element::getDataText(uchar inc) const
 {
+    /*
     QString space;
     space.fill(' ', inc * 5);
 
@@ -56,8 +57,10 @@ QString Element::getDataText(uchar inc) const
             stream << e->getDataText(inc);
         }
     }
-
     return buff;
+    */
+
+    return QString();
 }
 
 void Element::getElementData()

@@ -5,21 +5,12 @@
 #include "point.h"
 #include "property.h"
 #include "cgtsharewrapper.h"
+#include "global.h"
 
 //STL
 
 //Qt
 #include <QString>
-#include <QVector>
-#include <QSharedPointer>
-
-using namespace std;
-
-class Element;
-typedef QSharedPointer<Element> PElement;
-typedef QVector<PElement> Container;
-typedef QSharedPointer<Container> PContainer;
-typedef QVector<PContainer> ArrayPContainers;
 
 class Element {
 private:

@@ -2,18 +2,19 @@
 
 //Project
 #include "CGTShare.h"
-#include "element.h"
+#include "global.h"
 
 //STL
 
 //Qt
 
-class MainContainer {
+class MainContainer
+{
 
 private:
-    const PCodeGenTools m_cgt{};
+    const PCodeGenTools m_cgt {};
     const id_sdk m_sdk{};
-    const PContainer m_container{};
+    PContainer m_container{};
 
 public:
     explicit MainContainer(TBuildProcessRec &params);
