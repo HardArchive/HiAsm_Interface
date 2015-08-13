@@ -595,11 +595,11 @@ struct TCodeGenTools {
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TODO Пользовательские данные? Выяснить и дополнить описание.
     //ru Получает пользовательские данные элемента
-    CALLBACK quintptr(*elGetData)(id_element e);
+    CALLBACK char *(*elGetData)(id_element e);
 
     //TODO Пользовательские данные? Выяснить и дополнить описание.
     //ru Устанавливает пользовательские данные элемента
-    CALLBACK void (*elSetData)(id_element e, char *data);
+    CALLBACK void (*elSetData)(id_element e, const char *data);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки

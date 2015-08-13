@@ -5,11 +5,13 @@
 #include "maincontainer.h"
 #include "element.h"
 
-//STL
+//NATIVE
 #include <windows.h>
 
+//STL
+#include <iostream>
+
 //Qt
-#include <QDebug>
 #include <QDebug>
 #include <QDateTime>
 
@@ -40,6 +42,31 @@ static t_isElementMaker proxy_isElementMaker;
 static t_MakeElement proxy_MakeElement;
 static t_isReadyForAdd proxy_isReadyForAdd;
 
+//Переопределение вывода отладочных сообщений
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context)
+
+    QByteArray localMsg = msg.toLocal8Bit();
+    switch(type) {
+    case QtDebugMsg:
+        std::cout << localMsg.constData() << std::endl;
+        break;
+    case QtInfoMsg:
+        std::cout << localMsg.constData() << std::endl;
+        break;
+    case QtWarningMsg:
+        std::cerr << localMsg.constData() << std::endl;
+        break;
+    case QtCriticalMsg:
+        std::cerr << localMsg.constData() << std::endl;
+        break;
+    case QtFatalMsg:
+        std::cerr << localMsg.constData() << std::endl;
+        abort();
+    }
+}
+
 //Служебные переменные
 static HMODULE m_codegen = nullptr;
 
@@ -50,6 +77,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
     switch(reason) {
     case DLL_PROCESS_ATTACH: {
+        qInstallMessageHandler(myMessageOutput);
+
         qDebug() << "CODEGEN_PROCESS_ATTACH";
 
         //Загружаем оригинальную DLL в память
@@ -98,7 +127,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::saveOriginalCgt(params.cgt);
     params.cgt = cgt::getProxyCgt();
 
-#define MAINCONTAINER
+    //#define MAINCONTAINER
 #ifdef MAINCONTAINER
     MainContainer mainContainer(params);
     return CG_SUCCESS;
@@ -156,6 +185,10 @@ DLLEXPORT int MakeElement(PCodeGenTools cgt, id_element e)
 
 DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk)
 {
+    Q_UNUSED(cgt)
+    Q_UNUSED(rfd)
+    Q_UNUSED(sdk)
+
     //PRINT_FUNC_INFO
     //bool res =  proxy_isReadyForAdd(cgt, rfd, sdk);
     //qDebug() << RESULT_STR << res;

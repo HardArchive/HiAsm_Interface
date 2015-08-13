@@ -704,11 +704,8 @@ EXPORT bool isDebug(id_sdk e)
     return res;
 }
 
-//!~~~~~~~~~~~~~~~~~~~~~~~~ данные ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//TODO Преобразование данные?
-//TODO Или просто возращаем в нужном типе?
-//TODO id_data? Где он берётся?
-
+//!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
+//ru Получаем тип данных по его ID
 EXPORT DataTypes dtType(id_data d)
 {
     PRINT_FUNC_INFO
@@ -718,6 +715,9 @@ EXPORT DataTypes dtType(id_data d)
 
     return res;
 }
+
+//ru По ID данных, получаем содержимое.
+//ru Тип содержимого: строка в стиле C
 EXPORT char *dtStr(id_data d)
 {
     PRINT_FUNC_INFO
@@ -727,6 +727,9 @@ EXPORT char *dtStr(id_data d)
 
     return res;
 }
+
+//ru По ID данных, получаем содержимое.
+//ru Тип содержимого: целое число
 EXPORT int dtInt(id_data d)
 {
     PRINT_FUNC_INFO
@@ -736,6 +739,9 @@ EXPORT int dtInt(id_data d)
 
     return res;
 }
+
+//ru По ID данных, получаем содержимое.
+//ru Тип содержимого: число с плавающей запятой
 EXPORT double dtReal(id_data d)
 {
     PRINT_FUNC_INFO
@@ -796,21 +802,24 @@ EXPORT unsigned char fntCharSet(id_font f)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//TODO Пользовательские данные? Выяснить и дополнить описание.
-//ru Получает пользовательские данные элемента
-EXPORT quintptr elGetData(id_element e)
+
+//ru Получаем пользовательские данные элемента
+//ru Коммент из hiasm5 - user data used in FTCG codegen
+//ru Судя по всему, данные могут быть любого типа
+EXPORT const char *elGetData(id_element e)
 {
     PRINT_FUNC_INFO
-    quintptr res = m_cgt->elGetData(e);
+    const char *res = m_cgt->elGetData(e);
     printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
 }
 
-//TODO Пользовательские данные? Выяснить и дополнить описание.
 //ru Устанавливает пользовательские данные элемента
-EXPORT void elSetData(id_element e, char *data)
+//ru Коммент из hiasm5 - user data used in FTCG codegen
+//ru Судя по всему, данные могут быть любого типа, ибо void*
+EXPORT void elSetData(id_element e, const char *data)
 {
     PRINT_FUNC_INFO
     m_cgt->elSetData(e, data);
