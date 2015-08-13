@@ -548,7 +548,7 @@ struct TCodeGenTools {
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TODO Выяснить предназначение этой функции.
     //ru Возвращает значение параметра среды по его индексу
-    CALLBACK int (*GetParam)(CgtParams index, const char *value);
+    CALLBACK int (*GetParam)(CgtParams index, const void *value);
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массивы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает кол-во элементов в массиве а

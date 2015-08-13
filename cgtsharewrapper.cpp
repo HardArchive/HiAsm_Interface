@@ -73,15 +73,19 @@ const char RESULT_STR[] = "  Result:";
 #define EXPORT __stdcall
 
 //Служебные функции
-void printArgs(std::initializer_list<QVariant> args)
+void printArgs(std::initializer_list<QVariant> args, bool noquote = false)
 {
     uint i = 1;
     for(const QVariant &v : args) {
-        if(v.type() == QVariant::String)
-            qDebug().nospace() << "  Arg" << i << ": " << v.toString();
-        else
-            qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
+        if(v.type() == QVariant::String) {
+            if(noquote)
+                qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
+            else
+                qDebug().nospace() << "  Arg" << i << ": " << v.toString();
 
+        } else {
+            qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
+        }
         i++;
     }
 }
@@ -567,7 +571,7 @@ EXPORT char *resAddMenu(id_prop p)
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
 //ru Выводит строку Text в окно Отладка цветом Color
-//TODO Что возвращается данной функцией? Выяснить и дополнить описание.
+//ru Всего возвращает 0.
 EXPORT int _Debug(const char *Text, int Color)
 {
     PRINT_FUNC_INFO
@@ -579,14 +583,52 @@ EXPORT int _Debug(const char *Text, int Color)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает значение параметра среды по его индексу?
-EXPORT int GetParam(CgtParams index, const char *value)
+//ru Возвращает значение параметра среды по его индексу
+EXPORT int GetParam(CgtParams index, const void *value)
 {
     PRINT_FUNC_INFO
     int res = m_cgt->GetParam(index, value);
-    printArgs({CgtParamsMap[index], value});
-    qDebug() << RESULT_STR << res;
 
+    switch(index) {
+    case PARAM_CODE_PATH :
+        printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+        break;
+    case PARAM_DEBUG_MODE:
+        printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+        break;
+    case PARAM_DEBUG_SERVER_PORT:
+        printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+        break;
+    case PARAM_DEBUG_CLIENT_PORT:
+        printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+        break;
+    case PARAM_PROJECT_PATH:
+        printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+        break;
+    case PARAM_HIASM_VERSION:
+        printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+        break;
+    case PARAM_USER_NAME:
+        printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+        break;
+    case PARAM_USER_MAIL:
+        printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+        break;
+    case PARAM_PROJECT_NAME:
+        printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+        break;
+    case PARAM_SDE_WIDTH:
+        printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+        break;
+    case PARAM_SDE_HEIGHT:
+        printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+        break;
+    case PARAM_COMPILER:
+        printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+        break;
+    }
+
+    qDebug() << RESULT_STR << res;
 
     return res;
 }
