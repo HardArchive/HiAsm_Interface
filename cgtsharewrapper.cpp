@@ -129,7 +129,7 @@ EXPORT ElementFlags elGetFlag(id_element e)
     PRINT_FUNC_INFO
     ElementFlags res = m_cgt->elGetFlag(e);
     printArgs({e});
-    qDebug() << RESULT_STR << res;
+    qDebug() << RESULT_STR << ElementFlgs(res);
 
     return res;
 }
@@ -251,7 +251,7 @@ EXPORT ElementClasses elGetClassIndex(id_element e)
     PRINT_FUNC_INFO
     ElementClasses res = m_cgt->elGetClassIndex(e);
     printArgs({e});
-    qDebug() << RESULT_STR << res;
+    qDebug().noquote() << RESULT_STR << ElementClassesMap[res];
 
     return res;
 }
@@ -349,7 +349,7 @@ EXPORT PointsTypes ptGetType(id_point p)
     PRINT_FUNC_INFO
     PointsTypes res = m_cgt->ptGetType(p);
     printArgs({p});
-    qDebug() << RESULT_STR << res;
+    qDebug().noquote() << RESULT_STR << PointsTypesMap[res];
 
     return res;
 }
@@ -406,7 +406,7 @@ EXPORT DataTypes propGetType(id_prop prop)
     PRINT_FUNC_INFO
     DataTypes res = m_cgt->propGetType(prop);
     printArgs({prop});
-    qDebug() << RESULT_STR << res;
+    qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
     return res;
 }
@@ -607,7 +607,7 @@ EXPORT DataTypes arrType(id_array a)
     PRINT_FUNC_INFO
     DataTypes res = m_cgt->arrType(a);
     printArgs({a});
-    qDebug() << RESULT_STR << res;
+    qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
     return res;
 }
@@ -665,12 +665,12 @@ EXPORT bool isDebug(id_sdk e)
 //TODO Или просто возращаем в нужном типе?
 //TODO id_data? Где он берётся?
 
-EXPORT unsigned char dtType(id_data d)
+EXPORT DataTypes dtType(id_data d)
 {
     PRINT_FUNC_INFO
-    unsigned char res = m_cgt->dtType(d);
+    DataTypes res = m_cgt->dtType(d);
     printArgs({d});
-    qDebug() << RESULT_STR << res;
+    qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
     return res;
 }
@@ -780,7 +780,7 @@ EXPORT DataTypes ptGetDataType(id_point p)
     PRINT_FUNC_INFO
     DataTypes res = m_cgt->ptGetDataType(p);
     printArgs({p});
-    qDebug() << RESULT_STR << res;
+    qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
     return res;
 }

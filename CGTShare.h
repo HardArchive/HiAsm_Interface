@@ -4,6 +4,7 @@
 //STL
 
 //Qt
+#include <QtCore>
 #include <QBitArray>
 
 //Project
@@ -89,6 +90,12 @@ enum PointsTypes {
     //ru Данные
     pt_Data = 4,
 };
+const static QMap<int, QString> PointsTypesMap{
+    {pt_Work, "pt_Work"},
+    {pt_Event, "pt_Event"},
+    {pt_Var, "pt_Var"},
+    {pt_Data, "pt_Data"},
+};
 
 //!ru Типы данных
 enum DataTypes {
@@ -114,6 +121,30 @@ enum DataTypes {
     data_code = 19,
     data_element = 20,
     data_flags = 21,
+};
+const static QMap<int, QString> DataTypesMap{
+    {data_null, "data_null"},
+    {data_int, "data_int"},
+    {data_str, "data_str"},
+    {data_data, "data_data"},
+    {data_combo, "data_combo"},
+    {data_list, "data_list"},
+    {data_icon, "data_icon"},
+    {data_real, "data_real"},
+    {data_color, "data_color"},
+    {data_script, "data_color"},
+    {data_stream, "data_stream"},
+    {data_bitmap, "data_bitmap"},
+    {data_wave, "data_wave"},
+    {data_array, "data_array"},
+    {data_comboEx, "data_comboEx"},
+    {data_font, "data_font"},
+    {data_matr, "data_matr"},
+    {data_jpeg, "data_jpeg"},
+    {data_menu, "data_menu"},
+    {data_code, "data_code"},
+    {data_element, "data_element"},
+    {data_flags, "data_flags"}
 };
 
 //!ru Классы элемента (elGetClassIndex)
@@ -160,6 +191,25 @@ enum ElementClasses {
 
     //ru Полиморфный контейнер
     CI_PolyMulti = 17,
+};
+const static QMap<int, QString> ElementClassesMap{
+    {CI_Element, "CI_Element"},
+    {CI_DPElement, "CI_DPElement"},
+    {CI_MultiElement, "CI_MultiElement"},
+    {CI_EditMulti, "CI_EditMulti"},
+    {CI_EditMultiEx, "CI_EditMultiEx"},
+    {CI_InlineCode, "CI_InlineCode"},
+    {CI_DrawElement, "CI_DrawElement"},
+    {CI_AS_Special, "CI_AS_Special"},
+    {CI_DPLElement, "CI_DPLElement"},
+    {CI_UseHiDLL, "CI_UseHiDLL"},
+    {CI_WinElement, "CI_WinElement"},
+    {CI_PointHint, "CI_PointHint"},
+    {CI_PointElement, "CI_PointElement"},
+    {CI_LineBreak, "CI_LineBreak"},
+    {CI_LineBreakEx, "CI_LineBreakEx"},
+    {CI_UserElement, "CI_UserElement"},
+    {CI_PolyMulti, "CI_PolyMulti"}
 };
 
 //!ru Индексы параметров среды
@@ -242,7 +292,6 @@ typedef quintptr id_data;
 typedef quintptr id_font;
 
 struct TCodeGenTools;
-
 typedef TCodeGenTools *PCodeGenTools;
 
 //!ru Структуры кодогенератора и интерфейсы точки входа
@@ -515,7 +564,7 @@ struct TCodeGenTools {
     //TODO Или просто возращаем в нужном типе?
     //TODO id_data? Где он берётся?
 
-    CALLBACK unsigned char (*dtType)(id_data d);
+    CALLBACK DataTypes (*dtType)(id_data d);
     CALLBACK char *(*dtStr)(id_data d);
     CALLBACK int (*dtInt)(id_data d);
     CALLBACK double (*dtReal)(id_data d);
