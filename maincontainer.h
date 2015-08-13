@@ -11,9 +11,9 @@
 class MainContainer {
 
 private:
-    PCodeGenTools m_cgt{};
-    id_sdk m_sdk{};
-    PContainer m_container{};
+    const PCodeGenTools m_cgt{};
+    const id_sdk m_sdk{};
+    const PContainer m_container{};
 
 public:
     explicit MainContainer(TBuildProcessRec &params);

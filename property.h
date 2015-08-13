@@ -20,9 +20,9 @@ typedef QList<PropValue> ListPropValue;
 
 class Property {
 private:
-    PCodeGenTools m_cgt{};
-    id_prop m_propId{};
-    id_element m_elId{};
+    const PCodeGenTools m_cgt{};
+    const id_prop m_propId{};
+    const id_element m_elId{};
 
     //ru Данные свойства
     ListPropValue m_listPropValue;

@@ -23,8 +23,9 @@ typedef QVector<PContainer> ArrayPContainers;
 
 class Element {
 private:
-    PCodeGenTools m_cgt{};
-    id_element m_eId{};
+    const PCodeGenTools m_cgt{};
+    const id_element m_eId{};
+
     ArrayPContainers m_arrayContainers;
     ArrayPPoints m_arrayPoints;
     ArrayPProperties m_arrayProperties;

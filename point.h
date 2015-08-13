@@ -15,8 +15,8 @@ typedef QVector<PPoint> ArrayPPoints;
 
 class Point {
 private:
-    PCodeGenTools m_cgt{};
-    id_point m_ptId{};
+    const PCodeGenTools m_cgt{};
+    const id_point m_ptId{};
 
     //ru Данные точки
     DataTypes m_dataType{};
