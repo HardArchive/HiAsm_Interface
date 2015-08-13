@@ -584,7 +584,7 @@ EXPORT int GetParam(short int index, char *value)
 {
     PRINT_FUNC_INFO
     int res = m_cgt->GetParam(index, value);
-    printArgs({index, value});
+    printArgs({ParamsIdeMap[index], value});
     qDebug() << RESULT_STR << res;
 
     return res;

@@ -101,12 +101,15 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::saveOriginalCgt(params.cgt);
     params.cgt = cgt::getProxyCgt();
 
+#define MAINCONTAINER
+#ifdef MAINCONTAINER
     MainContainer mainContainer(params);
     return CG_SUCCESS;
-
+#else
     //int res = proxy_buildProcessProc(params);
     //qDebug() << RESULT_STR << res;
     //return res;
+#endif
 }
 
 DLLEXPORT int CheckVersionProc(THiAsmVersion &params)

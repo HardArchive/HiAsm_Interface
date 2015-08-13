@@ -227,6 +227,20 @@ enum ParamsIde {
     PARAM_SDE_HEIGHT = 10,
     PARAM_COMPILER = 11,
 };
+const static QMap<int, QString> ParamsIdeMap{
+    {PARAM_CODE_PATH, "PARAM_CODE_PATH"},
+    {PARAM_DEBUG_MODE, "PARAM_DEBUG_MODE"},
+    {PARAM_DEBUG_SERVER_PORT, "PARAM_DEBUG_SERVER_PORT"},
+    {PARAM_DEBUG_CLIENT_PORT, "PARAM_DEBUG_CLIENT_PORT"},
+    {PARAM_PROJECT_PATH, "PARAM_PROJECT_PATH"},
+    {PARAM_HIASM_VERSION, "PARAM_HIASM_VERSION"},
+    {PARAM_USER_NAME, "PARAM_USER_NAME"},
+    {PARAM_USER_MAIL, "PARAM_USER_MAIL"},
+    {PARAM_PROJECT_NAME, "PARAM_PROJECT_NAME"},
+    {PARAM_SDE_WIDTH, "PARAM_SDE_WIDTH"},
+    {PARAM_SDE_HEIGHT, "PARAM_SDE_HEIGHT"},
+    {PARAM_COMPILER, "PARAM_COMPILER"},
+};
 
 //!ru Ошибки при работе с библиотекой кодогенератора
 enum CgResult {
@@ -563,7 +577,7 @@ struct TCodeGenTools {
     //TODO Или просто возращаем в нужном типе?
     //TODO id_data? Где он берётся?
 
-    CALLBACK DataTypes (*dtType)(id_data d);
+    CALLBACK DataTypes(*dtType)(id_data d);
     CALLBACK char *(*dtStr)(id_data d);
     CALLBACK int (*dtInt)(id_data d);
     CALLBACK double (*dtReal)(id_data d);
