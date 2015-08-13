@@ -43,42 +43,6 @@ static t_isElementMaker proxy_isElementMaker;
 static t_MakeElement proxy_MakeElement;
 static t_isReadyForAdd proxy_isReadyForAdd;
 
-
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    QTextStream cerr(stderr);
-    QString DIV = "; ";
-    QString LS = "\n";
-    QString BEGIN = "====== %1 ======" + LS;
-    QString dateTime = "DateTime: " + QDateTime::currentDateTime().toString("yyyy/MM/dd HH:mm:ss") + LS;
-    QString file = "File: " + QString(context.file) + LS;
-    QString function = "Function: " + QString(context.function) + LS;
-    QString line = "Line: " + QString::number(context.line) + LS;
-    QString message = "Message: " + msg + LS;
-
-    QString formatedMessage = BEGIN + dateTime + file + line + function + message;
-
-    auto makeMessage = [&](const QString & prefix) {
-        cerr << formatedMessage.arg(prefix) << endl;
-    };
-
-    switch(type) {
-    case QtDebugMsg:
-        makeMessage("debug");
-        break;
-    case QtWarningMsg:
-        makeMessage("warning");
-        break;
-    case QtCriticalMsg:
-        makeMessage("critical");
-        break;
-    case QtFatalMsg:
-        makeMessage("fatal");
-        abort();
-    }
-}
-
-
 //Служебные переменные
 static HMODULE m_codegen = nullptr;
 
@@ -132,26 +96,17 @@ DLLEXPORT int buildPrepareProc(TBuildPrepareRec &params)
 
 DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 {
-    //qInstallMessageHandler(myMessageOutput);
     PRINT_FUNC_INFO
 
     cgt::saveOriginalCgt(params.cgt);
     params.cgt = cgt::getProxyCgt();
 
-    //TCGrec *p = new TCGrec;
-    //p->MainForm = "test";
-    //p->IBody = (quintptr)new int[1000]{};
-    //p->Units = (quintptr)new int[1000]{};
-    //params.result = (PCGrec)p;
     MainContainer mainContainer(params);
-
     return CG_SUCCESS;
 
-    /*
-    int res = proxy_buildProcessProc(params);
-    qDebug() << RESULT_STR << res;
-    return res;
-    */
+    //int res = proxy_buildProcessProc(params);
+    //qDebug() << RESULT_STR << res;
+    //return res;
 }
 
 DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
@@ -201,10 +156,10 @@ DLLEXPORT int MakeElement(PCodeGenTools cgt, id_element e)
 
 DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk)
 {
-    PRINT_FUNC_INFO
-    bool res =  proxy_isReadyForAdd(cgt, rfd, sdk);
-    qDebug() << RESULT_STR << res;
+    //PRINT_FUNC_INFO
+    //bool res =  proxy_isReadyForAdd(cgt, rfd, sdk);
+    //qDebug() << RESULT_STR << res;
 
-    return res;
+    return CG_SUCCESS;
 }
 

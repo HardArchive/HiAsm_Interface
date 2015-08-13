@@ -55,7 +55,6 @@ bool isPolyMulti(const ElementClasses &eClass)
 
 }
 
-
 namespace cgt
 {
 //Для хранения указателя на массив указателей на функции
@@ -68,14 +67,20 @@ const char RESULT_STR[] = "  Result:";
 
 //Дефайны
 #define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
+#define PRINT_RESULT_STR(X) \
+        qDebug().noquote() << RESULT_STR << '"'+QString::fromLocal8Bit(X)+'"';
 #define EXPORT __stdcall
 
 //Служебные функции
 void printArgs(std::initializer_list<QVariant> args)
 {
     uint i = 1;
-    for(const QVariant &o : args) {
-        qDebug().nospace() << "  Arg" << i << ": " << o.toString();
+    for(const QVariant &v : args) {
+        if(v.type() == QVariant::String)
+            qDebug().nospace() << "  Arg" << i << ": " << v.toString();
+        else
+            qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
+
         i++;
     }
 }
@@ -88,8 +93,8 @@ void printArgs(std::initializer_list<QVariant> args)
 EXPORT int sdkGetCount(id_sdk SDK)
 {
     PRINT_FUNC_INFO
-    printArgs({SDK});
     int res = m_cgt->sdkGetCount(SDK);
+    printArgs({SDK});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -99,8 +104,8 @@ EXPORT int sdkGetCount(id_sdk SDK)
 EXPORT id_element sdkGetElement(id_sdk SDK, int Index)
 {
     PRINT_FUNC_INFO
-    printArgs({SDK});
     id_element res = m_cgt->sdkGetElement(SDK, Index);
+    printArgs({SDK, Index});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -110,8 +115,8 @@ EXPORT id_element sdkGetElement(id_sdk SDK, int Index)
 EXPORT id_element sdkGetElementName(id_sdk SDK, char *Name)
 {
     PRINT_FUNC_INFO
-    printArgs({SDK});
     id_element res = m_cgt->sdkGetElementName(SDK, Name);
+    printArgs({SDK, Name});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -122,8 +127,8 @@ EXPORT id_element sdkGetElementName(id_sdk SDK, char *Name)
 EXPORT ElementFlags elGetFlag(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     ElementFlags res = m_cgt->elGetFlag(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -133,8 +138,8 @@ EXPORT ElementFlags elGetFlag(id_element e)
 EXPORT int elGetPropCount(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     int res = m_cgt->elGetPropCount(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -144,8 +149,8 @@ EXPORT int elGetPropCount(id_element e)
 EXPORT id_prop elGetProperty(id_element e, int Index)
 {
     PRINT_FUNC_INFO
-    printArgs({e, Index});
     id_prop res = m_cgt->elGetProperty(e, Index);
+    printArgs({e, Index});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -155,8 +160,8 @@ EXPORT id_prop elGetProperty(id_element e, int Index)
 EXPORT bool elIsDefProp(id_element e, int Index)
 {
     PRINT_FUNC_INFO
-    printArgs({e, Index});
     bool res = m_cgt->elIsDefProp(e, Index);
+    printArgs({e, Index});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -166,8 +171,8 @@ EXPORT bool elIsDefProp(id_element e, int Index)
 EXPORT id_element elSetCodeName(id_element e, char *Name)
 {
     PRINT_FUNC_INFO
-    printArgs({e, Name});
     id_element res = m_cgt->elSetCodeName(e, Name);
+    printArgs({e, Name});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -177,9 +182,9 @@ EXPORT id_element elSetCodeName(id_element e, char *Name)
 EXPORT char *elGetCodeName(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     char *res = m_cgt->elGetCodeName(e);
-    qDebug() << RESULT_STR << res;
+    printArgs({e});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -188,9 +193,9 @@ EXPORT char *elGetCodeName(id_element e)
 EXPORT char *elGetClassName(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     char *res = m_cgt->elGetClassName(e);
-    qDebug() << RESULT_STR << res;
+    printArgs({e});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -200,9 +205,9 @@ EXPORT char *elGetClassName(id_element e)
 EXPORT char *elGetInfSub(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     char *res = m_cgt->elGetInfSub(e);
-    qDebug() << RESULT_STR << res;
+    printArgs({e});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -211,8 +216,8 @@ EXPORT char *elGetInfSub(id_element e)
 EXPORT int elGetPtCount(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     int res = m_cgt->elGetPtCount(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -222,8 +227,8 @@ EXPORT int elGetPtCount(id_element e)
 EXPORT id_point elGetPt(id_element e, int i)
 {
     PRINT_FUNC_INFO
-    printArgs({e, i});
     id_point res = m_cgt->elGetPt(e, i);
+    printArgs({e, i});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -233,8 +238,8 @@ EXPORT id_point elGetPt(id_element e, int i)
 EXPORT id_point elGetPtName(id_element e, const char *Name)
 {
     PRINT_FUNC_INFO
-    printArgs({e, Name});
     id_point res = m_cgt->elGetPtName(e, Name);
+    printArgs({e, Name});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -244,8 +249,8 @@ EXPORT id_point elGetPtName(id_element e, const char *Name)
 EXPORT ElementClasses elGetClassIndex(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     ElementClasses res = m_cgt->elGetClassIndex(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -256,8 +261,8 @@ EXPORT ElementClasses elGetClassIndex(id_element e)
 EXPORT id_sdk elGetSDK(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     id_sdk res = m_cgt->elGetSDK(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -267,8 +272,8 @@ EXPORT id_sdk elGetSDK(id_element e)
 EXPORT bool elLinkIs(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     bool res = m_cgt->elLinkIs(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -278,8 +283,8 @@ EXPORT bool elLinkIs(id_element e)
 EXPORT id_element elLinkMain(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     id_element res = m_cgt->elLinkMain(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -289,16 +294,16 @@ EXPORT id_element elLinkMain(id_element e)
 EXPORT void elGetPos(id_element e, int &X, int &Y)
 {
     PRINT_FUNC_INFO
-    printArgs({e, X, Y});
     m_cgt->elGetPos(e, X, Y);
+    printArgs({e, X, Y});
 }
 
 //ru Помещаем в переменные "W" и "H", размеры элемента в редакторе схем
 EXPORT void elGetSize(id_element e, int &W, int &H)
 {
     PRINT_FUNC_INFO
-    printArgs({e, W, H});
     m_cgt->elGetSize(e, W, H);
+    printArgs({e, W, H});
 }
 
 //ru Неизвестно для чего эта функция.
@@ -307,8 +312,8 @@ EXPORT void elGetSize(id_element e, int &W, int &H)
 EXPORT int elGetEID(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     int res = m_cgt->elGetEID(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -319,8 +324,8 @@ EXPORT int elGetEID(id_element e)
 EXPORT id_point ptGetLinkPoint(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     id_point res = m_cgt->ptGetLinkPoint(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -331,8 +336,8 @@ EXPORT id_point ptGetLinkPoint(id_point p)
 EXPORT id_point ptGetRLinkPoint(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     id_point res = m_cgt->ptGetRLinkPoint(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -342,8 +347,8 @@ EXPORT id_point ptGetRLinkPoint(id_point p)
 EXPORT PointsTypes ptGetType(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     PointsTypes res = m_cgt->ptGetType(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -353,9 +358,9 @@ EXPORT PointsTypes ptGetType(id_point p)
 EXPORT char *ptGetName(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->ptGetName(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -364,8 +369,8 @@ EXPORT char *ptGetName(id_point p)
 EXPORT id_element ptGetParent(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     id_element res = m_cgt->ptGetParent(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -376,8 +381,8 @@ EXPORT id_element ptGetParent(id_point p)
 EXPORT int ptGetIndex(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     int res = m_cgt->ptGetIndex(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -387,9 +392,9 @@ EXPORT int ptGetIndex(id_point p)
 EXPORT char *pt_dpeGetName(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->pt_dpeGetName(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -399,8 +404,8 @@ EXPORT char *pt_dpeGetName(id_point p)
 EXPORT DataTypes propGetType(id_prop prop)
 {
     PRINT_FUNC_INFO
-    printArgs({prop});
     DataTypes res = m_cgt->propGetType(prop);
+    printArgs({prop});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -410,9 +415,9 @@ EXPORT DataTypes propGetType(id_prop prop)
 EXPORT char *propGetName(id_prop prop)
 {
     PRINT_FUNC_INFO
-    printArgs({prop});
     char *res = m_cgt->propGetName(prop);
-    qDebug() << RESULT_STR << res;
+    printArgs({prop});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -421,8 +426,8 @@ EXPORT char *propGetName(id_prop prop)
 EXPORT quintptr propGetValue(id_prop prop)
 {
     PRINT_FUNC_INFO
-    printArgs({prop});
     quintptr res = m_cgt->propGetValue(prop);
+    printArgs({prop});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -434,8 +439,8 @@ EXPORT quintptr propGetValue(id_prop prop)
 EXPORT unsigned char propToByte(id_prop prop)
 {
     PRINT_FUNC_INFO
-    printArgs({prop});
     unsigned char res = m_cgt->propToByte(prop);
+    printArgs({prop});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -445,8 +450,8 @@ EXPORT unsigned char propToByte(id_prop prop)
 EXPORT int propToInteger(id_prop prop)
 {
     PRINT_FUNC_INFO
-    printArgs({prop});
     int res = m_cgt->propToInteger(prop);
+    printArgs({prop});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -456,8 +461,8 @@ EXPORT int propToInteger(id_prop prop)
 EXPORT float propToReal(id_prop prop)
 {
     PRINT_FUNC_INFO
-    printArgs({prop});
     float res = m_cgt->propToReal(prop);
+    printArgs({prop});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -467,9 +472,9 @@ EXPORT float propToReal(id_prop prop)
 EXPORT char *propToString(id_prop prop)
 {
     PRINT_FUNC_INFO
-    printArgs({prop});
     char *res = m_cgt->propToString(prop);
-    qDebug() << RESULT_STR << res;
+    printArgs({prop});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -486,8 +491,8 @@ EXPORT char *propToString(id_prop prop)
 EXPORT int resAddFile(const char *Name)
 {
     PRINT_FUNC_INFO
-    printArgs({Name});
     int res = m_cgt->resAddFile(Name);
+    printArgs({Name});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -497,9 +502,9 @@ EXPORT int resAddFile(const char *Name)
 EXPORT char *resAddIcon(id_prop p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->resAddIcon(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -508,9 +513,9 @@ EXPORT char *resAddIcon(id_prop p)
 EXPORT char *resAddStr(const char *p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->resAddStr(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -519,9 +524,9 @@ EXPORT char *resAddStr(const char *p)
 EXPORT char *resAddStream(id_prop p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->resAddStream(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -530,9 +535,9 @@ EXPORT char *resAddStream(id_prop p)
 EXPORT char *resAddWave(id_prop p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->resAddWave(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -541,9 +546,9 @@ EXPORT char *resAddWave(id_prop p)
 EXPORT char *resAddBitmap(id_prop p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->resAddBitmap(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -552,9 +557,9 @@ EXPORT char *resAddBitmap(id_prop p)
 EXPORT char *resAddMenu(id_prop p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->resAddMenu(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -565,8 +570,8 @@ EXPORT char *resAddMenu(id_prop p)
 EXPORT int _Debug(const char *Text, int Color)
 {
     PRINT_FUNC_INFO
-    printArgs({Text, Color});
     int res = m_cgt->_Debug(Text, Color);
+    printArgs({Text, Color});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -589,8 +594,8 @@ EXPORT int GetParam(short int index, char *value)
 EXPORT int arrCount(id_array a)
 {
     PRINT_FUNC_INFO
-    printArgs({a});
     int res = m_cgt->arrCount(a);
+    printArgs({a});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -600,8 +605,8 @@ EXPORT int arrCount(id_array a)
 EXPORT DataTypes arrType(id_array a)
 {
     PRINT_FUNC_INFO
-    printArgs({a});
     DataTypes res = m_cgt->arrType(a);
+    printArgs({a});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -611,9 +616,9 @@ EXPORT DataTypes arrType(id_array a)
 EXPORT char *arrItemName(id_array a, int Index)
 {
     PRINT_FUNC_INFO
-    printArgs({a, Index});
     char *res = m_cgt->arrItemName(a, Index);
-    qDebug() << RESULT_STR << res;
+    printArgs({a, Index});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -622,8 +627,8 @@ EXPORT char *arrItemName(id_array a, int Index)
 EXPORT quintptr arrItemData(id_array a, int Index)
 {
     PRINT_FUNC_INFO
-    printArgs({a, Index});
     quintptr res = m_cgt->arrItemData(a, Index);
+    printArgs({a, Index});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -635,8 +640,8 @@ EXPORT quintptr arrItemData(id_array a, int Index)
 EXPORT id_data arrGetItem(id_array a, int Index)
 {
     PRINT_FUNC_INFO
-    printArgs({a, Index});
     id_data res = m_cgt->arrGetItem(a, Index);
+    printArgs({a, Index});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -648,8 +653,8 @@ EXPORT id_data arrGetItem(id_array a, int Index)
 EXPORT bool isDebug(id_sdk e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     bool res = m_cgt->isDebug(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -663,8 +668,8 @@ EXPORT bool isDebug(id_sdk e)
 EXPORT unsigned char dtType(id_data d)
 {
     PRINT_FUNC_INFO
-    printArgs({d});
     unsigned char res = m_cgt->dtType(d);
+    printArgs({d});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -672,17 +677,17 @@ EXPORT unsigned char dtType(id_data d)
 EXPORT char *dtStr(id_data d)
 {
     PRINT_FUNC_INFO
-    printArgs({d});
     char *res = m_cgt->dtStr(d);
-    qDebug() << RESULT_STR << res;
+    printArgs({d});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
 EXPORT int dtInt(id_data d)
 {
     PRINT_FUNC_INFO
-    printArgs({d});
     int res = m_cgt->dtInt(d);
+    printArgs({d});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -690,8 +695,8 @@ EXPORT int dtInt(id_data d)
 EXPORT double dtReal(id_data d)
 {
     PRINT_FUNC_INFO
-    printArgs({d});
     double res = m_cgt->dtReal(d);
+    printArgs({d});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -703,25 +708,25 @@ EXPORT double dtReal(id_data d)
 EXPORT char *fntName(id_font f)
 {
     PRINT_FUNC_INFO
-    printArgs({f});
     char *res = m_cgt->fntName(f);
-    qDebug() << RESULT_STR << res;
+    printArgs({f});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
 EXPORT int fntSize(id_font f)
 {
     PRINT_FUNC_INFO
-    printArgs({f});
     int res = m_cgt->fntSize(f);
+    printArgs({f});
     qDebug() << RESULT_STR << res;
 
     return res;
 }
 EXPORT unsigned char fntStyle(id_font f)
 {
-    PRINT_FUNC_INFO
     printArgs({f});
+    PRINT_FUNC_INFO
     unsigned char res = m_cgt->fntStyle(f);
     qDebug() << RESULT_STR << res;
 
@@ -730,8 +735,8 @@ EXPORT unsigned char fntStyle(id_font f)
 EXPORT int fntColor(id_font f)
 {
     PRINT_FUNC_INFO
-    printArgs({f});
     int res = m_cgt->fntColor(f);
+    printArgs({f});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -739,8 +744,8 @@ EXPORT int fntColor(id_font f)
 EXPORT unsigned char fntCharSet(id_font f)
 {
     PRINT_FUNC_INFO
-    printArgs({f});
     unsigned char res = m_cgt->fntCharSet(f);
+    printArgs({f});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -752,8 +757,8 @@ EXPORT unsigned char fntCharSet(id_font f)
 EXPORT quintptr elGetData(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     quintptr res = m_cgt->elGetData(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -773,8 +778,8 @@ EXPORT void elSetData(id_element e, char *data)
 EXPORT DataTypes ptGetDataType(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     DataTypes res = m_cgt->ptGetDataType(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -785,8 +790,8 @@ EXPORT DataTypes ptGetDataType(id_point p)
 EXPORT id_sdk elGetParent(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     id_sdk res = m_cgt->elGetParent(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -797,8 +802,8 @@ EXPORT id_sdk elGetParent(id_element e)
 EXPORT int elGetPropertyListCount(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     int res = m_cgt->elGetPropertyListCount(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -808,8 +813,8 @@ EXPORT int elGetPropertyListCount(id_element e)
 EXPORT id_proplist elGetPropertyListItem(id_element e, int i)
 {
     PRINT_FUNC_INFO
-    printArgs({e, i});
     id_proplist res = m_cgt->elGetPropertyListItem(e, i);
+    printArgs({e, i});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -820,9 +825,9 @@ EXPORT id_proplist elGetPropertyListItem(id_element e, int i)
 EXPORT char *plGetName(id_proplist p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->plGetName(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -831,9 +836,9 @@ EXPORT char *plGetName(id_proplist p)
 EXPORT char *plGetInfo(id_proplist p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->plGetInfo(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -842,9 +847,9 @@ EXPORT char *plGetInfo(id_proplist p)
 EXPORT char *plGetGroup(id_proplist p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->plGetGroup(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -853,8 +858,8 @@ EXPORT char *plGetGroup(id_proplist p)
 EXPORT id_prop plGetProperty(id_proplist p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     id_prop res = m_cgt->plGetProperty(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -864,8 +869,8 @@ EXPORT id_prop plGetProperty(id_proplist p)
 EXPORT id_element plGetOwner(id_proplist p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     id_element res = m_cgt->plGetOwner(p);
+    printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -876,9 +881,9 @@ EXPORT id_element plGetOwner(id_proplist p)
 EXPORT char *ptGetInfo(id_point p)
 {
     PRINT_FUNC_INFO
-    printArgs({p});
     char *res = m_cgt->ptGetInfo(p);
-    qDebug() << RESULT_STR << res;
+    printArgs({p});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -889,9 +894,8 @@ EXPORT char *ptGetInfo(id_point p)
 EXPORT id_element propGetLinkedElement(id_element e, const char *propName)
 {
     PRINT_FUNC_INFO
-    printArgs({e, propName});
     id_element res = m_cgt->propGetLinkedElement(e, propName);
-    //id_element res = cgt::getOriginalCgt()->propGetLinkedElement(e, propName);
+    printArgs({e, propName});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -902,8 +906,8 @@ EXPORT id_element propGetLinkedElement(id_element e, const char *propName)
 EXPORT int propIsTranslate(id_element e, id_prop p)
 {
     PRINT_FUNC_INFO
-    printArgs({e, p});
     int res = m_cgt->propIsTranslate(e, p);
+    printArgs({e, p});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -914,8 +918,8 @@ EXPORT int propIsTranslate(id_element e, id_prop p)
 EXPORT id_element propGetLinkedElementInfo(id_element e, id_prop prop, const char *_int)
 {
     PRINT_FUNC_INFO
-    printArgs({e, prop, _int});
     id_element res = m_cgt->propGetLinkedElementInfo(e, prop, _int);
+    printArgs({e, prop, _int});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -926,8 +930,8 @@ EXPORT id_element propGetLinkedElementInfo(id_element e, id_prop prop, const cha
 EXPORT id_sdk elGetSDKByIndex(id_element e, int index)
 {
     PRINT_FUNC_INFO
-    printArgs({e, index});
     id_sdk res = m_cgt->elGetSDKByIndex(e, index);
+    printArgs({e, index});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -937,8 +941,8 @@ EXPORT id_sdk elGetSDKByIndex(id_element e, int index)
 EXPORT int elGetSDKCount(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     int res = m_cgt->elGetSDKCount(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -949,9 +953,9 @@ EXPORT int elGetSDKCount(id_element e)
 EXPORT char *elGetSDKName(id_element e, int index)
 {
     PRINT_FUNC_INFO
-    printArgs({e, index});
     char *res = m_cgt->elGetSDKName(e, index);
-    qDebug() << RESULT_STR << res;
+    printArgs({e, index});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -961,8 +965,8 @@ EXPORT char *elGetSDKName(id_element e, int index)
 EXPORT id_element sdkGetParent(id_sdk SDK)
 {
     PRINT_FUNC_INFO
-    printArgs({SDK});
     id_element res = m_cgt->sdkGetParent(SDK);
+    printArgs({SDK});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -973,9 +977,9 @@ EXPORT id_element sdkGetParent(id_sdk SDK)
 EXPORT char *elGetInterface(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     char *res = m_cgt->elGetInterface(e);
-    qDebug() << RESULT_STR << res;
+    printArgs({e});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -984,9 +988,9 @@ EXPORT char *elGetInterface(id_element e)
 EXPORT char *elGetInherit(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     char *res = m_cgt->elGetInherit(e);
-    qDebug() << RESULT_STR << res;
+    printArgs({e});
+    PRINT_RESULT_STR(res)
 
     return res;
 }
@@ -1006,8 +1010,8 @@ EXPORT int resEmpty()
 EXPORT int resSetPref(const char *pref)
 {
     PRINT_FUNC_INFO
-    printArgs({pref});
     int res = m_cgt->resSetPref(pref);
+    printArgs({pref});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -1018,8 +1022,8 @@ EXPORT int resSetPref(const char *pref)
 EXPORT int _Error(int line, id_element e, const char *text)
 {
     PRINT_FUNC_INFO
-    printArgs({line, e, text});
     int res = m_cgt->_Error(line, e, text);
+    printArgs({line, e, text});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -1030,8 +1034,8 @@ EXPORT int _Error(int line, id_element e, const char *text)
 EXPORT int elGetGroup(id_element e)
 {
     PRINT_FUNC_INFO
-    printArgs({e});
     int res = m_cgt->elGetGroup(e);
+    printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -1043,8 +1047,8 @@ EXPORT int elGetGroup(id_element e)
 EXPORT int propSaveToFile(id_prop p, const char *fileName)
 {
     PRINT_FUNC_INFO
-    printArgs({p, fileName});
     int res = m_cgt->propSaveToFile(p, fileName);
+    printArgs({p, fileName});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -1060,8 +1064,8 @@ EXPORT int propSaveToFile(id_prop p, const char *fileName)
 EXPORT id_prop elGetPropertyName(id_element e, const char *name)
 {
     PRINT_FUNC_INFO
-    printResult({e, name});
     int id_prop = m_cgt->elGetPropertyName(e, name);
+    printResult({e, name});
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -1071,8 +1075,8 @@ EXPORT id_prop elGetPropertyName(id_element e, const char *name)
 EXPORT bool elIsDefProperty(id_element e, id_prop p)
 {
     PRINT_FUNC_INFO
-    printResult({e, p});
     int bool = m_cgt->elIsDefProperty(e, p);
+    printResult({e, p});
     qDebug() << RESULT_STR << res;
 
     return res;
