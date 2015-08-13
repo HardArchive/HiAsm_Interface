@@ -138,12 +138,20 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::saveOriginalCgt(params.cgt);
     params.cgt = cgt::getProxyCgt();
 
-    //MainContainer mainContainer(&params);
-    //return CG_SUCCESS;
+    //TCGrec *p = new TCGrec;
+    //p->MainForm = "test";
+    //p->IBody = (quintptr)new int[1000]{};
+    //p->Units = (quintptr)new int[1000]{};
+    //params.result = (PCGrec)p;
+    MainContainer mainContainer(params);
 
+    return CG_SUCCESS;
+
+    /*
     int res = proxy_buildProcessProc(params);
     qDebug() << RESULT_STR << res;
     return res;
+    */
 }
 
 DLLEXPORT int CheckVersionProc(THiAsmVersion &params)

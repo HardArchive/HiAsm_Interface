@@ -10,10 +10,10 @@
 #include "cgtsharewrapper.h"
 #include "CGTShare.h"
 
-MainContainer::MainContainer(TBuildProcessRec* params)
+MainContainer::MainContainer(TBuildProcessRec& params)
 {
-    m_cgt = params->cgt;
-    m_sdk = params->sdk;
+    m_cgt = params.cgt;
+    m_sdk = params.sdk;
 
     //ru Получаеим контейнер c элементами из SDK
     m_container = getContainerFromSDK(m_sdk);
@@ -27,7 +27,6 @@ MainContainer::~MainContainer()
 
 void MainContainer::saveToFile() const
 {
-
     QString buf;
     QTextStream out(&buf);
 

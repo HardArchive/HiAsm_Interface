@@ -259,10 +259,17 @@ struct TBuildPrepareRec {
     // none
 };
 
+struct TCGrec {
+    char *MainForm{};
+    quintptr Units{};
+    quintptr IBody{};
+};
+typedef TCGrec *PCGrec;
+
 struct TBuildProcessRec {
     PCodeGenTools cgt;
     id_sdk sdk;
-    quintptr result;
+    PCGrec result;
 };
 
 struct TBuildMakePrjRec {

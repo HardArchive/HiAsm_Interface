@@ -17,7 +17,7 @@ private:
     PContainer m_container{};
 
 public:
-    explicit MainContainer(TBuildProcessRec* params);
+    explicit MainContainer(TBuildProcessRec &params);
     ~MainContainer();
 
     void saveToFile() const;
