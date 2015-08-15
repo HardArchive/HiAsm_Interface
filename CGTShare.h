@@ -119,12 +119,12 @@ const static QMap<int, QString> DataTypesMap{
 
 //!ru Классы элементов (elGetClassIndex)
 enum ClassesElements {
-    //Просто элемент.
+    //ru Просто элемент.
     CI_Element = 0,
     //ru Элемент с динамическими точками (автонумерация), например - IndexToChanel.
     //D - Dynamic, P - Point.
     CI_DPElement,
-    //Контейнер
+    //ru Контейнер
     CI_MultiElement,
     //ru Редактор контейнера MultiElement.
     CI_EditMulti,
@@ -193,17 +193,17 @@ const static QMap<int, QString> ClassesElementMap{
 //!ru Индексы параметров среды - GetParam()
 enum CgtParams {
     PARAM_CODE_PATH = 0,
-    PARAM_DEBUG_MODE = 1,
-    PARAM_DEBUG_SERVER_PORT = 2,
-    PARAM_DEBUG_CLIENT_PORT = 3,
-    PARAM_PROJECT_PATH = 4,
-    PARAM_HIASM_VERSION = 5,
-    PARAM_USER_NAME = 6,
-    PARAM_USER_MAIL = 7,
-    PARAM_PROJECT_NAME = 8,
-    PARAM_SDE_WIDTH = 9,
-    PARAM_SDE_HEIGHT = 10,
-    PARAM_COMPILER = 11
+    PARAM_DEBUG_MODE,
+    PARAM_DEBUG_SERVER_PORT,
+    PARAM_DEBUG_CLIENT_PORT,
+    PARAM_PROJECT_PATH,
+    PARAM_HIASM_VERSION,
+    PARAM_USER_NAME,
+    PARAM_USER_MAIL,
+    PARAM_PROJECT_NAME,
+    PARAM_SDE_WIDTH,
+    PARAM_SDE_HEIGHT,
+    PARAM_COMPILER
 };
 const static QMap<int, QString> CgtParamsMap{
     {PARAM_CODE_PATH, "PARAM_CODE_PATH"},
