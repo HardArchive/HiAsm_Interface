@@ -53,13 +53,13 @@ bool isPolyMulti(const ClassesElements &eClass)
 
 namespace cgt
 {
-//Для хранения указателя на массив указателей на функции
+//Для хранения указателя на массив указателей на callback функции
 static PCodeGenTools m_cgt = nullptr;
 
 //Константы
 const char CALL_STR[] = "  Call:";
 const char ARG_STR[] = "  Arg";
-const char RESULT_STR[] = "  Result:";
+const char RESULT_STR[] = "  Return:";
 
 //Дефайны
 #define PRINT_RESULT_STR(X) \
@@ -255,7 +255,7 @@ EXPORT ClassesElements elGetClassIndex(id_element e)
     return res;
 }
 
-//ru Возвращает ID внутренней схемы для контейнеров
+//ru Возвращает ID внутренней схемы для контейнеров,
 //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
 EXPORT id_sdk elGetSDK(id_element e)
 {
@@ -297,7 +297,7 @@ EXPORT void elGetPos(id_element e, int &X, int &Y)
     printArgs({e, X, Y});
 }
 
-//ru Помещает в переменные "W" и "H", размеры элемента
+//ru Помещает в переменные "W" и "H", размеры элемента.
 EXPORT void elGetSize(id_element e, int &W, int &H)
 {
     PRINT_FUNC_INFO

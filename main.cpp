@@ -18,7 +18,7 @@
 //Константы
 const char CALL_STR[] = "Call:";
 const char ARG_STR[] = "Arg";
-const char RESULT_STR[] = "Result:";
+const char RESULT_STR[] = "Return:";
 
 //Типы функций
 typedef int(*t_buildPrepareProc)(TBuildPrepareRec &params);

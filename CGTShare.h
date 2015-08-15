@@ -119,18 +119,18 @@ const static QMap<int, QString> DataTypesMap{
 
 //!ru Классы элементов (elGetClassIndex)
 enum ClassesElements {
-    //Просто элемент
+    //Просто элемент.
     CI_Element = 0,
-    //ru Элемент с динамическими точками (автонумерация), например - IndexToChanel
-    //D - Dynamic, P - Point
+    //ru Элемент с динамическими точками (автонумерация), например - IndexToChanel.
+    //D - Dynamic, P - Point.
     CI_DPElement,
     //Контейнер
     CI_MultiElement,
-    //ru Редактор контейнера MultiElement
+    //ru Редактор контейнера MultiElement.
     CI_EditMulti,
-    //ru Редактор динамического контейнера
+    //ru Редактор динамического контейнера.
     CI_EditMultiEx,
-    //ru Элемент для встраивания кода
+    //ru Элемент для встраивания кода.
     CI_InlineCode,
     //ru Ручная отрисовка элемента интерфейса.
     CI_DrawElement,
@@ -163,7 +163,7 @@ enum ClassesElements {
     //ru В пакете Windows, именуется как Class=Translator.
     CI_Translate,
     //ru Полиморфный контейнер.
-    //ru Элемент может содержать более одного обычного контейнера.
+    //ru Элемент может содержать более одного контейнера.
     CI_PolyMulti,
     //ru Шаблон документа.
     CI_DocumentTemplate
