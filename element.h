@@ -4,7 +4,7 @@
 #include "CGTShare.h"
 #include "point.h"
 #include "property.h"
-#include "cgtsharewrapper.h"
+#include "cgt.h"
 #include "global.h"
 
 //STL
@@ -14,7 +14,6 @@
 
 class Element {
 private:
-    const PCodeGenTools m_cgt{};
     const id_element m_eId{};
 
     ArrayPContainers m_arrayContainers;
@@ -41,7 +40,7 @@ private:
     int m_sizeH{};
 
 public:
-    explicit Element(PCodeGenTools cgt, id_element eId);
+    explicit Element(id_element eId);
     ~Element();
 
     //ru Добавляем в элемент указатель на контейнер

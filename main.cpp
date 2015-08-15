@@ -1,9 +1,10 @@
 //Project
 #include "global.h"
 #include "CGTShare.h"
-#include "cgtsharewrapper.h"
+#include "cgt.h"
 #include "maincontainer.h"
 #include "element.h"
+
 
 //NATIVE
 #include <windows.h>
@@ -32,15 +33,15 @@ typedef int(*t_MakeElement)(PCodeGenTools cgt, id_element e);
 typedef bool(*t_isReadyForAdd)(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk);
 
 //Объявление функций проксируемого кодогенератора
-static t_buildPrepareProc proxy_buildPrepareProc;
-static t_buildProcessProc proxy_buildProcessProc;
-static t_CheckVersionProc proxy_CheckVersionProc;
-static t_ConfToCode proxy_ConfToCode;
-static t_synReadFuncList proxy_synReadFuncList;
-static t_hintForElement proxy_hintForElement;
-static t_isElementMaker proxy_isElementMaker;
-static t_MakeElement proxy_MakeElement;
-static t_isReadyForAdd proxy_isReadyForAdd;
+static t_buildPrepareProc original_buildPrepareProc;
+static t_buildProcessProc original_buildProcessProc;
+static t_CheckVersionProc original_CheckVersionProc;
+static t_ConfToCode original_ConfToCode;
+static t_synReadFuncList original_synReadFuncList;
+static t_hintForElement original_hintForElement;
+static t_isElementMaker original_isElementMaker;
+static t_MakeElement original_MakeElement;
+static t_isReadyForAdd original_isReadyForAdd;
 
 //Переопределение вывода отладочных сообщений
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -85,15 +86,15 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         m_codegen = LoadLibraryW(L"D:/MyProgs/HiAsm_AltBuild/Elements/delphi/CodeGen_orig.dll");
 
         //Определение функций проксируемого кодогенератора
-        proxy_buildPrepareProc = (t_buildPrepareProc)GetProcAddress(m_codegen, "buildPrepareProc");
-        proxy_buildProcessProc = (t_buildProcessProc)GetProcAddress(m_codegen, "buildProcessProc");
-        proxy_CheckVersionProc = (t_CheckVersionProc)GetProcAddress(m_codegen, "CheckVersionProc");
-        proxy_ConfToCode = (t_ConfToCode)GetProcAddress(m_codegen, "ConfToCode");
-        proxy_synReadFuncList = (t_synReadFuncList)GetProcAddress(m_codegen, "synReadFuncList");
-        proxy_hintForElement = (t_hintForElement)GetProcAddress(m_codegen, "hintForElement");
-        proxy_isElementMaker = (t_isElementMaker)GetProcAddress(m_codegen, "isElementMaker");
-        proxy_MakeElement = (t_MakeElement)GetProcAddress(m_codegen, "MakeElement");
-        proxy_isReadyForAdd = (t_isReadyForAdd)GetProcAddress(m_codegen, "isReadyForAdd");
+        original_buildPrepareProc = (t_buildPrepareProc)GetProcAddress(m_codegen, "buildPrepareProc");
+        original_buildProcessProc = (t_buildProcessProc)GetProcAddress(m_codegen, "buildProcessProc");
+        original_CheckVersionProc = (t_CheckVersionProc)GetProcAddress(m_codegen, "CheckVersionProc");
+        original_ConfToCode = (t_ConfToCode)GetProcAddress(m_codegen, "ConfToCode");
+        original_synReadFuncList = (t_synReadFuncList)GetProcAddress(m_codegen, "synReadFuncList");
+        original_hintForElement = (t_hintForElement)GetProcAddress(m_codegen, "hintForElement");
+        original_isElementMaker = (t_isElementMaker)GetProcAddress(m_codegen, "isElementMaker");
+        original_MakeElement = (t_MakeElement)GetProcAddress(m_codegen, "MakeElement");
+        original_isReadyForAdd = (t_isReadyForAdd)GetProcAddress(m_codegen, "isReadyForAdd");
 
         break;
     }
@@ -114,7 +115,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 DLLEXPORT int buildPrepareProc(TBuildPrepareRec &params)
 {
     PRINT_FUNC_INFO
-    int res = proxy_buildPrepareProc(params);
+    int res = original_buildPrepareProc(params);
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -124,15 +125,14 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 {
     PRINT_FUNC_INFO
 
-    cgt::saveOriginalCgt(params.cgt);
-    params.cgt = cgt::getProxyCgt();
+    cgt::setParams(params);
 
 #define MAINCONTAINER
 #ifdef MAINCONTAINER
-    MainContainer mainContainer(params);
+    MainContainer mainContainer;
     return CG_SUCCESS;
 #else
-    int res = proxy_buildProcessProc(params);
+    int res = original_buildProcessProc(params);
     qDebug() << RESULT_STR << res;
     return res;
 #endif
@@ -141,7 +141,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
 {
     PRINT_FUNC_INFO
-    int res = proxy_CheckVersionProc(params);
+    int res = original_CheckVersionProc(params);
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -150,25 +150,25 @@ DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
 DLLEXPORT void ConfToCode(const char *Pack, const char *UName)
 {
     PRINT_FUNC_INFO
-    proxy_ConfToCode(Pack, UName);
+    original_ConfToCode(Pack, UName);
 }
 
 DLLEXPORT void synReadFuncList(TSynParams &params)
 {
     PRINT_FUNC_INFO
-    proxy_synReadFuncList(params);
+    original_synReadFuncList(params);
 }
 
 DLLEXPORT void hintForElement(THintParams &params)
 {
     PRINT_FUNC_INFO
-    proxy_hintForElement(params);
+    original_hintForElement(params);
 }
 
 DLLEXPORT int isElementMaker(PCodeGenTools cgt, id_element e)
 {
     PRINT_FUNC_INFO
-    int res = proxy_isElementMaker(cgt, e);
+    int res = original_isElementMaker(cgt, e);
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -177,7 +177,7 @@ DLLEXPORT int isElementMaker(PCodeGenTools cgt, id_element e)
 DLLEXPORT int MakeElement(PCodeGenTools cgt, id_element e)
 {
     PRINT_FUNC_INFO
-    int res = proxy_MakeElement(cgt, e);
+    int res = original_MakeElement(cgt, e);
     qDebug() << RESULT_STR << res;
 
     return res;
@@ -190,7 +190,7 @@ DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk)
     Q_UNUSED(sdk)
 
     //PRINT_FUNC_INFO
-    //bool res =  proxy_isReadyForAdd(cgt, rfd, sdk);
+    //bool res =  original_isReadyForAdd(cgt, rfd, sdk);
     //qDebug() << RESULT_STR << res;
 
     return 1;

@@ -18,12 +18,10 @@ private:
     } m_params;
 
 private:
-    const PCodeGenTools m_cgt {};
-    const id_sdk m_sdk{};
     PContainer m_container{};
 
 public:
-    explicit MainContainer(TBuildProcessRec &params);
+    explicit MainContainer();
     ~MainContainer();
 
     void saveToFile() const;

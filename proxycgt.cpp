@@ -1,5 +1,5 @@
 ﻿//Project
-#include "cgtsharewrapper.h"
+#include "proxycgt.h"
 #include "global.h"
 
 //STL
@@ -8,50 +8,7 @@
 #include <QDebug>
 #include <QFlags>
 
-namespace cgt
-{
-bool isSelect(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_SELECT;
-}
-
-bool isParent(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_PARENT;
-}
-
-bool isCore(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_CORE;
-}
-
-bool isNoDelete(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_NODELETE;
-}
-
-bool isMulti(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_MULTI;
-}
-
-bool isEdit(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_EDIT;
-}
-
-bool isEditMultiEx(const ClassesElements &eClass)
-{
-    return eClass == CI_EditMultiEx;
-}
-
-bool isPolyMulti(const ClassesElements &eClass)
-{
-    return eClass == CI_PolyMulti;
-}
-}
-
-namespace cgt
+namespace ProxyCgt
 {
 //Для хранения указателя на массив указателей на callback функции
 static PCodeGenTools m_cgt = nullptr;

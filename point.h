@@ -2,7 +2,6 @@
 
 //Project
 #include "CGTShare.h"
-#include "cgtsharewrapper.h"
 
 //STL
 
@@ -13,10 +12,10 @@ class Point;
 typedef QSharedPointer<Point> PPoint;
 typedef QVector<PPoint> ArrayPPoints;
 
-class Point {
+class Point
+{
 private:
-    const PCodeGenTools m_cgt{};
-    const id_point m_ptId{};
+    const id_point m_ptId {};
 
     //ru Данные точки
     DataTypes m_dataType{};
@@ -30,7 +29,7 @@ private:
     QString m_dpeName{};
 
 public:
-    explicit Point(PCodeGenTools cgt, id_point pt);
+    explicit Point(id_point pt);
     ~Point();
 
 private:

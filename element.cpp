@@ -7,9 +7,8 @@
 //Project
 #include "element.h"
 
-Element::Element(PCodeGenTools cgt, id_element eId)
-    : m_cgt(cgt)
-    , m_eId(eId)
+Element::Element(id_element eId)
+    : m_eId(eId)
 {
     getElementData();
 }
@@ -66,31 +65,31 @@ QString Element::getDataText(uchar inc) const
 
 void Element::getElementData()
 {
-    m_className = QString::fromLocal8Bit(m_cgt->elGetClassName(m_eId));
-    m_classIndex = m_cgt->elGetClassIndex(m_eId);
-    m_flags = m_cgt->elGetFlag(m_eId);
-    m_inherit = QString::fromLocal8Bit(m_cgt->elGetInherit(m_eId));
-    m_SDKCount = m_cgt->elGetSDKCount(m_eId);
-    m_group = m_cgt->elGetGroup(m_eId);
-    m_interface = QString::fromLocal8Bit(m_cgt->elGetInterface(m_eId));
-    m_infSub = QString::fromLocal8Bit(m_cgt->elGetInfSub(m_eId));
-    m_propCount = m_cgt->elGetPropCount(m_eId);
-    m_propertyListCount = m_cgt->elGetPropertyListCount(m_eId);
-    m_ptCount = m_cgt->elGetPtCount(m_eId);
-    m_linkIs = m_cgt->elLinkIs(m_eId);
-    m_linkMain = m_cgt->elLinkMain(m_eId);
+    m_className = QString::fromLocal8Bit(cgt::elGetClassName(m_eId));
+    m_classIndex = cgt::elGetClassIndex(m_eId);
+    m_flags = cgt::elGetFlag(m_eId);
+    m_inherit = QString::fromLocal8Bit(cgt::elGetInherit(m_eId));
+    m_SDKCount = cgt::elGetSDKCount(m_eId);
+    m_group = cgt::elGetGroup(m_eId);
+    m_interface = QString::fromLocal8Bit(cgt::elGetInterface(m_eId));
+    m_infSub = QString::fromLocal8Bit(cgt::elGetInfSub(m_eId));
+    m_propCount = cgt::elGetPropCount(m_eId);
+    m_propertyListCount = cgt::elGetPropertyListCount(m_eId);
+    m_ptCount = cgt::elGetPtCount(m_eId);
+    m_linkIs = cgt::elLinkIs(m_eId);
+    m_linkMain = cgt::elLinkMain(m_eId);
 
-    m_cgt->elGetPos(m_eId, m_posX, m_posY);
-    m_cgt->elGetSize(m_eId, m_sizeW, m_sizeH);
+    cgt::elGetPos(m_eId, m_posX, m_posY);
+    cgt::elGetSize(m_eId, m_sizeW, m_sizeH);
 
     //ru Получаем информацию о точках
     for (int i = 0; i < m_ptCount; ++i) {
-        m_arrayPoints << PPoint::create(m_cgt, m_cgt->elGetPt(m_eId, i));
+        m_arrayPoints << PPoint::create(cgt::elGetPt(m_eId, i));
     }
 
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propCount; ++i) {
-        id_prop propId = m_cgt->elGetProperty(m_eId, i);
-        m_arrayProperties << PProperty::create(m_cgt, propId, m_eId);
+        id_prop propId = cgt::elGetProperty(m_eId, i);
+        m_arrayProperties << PProperty::create(propId, m_eId);
     }
 }

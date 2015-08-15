@@ -2,7 +2,7 @@
 
 //Project
 #include "CGTShare.h"
-#include "cgtsharewrapper.h"
+#include "cgt.h"
 
 //STL
 #include <windows.h>
@@ -20,7 +20,6 @@ typedef QList<PropValue> ListPropValue;
 
 class Property {
 private:
-    const PCodeGenTools m_cgt{};
     const id_prop m_propId{};
     const id_element m_elId{};
 
@@ -31,7 +30,7 @@ private:
     int m_isTranslate{};
 
 public:
-    Property(PCodeGenTools cgt, id_prop propId, id_element elementId);
+    Property(id_prop propId, id_element elementId);
     ~Property();
 
 private:
