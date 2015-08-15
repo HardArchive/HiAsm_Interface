@@ -127,7 +127,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::saveOriginalCgt(params.cgt);
     params.cgt = cgt::getProxyCgt();
 
-    //#define MAINCONTAINER
+//#define MAINCONTAINER
 #ifdef MAINCONTAINER
     MainContainer mainContainer(params);
     return CG_SUCCESS;
@@ -193,6 +193,6 @@ DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk)
     //bool res =  proxy_isReadyForAdd(cgt, rfd, sdk);
     //qDebug() << RESULT_STR << res;
 
-    return CG_SUCCESS;
+    return 1;
 }
 

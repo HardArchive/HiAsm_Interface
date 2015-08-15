@@ -40,11 +40,6 @@ bool isEdit(const ElementFlgs &flags)
     return flags & ELEMENT_FLG_IS_EDIT;
 }
 
-bool isSystem(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_SYSTEM;
-}
-
 bool isEditMultiEx(const ClassesElements &eClass)
 {
     return eClass == CI_EditMultiEx;
@@ -54,7 +49,6 @@ bool isPolyMulti(const ClassesElements &eClass)
 {
     return eClass == CI_PolyMulti;
 }
-
 }
 
 namespace cgt
@@ -92,9 +86,8 @@ void printArgs(std::initializer_list<QVariant> args, bool noquote = false)
 
 //~~~~~~~~~~~~~~~~~ Проксированные функции ~~~~~~~~~~~~~~~~~~~
 
-//!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает количество элементов в схеме.
-//ru Элементы в контейнерах не считаются
+//!~~~~~~~~~~~~~~~~~~~~~~~~ контейнер ~~~~~~~~~~~~~~~~~~~~~~~~~~
+//ru Возвращает количество элементов в контейнере.
 EXPORT int sdkGetCount(id_sdk SDK)
 {
     PRINT_FUNC_INFO
@@ -105,7 +98,7 @@ EXPORT int sdkGetCount(id_sdk SDK)
     return res;
 }
 
-//ru Возвращает идентификатор элемента по его Z-координате(индексу)
+//ru Возвращает ID элемента по его Z-положению(индексу) в контейнере.
 EXPORT id_element sdkGetElement(id_sdk SDK, int Index)
 {
     PRINT_FUNC_INFO
@@ -116,7 +109,7 @@ EXPORT id_element sdkGetElement(id_sdk SDK, int Index)
     return res;
 }
 
-//ru Возвращает идентификатор элемента по имени его класса
+//ru Возвращает ID элемента по имени элемента.
 EXPORT id_element sdkGetElementName(id_sdk SDK, char *Name)
 {
     PRINT_FUNC_INFO
@@ -128,18 +121,19 @@ EXPORT id_element sdkGetElementName(id_sdk SDK, char *Name)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает флаги элемента по его идентификатору
+//ru Возвращает флаги элемента.
 EXPORT ElementFlags elGetFlag(id_element e)
 {
     PRINT_FUNC_INFO
     ElementFlags res = m_cgt->elGetFlag(e);
     printArgs({e});
+
     qDebug() << RESULT_STR << ElementFlgs(res);
 
     return res;
 }
 
-//ru Возвращает кол-во св-в элемента
+//ru Возвращает количество свойств элемента.
 EXPORT int elGetPropCount(id_element e)
 {
     PRINT_FUNC_INFO
@@ -150,7 +144,7 @@ EXPORT int elGetPropCount(id_element e)
     return res;
 }
 
-//ru Возвращает целую структуру для конкретного св-ва с порядковым номером из INI
+//ru Возвращает свойство элемента по индексу, с порядковым номером из INI.
 EXPORT id_prop elGetProperty(id_element e, int Index)
 {
     PRINT_FUNC_INFO
@@ -161,7 +155,7 @@ EXPORT id_prop elGetProperty(id_element e, int Index)
     return res;
 }
 
-//ru Возвращает True, если значение св-ва совпадает с заданным в INI файле, иначе False
+//ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
 EXPORT bool elIsDefProp(id_element e, int Index)
 {
     PRINT_FUNC_INFO
@@ -172,8 +166,8 @@ EXPORT bool elIsDefProp(id_element e, int Index)
     return res;
 }
 
-//ru Присваиваем элементу уникальное имя
-EXPORT id_element elSetCodeName(id_element e, char *Name)
+//ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
+EXPORT id_element elSetCodeName(id_element e, const char *Name)
 {
     PRINT_FUNC_INFO
     id_element res = m_cgt->elSetCodeName(e, Name);
@@ -183,41 +177,40 @@ EXPORT id_element elSetCodeName(id_element e, char *Name)
     return res;
 }
 
-//ru Получаем уникальное имя элемента
-EXPORT char *elGetCodeName(id_element e)
+//ru Возвращает уникальное имя элемента
+EXPORT const char *elGetCodeName(id_element e)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->elGetCodeName(e);
+    const char *res = m_cgt->elGetCodeName(e);
     printArgs({e});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Получаем имя класса элемента
-EXPORT char *elGetClassName(id_element e)
+//ru Возвращает имя класса элемента.
+EXPORT const char *elGetClassName(id_element e)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->elGetClassName(e);
+    const char *res = m_cgt->elGetClassName(e);
     printArgs({e});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Просто содержимое поля Sub из INI-файла элемента
-//TODO Выяснить, что за "просто содержимое" поля Sub и дополнить описание.
-EXPORT char *elGetInfSub(id_element e)
+//ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
+EXPORT const char *elGetInfSub(id_element e)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->elGetInfSub(e);
+    const char *res = m_cgt->elGetInfSub(e);
     printArgs({e});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Получаем общее количество точек у элемента
+//ru Возвращает общее количество видимых точек у элемента.
 EXPORT int elGetPtCount(id_element e)
 {
     PRINT_FUNC_INFO
@@ -228,7 +221,7 @@ EXPORT int elGetPtCount(id_element e)
     return res;
 }
 
-//ru Получаем идентификатор точки по её индексу
+//ru Возвращает ID точки по её индексу.
 EXPORT id_point elGetPt(id_element e, int i)
 {
     PRINT_FUNC_INFO
@@ -239,7 +232,8 @@ EXPORT id_point elGetPt(id_element e, int i)
     return res;
 }
 
-//ru Получаем идентификатор точки по её имени
+//ru Возвращает ID точки по её имени.
+//[deprecated]
 EXPORT id_point elGetPtName(id_element e, const char *Name)
 {
     PRINT_FUNC_INFO
@@ -250,19 +244,19 @@ EXPORT id_point elGetPtName(id_element e, const char *Name)
     return res;
 }
 
-//ru Получаем подкласс элемента
+//ru Возвращает индекс класса элемента.
 EXPORT ClassesElements elGetClassIndex(id_element e)
 {
     PRINT_FUNC_INFO
     ClassesElements res = m_cgt->elGetClassIndex(e);
     printArgs({e});
-    qDebug().noquote() << RESULT_STR << ClassesElementsMap[res];
+    qDebug().noquote() << RESULT_STR << ClassesElementMap[res];
 
     return res;
 }
 
-//ru Получаем идентификатор внутренней схемы для контейнеров
-//ru и идентификатор родителя id_element для редактора контейнера
+//ru Возвращает ID внутренней схемы для контейнеров
+//ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
 EXPORT id_sdk elGetSDK(id_element e)
 {
     PRINT_FUNC_INFO
@@ -273,7 +267,7 @@ EXPORT id_sdk elGetSDK(id_element e)
     return res;
 }
 
-//ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются
+//ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
 EXPORT bool elLinkIs(id_element e)
 {
     PRINT_FUNC_INFO
@@ -284,7 +278,7 @@ EXPORT bool elLinkIs(id_element e)
     return res;
 }
 
-//ru Возвращает идент главного элемента(тот, на который ссылаются другие)
+//ru Возвращает ID главного элемента(тот, на который ссылаются другие).
 EXPORT id_element elLinkMain(id_element e)
 {
     PRINT_FUNC_INFO
@@ -295,7 +289,7 @@ EXPORT id_element elLinkMain(id_element e)
     return res;
 }
 
-//ru Помещаем в переменные "X" и "Y", позицию элемента в редакторе схем
+//ru Помещает в переменные "X" и "Y", позицию элемента в редакторе схем.
 EXPORT void elGetPos(id_element e, int &X, int &Y)
 {
     PRINT_FUNC_INFO
@@ -303,7 +297,7 @@ EXPORT void elGetPos(id_element e, int &X, int &Y)
     printArgs({e, X, Y});
 }
 
-//ru Помещаем в переменные "W" и "H", размеры элемента в редакторе схем
+//ru Помещает в переменные "W" и "H", размеры элемента
 EXPORT void elGetSize(id_element e, int &W, int &H)
 {
     PRINT_FUNC_INFO
@@ -311,9 +305,8 @@ EXPORT void elGetSize(id_element e, int &W, int &H)
     printArgs({e, W, H});
 }
 
-//ru Неизвестно для чего эта функция.
-//ru Возможно, возвращает уникальное число.
-//ru Можно считать её - deprecated.
+//ru Возвращает внутренний ID элемента (отличается от внешнего).
+//[deprecated]
 EXPORT int elGetEID(id_element e)
 {
     PRINT_FUNC_INFO
@@ -325,7 +318,8 @@ EXPORT int elGetEID(id_element e)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает идентификатор точки, с которой соеденена данная
+//ru Возвращает ID точки, с которой соединена указанная.
+//TODO [deprecated?], в CodeGen.dpr не используется.
 EXPORT id_point ptGetLinkPoint(id_point p)
 {
     PRINT_FUNC_INFO
@@ -336,8 +330,8 @@ EXPORT id_point ptGetLinkPoint(id_point p)
     return res;
 }
 
-//ru Возвращает идентификатор точки, с которой соеденена данная точка,
-//ru без учета точек разрыва и хабов
+//ru Возвращает ID точки, с которой соединена указанная точка,
+//ru без учета точек разрыва и хабов.
 EXPORT id_point ptGetRLinkPoint(id_point p)
 {
     PRINT_FUNC_INFO
@@ -348,7 +342,7 @@ EXPORT id_point ptGetRLinkPoint(id_point p)
     return res;
 }
 
-//ru Возвращает тип точек(константы pt_XXX)
+//ru Возвращает тип точек(константы PointTypes).
 EXPORT PointTypes ptGetType(id_point p)
 {
     PRINT_FUNC_INFO
@@ -359,18 +353,18 @@ EXPORT PointTypes ptGetType(id_point p)
     return res;
 }
 
-//ru Возвращает имя точки
-EXPORT char *ptGetName(id_point p)
+//ru Возвращает имя точки.
+EXPORT const char *ptGetName(id_point p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->ptGetName(p);
+    const char *res = m_cgt->ptGetName(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Возвращает идентификатор элемента, которому принадлежит точка
+//ru Возвращает ID элемента, которому принадлежит точка.
 EXPORT id_element ptGetParent(id_point p)
 {
     PRINT_FUNC_INFO
@@ -381,23 +375,22 @@ EXPORT id_element ptGetParent(id_point p)
     return res;
 }
 
-//ru Возвращает относительный индекс точки по принадлежности к одной из 4х групп
-//TODO Выяснить, что представлять из себя "относительный индекс точки" и дополнить описание.
-EXPORT int ptGetIndex(id_point p)
+//ru Возвращает тип точки (PointTypes).
+EXPORT PointTypes ptGetIndex(id_point p)
 {
     PRINT_FUNC_INFO
-    int res = m_cgt->ptGetIndex(p);
-    printArgs({p});
-    qDebug() << RESULT_STR << res;
+    PointTypes res = m_cgt->ptGetIndex(p);
+    printArgs({p}, true);
+    qDebug().noquote() << RESULT_STR << PointTypesMap[res];
 
     return res;
 }
 
-//ru Возвращает базовую часть имени динамических точек(для CI_DPElement)
-EXPORT char *pt_dpeGetName(id_point p)
+//ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
+EXPORT const char *pt_dpeGetName(id_point p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->pt_dpeGetName(p);
+    const char *res = m_cgt->pt_dpeGetName(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
@@ -405,7 +398,7 @@ EXPORT char *pt_dpeGetName(id_point p)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает тип параметра
+//ru Возвращает тип свойства.
 EXPORT DataTypes propGetType(id_prop prop)
 {
     PRINT_FUNC_INFO
@@ -416,18 +409,18 @@ EXPORT DataTypes propGetType(id_prop prop)
     return res;
 }
 
-//ru Возвращает имя параметра
-EXPORT char *propGetName(id_prop prop)
+//ru Возвращает имя свойства.
+EXPORT const char *propGetName(id_prop prop)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->propGetName(prop);
+    const char *res = m_cgt->propGetName(prop);
     printArgs({prop});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Возвращает значение параметра
+//ru Возвращает значение свойства в виде указателя на данные.
 EXPORT quintptr propGetValue(id_prop prop)
 {
     PRINT_FUNC_INFO
@@ -438,9 +431,7 @@ EXPORT quintptr propGetValue(id_prop prop)
     return res;
 }
 
-//TODO propTo функции, возвращают свойство в указанном типе? Дополнить описание.
-
-//ru ???
+//ru Возвращает значение свойства в формате unsigned char.
 EXPORT unsigned char propToByte(id_prop prop)
 {
     PRINT_FUNC_INFO
@@ -451,7 +442,7 @@ EXPORT unsigned char propToByte(id_prop prop)
     return res;
 }
 
-//ru ???
+//ru Возвращает значение свойства в формате int.
 EXPORT int propToInteger(id_prop prop)
 {
     PRINT_FUNC_INFO
@@ -462,7 +453,7 @@ EXPORT int propToInteger(id_prop prop)
     return res;
 }
 
-//ru ???
+//ru Возвращает значение свойства в формате float.
 EXPORT float propToReal(id_prop prop)
 {
     PRINT_FUNC_INFO
@@ -473,11 +464,11 @@ EXPORT float propToReal(id_prop prop)
     return res;
 }
 
-//ru ???
-EXPORT char *propToString(id_prop prop)
+//ru Возвращает значение свойства в виде C строки.
+EXPORT const char *propToString(id_prop prop)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->propToString(prop);
+    const char *res = m_cgt->propToString(prop);
     printArgs({prop});
     PRINT_RESULT_STR(res)
 
@@ -485,14 +476,9 @@ EXPORT char *propToString(id_prop prop)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
-/*
- *ru Функции resAdd* возвращают имя временного файла, в который сохраняется ресурс.
- *ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
- *ru работы с библиотекой.
- *
- */
 
-//ru Добавляет имя файла в общий список временных файлов для последующего удаления
+//ru Добавляет имя файла в общий список временных файлов
+//ru для последующего удаления файла.
 EXPORT int resAddFile(const char *Name)
 {
     PRINT_FUNC_INFO
@@ -503,66 +489,79 @@ EXPORT int resAddFile(const char *Name)
     return res;
 }
 
-//ru Добавляет иконку в ресурсы и в список временных файлов
-EXPORT char *resAddIcon(id_prop p)
+//ru Добавляет иконку в ресурсы и в список временных файлов,
+//ru и возвращают имя временного файла.
+//TODO p - является свойством, которое содержит иконку?
+EXPORT const char *resAddIcon(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->resAddIcon(p);
+    const char *res = m_cgt->resAddIcon(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Добавляет строку в ресурсы и в список временных файлов
-EXPORT char *resAddStr(const char *p)
+//ru Добавляет строку в ресурсы и в список временных файлов.
+//TODO Что возвращает?
+EXPORT const char *resAddStr(const char *p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->resAddStr(p);
+    const char *res = m_cgt->resAddStr(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Добавляет поток в ресурсы и в список временных файлов
-EXPORT char *resAddStream(id_prop p)
+//ru Добавляет поток (данные) в ресурсы и в список временных файлов,
+//ru и возвращает имя временного файла.
+//ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
+//ru работы с библиотекой.
+EXPORT const char *resAddStream(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->resAddStream(p);
+    const char *res = m_cgt->resAddStream(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Добавляет звук в ресурсы и в список временных файлов
-EXPORT char *resAddWave(id_prop p)
+//ru Добавляет звук в ресурсы и в список временных файлов,
+//ru и возвращает имя временного файла.
+//ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
+//ru работы с библиотекой.
+EXPORT const char *resAddWave(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->resAddWave(p);
+    const char *res = m_cgt->resAddWave(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Добавляет картинку в ресурсы и в список временных файлов
-EXPORT char *resAddBitmap(id_prop p)
+//ru Добавляет картинку в ресурсы и в список временных файлов,
+//ru и возвращает имя временного файла.
+//ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
+//ru работы с библиотекой.
+EXPORT const char *resAddBitmap(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->resAddBitmap(p);
+    const char *res = m_cgt->resAddBitmap(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Добавляет меню в ресурсы и в список временных файлов
-EXPORT char *resAddMenu(id_prop p)
+//ru Добавляет меню в ресурсы и в список временных файлов.
+//[deprecated]
+EXPORT const char *resAddMenu(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->resAddMenu(p);
+    const char *res = m_cgt->resAddMenu(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
@@ -633,8 +632,8 @@ EXPORT int GetParam(CgtParams index, const void *value)
     return res;
 }
 
-//!~~~~~~~~~~~~~~~~~~~~~~~~ массивы ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает кол-во элементов в массиве а
+//!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
+//ru Возвращает количество элементов в массиве.
 EXPORT int arrCount(id_array a)
 {
     PRINT_FUNC_INFO
@@ -645,7 +644,7 @@ EXPORT int arrCount(id_array a)
     return res;
 }
 
-//ru Возвращает тип элементов в массиве а
+//ru Возвращает тип элементов в массиве.
 EXPORT DataTypes arrType(id_array a)
 {
     PRINT_FUNC_INFO
@@ -656,11 +655,11 @@ EXPORT DataTypes arrType(id_array a)
     return res;
 }
 
-//ru Возвращает имя элемента с индексом Index
-EXPORT char *arrItemName(id_array a, int Index)
+//ru Возвращает имя элемента с индексом Index.
+EXPORT const char *arrItemName(id_array a, int Index)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->arrItemName(a, Index);
+    const char *res = m_cgt->arrItemName(a, Index);
     printArgs({a, Index});
     PRINT_RESULT_STR(res)
 
@@ -671,16 +670,15 @@ EXPORT char *arrItemName(id_array a, int Index)
 EXPORT quintptr arrItemData(id_array a, int Index)
 {
     PRINT_FUNC_INFO
-    quintptr res = m_cgt->arrItemData(a, Index);
+    const quintptr res = m_cgt->arrItemData(a, Index);
     printArgs({a, Index});
     qDebug() << RESULT_STR << res;
 
     return res;
 }
 
-//ru ???
-//TODO Выяснить предназначение данной функции.
-//p.s. Возможно, тут производится работа со свойствов... чего?
+//ru Получаем элемент массива в виде свойства,
+//ru для дальнейшей работы с ним cgt::prop* функциями.
 EXPORT id_data arrGetItem(id_array a, int Index)
 {
     PRINT_FUNC_INFO
@@ -692,8 +690,8 @@ EXPORT id_data arrGetItem(id_array a, int Index)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru ???
-//TODO Выяснить предназначение данной функции.
+//ru Возвращает true, если запускаем cборку и запуск схемы в режиме отладки,
+//ru иначе false.
 EXPORT bool isDebug(id_sdk e)
 {
     PRINT_FUNC_INFO
@@ -705,7 +703,8 @@ EXPORT bool isDebug(id_sdk e)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Получаем тип данных по его ID
+
+//ru Возвращает тип данных.
 EXPORT DataTypes dtType(id_data d)
 {
     PRINT_FUNC_INFO
@@ -716,20 +715,18 @@ EXPORT DataTypes dtType(id_data d)
     return res;
 }
 
-//ru По ID данных, получаем содержимое.
-//ru Тип содержимого: строка в стиле C
-EXPORT char *dtStr(id_data d)
+//ru Возвращает данные в формате: строка в стиле C.
+EXPORT const char *dtStr(id_data d)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->dtStr(d);
+    const char *res = m_cgt->dtStr(d);
     printArgs({d});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru По ID данных, получаем содержимое.
-//ru Тип содержимого: целое число
+//ru Возвращает данные в формате: целое число.
 EXPORT int dtInt(id_data d)
 {
     PRINT_FUNC_INFO
@@ -740,8 +737,7 @@ EXPORT int dtInt(id_data d)
     return res;
 }
 
-//ru По ID данных, получаем содержимое.
-//ru Тип содержимого: число с плавающей запятой
+//ru Возвращает данные в формате: число с плавающей запятой.
 EXPORT double dtReal(id_data d)
 {
     PRINT_FUNC_INFO
@@ -753,17 +749,17 @@ EXPORT double dtReal(id_data d)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//TODO Возвращает название шрифта по идентификатору?
-//TODO id_font? Где он берётся?
-EXPORT char *fntName(id_font f)
+//ru Возвращает название шрифта.
+EXPORT const char *fntName(id_font f)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->fntName(f);
+    const char *res = m_cgt->fntName(f);
     printArgs({f});
     PRINT_RESULT_STR(res)
 
     return res;
 }
+//ru Возвращает размер шрифта.
 EXPORT int fntSize(id_font f)
 {
     PRINT_FUNC_INFO
@@ -773,6 +769,7 @@ EXPORT int fntSize(id_font f)
 
     return res;
 }
+//ru Возвращает стиль шрифта.
 EXPORT unsigned char fntStyle(id_font f)
 {
     printArgs({f});
@@ -782,6 +779,7 @@ EXPORT unsigned char fntStyle(id_font f)
 
     return res;
 }
+//ru Возвращает цвет шрифта.
 EXPORT int fntColor(id_font f)
 {
     PRINT_FUNC_INFO
@@ -791,6 +789,7 @@ EXPORT int fntColor(id_font f)
 
     return res;
 }
+//ru Возвращает кодировку шрифта.
 EXPORT unsigned char fntCharSet(id_font f)
 {
     PRINT_FUNC_INFO
@@ -801,25 +800,26 @@ EXPORT unsigned char fntCharSet(id_font f)
     return res;
 }
 
-//!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
+//!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
+//!ru Судя по CodeGen.dpr, используется для хранения указателя (ID элемента) на самого себя.
 
-//ru Получаем пользовательские данные элемента
-//ru Коммент из hiasm5 - user data used in FTCG codegen
-//ru Судя по всему, данные могут быть любого типа
-EXPORT const char *elGetData(id_element e)
+//ru Возвращает пользовательские данные элемента.
+//ru Коммент из hiasm5 - user data used in FTCG codegen.
+//ru Судя по всему, данные могут быть любого типа, ибо хранит указатель..
+EXPORT quintptr elGetData(id_element e)
 {
     PRINT_FUNC_INFO
-    const char *res = m_cgt->elGetData(e);
+    const quintptr res = m_cgt->elGetData(e);
     printArgs({e});
     qDebug() << RESULT_STR << res;
 
     return res;
 }
 
-//ru Устанавливает пользовательские данные элемента
-//ru Коммент из hiasm5 - user data used in FTCG codegen
-//ru Судя по всему, данные могут быть любого типа, ибо void*
-EXPORT void elSetData(id_element e, const char *data)
+//ru Устанавливает пользовательские данные элементу.
+//ru Коммент из hiasm5 - user data used in FTCG codegen.
+//ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
+EXPORT void elSetData(id_element e, const quintptr data)
 {
     PRINT_FUNC_INFO
     m_cgt->elSetData(e, data);
@@ -827,7 +827,7 @@ EXPORT void elSetData(id_element e, const char *data)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает тип данных точки
+//ru Возвращает тип данных точки.
 EXPORT DataTypes ptGetDataType(id_point p)
 {
     PRINT_FUNC_INFO
@@ -839,7 +839,7 @@ EXPORT DataTypes ptGetDataType(id_point p)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает идентификатор родителя
+//ru Возвращает ID родительского контейнера элемента.
 EXPORT id_sdk elGetParent(id_element e)
 {
     PRINT_FUNC_INFO
@@ -850,8 +850,9 @@ EXPORT id_sdk elGetParent(id_element e)
     return res;
 }
 
-//ru Возвращает количество элементов в списке св-тв(из панели св-ва)
-//ru В RTCG используется аналогичный метод - elGetPropCount
+//ru Возвращает количество свойств в списке свойств(из панели свойств).
+//ru В RTCG используется аналогичная функция - elGetPropCount.
+//[deprecated]
 EXPORT int elGetPropertyListCount(id_element e)
 {
     PRINT_FUNC_INFO
@@ -862,7 +863,8 @@ EXPORT int elGetPropertyListCount(id_element e)
     return res;
 }
 
-//ru Возвращает элемент списка св-тв (PropertyList)
+//ru Возвращает свойство из списка свойств (PropertyList).
+//[deprecated]
 EXPORT id_proplist elGetPropertyListItem(id_element e, int i)
 {
     PRINT_FUNC_INFO
@@ -874,52 +876,52 @@ EXPORT id_proplist elGetPropertyListItem(id_element e, int i)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ список свойств элемента ~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает имя св-ва
-EXPORT char *plGetName(id_proplist p)
+//ru Возвращает имя свойства.
+EXPORT const char *plGetName(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->plGetName(p);
+    const char *res = m_cgt->plGetName(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Возвращает описание св-ва
-EXPORT char *plGetInfo(id_proplist p)
+//ru Возвращает описание свойства.
+EXPORT const char *plGetInfo(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->plGetInfo(p);
+    const char *res = m_cgt->plGetInfo(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Возвращает группу св-ва
-EXPORT char *plGetGroup(id_proplist p)
+//ru Возвращает группу свойсва.
+EXPORT const char *plGetGroup(id_prop p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->plGetGroup(p);
+    const char *res = m_cgt->plGetGroup(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Возвращает значение св-ва
-EXPORT id_prop plGetProperty(id_proplist p)
+//ru Возвращает указатель на данные свойства.
+EXPORT quintptr plGetProperty(id_prop p)
 {
     PRINT_FUNC_INFO
-    id_prop res = m_cgt->plGetProperty(p);
+    quintptr res = m_cgt->plGetProperty(p);
     printArgs({p});
     qDebug() << RESULT_STR << res;
 
     return res;
 }
 
-//ru Возвращает родительский элемент даного св-ва
-EXPORT id_element plGetOwner(id_proplist p)
+//ru Возвращает ID родительского элемента указанного свойства.
+EXPORT id_element plGetOwner(id_prop p)
 {
     PRINT_FUNC_INFO
     id_element res = m_cgt->plGetOwner(p);
@@ -930,11 +932,11 @@ EXPORT id_element plGetOwner(id_proplist p)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает описание точки
-EXPORT char *ptGetInfo(id_point p)
+//ru Возвращает описание точки.
+EXPORT const char *ptGetInfo(id_point p)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->ptGetInfo(p);
+    const char *res = m_cgt->ptGetInfo(p);
     printArgs({p});
     PRINT_RESULT_STR(res)
 
@@ -942,8 +944,7 @@ EXPORT char *ptGetInfo(id_point p)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает идентификатор элемента, прилинкованного к указанному св-ву
-//TODO Как это? Выяснить и дополнить описание.
+//ru Возвращает ID элемента, прилинкованного к указанному свойству.
 EXPORT id_element propGetLinkedElement(id_element e, const char *propName)
 {
     PRINT_FUNC_INFO
@@ -954,8 +955,7 @@ EXPORT id_element propGetLinkedElement(id_element e, const char *propName)
     return res;
 }
 
-//ru Возвращает 1 если св-во помечено на перевод
-//TODO Выяснить, где в среде можно помечать свойства на перевод.
+//ru Возвращает 1, если свойство помечено на перевод.
 EXPORT int propIsTranslate(id_element e, id_prop p)
 {
     PRINT_FUNC_INFO
@@ -966,20 +966,21 @@ EXPORT int propIsTranslate(id_element e, id_prop p)
     return res;
 }
 
-//ru ???
-//TODO Выяснить, для чего предназначена данная функция.
-EXPORT id_element propGetLinkedElementInfo(id_element e, id_prop prop, const char *_int)
+//ru Предназначение данной функции так и небыло найдено.
+//ru Всегда возвращает 0.
+//[deprecated]
+EXPORT id_element propGetLinkedElementInfo(id_element e, id_prop prop, char *_int)
 {
     PRINT_FUNC_INFO
     id_element res = m_cgt->propGetLinkedElementInfo(e, prop, _int);
     printArgs({e, prop, _int});
     qDebug() << RESULT_STR << res;
 
-    return res;
+    return 0;
 }
 
-//!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает SDK полиморфного контейнера по его индексу
+//!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~
+//ru Возвращает SDK контейнера по его индексу.
 EXPORT id_sdk elGetSDKByIndex(id_element e, int index)
 {
     PRINT_FUNC_INFO
@@ -990,7 +991,7 @@ EXPORT id_sdk elGetSDKByIndex(id_element e, int index)
     return res;
 }
 
-//ru Возвращает количаство сабклассов полиморфного контейнера
+//ru Возвращает количаство контейнеров полиморфного элемента(CI_PolyMulti).
 EXPORT int elGetSDKCount(id_element e)
 {
     PRINT_FUNC_INFO
@@ -1001,12 +1002,11 @@ EXPORT int elGetSDKCount(id_element e)
     return res;
 }
 
-//ru Возвращает имя контейнера?
-//TODO Выяснить, точно ли данная функция возвращает имя текущего(?) контейнера.
-EXPORT char *elGetSDKName(id_element e, int index)
+//ru Возвращает имя контейнера по индексу.
+EXPORT const char *elGetSDKName(id_element e, int index)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->elGetSDKName(e, index);
+    const char *res = m_cgt->elGetSDKName(e, index);
     printArgs({e, index});
     PRINT_RESULT_STR(res)
 
@@ -1014,7 +1014,8 @@ EXPORT char *elGetSDKName(id_element e, int index)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает элемент родитель для данного SDK
+//ru Возвращает элемент родитель для данного SDK.
+//ru Возвращает 0, если контейнер не имеет родителя.
 EXPORT id_element sdkGetParent(id_sdk SDK)
 {
     PRINT_FUNC_INFO
@@ -1026,22 +1027,24 @@ EXPORT id_element sdkGetParent(id_sdk SDK)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает интерфейсы, предоставляемые элементом
-EXPORT char *elGetInterface(id_element e)
+//ru Возвращает интерфейсы, предоставляемые элементом.
+//ru Содержимое поля Interfaces= из конфигурации элемента.
+EXPORT const char *elGetInterface(id_element e)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->elGetInterface(e);
+    const char *res = m_cgt->elGetInterface(e);
     printArgs({e});
     PRINT_RESULT_STR(res)
 
     return res;
 }
 
-//ru Возвращает классы, от которых наследуется элемент
-EXPORT char *elGetInherit(id_element e)
+//ru Возвращает список классов, от которых наследуется элемент
+//ru Содержимое поля Inherit= из конфигурации элемента.
+EXPORT const char *elGetInherit(id_element e)
 {
     PRINT_FUNC_INFO
-    char *res = m_cgt->elGetInherit(e);
+    const char *res = m_cgt->elGetInherit(e);
     printArgs({e});
     PRINT_RESULT_STR(res)
 
@@ -1049,7 +1052,7 @@ EXPORT char *elGetInherit(id_element e)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает 1 если список ресурсов пуст, и 0 в противном случае
+//ru Возвращает 1, если список ресурсов пуст, и 0 в противном случае.
 EXPORT int resEmpty()
 {
     PRINT_FUNC_INFO
@@ -1059,7 +1062,7 @@ EXPORT int resEmpty()
     return res;
 }
 
-//ru Устанавливает префикс для имен ресурсов
+//ru Устанавливает префикс для имен ресурсов.
 EXPORT int resSetPref(const char *pref)
 {
     PRINT_FUNC_INFO
@@ -1071,7 +1074,7 @@ EXPORT int resSetPref(const char *pref)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Добавляет информацию в панель ошибок
+//ru Добавляет информацию в информационную панель
 EXPORT int _Error(int line, id_element e, const char *text)
 {
     PRINT_FUNC_INFO
@@ -1084,6 +1087,7 @@ EXPORT int _Error(int line, id_element e, const char *text)
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
 //ru Возвращает ID группы, к которой принадлежит элемент и 0, если группа отсутствует
+//[deprecated]
 EXPORT int elGetGroup(id_element e)
 {
     PRINT_FUNC_INFO
@@ -1095,8 +1099,8 @@ EXPORT int elGetGroup(id_element e)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru ???
-//TODO Выяснить, для чего предназначена данная функция.
+//ru Сохраняет данные свойства в файл.
+//[deprecated]
 EXPORT int propSaveToFile(id_prop p, const char *fileName)
 {
     PRINT_FUNC_INFO
@@ -1106,35 +1110,6 @@ EXPORT int propSaveToFile(id_prop p, const char *fileName)
 
     return res;
 }
-
-//ru "MSDK" - определение вызовов, оптимизирующих производительность.
-//ru Вызовы реализованы в стороннем проекте HiAsm SDK.
-//ru http://forum.hiasm.com/forum.html?q=3&p=273676#p273676
-//TODO Нужно будет решить, что с ними делать.
-#ifdef MSDK
-//!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru ???
-EXPORT id_prop elGetPropertyName(id_element e, const char *name)
-{
-    PRINT_FUNC_INFO
-    int id_prop = m_cgt->elGetPropertyName(e, name);
-    printResult({e, name});
-    qDebug() << RESULT_STR << res;
-
-    return res;
-}
-
-//ru ???
-EXPORT bool elIsDefProperty(id_element e, id_prop p)
-{
-    PRINT_FUNC_INFO
-    int bool = m_cgt->elIsDefProperty(e, p);
-    printResult({e, p});
-    qDebug() << RESULT_STR << res;
-
-    return res;
-}
-#endif
 
 //Заполняем массив указателей
 quintptr arrayPointers[] {

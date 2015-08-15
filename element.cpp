@@ -25,6 +25,7 @@ void Element::append(PContainer container)
 
 QString Element::getDataText(uchar inc) const
 {
+    Q_UNUSED(inc)
     /*
     QString space;
     space.fill(' ', inc * 5);
