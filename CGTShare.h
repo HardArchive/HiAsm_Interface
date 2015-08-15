@@ -56,13 +56,13 @@ enum PointTypes {
     pt_Var,
 
     //ru Данные
-    pt_Data,
+    pt_Data
 };
 const static QMap<int, QString> PointTypesMap{
     {pt_Work, "pt_Work"},
     {pt_Event, "pt_Event"},
     {pt_Var, "pt_Var"},
-    {pt_Data, "pt_Data"},
+    {pt_Data, "pt_Data"}
 };
 
 //!ru Типы данных
@@ -187,7 +187,7 @@ const static QMap<int, QString> ClassesElementMap{
     {CI_UserElement, "CI_UserElement"},
     {CI_Translate, "CI_Translate"},
     {CI_PolyMulti, "CI_PolyMulti"},
-    {CI_DocumentTemplate, "CI_DocumentTemplate"},
+    {CI_DocumentTemplate, "CI_DocumentTemplate"}
 };
 
 //!ru Индексы параметров среды - GetParam()
@@ -217,7 +217,7 @@ const static QMap<int, QString> CgtParamsMap{
     {PARAM_PROJECT_NAME, "PARAM_PROJECT_NAME"},
     {PARAM_SDE_WIDTH, "PARAM_SDE_WIDTH"},
     {PARAM_SDE_HEIGHT, "PARAM_SDE_HEIGHT"},
-    {PARAM_COMPILER, "PARAM_COMPILER"},
+    {PARAM_COMPILER, "PARAM_COMPILER"}
 };
 
 //!ru Ошибки при работе с библиотекой кодогенератора
@@ -238,7 +238,7 @@ enum CgResult {
     CG_BUILD_FAILED = 10,
 
     //ru Результат компиляции не найден.
-    CG_APP_NOT_FOUND = 20,
+    CG_APP_NOT_FOUND = 20
 };
 
 //!ru Параметры проекта
@@ -253,7 +253,7 @@ enum ProjectFlags {
     CGMP_RUN_DEBUG = 0x04,
 
     //ru Поддерживает внешний редактор форм.
-    CGMP_FORM_EDIT = 0x08,
+    CGMP_FORM_EDIT = 0x08
 };
 typedef QFlags<ProjectFlags> ProjectFlgs;
 
