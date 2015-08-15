@@ -258,16 +258,15 @@ enum ProjectFlags {
 typedef QFlags<ProjectFlags> ProjectFlgs;
 
 //!ru Типы используемые в CodeGenTools.
-//ru Контейнер (уровень схемы)
+//ru Контейнер
 typedef quintptr id_sdk;
 //ru Элемент
 typedef quintptr id_element;
 //ru Точка
 typedef quintptr id_point;
-//ru Значение свойства
+//ru Cвойство
 typedef quintptr id_prop;
-typedef quintptr id_value;
-//ru Свойство
+//ru Список свойств
 typedef quintptr id_proplist;
 //ru Массив
 typedef quintptr id_array;
@@ -277,6 +276,7 @@ typedef quintptr id_data;
 typedef quintptr id_font;
 
 //!ru Структуры необходимые для работы кодогенератора и интерфейса.
+
 struct TCodeGenTools;
 typedef TCodeGenTools *PCodeGenTools;
 
