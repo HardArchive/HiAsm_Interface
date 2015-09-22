@@ -357,7 +357,7 @@ int cgt::_Debug(const char *Text, int Color)
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
 //ru Возвращает значение параметра среды по его индексу
-int cgt::GetParam(CgtParams index, const void *value)
+int cgt::GetParam(CgtParams index, void *value)
 {
     return m_cgt->GetParam(index, value);
 }

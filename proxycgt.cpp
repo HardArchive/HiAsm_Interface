@@ -540,7 +540,7 @@ EXPORT int _Debug(const char *Text, int Color)
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
 //ru Возвращает значение параметра среды по его индексу
-EXPORT int GetParam(CgtParams index, const void *value)
+EXPORT int GetParam(CgtParams index, void *value)
 {
     PRINT_FUNC_INFO
     int res = m_cgt->GetParam(index, value);

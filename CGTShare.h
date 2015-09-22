@@ -447,7 +447,7 @@ struct TCodeGenTools {
     CALLBACK int (*_Debug)(const char *Text, int Color);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает значение параметра среды по его индексу
-    CALLBACK int (*GetParam)(CgtParams index, const void *value);
+    CALLBACK int (*GetParam)(CgtParams index, void *value);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает количество элементов в массиве.
     CALLBACK int (*arrCount)(id_array a);

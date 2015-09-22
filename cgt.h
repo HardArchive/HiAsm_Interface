@@ -150,7 +150,7 @@ public:
     static int _Debug(const char *Text, int Color);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает значение параметра среды по его индексу
-    static int GetParam(CgtParams index, const void *value);
+    static int GetParam(CgtParams index, void *value);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает количество элементов в массиве.
     static int arrCount(id_array a);
