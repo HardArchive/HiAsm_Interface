@@ -35,7 +35,9 @@ void MainContainer::saveToFile() const
 PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const
 {
     int countElements = cgt::sdkGetCount(sdk);
-    PContainer container = PContainer::create();
+    PContainer container = std::make_shared<Container>();
+
+    qDebug() << fcgt::isCore(cgt::elGetFlag(sdk));
 
     for(int i = 0; i < countElements; ++i) {
         id_element eId = cgt::sdkGetElement(sdk, i);
@@ -43,7 +45,7 @@ PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const
         ElementFlgs eFlags = cgt::elGetFlag(eId);
 
         //ru Создаём элемент
-        PElement element = PElement::create(eId);
+        PElement element = std::make_shared<Element>(eId);
 
         //ru Элемент содержит контейнер(ы)
         if(fcgt::isMulti(eFlags)) {
@@ -70,7 +72,7 @@ PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const
         }
 
         //ru Добавляем элемент в контейнер
-        container->append(element);
+        container->push_back(element);
     }
 
     return container;

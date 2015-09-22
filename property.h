@@ -6,16 +6,16 @@
 
 //STL
 #include <windows.h>
+#include <memory>
 
 //Qt
 #include <QDebug>
-#include <QSharedPointer>
 
 class Property;
-typedef QSharedPointer<Property> PProperty;
-typedef QVector<PProperty> ArrayPProperties;
+typedef std::shared_ptr<Property> PProperty;
+typedef std::vector<PProperty> ArrayPProperties;
 
-typedef QPair<QVariant, DataTypes> PropValue;
+typedef std::pair<QVariant, DataTypes> PropValue;
 typedef QList<PropValue> ListPropValue;
 
 class Property {

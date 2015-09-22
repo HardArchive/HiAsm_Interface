@@ -19,7 +19,7 @@ Element::~Element()
 
 void Element::append(PContainer container)
 {
-    m_arrayContainers.append(container);
+    m_arrayContainers.push_back(container);
 }
 
 QString Element::getDataText(uchar inc) const
@@ -83,13 +83,13 @@ void Element::getElementData()
     cgt::elGetSize(m_eId, m_sizeW, m_sizeH);
 
     //ru Получаем информацию о точках
-    for (int i = 0; i < m_ptCount; ++i) {
-        m_arrayPoints << PPoint::create(cgt::elGetPt(m_eId, i));
+    for(int i = 0; i < m_ptCount; ++i) {
+        m_arrayPoints.push_back(std::make_shared<Point>(cgt::elGetPt(m_eId, i)));
     }
 
     //ru Получаем информацию о свойствах
-    for (int i = 0; i < m_propCount; ++i) {
+    for(int i = 0; i < m_propCount; ++i) {
         id_prop propId = cgt::elGetProperty(m_eId, i);
-        m_arrayProperties << PProperty::create(propId, m_eId);
+        m_arrayProperties.push_back(std::make_shared<Property>(propId, m_eId));
     }
 }

@@ -3,10 +3,10 @@
 //Project
 
 //STL
+#include <memory>
+#include <vector>
 
 //Qt
-#include <QVector>
-#include <QSharedPointer>
 
 //Дефайны
 #define DLLEXPORT extern "C" __cdecl
@@ -14,7 +14,7 @@
 
 // Типы данных
 class Element;
-typedef QSharedPointer<Element> PElement;
-typedef QVector<PElement> Container;
-typedef QSharedPointer<Container> PContainer;
-typedef QVector<PContainer> ArrayPContainers;
+typedef std::shared_ptr<Element> PElement;
+typedef std::vector<PElement> Container;
+typedef std::shared_ptr<Container> PContainer;
+typedef std::vector<PContainer> ArrayPContainers;

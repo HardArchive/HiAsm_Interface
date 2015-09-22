@@ -4,13 +4,15 @@
 #include "CGTShare.h"
 
 //STL
+#include <memory>
+#include <vector>
 
 //Qt
 #include <QDebug>
 
 class Point;
-typedef QSharedPointer<Point> PPoint;
-typedef QVector<PPoint> ArrayPPoints;
+typedef std::shared_ptr<Point> PPoint;
+typedef std::vector<PPoint> ArrayPPoints;
 
 class Point
 {
