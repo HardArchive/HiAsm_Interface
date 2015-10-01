@@ -1,5 +1,5 @@
 //Project
-#include "maincontainer.h"
+#include "datacollector.h"
 #include "CGTShare.h"
 #include "element.h"
 #include "cgt.h"
@@ -10,18 +10,20 @@
 #include <QDebug>
 #include <QFile>
 
-MainContainer::MainContainer()
+DataCollector::DataCollector()
 {
     //ru Получаеим контейнер c элементами из SDK
     m_container = getContainerFromSDK(cgt::getMainSDK());
+
+    qDebug() << "test";
 }
 
-MainContainer::~MainContainer()
+DataCollector::~DataCollector()
 {
 
 }
 
-void MainContainer::saveToFile() const
+void DataCollector::saveToFile() const
 {
     QString buf;
     QTextStream out(&buf);
@@ -33,7 +35,7 @@ void MainContainer::saveToFile() const
     qDebug() << buf;
 }
 
-PContainer MainContainer::getContainerFromSDK(id_sdk sdk) const
+PContainer DataCollector::getContainerFromSDK(id_sdk sdk) const
 {
     int countElements = cgt::sdkGetCount(sdk);
     PContainer container = std::make_shared<Container>();

@@ -9,7 +9,7 @@
 //Qt
 
 
-class MainContainer
+class DataCollector
 {
 
 private:
@@ -21,8 +21,8 @@ private:
     PContainer m_container{};
 
 public:
-    explicit MainContainer();
-    ~MainContainer();
+    explicit DataCollector();
+    ~DataCollector();
 
     void saveToFile() const;
 

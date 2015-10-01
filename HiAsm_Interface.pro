@@ -20,18 +20,20 @@ HEADERS += \
     CGTShare.h \
     global.h \
     element.h \
-    maincontainer.h \
     point.h \
     property.h \
     proxycgt.h \
-    cgt.h
+    cgt.h \
+    container.h \
+    datacollector.h
 
 SOURCES += \
     main.cpp \
     element.cpp \
-    maincontainer.cpp \
     point.cpp \
     property.cpp \
     proxycgt.cpp \
-    cgt.cpp
+    cgt.cpp \
+    container.cpp \
+    datacollector.cpp
 

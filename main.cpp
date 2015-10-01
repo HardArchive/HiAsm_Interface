@@ -2,7 +2,7 @@
 #include "global.h"
 #include "CGTShare.h"
 #include "cgt.h"
-#include "maincontainer.h"
+#include "datacollector.h"
 #include "element.h"
 
 
@@ -127,9 +127,9 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 
     cgt::setParams(params);
 
-#define MAINCONTAINER
-#ifdef MAINCONTAINER
-    MainContainer mainContainer;
+#define DATACOLLECTOR
+#ifdef DATACOLLECTOR
+    DataCollector dataCollector;
     return CG_SUCCESS;
 #else
     int res = original_buildProcessProc(params);
