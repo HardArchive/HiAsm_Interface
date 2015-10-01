@@ -8,9 +8,9 @@ HIASM_PACKAGES = "D:/MyProgs/HiAsm_AltBuild/Elements"
 
 #ru Копируем кодогенератор в интересующий пакет
 contains(DEFINES, CNET){
-    DESTDIR += $$HIASM_PACKAGES/"CNET"
+    DESTDIR += $$HIASM_PACKAGES/CNET
 } else {
-    DESTDIR += $$HIASM_PACKAGES/"delphi"
+    DESTDIR += $$HIASM_PACKAGES/delphi
 }
 
 #ru Где сохраняется собранный кодогенератор

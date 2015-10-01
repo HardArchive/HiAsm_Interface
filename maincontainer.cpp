@@ -18,6 +18,7 @@ MainContainer::MainContainer()
 
 MainContainer::~MainContainer()
 {
+
 }
 
 void MainContainer::saveToFile() const
