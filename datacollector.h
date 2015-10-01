@@ -5,6 +5,7 @@
 #include "global.h"
 
 //STL
+#include <memory>
 
 //Qt
 
@@ -18,14 +19,12 @@ private:
     } m_params;
 
 private:
-    PContainer m_container{};
+    SContainer m_container;
 
 public:
     explicit DataCollector();
     ~DataCollector();
 
-    void saveToFile() const;
-
 private:
-    PContainer getContainerFromSDK(id_sdk sdk) const;
+    SContainer grabberFromSDK(id_sdk sdk) const;
 };

@@ -9,7 +9,7 @@
 
 namespace ProxyCgt
 {
-void saveOriginalCgt(PCodeGenTools cgt);
-PCodeGenTools getOriginalCgt();
-PCodeGenTools getProxyCgt();
+    void saveOriginalCgt(PCodeGenTools cgt);
+    PCodeGenTools getOriginalCgt();
+    PCodeGenTools getProxyCgt();
 }

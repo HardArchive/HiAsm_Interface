@@ -12,13 +12,14 @@
 //Qt
 #include <QString>
 
-class Element {
+class Element
+{
 private:
-    const id_element m_eId{};
+    const id_element m_eId {};
 
-    ArrayPContainers m_arrayContainers;
-    ArrayPPoints m_arrayPoints;
-    ArrayPProperties m_arrayProperties;
+    Containers m_containers;
+    Points m_points;
+    Properties m_properties;
     
     //ru Данные элемента
     QString m_className{};
@@ -43,12 +44,11 @@ public:
     explicit Element(id_element eId);
     ~Element();
 
-    //ru Добавляем в элемент указатель на контейнер
-    void append(PContainer container);
-
-    //ru Возвращаем данные элемента в текстовом формате (для тестов).
-    QString getDataText(uchar inc = 0) const;
-
 private:
     void getElementData();
+
+public:
+    //ru Добавляем контейнер в список контейнеров элемента
+    void addContainer(const SContainer &container);
+
 };

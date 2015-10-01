@@ -2,6 +2,7 @@
 #include "datacollector.h"
 #include "CGTShare.h"
 #include "element.h"
+#include "container.h"
 #include "cgt.h"
 
 //STL
@@ -13,7 +14,7 @@
 DataCollector::DataCollector()
 {
     //ru Получаеим контейнер c элементами из SDK
-    m_container = getContainerFromSDK(cgt::getMainSDK());
+    m_container = grabberFromSDK(cgt::getMainSDK());
 
     qDebug() << "test";
 }
@@ -23,22 +24,10 @@ DataCollector::~DataCollector()
 
 }
 
-void DataCollector::saveToFile() const
-{
-    QString buf;
-    QTextStream out(&buf);
-
-    for(const PElement e : *m_container) {
-        out << e->getDataText() << endl;
-    }
-
-    qDebug() << buf;
-}
-
-PContainer DataCollector::getContainerFromSDK(id_sdk sdk) const
+SContainer DataCollector::grabberFromSDK(id_sdk sdk) const
 {
     int countElements = cgt::sdkGetCount(sdk);
-    PContainer container = std::make_shared<Container>();
+    SContainer container = SContainer::create();
 
     qDebug() << fcgt::isCore(cgt::elGetFlag(sdk));
 
@@ -48,7 +37,7 @@ PContainer DataCollector::getContainerFromSDK(id_sdk sdk) const
         ElementFlgs eFlags = cgt::elGetFlag(eId);
 
         //ru Создаём элемент
-        PElement element = std::make_shared<Element>(eId);
+        SElement element = SElement::create(eId);
 
         //ru Элемент содержит контейнер(ы)
         if(fcgt::isMulti(eFlags)) {
@@ -62,7 +51,7 @@ PContainer DataCollector::getContainerFromSDK(id_sdk sdk) const
                     id_sdk SDKContiner = cgt::elGetSDKByIndex(eId, i);
 
                     //ru Добавляем контейнер в элемент
-                    element->append(getContainerFromSDK(SDKContiner));
+                    element->addContainer(grabberFromSDK(SDKContiner));
                 }
             } else { //ru Элемент содержит обычный контейнер
 
@@ -70,12 +59,12 @@ PContainer DataCollector::getContainerFromSDK(id_sdk sdk) const
                 id_sdk SDKContiner = cgt::elGetSDK(eId);
 
                 //ru Добавляем в элемент указатель на контейнер
-                element->append(getContainerFromSDK(SDKContiner));
+                element->addContainer(grabberFromSDK(SDKContiner));
             }
         }
 
         //ru Добавляем элемент в контейнер
-        container->push_back(element);
+        container->addElement(element);
     }
 
     return container;

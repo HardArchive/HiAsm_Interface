@@ -3,6 +3,7 @@
 //Project
 #include "CGTShare.h"
 #include "cgt.h"
+#include "global.h"
 
 //STL
 #include <windows.h>
@@ -11,16 +12,13 @@
 //Qt
 #include <QDebug>
 
-class Property;
-typedef std::shared_ptr<Property> PProperty;
-typedef std::vector<PProperty> ArrayPProperties;
-
-typedef std::pair<QVariant, DataTypes> PropValue;
+typedef QPair<QVariant, DataTypes> PropValue;
 typedef QList<PropValue> ListPropValue;
 
-class Property {
+class Property
+{
 private:
-    const id_prop m_propId{};
+    const id_prop m_propId {};
     const id_element m_elId{};
 
     //ru Данные свойства

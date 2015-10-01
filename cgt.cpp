@@ -11,45 +11,45 @@
 
 namespace fcgt
 {
-bool isSelect(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_SELECT;
-}
+    bool isSelect(const ElementFlgs &flags)
+    {
+        return flags & ELEMENT_FLG_IS_SELECT;
+    }
 
-bool isParent(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_PARENT;
-}
+    bool isParent(const ElementFlgs &flags)
+    {
+        return flags & ELEMENT_FLG_IS_PARENT;
+    }
 
-bool isCore(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_CORE;
-}
+    bool isCore(const ElementFlgs &flags)
+    {
+        return flags & ELEMENT_FLG_IS_CORE;
+    }
 
-bool isNoDelete(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_NODELETE;
-}
+    bool isNoDelete(const ElementFlgs &flags)
+    {
+        return flags & ELEMENT_FLG_IS_NODELETE;
+    }
 
-bool isMulti(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_MULTI;
-}
+    bool isMulti(const ElementFlgs &flags)
+    {
+        return flags & ELEMENT_FLG_IS_MULTI;
+    }
 
-bool isEdit(const ElementFlgs &flags)
-{
-    return flags & ELEMENT_FLG_IS_EDIT;
-}
+    bool isEdit(const ElementFlgs &flags)
+    {
+        return flags & ELEMENT_FLG_IS_EDIT;
+    }
 
-bool isEditMultiEx(const ClassesElements &eClass)
-{
-    return eClass == CI_EditMultiEx;
-}
+    bool isEditMultiEx(const ClassesElements &eClass)
+    {
+        return eClass == CI_EditMultiEx;
+    }
 
-bool isPolyMulti(const ClassesElements &eClass)
-{
-    return eClass == CI_PolyMulti;
-}
+    bool isPolyMulti(const ClassesElements &eClass)
+    {
+        return eClass == CI_PolyMulti;
+    }
 }
 
 

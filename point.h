@@ -2,17 +2,14 @@
 
 //Project
 #include "CGTShare.h"
+#include "global.h"
 
 //STL
 #include <memory>
-#include <vector>
+#include <list>
 
 //Qt
 #include <QDebug>
-
-class Point;
-typedef std::shared_ptr<Point> PPoint;
-typedef std::vector<PPoint> ArrayPPoints;
 
 class Point
 {
