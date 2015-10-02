@@ -1,10 +1,10 @@
 //Project
-#include "global.h"
 #include "CGTShare.h"
 #include "cgt.h"
+#include "global.h"
+
 #include "datacollector.h"
 #include "element.h"
-
 
 //NATIVE
 #include <windows.h>

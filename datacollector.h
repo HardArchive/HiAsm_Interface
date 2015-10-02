@@ -5,7 +5,6 @@
 #include "global.h"
 
 //STL
-#include <memory>
 
 //Qt
 
@@ -22,5 +21,8 @@ public:
 
 private:
     PContainer grabberSDK(id_sdk sdk, PElement parent = PElement());
+
+private:
+    void fixedPtr();
 
 };

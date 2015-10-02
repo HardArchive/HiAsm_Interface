@@ -39,5 +39,8 @@ private:
 
 public:
     friend class DataCollector;
+    friend class Container;
+    friend class Element;
+    friend class Point;
 
 };

@@ -1,11 +1,9 @@
+//Project
+#include "element.h"
+
 //STL
 
 //Qt
-#include <QTextStream>
-#include <QDebug>
-
-//Project
-#include "element.h"
 
 Element::Element(id_element eId, PContainer parent)
     : m_id(eId)

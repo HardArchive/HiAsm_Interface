@@ -1,10 +1,11 @@
+//Project
+#include "property.h"
+#include "element.h"
+
 //STL
 
 //Qt
 
-//Project
-#include "property.h"
-#include "element.h"
 
 Property::Property(id_prop propId, PElement parent)
     : m_id(propId)
@@ -105,7 +106,7 @@ void Property::getValues()
         break;
     }
     case data_element: {
-        quintptr linkedElement = reinterpret_cast<quintptr>(cgt::propGetLinkedElement(m_parent->getId(), m_name.toStdString().c_str()));
+        quintptr linkedElement = reinterpret_cast<quintptr>(cgt::propGetLinkedElement(m_parent->m_id, m_name.toStdString().c_str()));
         m_propValues << PropValue(linkedElement, data_element);
         break;
     }

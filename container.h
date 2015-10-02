@@ -30,4 +30,8 @@ private:
 
 public:
     friend class DataCollector;
+    friend class Element;
+    friend class Point;
+    friend class Property;
+
 };

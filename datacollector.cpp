@@ -2,6 +2,9 @@
 #include "datacollector.h"
 #include "container.h"
 #include "element.h"
+#include "point.h"
+#include "property.h"
+
 #include "cgt.h"
 
 //STL
@@ -14,6 +17,7 @@ DataCollector::DataCollector()
     //ru Получаем контейнер c элементами из SDK
     grabberSDK(cgt::getMainSDK());
 
+    fixedPtr();
     qDebug() << 12;
 }
 
@@ -63,4 +67,15 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
     }
 
     return container;
+}
+
+void DataCollector::fixedPtr()
+{
+    for(PContainer c : m_containers) {
+        for(PElement e : c->m_elements) {
+            for(PPoint p : e->m_points) {
+                p->fixedPtr();
+            }
+        }
+    }
 }

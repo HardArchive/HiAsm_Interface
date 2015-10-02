@@ -1,9 +1,9 @@
 #pragma once
 
 //Project
-#include "CGTShare.h"
 #include "point.h"
 #include "property.h"
+#include "CGTShare.h"
 #include "cgt.h"
 #include "global.h"
 
@@ -53,9 +53,9 @@ private:
 
 public:
     friend class DataCollector;
+    friend class Container;
+    friend class Point;
+    friend class Property;
 
-    id_element getId()
-    {
-        return m_id;
-    }
+
 };
