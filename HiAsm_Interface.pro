@@ -13,6 +13,12 @@ contains(DEFINES, CNET){
     DESTDIR += $$HIASM_PACKAGES/delphi
 }
 
+#ru Подключаем DataCollector
+DEFINES += DATACOLLECTOR
+
+#ru Подключаем ProxyCgt
+#DEFINES += PROXYCGT
+
 #ru Где сохраняется собранный кодогенератор
 message(Build path: $$DESTDIR)
 
