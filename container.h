@@ -4,7 +4,6 @@
 #include "CGTShare.h"
 #include "global.h"
 
-
 //STL
 
 //Qt
@@ -24,9 +23,6 @@ private:
 
 public:
     Container(id_sdk id, PElement parent);
-
-private:
-    void collectingData();
 
 public:
     friend class DataCollector;

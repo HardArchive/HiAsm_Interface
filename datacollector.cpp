@@ -42,7 +42,7 @@ void DataCollector::collectingData()
     QByteArray buf("", 512);
 
     buf.fill('\0');
-    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    ((int *)buf.data())[0] = eId;
     cgt::GetParam(PARAM_CODE_PATH, buf.data());
     m_cgtParams.PARAM_CODE_PATH = QString::fromLocal8Bit(buf);
 
@@ -56,7 +56,7 @@ void DataCollector::collectingData()
     m_cgtParams.PARAM_DEBUG_CLIENT_PORT = iBuf;
 
     buf.fill('\0');
-    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    ((int *)buf.data())[0] = eId;
     cgt::GetParam(PARAM_PROJECT_PATH, buf.data());
     m_cgtParams.PARAM_PROJECT_PATH = QString::fromLocal8Bit(buf);
 
@@ -76,7 +76,7 @@ void DataCollector::collectingData()
     m_cgtParams.PARAM_USER_MAIL = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
-    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    ((int *)buf.data())[0] = eId;
     cgt::GetParam(PARAM_PROJECT_NAME, buf.data());
     m_cgtParams.PARAM_PROJECT_NAME = QString::fromLocal8Bit(buf);
 
@@ -89,7 +89,7 @@ void DataCollector::collectingData()
     m_cgtParams.PARAM_SDE_HEIGHT = tmpH[0];
 
     buf.fill('\0');
-    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    ((int *)buf.data())[0] = eId;
     cgt::GetParam(PARAM_COMPILER, buf.data());
     m_cgtParams.PARAM_COMPILER = QString::fromLocal8Bit(buf);
 }
@@ -105,6 +105,11 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
 
         //ru Создаём элемент
         PElement element = new Element(eId, container);
+
+        if(fcgt::isLink(element->m_flags)) {
+            container->m_elements << element;
+            continue;
+        }
 
         //ru Элемент содержит контейнер(ы)
         if(fcgt::isMulti(element->m_flags)) {

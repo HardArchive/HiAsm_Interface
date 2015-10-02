@@ -647,12 +647,12 @@ namespace ProxyCgt
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает true, если запускаем cборку и запуск схемы в режиме отладки,
-    //ru иначе false.
-    EXPORT bool isDebug(id_sdk e)
+    //ru Возвращает >0, если запускаем cборку и запуск схемы в режиме отладки,
+    //ru иначе 0.
+    EXPORT int isDebug(id_sdk e)
     {
         PRINT_FUNC_INFO
-        bool res = m_cgt->isDebug(e);
+        int res = m_cgt->isDebug(e);
         printArgs({e});
         qDebug() << RESULT_STR << res;
 

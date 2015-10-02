@@ -41,6 +41,12 @@ namespace fcgt
         return flags & ELEMENT_FLG_IS_EDIT;
     }
 
+    bool isLink(const ElementFlgs &flags)
+    {
+        return flags & ELEMENT_FLG_IS_LINK;
+    }
+
+
     bool isEditMultiEx(const ElementClass &eClass)
     {
         return eClass == CI_EditMultiEx;
@@ -398,9 +404,9 @@ id_data cgt::arrGetItem(id_array a, int Index)
 }
 
 //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-//ru Возвращает true, если запускаем cборку и запуск схемы в режиме отладки,
-//ru иначе false.
-bool cgt::isDebug(id_sdk e)
+//ru Возвращает >0, если запускаем cборку и запуск схемы в режиме отладки,
+//ru иначе 0.
+int cgt::isDebug(id_sdk e)
 {
     return m_cgt->isDebug(e);
 }

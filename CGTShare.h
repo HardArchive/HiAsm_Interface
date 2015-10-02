@@ -478,9 +478,9 @@ struct TCodeGenTools {
     //ru для дальнейшей работы с ним cgt::prop* функциями.
     CALLBACK id_data(*arrGetItem)(id_array a, int Index);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает true, если запускаем cборку и запуск схемы в режиме отладки,
-    //ru иначе false.
-    CALLBACK bool (*isDebug)(id_sdk e);
+    //ru Возвращает >0, если запускаем cборку и запуск схемы в режиме отладки,
+    //ru иначе 0.
+    CALLBACK int (*isDebug)(id_sdk e);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных.
     CALLBACK DataTypes(*dtType)(id_data d);

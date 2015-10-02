@@ -15,7 +15,7 @@ namespace fcgt
     bool isNoDelete(const ElementFlgs &flags);
     bool isMulti(const ElementFlgs &flags);
     bool isEdit(const ElementFlgs &flags);
-    bool isSystem(const ElementFlgs &flags);
+    bool isLink(const ElementFlgs &flags);
 
 
     bool isEditMultiEx(const ElementClass &eClass);
@@ -164,9 +164,9 @@ public:
     //ru для дальнейшей работы с ним cgt::prop* функциями.
     static id_data arrGetItem(id_array a, int Index);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает true, если запускаем cборку и запуск схемы в режиме отладки,
-    //ru иначе false.
-    static bool isDebug(id_sdk e);
+    //ru Возвращает >0, если запускаем cборку и запуск схемы в режиме отладки,
+    //ru иначе 0.
+    static int isDebug(id_sdk e);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных.
     static DataTypes dtType(id_data d);
