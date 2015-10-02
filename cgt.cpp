@@ -41,12 +41,12 @@ namespace fcgt
         return flags & ELEMENT_FLG_IS_EDIT;
     }
 
-    bool isEditMultiEx(const ClassesElements &eClass)
+    bool isEditMultiEx(const ElementClass &eClass)
     {
         return eClass == CI_EditMultiEx;
     }
 
-    bool isPolyMulti(const ClassesElements &eClass)
+    bool isPolyMulti(const ElementClass &eClass)
     {
         return eClass == CI_PolyMulti;
     }
@@ -158,7 +158,7 @@ id_point cgt::elGetPtName(id_element e, const char *Name)
 }
 
 //ru Возвращает индекс класса элемента.
-ClassesElements cgt::elGetClassIndex(id_element e)
+ElementClass cgt::elGetClassIndex(id_element e)
 {
     return m_cgt->elGetClassIndex(e);
 }

@@ -18,8 +18,8 @@ namespace fcgt
     bool isSystem(const ElementFlgs &flags);
 
 
-    bool isEditMultiEx(const ClassesElements &eClass);
-    bool isPolyMulti(const ClassesElements &eClass);
+    bool isEditMultiEx(const ElementClass &eClass);
+    bool isPolyMulti(const ElementClass &eClass);
 }
 
 class cgt
@@ -68,7 +68,7 @@ public:
     //[deprecated]
     static id_point elGetPtName(id_element e, const char *Name);
     //ru Возвращает индекс класса элемента.
-    static ClassesElements elGetClassIndex(id_element e);
+    static ElementClass elGetClassIndex(id_element e);
     //ru Возвращает ID внутренней схемы для контейнеров,
     //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
     static id_sdk elGetSDK(id_element e);

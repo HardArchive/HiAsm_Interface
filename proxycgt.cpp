@@ -202,12 +202,12 @@ namespace ProxyCgt
     }
 
     //ru Возвращает индекс класса элемента.
-    EXPORT ClassesElements elGetClassIndex(id_element e)
+    EXPORT ElementClass elGetClassIndex(id_element e)
     {
         PRINT_FUNC_INFO
-        ClassesElements res = m_cgt->elGetClassIndex(e);
+        ElementClass res = m_cgt->elGetClassIndex(e);
         printArgs({e});
-        qDebug().noquote() << RESULT_STR << ClassesElementMap[res];
+        qDebug().noquote() << RESULT_STR << ElementClassMap[res];
 
         return res;
     }

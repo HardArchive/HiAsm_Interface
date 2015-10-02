@@ -5,8 +5,6 @@
 #include "global.h"
 
 //STL
-#include <memory>
-#include <list>
 
 //Qt
 #include <QDebug>
@@ -14,23 +12,28 @@
 class Point
 {
 private:
-    const id_point m_ptId {};
+    //ru Данные
+    const id_point m_id;
+    id_point m_linkPoint{};
+    id_point m_RLinkPoint{};
 
-    //ru Данные точки
     DataTypes m_dataType{};
     int m_index{};
-    QString m_info{};
-    id_point m_linkPoint{};
-    QString m_name{};
-    id_element m_parent{};
-    id_point m_RLinkPoint{};
     PointTypes m_type{};
+    QString m_info{};
+    QString m_name{};
     QString m_dpeName{};
 
+    //ru Указатели и ссылки
+    PElement m_parent;
+    PPoint m_linkPointPtr{};
+    PPoint m_RLinkPointPtr{};
+
 public:
-    explicit Point(id_point pt);
+    explicit Point(id_point pt, PElement parent);
     ~Point();
 
 private:
-    void getPointData();
+    void collectingData();
+
 };

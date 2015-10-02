@@ -118,7 +118,7 @@ const static QMap<int, QString> DataTypesMap{
 };
 
 //!ru Классы элементов (elGetClassIndex)
-enum ClassesElements {
+enum ElementClass {
     //ru Просто элемент.
     CI_Element = 0,
     //ru Элемент с динамическими точками (автонумерация), например - IndexToChanel.
@@ -168,7 +168,7 @@ enum ClassesElements {
     //ru Шаблон документа.
     CI_DocumentTemplate
 };
-const static QMap<int, QString> ClassesElementMap{
+const static QMap<int, QString> ElementClassMap{
     {CI_Element, "CI_Element"},
     {CI_DPElement, "CI_DPElement"},
     {CI_MultiElement, "CI_MultiElement"},
@@ -365,7 +365,7 @@ struct TCodeGenTools {
     //[deprecated]
     CALLBACK id_point(*elGetPtName)(id_element e, const char *Name);
     //ru Возвращает индекс класса элемента.
-    CALLBACK ClassesElements(*elGetClassIndex)(id_element e);
+    CALLBACK ElementClass(*elGetClassIndex)(id_element e);
     //ru Возвращает ID внутренней схемы для контейнеров
     //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
     CALLBACK id_sdk(*elGetSDK)(id_element e);

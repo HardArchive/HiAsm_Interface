@@ -6,32 +6,34 @@
 #include "global.h"
 
 //STL
-#include <windows.h>
-#include <memory>
 
 //Qt
 #include <QDebug>
 
 typedef QPair<QVariant, DataTypes> PropValue;
-typedef QList<PropValue> ListPropValue;
+typedef QList<PropValue> PropValues;
 
 class Property
 {
 private:
-    const id_prop m_propId {};
-    const id_element m_elId{};
 
-    //ru Данные свойства
-    ListPropValue m_listPropValue;
+    //ru Данные
+    const id_prop m_id;
     QString m_name;
     DataTypes m_type{};
     int m_isTranslate{};
 
+    //ru Указатели и ссылки
+    PElement m_parent;
+
+    //Список значений свойства
+    PropValues m_propValues;
+
 public:
-    Property(id_prop propId, id_element elementId);
+    Property(id_prop propId, PElement parent);
     ~Property();
 
 private:
-    void getPropertyData();
+    void collectingData();
     void getValues();
 };

@@ -14,17 +14,17 @@
 
 // Типы данных
 class Property;
-typedef QSharedPointer<Property> SProperty;
-typedef QList<SProperty> Properties;
+typedef Property *PProperty;
+typedef QVector<PProperty> Properties;
 
 class Point;
-typedef QSharedPointer<Point> SPoint;
-typedef QList<SPoint> Points;
+typedef Point *PPoint;
+typedef QVector<PPoint> Points;
 
 class Element;
-typedef QSharedPointer<Element> SElement;
-typedef QList<SElement> Elements;
+typedef Element *PElement;
+typedef QVector<PElement> Elements;
 
 class Container;
-typedef QSharedPointer<Container> SContainer;
-typedef QList<SContainer> Containers;
+typedef Container *PContainer;
+typedef QVector<PContainer> Containers;

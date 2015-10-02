@@ -14,17 +14,13 @@ class DataCollector
 {
 
 private:
-    struct  {
-
-    } m_params;
-
-private:
-    SContainer m_container;
+    Containers m_containers;
 
 public:
     explicit DataCollector();
     ~DataCollector();
 
 private:
-    SContainer grabberFromSDK(id_sdk sdk) const;
+    PContainer grabberSDK(id_sdk sdk, PElement parent = PElement());
+
 };
