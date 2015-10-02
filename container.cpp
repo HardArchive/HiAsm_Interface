@@ -7,8 +7,3 @@ Container::Container(id_sdk id, PElement parent)
 {
 
 }
-
-void Container::addElement(PElement element)
-{
-    m_elements.append(element);
-}

@@ -36,4 +36,6 @@ public:
 private:
     void collectingData();
 
+public:
+    friend class DataCollector;
 };

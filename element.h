@@ -52,37 +52,10 @@ private:
     void collectingData();
 
 public:
-    //ru Добавляем контейнер в список контейнеров элемента
-    void addContainer(PContainer container);
+    friend class DataCollector;
 
-    ElementClass getClassIndex() const
-    {
-        return m_classIndex;
-    }
-    ElementFlgs getFlags() const
-    {
-        return m_flags;
-    }
-
-    uint getCountContainers() const
-    {
-        return m_containers.count();
-    }
-    id_element getId() const
+    id_element getId()
     {
         return m_id;
     }
-    Containers &getContainers()
-    {
-        return m_containers;
-    }
-    Points &getPoints()
-    {
-        return m_points;
-    }
-    Properties &getProperties()
-    {
-        return m_properties;
-    }
-
 };

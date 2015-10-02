@@ -1,8 +1,9 @@
 #pragma once
 
 //Project
-#include "global.h"
 #include "CGTShare.h"
+#include "global.h"
+
 
 //STL
 
@@ -28,9 +29,5 @@ private:
     void collectingData();
 
 public:
-    void addElement(PElement element);
-    Elements &getElements()
-    {
-        return m_elements;
-    }
+    friend class DataCollector;
 };

@@ -127,7 +127,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 
     cgt::setParams(params);
 
-//#define DATACOLLECTOR
+#define DATACOLLECTOR
 #ifdef DATACOLLECTOR
     DataCollector dataCollector;
     return CG_SUCCESS;

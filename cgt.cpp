@@ -63,7 +63,7 @@ id_sdk cgt::m_sdk{};
 void cgt::setParams(TBuildProcessRec &params)
 {
     ProxyCgt::saveOriginalCgt(params.cgt);
-    params.cgt = ProxyCgt::getProxyCgt();
+    //params.cgt = ProxyCgt::getProxyCgt();
 
     m_cgt = params.cgt;
     m_sdk = params.sdk;

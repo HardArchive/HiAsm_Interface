@@ -5,8 +5,7 @@
 //STL
 
 //Qt
-#include <QList>
-#include <QSharedPointer>
+#include <QVector>
 
 //Дефайны
 #define DLLEXPORT extern "C" __cdecl
@@ -28,3 +27,5 @@ typedef QVector<PElement> Elements;
 class Container;
 typedef Container *PContainer;
 typedef QVector<PContainer> Containers;
+
+class DataCollector;

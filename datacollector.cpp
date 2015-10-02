@@ -1,19 +1,17 @@
 //Project
 #include "datacollector.h"
-#include "CGTShare.h"
-#include "element.h"
 #include "container.h"
+#include "element.h"
 #include "cgt.h"
 
 //STL
 
 //Qt
 #include <QDebug>
-#include <QFile>
 
 DataCollector::DataCollector()
 {
-    //ru Получаеим контейнер c элементами из SDK
+    //ru Получаем контейнер c элементами из SDK
     grabberSDK(cgt::getMainSDK());
 
     qDebug() << 12;
@@ -35,13 +33,11 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
 
         //ru Создаём элемент
         PElement element = new Element(eId, container);
-        ElementClass eClass = element->getClassIndex();
-        ElementFlgs eFlags = element->getFlags();
 
         //ru Элемент содержит контейнер(ы)
-        if(fcgt::isMulti(eFlags)) {
+        if(fcgt::isMulti(element->m_flags)) {
             //ru Элемен содержит полиморфный контейнер
-            if(fcgt::isPolyMulti(eClass)) {
+            if(fcgt::isPolyMulti(element->m_classIndex)) {
                 //ru Получаем к-во контейнеров, которое содержит элемент
                 int countContainers = cgt::elGetSDKCount(eId);
 
@@ -50,7 +46,7 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
                     id_sdk idSDK = cgt::elGetSDKByIndex(eId, i);
 
                     //ru Добавляем контейнер в элемент
-                    element->addContainer(grabberSDK(idSDK, element));
+                    element->m_containers << grabberSDK(idSDK, element);
                 }
             } else { //ru Элемент содержит обычный контейнер
 
@@ -58,12 +54,12 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
                 id_sdk idSDK = cgt::elGetSDK(eId);
 
                 //ru Добавляем контейнер в элемент
-                element->addContainer(grabberSDK(idSDK, element));
+                element->m_containers << grabberSDK(idSDK, element);
             }
         }
 
         //ru Добавляем элемент в контейнер
-        container->addElement(element);
+        container->m_elements << element;
     }
 
     return container;

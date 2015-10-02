@@ -18,11 +18,6 @@ Element::~Element()
 {
 }
 
-void Element::addContainer(PContainer container)
-{
-    m_containers.append(container);
-}
-
 void Element::collectingData()
 {
     m_className = QString::fromLocal8Bit(cgt::elGetClassName(m_id));
