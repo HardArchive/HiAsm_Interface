@@ -550,13 +550,13 @@ namespace ProxyCgt
             printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
             break;
         case PARAM_DEBUG_MODE:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
             break;
         case PARAM_DEBUG_SERVER_PORT:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
             break;
         case PARAM_DEBUG_CLIENT_PORT:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
             break;
         case PARAM_PROJECT_PATH:
             printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
@@ -574,10 +574,10 @@ namespace ProxyCgt
             printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
             break;
         case PARAM_SDE_WIDTH:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
             break;
         case PARAM_SDE_HEIGHT:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)});
+            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
             break;
         case PARAM_COMPILER:
             printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);

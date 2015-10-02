@@ -38,6 +38,9 @@ enum ElementFlags {
     //ru Например: CI_HubEx, CI_GetDataEx, ElementInfoTip, HCButton.
     ELEMENT_FLG_IS_CORE = 0x400,
 
+    //ru Элемент является ссылкой, либо на него ссылаются.
+    ELEMENT_FLG_IS_LINK = 0x800,
+
     //ru С элементом нельзя взаимодействовать с помощью мыши?
     //TODO Нужна дополнительная информация по этому флагу.
     ELEMENT_FLG_IS_NOMOUSE = 0x2000,
@@ -218,6 +221,20 @@ const static QMap<int, QString> CgtParamsMap{
     {PARAM_SDE_WIDTH, "PARAM_SDE_WIDTH"},
     {PARAM_SDE_HEIGHT, "PARAM_SDE_HEIGHT"},
     {PARAM_COMPILER, "PARAM_COMPILER"}
+};
+struct TCgtParams {
+    QString PARAM_CODE_PATH;
+    int PARAM_DEBUG_MODE = 1;
+    int PARAM_DEBUG_SERVER_PORT;
+    int PARAM_DEBUG_CLIENT_PORT;
+    QString PARAM_PROJECT_PATH;
+    QString PARAM_HIASM_VERSION;
+    QString PARAM_USER_NAME;
+    QString PARAM_USER_MAIL;
+    QString PARAM_PROJECT_NAME;
+    int PARAM_SDE_WIDTH;
+    int PARAM_SDE_HEIGHT;
+    QString PARAM_COMPILER;
 };
 
 //!ru Ошибки при работе с библиотекой кодогенератора

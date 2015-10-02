@@ -13,17 +13,85 @@
 #include <QDebug>
 
 DataCollector::DataCollector()
+    : m_sdk(cgt::getMainSDK())
 {
-    //ru Получаем контейнер c элементами из SDK
-    grabberSDK(cgt::getMainSDK());
+    //Собираем данные о среде
+    collectingData();
 
+    //ru Получаем контейнер c элементами из SDK
+    grabberSDK(m_sdk);
+
+    //Исправляем указатели
     fixedPtr();
+
     qDebug() << 12;
 }
 
 DataCollector::~DataCollector()
 {
 
+}
+
+void DataCollector::collectingData()
+{
+    m_isDebug = cgt::isDebug(m_sdk);
+
+    id_element eId = cgt::sdkGetElement(m_sdk, 0);
+
+    int iBuf{};
+    QByteArray buf("", 512);
+
+    buf.fill('\0');
+    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    cgt::GetParam(PARAM_CODE_PATH, buf.data());
+    m_cgtParams.PARAM_CODE_PATH = QString::fromLocal8Bit(buf);
+
+    cgt::GetParam(PARAM_DEBUG_MODE, &iBuf);
+    m_cgtParams.PARAM_DEBUG_MODE = iBuf;
+
+    cgt::GetParam(PARAM_DEBUG_SERVER_PORT, &iBuf);
+    m_cgtParams.PARAM_DEBUG_SERVER_PORT = iBuf;
+
+    cgt::GetParam(PARAM_DEBUG_CLIENT_PORT, &iBuf);
+    m_cgtParams.PARAM_DEBUG_CLIENT_PORT = iBuf;
+
+    buf.fill('\0');
+    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    cgt::GetParam(PARAM_PROJECT_PATH, buf.data());
+    m_cgtParams.PARAM_PROJECT_PATH = QString::fromLocal8Bit(buf);
+
+    const char f[] = "%mj.%mn.%bl";
+    char *tmpBuf = new char[strlen(f) + 1];
+    strcpy(tmpBuf, f);
+    cgt::GetParam(PARAM_HIASM_VERSION, tmpBuf);
+    m_cgtParams.PARAM_HIASM_VERSION = QString::fromLatin1(tmpBuf);
+    delete tmpBuf;
+
+    buf.fill('\0');
+    cgt::GetParam(PARAM_USER_NAME, buf.data());
+    m_cgtParams.PARAM_USER_NAME = QString::fromLocal8Bit(buf);
+
+    buf.fill('\0');
+    cgt::GetParam(PARAM_USER_MAIL, buf.data());
+    m_cgtParams.PARAM_USER_MAIL = QString::fromLocal8Bit(buf);
+
+    buf.fill('\0');
+    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    cgt::GetParam(PARAM_PROJECT_NAME, buf.data());
+    m_cgtParams.PARAM_PROJECT_NAME = QString::fromLocal8Bit(buf);
+
+    int tmpW[1] = {(int)eId};
+    cgt::GetParam(PARAM_SDE_WIDTH, tmpW);
+    m_cgtParams.PARAM_SDE_WIDTH = tmpW[0];
+
+    int tmpH[1] = {(int)eId};
+    cgt::GetParam(PARAM_SDE_HEIGHT, tmpH);
+    m_cgtParams.PARAM_SDE_HEIGHT = tmpH[0];
+
+    buf.fill('\0');
+    *reinterpret_cast<void **>(buf.data()) = (void *)eId;
+    cgt::GetParam(PARAM_COMPILER, buf.data());
+    m_cgtParams.PARAM_COMPILER = QString::fromLocal8Bit(buf);
 }
 
 PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)

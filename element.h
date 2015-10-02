@@ -24,6 +24,7 @@ private:
     PElement m_linkMainPtr{};
 
     QString m_className{};
+    QString m_codeName{};
     ElementClass m_classIndex{};
     ElementFlgs m_flags{};
     QString m_inherit{};
@@ -56,6 +57,5 @@ public:
     friend class Container;
     friend class Point;
     friend class Property;
-
 
 };

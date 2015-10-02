@@ -19,6 +19,7 @@ Element::~Element()
 void Element::collectingData()
 {
     m_className = QString::fromLocal8Bit(cgt::elGetClassName(m_id));
+    m_codeName = QString::fromLocal8Bit(cgt::elGetCodeName(m_id));
     m_classIndex = cgt::elGetClassIndex(m_id);
     m_flags = cgt::elGetFlag(m_id);
     m_inherit = QString::fromLocal8Bit(cgt::elGetInherit(m_id));
