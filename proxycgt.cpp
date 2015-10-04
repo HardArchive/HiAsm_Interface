@@ -40,6 +40,15 @@ namespace ProxyCgt
             i++;
         }
     }
+    void printArgs(CgtParams index, const QVariant value)
+    {
+        qDebug().nospace().noquote() << "  Arg1" << ": " << CgtParamsMap[index];
+        if(value.type() == QVariant::String) {
+            qDebug().nospace() << "  Arg2: " << value.toString();
+        } else {
+            qDebug().nospace().noquote() << "  Arg2: " << value.toString();
+        }
+    }
 
     //~~~~~~~~~~~~~~~~~ Проксированные функции ~~~~~~~~~~~~~~~~~~~
 
@@ -547,40 +556,40 @@ namespace ProxyCgt
 
         switch(index) {
         case PARAM_CODE_PATH :
-            printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+            printArgs(index, reinterpret_cast<const char *>(value));
             break;
         case PARAM_DEBUG_MODE:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
+            printArgs(index, *reinterpret_cast<const int *>(value));
             break;
         case PARAM_DEBUG_SERVER_PORT:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
+            printArgs(index, *reinterpret_cast<const int *>(value));
             break;
         case PARAM_DEBUG_CLIENT_PORT:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
+            printArgs(index, *reinterpret_cast<const int *>(value));
             break;
         case PARAM_PROJECT_PATH:
-            printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+            printArgs(index, reinterpret_cast<const char *>(value));
             break;
         case PARAM_HIASM_VERSION:
-            printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+            printArgs(index, reinterpret_cast<const char *>(value));
             break;
         case PARAM_USER_NAME:
-            printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+            printArgs(index, reinterpret_cast<const char *>(value));
             break;
         case PARAM_USER_MAIL:
-            printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+            printArgs(index, reinterpret_cast<const char *>(value));
             break;
         case PARAM_PROJECT_NAME:
-            printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+            printArgs(index, reinterpret_cast<const char *>(value));
             break;
         case PARAM_SDE_WIDTH:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
+            printArgs(index, *reinterpret_cast<const int *>(value));
             break;
         case PARAM_SDE_HEIGHT:
-            printArgs({CgtParamsMap[index], *reinterpret_cast<const int *>(value)}, true);
+            printArgs(index, *reinterpret_cast<const int *>(value));
             break;
         case PARAM_COMPILER:
-            printArgs({CgtParamsMap[index], reinterpret_cast<const char *>(value)}, true);
+            printArgs(index, reinterpret_cast<const char *>(value));
             break;
         }
 
