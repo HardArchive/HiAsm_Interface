@@ -24,7 +24,7 @@ DataCollector::DataCollector()
     //Исправляем указатели
     fixedPtr();
 
-    qDebug() << 12;
+    //qDebug() << 12;
 }
 
 DataCollector::~DataCollector()

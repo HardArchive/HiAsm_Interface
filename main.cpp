@@ -83,7 +83,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         qDebug() << "CODEGEN_PROCESS_ATTACH";
 
         //Загружаем оригинальную DLL в память
-        m_codegen = LoadLibraryW(L"D:/MyProgs/HiAsm_AltBuild/Elements/delphi/CodeGen_orig.dll");
+        QString codegen = QString("%1/CodeGen_orig.dll").arg(HIASM_PACKAGE);
+        m_codegen = LoadLibraryW(&codegen.toStdWString()[0]);
 
         //Определение функций проксируемого кодогенератора
         original_buildPrepareProc = (t_buildPrepareProc)GetProcAddress(m_codegen, "buildPrepareProc");

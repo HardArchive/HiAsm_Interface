@@ -4,20 +4,22 @@ QT += core
 CONFIG += c++14
 
 #ru Путь до пакетов HiAsm
-HIASM_PACKAGES = "D:/MyProgs/HiAsm_AltBuild/Elements"
+HIASM_PACKAGES = "C:/Users/Admin/AppData/Roaming/HiAsm_AltBuild/Elements"
 
 #ru Копируем кодогенератор в интересующий пакет
 contains(DEFINES, CNET){
-    DESTDIR += $$HIASM_PACKAGES/CNET
+    PACKAGE += $$HIASM_PACKAGES/CNET
 } else {
-    DESTDIR += $$HIASM_PACKAGES/delphi
+    PACKAGE += $$HIASM_PACKAGES/delphi
 }
+DESTDIR += $$PACKAGE
+DEFINES += HIASM_PACKAGE=\"\\\"$$PACKAGE\\\"\"
 
 #ru Подключаем DataCollector
 DEFINES += DATACOLLECTOR
 
 #ru Подключаем ProxyCgt
-#DEFINES += PROXYCGT
+DEFINES += PROXYCGT
 
 #ru Где сохраняется собранный кодогенератор
 message(Build path: $$DESTDIR)
