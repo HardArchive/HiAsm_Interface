@@ -30,7 +30,7 @@ class cgt
 public:
     //!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
     //ru Устанавливаем параметры
-    static void setParams(TBuildProcessRec &params);
+    static void initParams(TBuildProcessRec &params);
     inline static id_sdk getMainSDK()
     {
         return m_sdk;

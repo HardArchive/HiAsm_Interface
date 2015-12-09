@@ -65,8 +65,8 @@ namespace fcgt
 PCodeGenTools cgt::m_cgt = nullptr;
 id_sdk cgt::m_sdk{};
 
-//ru Устанавливаем параметры
-void cgt::setParams(TBuildProcessRec &params)
+//ru Инициализация параметров
+void cgt::initParams(TBuildProcessRec &params)
 {
     ProxyCgt::saveOriginalCgt(params.cgt);
 

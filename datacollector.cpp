@@ -15,13 +15,13 @@
 DataCollector::DataCollector()
     : m_sdk(cgt::getMainSDK())
 {
-    //Собираем данные о среде
+    //ru Собираем данные о среде
     collectingData();
 
     //ru Получаем контейнер c элементами из SDK
     grabberSDK(m_sdk);
 
-    //Исправляем указатели
+    //ru Исправляем указатели
     fixedPtr();
 
     //qDebug() << 12;

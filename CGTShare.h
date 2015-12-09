@@ -310,10 +310,17 @@ struct TBuildPrepareRec {
 };
 
 //Требуется для export функции - buildProcessProc.
+class TCGrec
+{
+    //char unused[60];
+    char MainForm[];
+};
+typedef TCGrec *PTCGrep;
+
 struct TBuildProcessRec {
     PCodeGenTools cgt;
     id_sdk sdk;
-    quintptr result;
+    PTCGrep result;
 };
 
 //Требуется для export функции - synReadFuncList.

@@ -16,7 +16,7 @@ DESTDIR += $$PACKAGE
 DEFINES += HIASM_PACKAGE=\"\\\"$$PACKAGE\\\"\"
 
 #ru Подключаем DataCollector
-DEFINES += DATACOLLECTOR
+#DEFINES += DATACOLLECTOR
 
 #ru Подключаем ProxyCgt
 DEFINES += PROXYCGT
@@ -24,24 +24,5 @@ DEFINES += PROXYCGT
 #ru Где сохраняется собранный кодогенератор
 message(Build path: $$DESTDIR)
 
-HEADERS += \
-    CGTShare.h \
-    global.h \
-    element.h \
-    point.h \
-    property.h \
-    proxycgt.h \
-    cgt.h \
-    container.h \
-    datacollector.h
-
-SOURCES += \
-    main.cpp \
-    element.cpp \
-    point.cpp \
-    property.cpp \
-    proxycgt.cpp \
-    cgt.cpp \
-    container.cpp \
-    datacollector.cpp
-
+SOURCES += $$files("*.cpp", true)
+HEADERS += $$files("*.h", true)

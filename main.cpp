@@ -124,13 +124,14 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 {
     PRINT_FUNC_INFO
 
-    cgt::setParams(params);
+    cgt::initParams(params);
 
 #ifdef DATACOLLECTOR
     DataCollector dataCollector;
     return CG_SUCCESS;
 #else
     int res = original_buildProcessProc(params);
+
     qDebug() << RESULT_STR << res;
     return res;
 #endif
@@ -187,9 +188,9 @@ DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk)
     Q_UNUSED(rfd)
     Q_UNUSED(sdk)
 
-//    PRINT_FUNC_INFO
-//    bool res =  original_isReadyForAdd(cgt, rfd, sdk);
-//    qDebug() << RESULT_STR << res;
+    //    PRINT_FUNC_INFO
+    //    bool res =  original_isReadyForAdd(cgt, rfd, sdk);
+    //    qDebug() << RESULT_STR << res;
 
     return 1;
 }
