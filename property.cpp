@@ -28,7 +28,7 @@ void Property::collectingData()
 
 void Property::getValues()
 {
-    switch(m_type) {
+    switch (m_type) {
     case data_int: {
         m_propValues << PropValue(cgt::propToInteger(m_id), data_int);
         break;
@@ -61,7 +61,7 @@ void Property::getValues()
     }
     case data_data: {
         id_data data = static_cast<id_data>(cgt::propGetValue(m_id));
-        switch(cgt::dtType(data)) {
+        switch (cgt::dtType(data)) {
         case data_int:
             m_propValues << PropValue(cgt::dtInt(data), data_int);
             break;
@@ -85,8 +85,8 @@ void Property::getValues()
     case data_array: {
         id_array array = static_cast<id_array>(cgt::propGetValue(m_id));
         DataTypes subType = cgt::arrType(array);
-        for(int i = 0; i < cgt::arrCount(array); ++i) {
-            switch(subType) {
+        for (int i = 0; i < cgt::arrCount(array); ++i) {
+            switch (subType) {
             case data_int:
                 m_propValues << PropValue(cgt::propToInteger(cgt::arrGetItem(array, i)),
                                           subType);

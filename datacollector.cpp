@@ -42,7 +42,7 @@ void DataCollector::collectingData()
     QByteArray buf("", 512);
 
     buf.fill('\0');
-    ((int *)buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_CODE_PATH, buf.data());
     m_cgtParams.PARAM_CODE_PATH = QString::fromLocal8Bit(buf);
 
@@ -56,7 +56,7 @@ void DataCollector::collectingData()
     m_cgtParams.PARAM_DEBUG_CLIENT_PORT = iBuf;
 
     buf.fill('\0');
-    ((int *)buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_PROJECT_PATH, buf.data());
     m_cgtParams.PARAM_PROJECT_PATH = QString::fromLocal8Bit(buf);
 
@@ -76,20 +76,20 @@ void DataCollector::collectingData()
     m_cgtParams.PARAM_USER_MAIL = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
-    ((int *)buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_PROJECT_NAME, buf.data());
     m_cgtParams.PARAM_PROJECT_NAME = QString::fromLocal8Bit(buf);
 
-    int tmpW[1] = {(int)eId};
+    uint tmpW[1] = {reinterpret_cast<uint>(eId)};
     cgt::GetParam(PARAM_SDE_WIDTH, tmpW);
     m_cgtParams.PARAM_SDE_WIDTH = tmpW[0];
 
-    int tmpH[1] = {(int)eId};
+    uint tmpH[1] = {reinterpret_cast<uint>(eId)};
     cgt::GetParam(PARAM_SDE_HEIGHT, tmpH);
     m_cgtParams.PARAM_SDE_HEIGHT = tmpH[0];
 
     buf.fill('\0');
-    ((int *)buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_COMPILER, buf.data());
     m_cgtParams.PARAM_COMPILER = QString::fromLocal8Bit(buf);
 }
@@ -100,25 +100,25 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
     m_containers.append(container);
 
     int countElements = cgt::sdkGetCount(sdk);
-    for(int i = 0; i < countElements; ++i) {
+    for (int i = 0; i < countElements; ++i) {
         id_element eId = cgt::sdkGetElement(sdk, i);
 
         //ru Создаём элемент
         PElement element = new Element(eId, container);
 
-        if(fcgt::isLink(element->m_flags)) {
+        if (fcgt::isLink(element->m_flags)) {
             container->m_elements << element;
             continue;
         }
 
         //ru Элемент содержит контейнер(ы)
-        if(fcgt::isMulti(element->m_flags)) {
+        if (fcgt::isMulti(element->m_flags)) {
             //ru Элемен содержит полиморфный контейнер
-            if(fcgt::isPolyMulti(element->m_classIndex)) {
+            if (fcgt::isPolyMulti(element->m_classIndex)) {
                 //ru Получаем к-во контейнеров, которое содержит элемент
                 int countContainers = cgt::elGetSDKCount(eId);
 
-                for(int i = 0; i < countContainers; ++i) {
+                for (int i = 0; i < countContainers; ++i) {
                     //ru Получаем контейнер
                     id_sdk idSDK = cgt::elGetSDKByIndex(eId, i);
 
@@ -144,9 +144,9 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
 
 void DataCollector::fixedPtr()
 {
-    for(PContainer c : m_containers) {
-        for(PElement e : c->m_elements) {
-            for(PPoint p : e->m_points) {
+    for (PContainer c : m_containers) {
+        for (PElement e : c->m_elements) {
+            for (PPoint p : e->m_points) {
                 p->fixedPtr();
             }
         }

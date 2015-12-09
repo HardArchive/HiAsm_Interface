@@ -232,8 +232,8 @@ struct TCgtParams {
     QString PARAM_USER_NAME;
     QString PARAM_USER_MAIL;
     QString PARAM_PROJECT_NAME;
-    int PARAM_SDE_WIDTH;
-    int PARAM_SDE_HEIGHT;
+    uint PARAM_SDE_WIDTH;
+    uint PARAM_SDE_HEIGHT;
     QString PARAM_COMPILER;
 };
 
@@ -313,7 +313,7 @@ struct TBuildPrepareRec {
 class TCGrec
 {
     //char unused[60];
-    char MainForm[];
+    char mainForm[60];
 };
 typedef TCGrec *PTCGrep;
 

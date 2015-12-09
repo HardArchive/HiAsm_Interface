@@ -35,25 +35,25 @@ void Point::collectingData()
 
 void Point::fixedPtr()
 {
-    if(!(m_linkPoint || m_RLinkPoint))
+    if (!(m_linkPoint || m_RLinkPoint))
         return;
 
-    if(m_linkPointPtr && m_RLinkPointPtr)
+    if (m_linkPointPtr && m_RLinkPointPtr)
         return;
 
-    for(PElement e : m_parent->m_parent->m_elements) {
-        for(PPoint p : e->m_points) {
-            if(p->m_id == m_id) continue;
+    for (PElement e : m_parent->m_parent->m_elements) {
+        for (PPoint p : e->m_points) {
+            if (p->m_id == m_id) continue;
 
-            if(p->m_id == m_linkPoint) {
+            if (p->m_id == m_linkPoint) {
                 m_linkPointPtr = p;
 
-                if(m_RLinkPointPtr) return;
+                if (m_RLinkPointPtr) return;
             }
-            if(p->m_id == m_RLinkPoint) {
+            if (p->m_id == m_RLinkPoint) {
                 m_RLinkPointPtr = p;
 
-                if(m_linkPointPtr) return;
+                if (m_linkPointPtr) return;
             }
         }
     }

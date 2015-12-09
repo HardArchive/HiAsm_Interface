@@ -35,13 +35,13 @@ void Element::collectingData()
     cgt::elGetSize(m_id, m_sizeW, m_sizeH);
 
     //ru Получаем информацию о точках
-    for(int i = 0; i < m_ptCount; ++i) {
+    for (int i = 0; i < m_ptCount; ++i) {
         id_prop pointId = cgt::elGetPt(m_id, i);
         m_points.append(new Point(pointId, this));
     }
 
     //ru Получаем информацию о свойствах
-    for(int i = 0; i < m_propCount; ++i) {
+    for (int i = 0; i < m_propCount; ++i) {
         id_prop propId = cgt::elGetProperty(m_id, i);
         m_properties.append(new Property(propId, this));
     }

@@ -49,7 +49,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
     Q_UNUSED(context)
 
     QByteArray localMsg = msg.toLocal8Bit();
-    switch(type) {
+    switch (type) {
     case QtDebugMsg:
         std::cout << localMsg.constData() << std::endl;
         break;
@@ -76,7 +76,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     Q_UNUSED(hModule)
     Q_UNUSED(lpReserved)
 
-    switch(reason) {
+    switch (reason) {
     case DLL_PROCESS_ATTACH: {
         qInstallMessageHandler(myMessageOutput);
 
@@ -87,15 +87,15 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         m_codegen = LoadLibraryW(&codegen.toStdWString()[0]);
 
         //Определение функций проксируемого кодогенератора
-        original_buildPrepareProc = (t_buildPrepareProc)GetProcAddress(m_codegen, "buildPrepareProc");
-        original_buildProcessProc = (t_buildProcessProc)GetProcAddress(m_codegen, "buildProcessProc");
-        original_CheckVersionProc = (t_CheckVersionProc)GetProcAddress(m_codegen, "CheckVersionProc");
-        original_ConfToCode = (t_ConfToCode)GetProcAddress(m_codegen, "ConfToCode");
-        original_synReadFuncList = (t_synReadFuncList)GetProcAddress(m_codegen, "synReadFuncList");
-        original_hintForElement = (t_hintForElement)GetProcAddress(m_codegen, "hintForElement");
-        original_isElementMaker = (t_isElementMaker)GetProcAddress(m_codegen, "isElementMaker");
-        original_MakeElement = (t_MakeElement)GetProcAddress(m_codegen, "MakeElement");
-        original_isReadyForAdd = (t_isReadyForAdd)GetProcAddress(m_codegen, "isReadyForAdd");
+        original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
+        original_buildProcessProc = reinterpret_cast<t_buildProcessProc>(GetProcAddress(m_codegen, "buildProcessProc"));
+        original_CheckVersionProc = reinterpret_cast<t_CheckVersionProc>(GetProcAddress(m_codegen, "CheckVersionProc"));
+        original_ConfToCode = reinterpret_cast<t_ConfToCode>(GetProcAddress(m_codegen, "ConfToCode"));
+        original_synReadFuncList = reinterpret_cast<t_synReadFuncList>(GetProcAddress(m_codegen, "synReadFuncList"));
+        original_hintForElement = reinterpret_cast<t_hintForElement>(GetProcAddress(m_codegen, "hintForElement"));
+        original_isElementMaker = reinterpret_cast<t_isElementMaker>(GetProcAddress(m_codegen, "isElementMaker"));
+        original_MakeElement = reinterpret_cast<t_MakeElement>(GetProcAddress(m_codegen, "MakeElement"));
+        original_isReadyForAdd = reinterpret_cast<t_isReadyForAdd>(GetProcAddress(m_codegen, "isReadyForAdd"));
 
         break;
     }
@@ -107,7 +107,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     }
     }
 
-    return(TRUE);
+    return (TRUE);
 }
 
 //Экспортируемые функции

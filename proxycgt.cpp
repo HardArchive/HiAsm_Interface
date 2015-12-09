@@ -20,16 +20,16 @@ namespace ProxyCgt
 
     //Дефайны
 #define PRINT_RESULT_STR(X) \
-        qDebug().noquote() << RESULT_STR << '"'+QString::fromLocal8Bit(X)+'"';
+    qDebug().noquote() << RESULT_STR << '"'+QString::fromLocal8Bit(X)+'"';
 #define EXPORT __stdcall
 
     //Служебные функции
     void printArgs(std::initializer_list<QVariant> args, bool noquote = false)
     {
         uint i = 1;
-        for(const QVariant &v : args) {
-            if(v.type() == QVariant::String) {
-                if(noquote)
+        for (const QVariant &v : args) {
+            if (v.type() == QVariant::String) {
+                if (noquote)
                     qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
                 else
                     qDebug().nospace() << "  Arg" << i << ": " << v.toString();
@@ -43,7 +43,7 @@ namespace ProxyCgt
     void printArgs(CgtParams index, const QVariant value)
     {
         qDebug().nospace().noquote() << "  Arg1" << ": " << CgtParamsMap[index];
-        if(value.type() == QVariant::String) {
+        if (value.type() == QVariant::String) {
             qDebug().nospace() << "  Arg2: " << value.toString();
         } else {
             qDebug().nospace().noquote() << "  Arg2: " << value.toString();
@@ -554,7 +554,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->GetParam(index, value);
 
-        switch(index) {
+        switch (index) {
         case PARAM_CODE_PATH :
             printArgs(index, reinterpret_cast<const char *>(value));
             break;
@@ -1078,96 +1078,92 @@ namespace ProxyCgt
     }
 
     //Заполняем массив указателей
-    quintptr arrayPointers[] {
-        (quintptr) &sdkGetCount,
-        (quintptr) &sdkGetElement,
-        (quintptr) &sdkGetElementName,
-        (quintptr) &elGetFlag,
-        (quintptr) &elGetPropCount,
-        (quintptr) &elGetProperty,
-        (quintptr) &elIsDefProp,
-        (quintptr) &elSetCodeName,
-        (quintptr) &elGetCodeName,
-        (quintptr) &elGetClassName,
-        (quintptr) &elGetInfSub,
-        (quintptr) &elGetPtCount,
-        (quintptr) &elGetPt,
-        (quintptr) &elGetPtName,
-        (quintptr) &elGetClassIndex,
-        (quintptr) &elGetSDK,
-        (quintptr) &elLinkIs,
-        (quintptr) &elLinkMain,
-        (quintptr) &elGetPos,
-        (quintptr) &elGetSize,
-        (quintptr) &elGetEID,
-        (quintptr) &ptGetLinkPoint,
-        (quintptr) &ptGetRLinkPoint,
-        (quintptr) &ptGetType,
-        (quintptr) &ptGetName,
-        (quintptr) &ptGetParent,
-        (quintptr) &ptGetIndex,
-        (quintptr) &pt_dpeGetName,
-        (quintptr) &propGetType,
-        (quintptr) &propGetName,
-        (quintptr) &propGetValue,
-        (quintptr) &propToByte,
-        (quintptr) &propToInteger,
-        (quintptr) &propToReal,
-        (quintptr) &propToString,
-        (quintptr) &resAddFile,
-        (quintptr) &resAddIcon,
-        (quintptr) &resAddStr,
-        (quintptr) &resAddStream,
-        (quintptr) &resAddWave,
-        (quintptr) &resAddBitmap,
-        (quintptr) &resAddMenu,
-        (quintptr) &_Debug,
-        (quintptr) &GetParam,
-        (quintptr) &arrCount,
-        (quintptr) &arrType,
-        (quintptr) &arrItemName,
-        (quintptr) &arrItemData,
-        (quintptr) &arrGetItem,
-        (quintptr) &isDebug,
-        (quintptr) &dtType,
-        (quintptr) &dtStr,
-        (quintptr) &dtInt,
-        (quintptr) &dtReal,
-        (quintptr) &fntName,
-        (quintptr) &fntSize,
-        (quintptr) &fntStyle,
-        (quintptr) &fntColor,
-        (quintptr) &fntCharSet,
-        (quintptr) &elGetData,
-        (quintptr) &elSetData,
-        (quintptr) &ptGetDataType,
-        (quintptr) &elGetParent,
-        (quintptr) &elGetPropertyListCount,
-        (quintptr) &elGetPropertyListItem,
-        (quintptr) &plGetName,
-        (quintptr) &plGetInfo,
-        (quintptr) &plGetGroup,
-        (quintptr) &plGetProperty,
-        (quintptr) &plGetOwner,
-        (quintptr) &ptGetInfo,
-        (quintptr) &propGetLinkedElement,
-        (quintptr) &propIsTranslate,
-        (quintptr) &propGetLinkedElementInfo,
-        (quintptr) &elGetSDKByIndex,
-        (quintptr) &elGetSDKCount,
-        (quintptr) &elGetSDKName,
-        (quintptr) &sdkGetParent,
-        (quintptr) &elGetInterface,
-        (quintptr) &elGetInherit,
-        (quintptr) &resEmpty,
-        (quintptr) &resSetPref,
-        (quintptr) &_Error,
-        (quintptr) &elGetGroup,
-        (quintptr) &propSaveToFile,
-#ifdef MSDK
-        (quintptr) &elGetPropertyName,
-        (quintptr) &elIsDefProperty
-#endif
+    static uintptr_t arrayPointers[] {
+        reinterpret_cast<quintptr>(sdkGetCount),
+        reinterpret_cast<quintptr>(sdkGetElement),
+        reinterpret_cast<quintptr>(sdkGetElementName),
+        reinterpret_cast<quintptr>(elGetFlag),
+        reinterpret_cast<quintptr>(elGetPropCount),
+        reinterpret_cast<quintptr>(elGetProperty),
+        reinterpret_cast<quintptr>(elIsDefProp),
+        reinterpret_cast<quintptr>(elSetCodeName),
+        reinterpret_cast<quintptr>(elGetCodeName),
+        reinterpret_cast<quintptr>(elGetClassName),
+        reinterpret_cast<quintptr>(elGetInfSub),
+        reinterpret_cast<quintptr>(elGetPtCount),
+        reinterpret_cast<quintptr>(elGetPt),
+        reinterpret_cast<quintptr>(elGetPtName),
+        reinterpret_cast<quintptr>(elGetClassIndex),
+        reinterpret_cast<quintptr>(elGetSDK),
+        reinterpret_cast<quintptr>(elLinkIs),
+        reinterpret_cast<quintptr>(elLinkMain),
+        reinterpret_cast<quintptr>(elGetPos),
+        reinterpret_cast<quintptr>(elGetSize),
+        reinterpret_cast<quintptr>(elGetEID),
+        reinterpret_cast<quintptr>(ptGetLinkPoint),
+        reinterpret_cast<quintptr>(ptGetRLinkPoint),
+        reinterpret_cast<quintptr>(ptGetType),
+        reinterpret_cast<quintptr>(ptGetName),
+        reinterpret_cast<quintptr>(ptGetParent),
+        reinterpret_cast<quintptr>(ptGetIndex),
+        reinterpret_cast<quintptr>(pt_dpeGetName),
+        reinterpret_cast<quintptr>(propGetType),
+        reinterpret_cast<quintptr>(propGetName),
+        reinterpret_cast<quintptr>(propGetValue),
+        reinterpret_cast<quintptr>(propToByte),
+        reinterpret_cast<quintptr>(propToInteger),
+        reinterpret_cast<quintptr>(propToReal),
+        reinterpret_cast<quintptr>(propToString),
+        reinterpret_cast<quintptr>(resAddFile),
+        reinterpret_cast<quintptr>(resAddIcon),
+        reinterpret_cast<quintptr>(resAddStr),
+        reinterpret_cast<quintptr>(resAddStream),
+        reinterpret_cast<quintptr>(resAddWave),
+        reinterpret_cast<quintptr>(resAddBitmap),
+        reinterpret_cast<quintptr>(resAddMenu),
+        reinterpret_cast<quintptr>(_Debug),
+        reinterpret_cast<quintptr>(GetParam),
+        reinterpret_cast<quintptr>(arrCount),
+        reinterpret_cast<quintptr>(arrType),
+        reinterpret_cast<quintptr>(arrItemName),
+        reinterpret_cast<quintptr>(arrItemData),
+        reinterpret_cast<quintptr>(arrGetItem),
+        reinterpret_cast<quintptr>(isDebug),
+        reinterpret_cast<quintptr>(dtType),
+        reinterpret_cast<quintptr>(dtStr),
+        reinterpret_cast<quintptr>(dtInt),
+        reinterpret_cast<quintptr>(dtReal),
+        reinterpret_cast<quintptr>(fntName),
+        reinterpret_cast<quintptr>(fntSize),
+        reinterpret_cast<quintptr>(fntStyle),
+        reinterpret_cast<quintptr>(fntColor),
+        reinterpret_cast<quintptr>(fntCharSet),
+        reinterpret_cast<quintptr>(elGetData),
+        reinterpret_cast<quintptr>(elSetData),
+        reinterpret_cast<quintptr>(ptGetDataType),
+        reinterpret_cast<quintptr>(elGetParent),
+        reinterpret_cast<quintptr>(elGetPropertyListCount),
+        reinterpret_cast<quintptr>(elGetPropertyListItem),
+        reinterpret_cast<quintptr>(plGetName),
+        reinterpret_cast<quintptr>(plGetInfo),
+        reinterpret_cast<quintptr>(plGetGroup),
+        reinterpret_cast<quintptr>(plGetProperty),
+        reinterpret_cast<quintptr>(plGetOwner),
+        reinterpret_cast<quintptr>(ptGetInfo),
+        reinterpret_cast<quintptr>(propGetLinkedElement),
+        reinterpret_cast<quintptr>(propIsTranslate),
+        reinterpret_cast<quintptr>(propGetLinkedElementInfo),
+        reinterpret_cast<quintptr>(elGetSDKByIndex),
+        reinterpret_cast<quintptr>(elGetSDKCount),
+        reinterpret_cast<quintptr>(elGetSDKName),
+        reinterpret_cast<quintptr>(sdkGetParent),
+        reinterpret_cast<quintptr>(elGetInterface),
+        reinterpret_cast<quintptr>(elGetInherit),
+        reinterpret_cast<quintptr>(resEmpty),
+        reinterpret_cast<quintptr>(resSetPref),
+        reinterpret_cast<quintptr>(_Error),
+        reinterpret_cast<quintptr>(elGetGroup),
+        reinterpret_cast<quintptr>(propSaveToFile),
     };
 
     /*!  Служебные функции   */
@@ -1186,6 +1182,6 @@ namespace ProxyCgt
     //Получаем массив указателей на функции
     PCodeGenTools getProxyCgt()
     {
-        return (PCodeGenTools)arrayPointers;
+        return reinterpret_cast<PCodeGenTools>(arrayPointers);
     }
 }
