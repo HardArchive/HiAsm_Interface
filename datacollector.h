@@ -19,6 +19,9 @@ private:
     //Массив контейнеров
     Containers m_containers;
 
+    //Карта объектов
+    QMap<quintptr, quintptr> m_mapObjects;
+
 public:
     explicit DataCollector();
     ~DataCollector();
@@ -28,4 +31,5 @@ private:
     PContainer grabberSDK(id_sdk sdk, PElement parent = PElement());
     void fixedPtr();
 
+    void initMapObjects();
 };

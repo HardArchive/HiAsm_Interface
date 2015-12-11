@@ -16,10 +16,10 @@ DESTDIR += $$PACKAGE
 DEFINES += HIASM_PACKAGE=\"\\\"$$PACKAGE\\\"\"
 
 #ru Подключаем DataCollector
-#DEFINES += DATACOLLECTOR
+DEFINES += DATACOLLECTOR
 
 #ru Подключаем ProxyCgt
-DEFINES += PROXYCGT
+#DEFINES += PROXYCGT
 
 #ru Где сохраняется собранный кодогенератор
 message(Build path: $$DESTDIR)

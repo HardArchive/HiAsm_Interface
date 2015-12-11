@@ -21,10 +21,13 @@ DataCollector::DataCollector()
     //ru Получаем контейнер c элементами из SDK
     grabberSDK(m_sdk);
 
+    //ru Инициализация карты объектов
+    initMapObjects();
+
     //ru Исправляем указатели
     fixedPtr();
 
-    //qDebug() << 12;
+    qDebug() << 12;
 }
 
 DataCollector::~DataCollector()
@@ -106,7 +109,7 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
         //ru Создаём элемент
         PElement element = new Element(eId, container);
 
-        if (fcgt::isLink(element->m_flags)) {
+        if (!fcgt::isLink(element->m_flags)) {
             container->m_elements << element;
             continue;
         }
@@ -142,12 +145,35 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
     return container;
 }
 
+void DataCollector::initMapObjects()
+{
+    for (PContainer c : m_containers) {
+        m_mapObjects.insert(c->m_id, reinterpret_cast<quintptr>(c));
+
+        for (PElement e : c->m_elements) {
+            m_mapObjects.insert(e->m_id, reinterpret_cast<quintptr>(e));
+
+            for (PPoint p : e->m_points) {
+                m_mapObjects.insert(p->m_id, reinterpret_cast<quintptr>(p));
+            }
+
+            for (PProperty p : e->m_properties) {
+                m_mapObjects.insert(p->m_id, reinterpret_cast<quintptr>(p));
+            }
+        }
+    }
+}
+
 void DataCollector::fixedPtr()
 {
     for (PContainer c : m_containers) {
         for (PElement e : c->m_elements) {
+            if (e->m_linkMain != e->m_id)
+                e->m_linkMainPtr = reinterpret_cast<PElement>(m_mapObjects[e->m_linkMain]);
+
             for (PPoint p : e->m_points) {
-                p->fixedPtr();
+                p->m_RLinkPointPtr = reinterpret_cast<PPoint>(m_mapObjects[p->m_RLinkPoint]);
+                p->m_linkPointPtr = reinterpret_cast<PPoint>(m_mapObjects[p->m_RLinkPoint]);
             }
         }
     }

@@ -8,7 +8,7 @@
 #include <QtCore>
 #include <QBitArray>
 
-//!!! ========== Поддерживается только HiAsm 4, пакет Windows ==========
+//!!! ========== Поддерживается только HiAsm 4, пакет Delphi ==========
 
 //!ru Флаги элемента
 enum ElementFlags {
@@ -310,10 +310,10 @@ struct TBuildPrepareRec {
 };
 
 //Требуется для export функции - buildProcessProc.
-class TCGrec
-{
-    //char unused[60];
-    char mainForm[60];
+struct TCGrec {
+    char *MainForm;
+    //char *Units;
+    //char *IBody;
 };
 typedef TCGrec *PTCGrep;
 

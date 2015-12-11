@@ -43,17 +43,20 @@ void Point::fixedPtr()
 
     for (PElement e : m_parent->m_parent->m_elements) {
         for (PPoint p : e->m_points) {
-            if (p->m_id == m_id) continue;
+            if (p->m_id == m_id)
+                continue;
 
             if (p->m_id == m_linkPoint) {
                 m_linkPointPtr = p;
 
-                if (m_RLinkPointPtr) return;
+                if (m_RLinkPointPtr)
+                    return;
             }
             if (p->m_id == m_RLinkPoint) {
                 m_RLinkPointPtr = p;
 
-                if (m_linkPointPtr) return;
+                if (m_linkPointPtr)
+                    return;
             }
         }
     }
