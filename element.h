@@ -16,7 +16,7 @@ class Element
 {
 private:
     //ru Данные элемента
-    const id_element m_id;
+    const id_element m_id{};
     id_element m_linkMain{};
 
     //Указатели и ссылки

@@ -1,22 +1,16 @@
 #pragma once
 
 //Project
-#include "CGTShare.h"
-#include "cgt.h"
-#include "global.h"
+#include "datatypes.h"
 
 //STL
 
 //Qt
 #include <QDebug>
 
-typedef QPair<QVariant, DataTypes> PropValue;
-typedef QList<PropValue> PropValues;
-
 class Property
 {
 private:
-
     //ru Данные
     const id_prop m_id;
     QString m_name;

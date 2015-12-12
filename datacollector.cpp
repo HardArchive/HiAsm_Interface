@@ -26,8 +26,6 @@ DataCollector::DataCollector()
 
     //ru Исправляем указатели
     fixedPtr();
-
-    qDebug() << 12;
 }
 
 DataCollector::~DataCollector()
@@ -106,7 +104,6 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
     for (int i = 0; i < countElements; ++i) {
         id_element eId = cgt::sdkGetElement(sdk, i);
 
-        //ru Создаём элемент
         PElement element = new Element(eId, container);
 
         if (!fcgt::isLink(element->m_flags)) {

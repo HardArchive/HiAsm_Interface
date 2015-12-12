@@ -33,31 +33,3 @@ void Point::collectingData()
     m_dpeName = QString::fromLocal8Bit(cgt::pt_dpeGetName(m_id));
 }
 
-void Point::fixedPtr()
-{
-    if (!(m_linkPoint || m_RLinkPoint))
-        return;
-
-    if (m_linkPointPtr && m_RLinkPointPtr)
-        return;
-
-    for (PElement e : m_parent->m_parent->m_elements) {
-        for (PPoint p : e->m_points) {
-            if (p->m_id == m_id)
-                continue;
-
-            if (p->m_id == m_linkPoint) {
-                m_linkPointPtr = p;
-
-                if (m_RLinkPointPtr)
-                    return;
-            }
-            if (p->m_id == m_RLinkPoint) {
-                m_RLinkPointPtr = p;
-
-                if (m_linkPointPtr)
-                    return;
-            }
-        }
-    }
-}

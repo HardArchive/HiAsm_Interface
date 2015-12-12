@@ -2,9 +2,9 @@
 #include "CGTShare.h"
 #include "cgt.h"
 #include "global.h"
-
 #include "datacollector.h"
 #include "element.h"
+#include "emulatecgt.h"
 
 //NATIVE
 #include <windows.h>
@@ -124,12 +124,14 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 {
     PRINT_FUNC_INFO
 
-    cgt::initParams(params);
-
 #ifdef DATACOLLECTOR
     DataCollector dataCollector;
-    return CG_SUCCESS;
+    EmulateCgt::setModelCgt(&dataCollector);
+    cgt::setProxyCgt(params, EmulateCgt::getEmulateCgt());
+
+    return original_buildProcessProc(params); //CG_SUCCESS
 #else
+    cgt::setProxyCgt(params, params.cgt);
     int res = original_buildProcessProc(params);
 
     qDebug() << RESULT_STR << res;

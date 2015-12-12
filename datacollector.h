@@ -12,9 +12,9 @@
 class DataCollector
 {
 private:
-    const id_sdk m_sdk;
+    const id_sdk m_sdk{};
     bool m_isDebug{};
-    TCgtParams m_cgtParams = TCgtParams();
+    TCgtParams m_cgtParams;
 
     //Массив контейнеров
     Containers m_containers;
@@ -30,6 +30,5 @@ private:
     void collectingData();
     PContainer grabberSDK(id_sdk sdk, PElement parent = PElement());
     void fixedPtr();
-
     void initMapObjects();
 };

@@ -223,18 +223,18 @@ const static QMap<int, QString> CgtParamsMap{
     {PARAM_COMPILER, "PARAM_COMPILER"}
 };
 struct TCgtParams {
-    QString PARAM_CODE_PATH;
-    int PARAM_DEBUG_MODE = 1;
-    int PARAM_DEBUG_SERVER_PORT;
-    int PARAM_DEBUG_CLIENT_PORT;
-    QString PARAM_PROJECT_PATH;
-    QString PARAM_HIASM_VERSION;
-    QString PARAM_USER_NAME;
-    QString PARAM_USER_MAIL;
-    QString PARAM_PROJECT_NAME;
-    uint PARAM_SDE_WIDTH;
-    uint PARAM_SDE_HEIGHT;
-    QString PARAM_COMPILER;
+    QString PARAM_CODE_PATH{};
+    int PARAM_DEBUG_MODE{};
+    int PARAM_DEBUG_SERVER_PORT{};
+    int PARAM_DEBUG_CLIENT_PORT{};
+    QString PARAM_PROJECT_PATH{};
+    QString PARAM_HIASM_VERSION{};
+    QString PARAM_USER_NAME{};
+    QString PARAM_USER_MAIL{};
+    QString PARAM_PROJECT_NAME{};
+    uint PARAM_SDE_WIDTH{};
+    uint PARAM_SDE_HEIGHT{};
+    QString PARAM_COMPILER{};
 };
 
 //!ru Ошибки при работе с библиотекой кодогенератора
@@ -299,9 +299,9 @@ typedef TCodeGenTools *PCodeGenTools;
 
 //Требуется для export функции - CheckVersionProc.
 struct THiAsmVersion {
-    short int major;
-    short int minor;
-    short int build;
+    short int major{};
+    short int minor{};
+    short int build{};
 };
 
 //Требуется для export функции - buildPrepareProc.
@@ -311,48 +311,48 @@ struct TBuildPrepareRec {
 
 //Требуется для export функции - buildProcessProc.
 struct TCGrec {
-    char *MainForm;
+    char *MainForm{};
     //char *Units;
     //char *IBody;
 };
 typedef TCGrec *PTCGrep;
 
 struct TBuildProcessRec {
-    PCodeGenTools cgt;
-    id_sdk sdk;
-    PTCGrep result;
+    PCodeGenTools cgt{};
+    id_sdk sdk{};
+    PTCGrep result{};
 };
 
 //Требуется для export функции - synReadFuncList.
 struct TSynParams {
     //ru Имя текущего элемента.
-    char *elName;
+    char *elName{};
 
     //ru Имя объекта.
-    char *objName;
+    char *objName{};
 
     //ru Список методов и полей для вставки в редактор.
-    char *inst_list;
+    char *inst_list{};
 
     //ru Список, отображаемый во всплывающей подсказке.
-    char *disp_list;
+    char *disp_list{};
 };
 
 //Требуется для export функции - hintForElement.
 struct THintParams {
-    id_point point;
-    id_sdk sdk;
-    PCodeGenTools cgt;
-    char *hint;
+    id_point point{};
+    id_sdk sdk{};
+    PCodeGenTools cgt{};
+    char *hint{};
 };
 
 //Требуется для export функции - isReadyForAdd.
 struct TRFD_Rec {
-    char *name;
-    char *className;
-    char *inherit;
-    char *interfaces;
-    char *sub;
+    char *name{};
+    char *className{};
+    char *inherit{};
+    char *interfaces{};
+    char *sub{};
 };
 
 struct TCodeGenTools {
@@ -428,8 +428,8 @@ struct TCodeGenTools {
     CALLBACK const char *(*propGetName)(id_prop prop);
     //ru Возвращает значение свойства в виде указателя на данные.
     CALLBACK quintptr(*propGetValue)(id_prop prop);
-    //ru Возвращает значение свойства в формате unsigned char.
-    CALLBACK unsigned char (*propToByte)(id_prop prop);
+    //ru Возвращает значение свойства в формате uchar.
+    CALLBACK uchar (*propToByte)(id_prop prop);
     //ru Возвращает значение свойства в формате int.
     CALLBACK int (*propToInteger)(id_prop prop);
     //ru Возвращает значение свойства в формате float.
@@ -503,11 +503,11 @@ struct TCodeGenTools {
     //ru Возвращает размер шрифта.
     CALLBACK int (*fntSize)(id_font f);
     //ru Возвращает стиль шрифта.
-    CALLBACK unsigned char (*fntStyle)(id_font f);
+    CALLBACK uchar (*fntStyle)(id_font f);
     //ru Возвращает цвет шрифта.
-    CALLBACK int (*fntColor)(id_font f);
+    CALLBACK uint (*fntColor)(id_font f);
     //ru Возвращает кодировку шрифта.
-    CALLBACK unsigned char (*fntCharSet)(id_font f);
+    CALLBACK uchar (*fntCharSet)(id_font f);
     //!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
     //!ru Судя по CodeGen.dpr, используется для хранения указателя (ID элемента) на самого себя.
     //ru Возвращает пользовательские данные элемента.

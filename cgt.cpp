@@ -62,17 +62,15 @@ namespace fcgt
 
 //!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
 
-PCodeGenTools cgt::m_cgt = nullptr;
+PCodeGenTools cgt::m_cgt{};
 id_sdk cgt::m_sdk{};
 
 //ru Инициализация параметров
-void cgt::initParams(TBuildProcessRec &params)
+void cgt::setProxyCgt(TBuildProcessRec &params, PCodeGenTools proxyCgt)
 {
-    ProxyCgt::saveOriginalCgt(params.cgt);
+    ProxyCgt::setOriginalCgt(proxyCgt);
 
-#ifdef PROXYCGT
     params.cgt = ProxyCgt::getProxyCgt();
-#endif
 
     m_cgt = params.cgt;
     m_sdk = params.sdk;
@@ -274,8 +272,8 @@ quintptr cgt::propGetValue(id_prop prop)
     return m_cgt->propGetValue(prop);
 }
 
-//ru Возвращает значение свойства в формате unsigned char.
-unsigned char cgt::propToByte(id_prop prop)
+//ru Возвращает значение свойства в формате uchar.
+uchar cgt::propToByte(id_prop prop)
 {
     return m_cgt->propToByte(prop);
 }
@@ -449,17 +447,17 @@ int cgt::fntSize(id_font f)
     return m_cgt->fntSize(f);
 }
 //ru Возвращает стиль шрифта.
-unsigned char cgt::fntStyle(id_font f)
+uchar cgt::fntStyle(id_font f)
 {
     return m_cgt->fntStyle(f);
 }
 //ru Возвращает цвет шрифта.
-int cgt::fntColor(id_font f)
+uint cgt::fntColor(id_font f)
 {
     return m_cgt->fntColor(f);
 }
 //ru Возвращает кодировку шрифта.
-unsigned char cgt::fntCharSet(id_font f)
+uchar cgt::fntCharSet(id_font f)
 {
     return m_cgt->fntCharSet(f);
 }

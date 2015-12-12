@@ -1,54 +1,11 @@
-﻿//Project
-#include "proxycgt.h"
-#include "global.h"
+#include "emulatecgt.h"
 
-//STL
-
-//Qt
-#include <QDebug>
-#include <QFlags>
-
-namespace ProxyCgt
+namespace EmulateCgt
 {
-    //Для хранения указателя на массив указателей на callback функции
-    static PCodeGenTools m_cgt = nullptr;
-
-    //Константы
-    const char CALL_STR[] = "  Call:";
-    const char ARG_STR[] = "  Arg";
-    const char RESULT_STR[] = "  Return:";
-
-    //Дефайны
-#define PRINT_RESULT_STR(X) \
-    qDebug().noquote() << RESULT_STR << '"'+QString::fromLocal8Bit(X)+'"';
 #define EXPORT static __stdcall
 
-    //Служебные функции
-    void printArgs(std::initializer_list<QVariant> args, bool noquote = false)
-    {
-        uint i = 1;
-        for (const QVariant &v : args) {
-            if (v.type() == QVariant::String) {
-                if (noquote)
-                    qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
-                else
-                    qDebug().nospace() << "  Arg" << i << ": " << v.toString();
-
-            } else {
-                qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
-            }
-            i++;
-        }
-    }
-    void printArgs(CgtParams index, const QVariant value)
-    {
-        qDebug().nospace().noquote() << "  Arg1" << ": " << CgtParamsMap[index];
-        if (value.type() == QVariant::String) {
-            qDebug().nospace() << "  Arg2: " << value.toString();
-        } else {
-            qDebug().nospace().noquote() << "  Arg2: " << value.toString();
-        }
-    }
+    //ru Храним указатель на модель схемы
+    static DataCollector *m_model = nullptr;
 
     //~~~~~~~~~~~~~~~~~ Проксированные функции ~~~~~~~~~~~~~~~~~~~
 
@@ -56,231 +13,147 @@ namespace ProxyCgt
     //ru Возвращает количество элементов в контейнере.
     EXPORT int sdkGetCount(id_sdk SDK)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->sdkGetCount(SDK);
-        printArgs({SDK});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает ID элемента по его Z-положению(индексу) в контейнере.
     EXPORT id_element sdkGetElement(id_sdk SDK, int Index)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->sdkGetElement(SDK, Index);
-        printArgs({SDK, Index});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает ID элемента по имени элемента.
     EXPORT id_element sdkGetElementName(id_sdk SDK, char *Name)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->sdkGetElementName(SDK, Name);
-        printArgs({SDK, Name});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает флаги элемента.
     EXPORT ElementFlags elGetFlag(id_element e)
     {
-        PRINT_FUNC_INFO
-        ElementFlags res = m_cgt->elGetFlag(e);
-        printArgs({e});
 
-        qDebug() << RESULT_STR << ElementFlgs(res);
-
-        return res;
+        return ELEMENT_FLG_IS_FREEZE;
     }
 
     //ru Возвращает количество свойств элемента.
     EXPORT int elGetPropCount(id_element e)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetPropCount(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает свойство элемента по индексу, с порядковым номером из INI.
     EXPORT id_prop elGetProperty(id_element e, int Index)
     {
-        PRINT_FUNC_INFO
-        id_prop res = m_cgt->elGetProperty(e, Index);
-        printArgs({e, Index});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
     EXPORT bool elIsDefProp(id_element e, int Index)
     {
-        PRINT_FUNC_INFO
-        bool res = m_cgt->elIsDefProp(e, Index);
-        printArgs({e, Index});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return false;
     }
 
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
     EXPORT id_element elSetCodeName(id_element e, const char *Name)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->elSetCodeName(e, Name);
-        printArgs({e, Name});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает уникальное имя элемента
     EXPORT const char *elGetCodeName(id_element e)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetCodeName(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
-
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает имя класса элемента.
     EXPORT const char *elGetClassName(id_element e)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetClassName(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
-
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
     EXPORT const char *elGetInfSub(id_element e)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetInfSub(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
-
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает общее количество видимых точек у элемента.
     EXPORT int elGetPtCount(id_element e)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetPtCount(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает ID точки по её индексу.
     EXPORT id_point elGetPt(id_element e, int i)
     {
-        PRINT_FUNC_INFO
-        id_point res = m_cgt->elGetPt(e, i);
-        printArgs({e, i});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает ID точки по её имени.
     //[deprecated]
     EXPORT id_point elGetPtName(id_element e, const char *Name)
     {
-        PRINT_FUNC_INFO
-        id_point res = m_cgt->elGetPtName(e, Name);
-        printArgs({e, Name});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает индекс класса элемента.
     EXPORT ElementClass elGetClassIndex(id_element e)
     {
-        PRINT_FUNC_INFO
-        ElementClass res = m_cgt->elGetClassIndex(e);
-        printArgs({e});
-        qDebug().noquote() << RESULT_STR << ElementClassMap[res];
 
-        return res;
+        return CI_Element;
     }
 
     //ru Возвращает ID внутренней схемы для контейнеров,
     //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
     EXPORT id_sdk elGetSDK(id_element e)
     {
-        PRINT_FUNC_INFO
-        id_sdk res = m_cgt->elGetSDK(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
     EXPORT bool elLinkIs(id_element e)
     {
-        PRINT_FUNC_INFO
-        bool res = m_cgt->elLinkIs(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
-
-        return res;
+        return false;
     }
 
     //ru Возвращает ID главного элемента(тот, на который ссылаются другие).
     EXPORT id_element elLinkMain(id_element e)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->elLinkMain(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
-
-        return res;
+        return 0;
     }
 
     //ru Помещает в переменные "X" и "Y", позицию элемента в редакторе схем.
     EXPORT void elGetPos(id_element e, int &X, int &Y)
     {
-        PRINT_FUNC_INFO
-        m_cgt->elGetPos(e, X, Y);
-        printArgs({e, X, Y});
+        X = 0;
+        Y = 0;
     }
 
     //ru Помещает в переменные "W" и "H", размеры элемента.
     EXPORT void elGetSize(id_element e, int &W, int &H)
     {
-        PRINT_FUNC_INFO
-        m_cgt->elGetSize(e, W, H);
-        printArgs({e, W, H});
+        W = 0;
+        H = 0;
     }
 
     //ru Возвращает внутренний ID элемента (отличается от внешнего).
     //[deprecated]
     EXPORT int elGetEID(id_element e)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetEID(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -288,157 +161,98 @@ namespace ProxyCgt
     //TODO [deprecated?], в CodeGen.dpr не используется.
     EXPORT id_point ptGetLinkPoint(id_point p)
     {
-        PRINT_FUNC_INFO
-        id_point res = m_cgt->ptGetLinkPoint(p);
-        printArgs({p});
-        qDebug() << RESULT_STR << res;
-
-        return res;
+        return 0;
     }
 
     //ru Возвращает ID точки, с которой соединена указанная точка,
     //ru без учета точек разрыва и хабов.
     EXPORT id_point ptGetRLinkPoint(id_point p)
     {
-        PRINT_FUNC_INFO
-        id_point res = m_cgt->ptGetRLinkPoint(p);
-        printArgs({p});
-        qDebug() << RESULT_STR << res;
-
-        return res;
+        return 0;
     }
 
     //ru Возвращает тип точек(константы PointTypes).
     EXPORT PointTypes ptGetType(id_point p)
     {
-        PRINT_FUNC_INFO
-        PointTypes res = m_cgt->ptGetType(p);
-        printArgs({p});
-        qDebug().noquote() << RESULT_STR << PointTypesMap[res];
-
-        return res;
+        return pt_Work;
     }
 
     //ru Возвращает имя точки.
     EXPORT const char *ptGetName(id_point p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->ptGetName(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает ID элемента, которому принадлежит точка.
     EXPORT id_element ptGetParent(id_point p)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->ptGetParent(p);
-        printArgs({p});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+
+        return 0;
     }
 
     //ru Возвращает тип точки (PointTypes).
     EXPORT PointTypes ptGetIndex(id_point p)
     {
-        PRINT_FUNC_INFO
-        PointTypes res = m_cgt->ptGetIndex(p);
-        printArgs({p}, true);
-        qDebug().noquote() << RESULT_STR << PointTypesMap[res];
 
-        return res;
+        return pt_Work;
     }
 
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
     EXPORT const char *pt_dpeGetName(id_point p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->pt_dpeGetName(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип свойства.
     EXPORT DataTypes propGetType(id_prop prop)
     {
-        PRINT_FUNC_INFO
-        DataTypes res = m_cgt->propGetType(prop);
-        printArgs({prop});
-        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
-
-        return res;
+        return data_null;
     }
 
     //ru Возвращает имя свойства.
     EXPORT const char *propGetName(id_prop prop)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->propGetName(prop);
-        printArgs({prop});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает значение свойства в виде указателя на данные.
     EXPORT quintptr propGetValue(id_prop prop)
     {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->propGetValue(prop);
-        printArgs({prop});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает значение свойства в формате uchar.
     EXPORT uchar propToByte(id_prop prop)
     {
-        PRINT_FUNC_INFO
-        uchar res = m_cgt->propToByte(prop);
-        printArgs({prop});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает значение свойства в формате int.
     EXPORT int propToInteger(id_prop prop)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->propToInteger(prop);
-        printArgs({prop});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает значение свойства в формате float.
     EXPORT float propToReal(id_prop prop)
     {
-        PRINT_FUNC_INFO
-        float res = m_cgt->propToReal(prop);
-        printArgs({prop});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0.0;
     }
 
     //ru Возвращает значение свойства в виде C строки.
     EXPORT const char *propToString(id_prop prop)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->propToString(prop);
-        printArgs({prop});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -447,12 +261,8 @@ namespace ProxyCgt
     //ru для последующего удаления файла.
     EXPORT int resAddFile(const char *Name)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->resAddFile(Name);
-        printArgs({Name});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Добавляет иконку в ресурсы и в список временных файлов,
@@ -460,24 +270,17 @@ namespace ProxyCgt
     //TODO p - является свойством, которое содержит иконку?
     EXPORT const char *resAddIcon(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddIcon(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+
+        return new char[5] {};
     }
 
     //ru Добавляет строку в ресурсы и в список временных файлов.
     //TODO Что возвращает?
     EXPORT const char *resAddStr(const char *p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddStr(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Добавляет поток (данные) в ресурсы и в список временных файлов,
@@ -486,12 +289,8 @@ namespace ProxyCgt
     //ru работы с библиотекой.
     EXPORT const char *resAddStream(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddStream(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Добавляет звук в ресурсы и в список временных файлов,
@@ -500,12 +299,8 @@ namespace ProxyCgt
     //ru работы с библиотекой.
     EXPORT const char *resAddWave(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddWave(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Добавляет картинку в ресурсы и в список временных файлов,
@@ -514,24 +309,16 @@ namespace ProxyCgt
     //ru работы с библиотекой.
     EXPORT const char *resAddBitmap(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddBitmap(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Добавляет меню в ресурсы и в список временных файлов.
     //[deprecated]
     EXPORT const char *resAddMenu(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddMenu(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -539,120 +326,53 @@ namespace ProxyCgt
     //ru Всего возвращает 0.
     EXPORT int _Debug(const char *Text, int Color)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->_Debug(Text, Color);
-        printArgs({Text, Color});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает значение параметра среды по его индексу
     EXPORT int GetParam(CgtParams index, void *value)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->GetParam(index, value);
 
-        switch (index) {
-        case PARAM_CODE_PATH :
-            printArgs(index, reinterpret_cast<const char *>(value));
-            break;
-        case PARAM_DEBUG_MODE:
-            printArgs(index, *reinterpret_cast<const int *>(value));
-            break;
-        case PARAM_DEBUG_SERVER_PORT:
-            printArgs(index, *reinterpret_cast<const int *>(value));
-            break;
-        case PARAM_DEBUG_CLIENT_PORT:
-            printArgs(index, *reinterpret_cast<const int *>(value));
-            break;
-        case PARAM_PROJECT_PATH:
-            printArgs(index, reinterpret_cast<const char *>(value));
-            break;
-        case PARAM_HIASM_VERSION:
-            printArgs(index, reinterpret_cast<const char *>(value));
-            break;
-        case PARAM_USER_NAME:
-            printArgs(index, reinterpret_cast<const char *>(value));
-            break;
-        case PARAM_USER_MAIL:
-            printArgs(index, reinterpret_cast<const char *>(value));
-            break;
-        case PARAM_PROJECT_NAME:
-            printArgs(index, reinterpret_cast<const char *>(value));
-            break;
-        case PARAM_SDE_WIDTH:
-            printArgs(index, *reinterpret_cast<const int *>(value));
-            break;
-        case PARAM_SDE_HEIGHT:
-            printArgs(index, *reinterpret_cast<const int *>(value));
-            break;
-        case PARAM_COMPILER:
-            printArgs(index, reinterpret_cast<const char *>(value));
-            break;
-        }
-
-        qDebug() << RESULT_STR << res;
-
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает количество элементов в массиве.
     EXPORT int arrCount(id_array a)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->arrCount(a);
-        printArgs({a});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает тип элементов в массиве.
     EXPORT DataTypes arrType(id_array a)
     {
-        PRINT_FUNC_INFO
-        DataTypes res = m_cgt->arrType(a);
-        printArgs({a});
-        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
-        return res;
+        return data_null;
     }
 
     //ru Возвращает имя элемента с индексом Index.
     EXPORT const char *arrItemName(id_array a, int Index)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->arrItemName(a, Index);
-        printArgs({a, Index});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает значение элемента с индексом Index
     EXPORT quintptr arrItemData(id_array a, int Index)
     {
-        PRINT_FUNC_INFO
-        const quintptr res = m_cgt->arrItemData(a, Index);
-        printArgs({a, Index});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Получаем элемент массива в виде свойства,
     //ru для дальнейшей работы с ним cgt::prop* функциями.
     EXPORT id_data arrGetItem(id_array a, int Index)
     {
-        PRINT_FUNC_INFO
-        id_data res = m_cgt->arrGetItem(a, Index);
-        printArgs({a, Index});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -660,12 +380,8 @@ namespace ProxyCgt
     //ru иначе 0.
     EXPORT int isDebug(id_sdk e)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->isDebug(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -673,97 +389,63 @@ namespace ProxyCgt
     //ru Возвращает тип данных.
     EXPORT DataTypes dtType(id_data d)
     {
-        PRINT_FUNC_INFO
-        DataTypes res = m_cgt->dtType(d);
-        printArgs({d});
-        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
-        return res;
+        return data_null;
     }
 
     //ru Возвращает данные в формате: строка в стиле C.
     EXPORT const char *dtStr(id_data d)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->dtStr(d);
-        printArgs({d});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает данные в формате: целое число.
     EXPORT int dtInt(id_data d)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->dtInt(d);
-        printArgs({d});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает данные в формате: число с плавающей запятой.
     EXPORT double dtReal(id_data d)
     {
-        PRINT_FUNC_INFO
-        double res = m_cgt->dtReal(d);
-        printArgs({d});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+
+        return 0.0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает название шрифта.
     EXPORT const char *fntName(id_font f)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->fntName(f);
-        printArgs({f});
-        PRINT_RESULT_STR(res)
 
-        return res;
+
+        return new char[5] {};
     }
     //ru Возвращает размер шрифта.
     EXPORT int fntSize(id_font f)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->fntSize(f);
-        printArgs({f});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
     //ru Возвращает стиль шрифта.
     EXPORT uchar fntStyle(id_font f)
     {
-        printArgs({f});
-        PRINT_FUNC_INFO
-        uchar res = m_cgt->fntStyle(f);
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
     //ru Возвращает цвет шрифта.
     EXPORT uint fntColor(id_font f)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->fntColor(f);
-        printArgs({f});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
     //ru Возвращает кодировку шрифта.
     EXPORT uchar fntCharSet(id_font f)
     {
-        PRINT_FUNC_INFO
-        uchar res = m_cgt->fntCharSet(f);
-        printArgs({f});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
@@ -774,12 +456,8 @@ namespace ProxyCgt
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель..
     EXPORT quintptr elGetData(id_element e)
     {
-        PRINT_FUNC_INFO
-        const quintptr res = m_cgt->elGetData(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Устанавливает пользовательские данные элементу.
@@ -787,33 +465,23 @@ namespace ProxyCgt
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
     EXPORT void elSetData(id_element e, const quintptr data)
     {
-        PRINT_FUNC_INFO
-        m_cgt->elSetData(e, data);
-        printArgs({e, data});
+
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки.
     EXPORT DataTypes ptGetDataType(id_point p)
     {
-        PRINT_FUNC_INFO
-        DataTypes res = m_cgt->ptGetDataType(p);
-        printArgs({p});
-        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
-        return res;
+        return data_null;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID родительского контейнера элемента.
     EXPORT id_sdk elGetParent(id_element e)
     {
-        PRINT_FUNC_INFO
-        id_sdk res = m_cgt->elGetParent(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает количество свойств в списке свойств(из панели свойств).
@@ -821,115 +489,75 @@ namespace ProxyCgt
     //[deprecated]
     EXPORT int elGetPropertyListCount(id_element e)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetPropertyListCount(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает свойство из списка свойств (PropertyList).
     //[deprecated]
     EXPORT id_proplist elGetPropertyListItem(id_element e, int i)
     {
-        PRINT_FUNC_INFO
-        id_proplist res = m_cgt->elGetPropertyListItem(e, i);
-        printArgs({e, i});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ список свойств элемента ~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает имя свойства.
     EXPORT const char *plGetName(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->plGetName(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает описание свойства.
     EXPORT const char *plGetInfo(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->plGetInfo(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает группу свойсва.
     EXPORT const char *plGetGroup(id_prop p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->plGetGroup(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает указатель на данные свойства.
     EXPORT quintptr plGetProperty(id_prop p)
     {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->plGetProperty(p);
-        printArgs({p});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает ID родительского элемента указанного свойства.
     EXPORT id_element plGetOwner(id_prop p)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->plGetOwner(p);
-        printArgs({p});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает описание точки.
     EXPORT const char *ptGetInfo(id_point p)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->ptGetInfo(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID элемента, прилинкованного к указанному свойству.
     EXPORT id_element propGetLinkedElement(id_element e, const char *propName)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->propGetLinkedElement(e, propName);
-        printArgs({e, propName});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает 1, если свойство помечено на перевод.
     EXPORT int propIsTranslate(id_element e, id_prop p)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->propIsTranslate(e, p);
-        printArgs({e, p});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Предназначение данной функции так и небыло найдено.
@@ -937,10 +565,6 @@ namespace ProxyCgt
     //[deprecated]
     EXPORT id_element propGetLinkedElementInfo(id_element e, id_prop prop, char *_int)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->propGetLinkedElementInfo(e, prop, _int);
-        printArgs({e, prop, _int});
-        qDebug() << RESULT_STR << res;
 
         return 0;
     }
@@ -949,34 +573,22 @@ namespace ProxyCgt
     //ru Возвращает SDK контейнера по его индексу.
     EXPORT id_sdk elGetSDKByIndex(id_element e, int index)
     {
-        PRINT_FUNC_INFO
-        id_sdk res = m_cgt->elGetSDKByIndex(e, index);
-        printArgs({e, index});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает количаство контейнеров полиморфного элемента(CI_PolyMulti).
     EXPORT int elGetSDKCount(id_element e)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetSDKCount(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Возвращает имя контейнера по индексу.
     EXPORT const char *elGetSDKName(id_element e, int index)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetSDKName(e, index);
-        printArgs({e, index});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -984,12 +596,8 @@ namespace ProxyCgt
     //ru Возвращает 0, если контейнер не имеет родителя.
     EXPORT id_element sdkGetParent(id_sdk SDK)
     {
-        PRINT_FUNC_INFO
-        id_element res = m_cgt->sdkGetParent(SDK);
-        printArgs({SDK});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -997,58 +605,39 @@ namespace ProxyCgt
     //ru Содержимое поля Interfaces= из конфигурации элемента.
     EXPORT const char *elGetInterface(id_element e)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetInterface(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //ru Возвращает список классов, от которых наследуется элемент
     //ru Содержимое поля Inherit= из конфигурации элемента.
     EXPORT const char *elGetInherit(id_element e)
     {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetInherit(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
 
-        return res;
+        return new char[5] {};
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает 1, если список ресурсов пуст, и 0 в противном случае.
     EXPORT int resEmpty()
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->resEmpty();
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //ru Устанавливает префикс для имен ресурсов.
     EXPORT int resSetPref(const char *pref)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->resSetPref(pref);
-        printArgs({pref});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Добавляет информацию в информационную панель
     EXPORT int _Error(int line, id_element e, const char *text)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->_Error(line, e, text);
-        printArgs({line, e, text});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1056,12 +645,8 @@ namespace ProxyCgt
     //[deprecated]
     EXPORT int elGetGroup(id_element e)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetGroup(e);
-        printArgs({e});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1069,12 +654,8 @@ namespace ProxyCgt
     //[deprecated]
     EXPORT int propSaveToFile(id_prop p, const char *fileName)
     {
-        PRINT_FUNC_INFO
-        int res = m_cgt->propSaveToFile(p, fileName);
-        printArgs({p, fileName});
-        qDebug() << RESULT_STR << res;
 
-        return res;
+        return 0;
     }
 
     //Заполняем массив указателей
@@ -1169,18 +750,13 @@ namespace ProxyCgt
     /*!  Служебные функции   */
 
     //Сохранение указателя для дальнейшей работы с оным
-    void setOriginalCgt(PCodeGenTools cgt)
+    void setModelCgt(DataCollector *collector)
     {
-        m_cgt = cgt;
-    }
-
-    PCodeGenTools getOriginalCgt()
-    {
-        return m_cgt;
+        m_model = collector;
     }
 
     //Получаем массив указателей на функции
-    PCodeGenTools getProxyCgt()
+    PCodeGenTools getEmulateCgt()
     {
         return reinterpret_cast<PCodeGenTools>(arrayPointers);
     }

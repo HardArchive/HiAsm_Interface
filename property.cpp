@@ -5,6 +5,7 @@
 //STL
 
 //Qt
+#include <QFont>
 
 
 Property::Property(id_prop propId, PElement parent)
@@ -107,7 +108,8 @@ void Property::getValues()
     }
     case data_element: {
         quintptr linkedElement = reinterpret_cast<quintptr>(cgt::propGetLinkedElement(m_parent->m_id, m_name.toStdString().c_str()));
-        m_propValues << PropValue(linkedElement, data_element);
+        if (linkedElement)
+            m_propValues << PropValue(linkedElement, data_element);
         break;
     }
     case data_bitmap: {
@@ -133,6 +135,18 @@ void Property::getValues()
     case data_menu: {
         m_propValues << PropValue(QString::fromLocal8Bit(cgt::resAddMenu(m_id)),
                                   data_menu);
+        break;
+    }
+    case data_font: {
+        DFont font;
+        quintptr fontPtr = cgt::propGetValue(m_id);
+        font.name = QString::fromLocal8Bit(cgt::fntName(fontPtr));
+        font.size = cgt::fntSize(fontPtr);
+        font.style = cgt::fntStyle(fontPtr);
+        font.color = cgt::fntColor(fontPtr);
+        font.charset = cgt::fntCharSet(fontPtr);
+
+        m_propValues << PropValue(QVariant::fromValue(font), data_font);
         break;
     }
     default:

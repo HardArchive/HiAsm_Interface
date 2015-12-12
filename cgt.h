@@ -30,7 +30,7 @@ class cgt
 public:
     //!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
     //ru Устанавливаем параметры
-    static void initParams(TBuildProcessRec &params);
+    static void setProxyCgt(TBuildProcessRec &params, PCodeGenTools proxyCgt);
     inline static id_sdk getMainSDK()
     {
         return m_sdk;
@@ -107,8 +107,8 @@ public:
     static const char *propGetName(id_prop prop);
     //ru Возвращает значение свойства в виде указателя на данные.
     static quintptr propGetValue(id_prop prop);
-    //ru Возвращает значение свойства в формате unsigned char.
-    static unsigned char propToByte(id_prop prop);
+    //ru Возвращает значение свойства в формате uchar.
+    static uchar propToByte(id_prop prop);
     //ru Возвращает значение свойства в формате int.
     static int propToInteger(id_prop prop);
     //ru Возвращает значение свойства в формате float.
@@ -182,11 +182,11 @@ public:
     //ru Возвращает размер шрифта.
     static int fntSize(id_font f);
     //ru Возвращает стиль шрифта.
-    static unsigned char fntStyle(id_font f);
+    static uchar fntStyle(id_font f);
     //ru Возвращает цвет шрифта.
-    static int fntColor(id_font f);
+    static uint fntColor(id_font f);
     //ru Возвращает кодировку шрифта.
-    static unsigned char fntCharSet(id_font f);
+    static uchar fntCharSet(id_font f);
     //!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
     //!ru Судя по CodeGen.dpr, используется для хранения указателя (ID элемента) на самого себя.
     //ru Возвращает пользовательские данные элемента.

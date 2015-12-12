@@ -35,7 +35,6 @@ public:
 
 private:
     void collectingData();
-    void fixedPtr();
 
 public:
     friend class DataCollector;
