@@ -1,4 +1,5 @@
 #include "emulatecgt.h"
+#include "container.h"
 
 namespace EmulateCgt
 {
@@ -21,14 +22,18 @@ namespace EmulateCgt
     EXPORT id_element sdkGetElement(id_sdk SDK, int Index)
     {
 
+
         return 0;
     }
 
     //ru Возвращает ID элемента по имени элемента.
     EXPORT id_element sdkGetElementName(id_sdk SDK, char *Name)
     {
+        PContainer container = reinterpret_cast<PContainer>(m_model->m_mapObjects[SDK]);
+        if (!container)
+            return 0;
 
-        return 0;
+        return container->findElementByName(QString::fromLocal8Bit(Name));
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -334,6 +339,46 @@ namespace EmulateCgt
     //ru Возвращает значение параметра среды по его индексу
     EXPORT int GetParam(CgtParams index, void *value)
     {
+        TCgtParams &cgtParams = m_model->m_cgtParams;
+        int result;
+        switch (index) {
+        case PARAM_CODE_PATH :
+            //reinterpret_cast<char *>(value) = cgtParams.PARAM_CODE_PATH.toStdString()[0];
+            break;
+        case PARAM_DEBUG_MODE:
+            *reinterpret_cast<int *>(value) = cgtParams.PARAM_DEBUG_MODE;
+            break;
+        case PARAM_DEBUG_SERVER_PORT:
+            *reinterpret_cast<int *>(value) = cgtParams.PARAM_DEBUG_SERVER_PORT;
+            break;
+        case PARAM_DEBUG_CLIENT_PORT:
+            *reinterpret_cast<int *>(value) = cgtParams.PARAM_DEBUG_CLIENT_PORT;
+            break;
+        case PARAM_PROJECT_PATH:
+            reinterpret_cast<char *>(value);
+            break;
+        case PARAM_HIASM_VERSION:
+            reinterpret_cast<char *>(value);
+            break;
+        case PARAM_USER_NAME:
+            reinterpret_cast<char *>(value);
+            break;
+        case PARAM_USER_MAIL:
+            reinterpret_cast<char *>(value);
+            break;
+        case PARAM_PROJECT_NAME:
+            reinterpret_cast<char *>(value);
+            break;
+        case PARAM_SDE_WIDTH:
+            *reinterpret_cast<int *>(value) = cgtParams.PARAM_SDE_WIDTH;
+            break;
+        case PARAM_SDE_HEIGHT:
+            *reinterpret_cast<int *>(value) = cgtParams.PARAM_SDE_HEIGHT;
+            break;
+        case PARAM_COMPILER:
+            reinterpret_cast<char *>(value);
+            break;
+        }
 
         return 0;
     }
@@ -376,12 +421,11 @@ namespace EmulateCgt
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает >0, если запускаем cборку и запуск схемы в режиме отладки,
+    //ru Возвращаем >0, если запускаем схемы в режиме отладки,
     //ru иначе 0.
     EXPORT int isDebug(id_sdk e)
     {
-
-        return 0;
+        return m_model->m_isDebug;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1168,19 +1168,13 @@ namespace ProxyCgt
 
     /*!  Служебные функции   */
 
-    //Сохранение указателя для дальнейшей работы с оным
-    void setOriginalCgt(PCodeGenTools cgt)
+    void setProxiedCgt(PCodeGenTools cgt)
     {
         m_cgt = cgt;
     }
 
-    PCodeGenTools getOriginalCgt()
-    {
-        return m_cgt;
-    }
-
     //Получаем массив указателей на функции
-    PCodeGenTools getProxyCgt()
+    PCodeGenTools getCgt()
     {
         return reinterpret_cast<PCodeGenTools>(arrayPointers);
     }

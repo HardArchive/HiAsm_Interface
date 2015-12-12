@@ -10,7 +10,7 @@
 
 class Container
 {
-private:
+public:
 
     //Данные контейнера
     const id_sdk m_id;
@@ -25,9 +25,6 @@ public:
     Container(id_sdk id, PElement parent);
 
 public:
-    friend class DataCollector;
-    friend class Element;
-    friend class Point;
-    friend class Property;
+    id_element findElementByName(QString name);
 
 };

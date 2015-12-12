@@ -11,7 +11,7 @@
 
 class Point
 {
-private:
+public:
     //ru Данные
     const id_point m_id;
     id_point m_linkPoint{};
@@ -33,12 +33,6 @@ public:
     explicit Point(id_point pt, PElement parent);
     ~Point();
 
-private:
-    void collectingData();
-
 public:
-    friend class DataCollector;
-    friend class Container;
-    friend class Element;
-    friend class Property;
+    void collectingData();
 };

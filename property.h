@@ -10,7 +10,7 @@
 
 class Property
 {
-private:
+public:
     //ru Данные
     const id_prop m_id;
     QString m_name;
@@ -27,14 +27,8 @@ public:
     Property(id_prop propId, PElement parent);
     ~Property();
 
-private:
+public:
     void collectingData();
     void getValues();
-
-public:
-    friend class DataCollector;
-    friend class Container;
-    friend class Element;
-    friend class Point;
 
 };

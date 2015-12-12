@@ -14,7 +14,7 @@
 
 class Element
 {
-private:
+public:
     //ru Данные элемента
     const id_element m_id{};
     id_element m_linkMain{};
@@ -49,13 +49,7 @@ public:
     explicit Element(id_element eId, PContainer parent);
     ~Element();
 
-private:
-    void collectingData();
-
 public:
-    friend class DataCollector;
-    friend class Container;
-    friend class Point;
-    friend class Property;
+    void collectingData();
 
 };

@@ -5,6 +5,7 @@
 #include "datacollector.h"
 #include "element.h"
 #include "emulatecgt.h"
+#include "proxycgt.h"
 
 //NATIVE
 #include <windows.h>
@@ -123,20 +124,23 @@ DLLEXPORT int buildPrepareProc(TBuildPrepareRec &params)
 DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 {
     PRINT_FUNC_INFO
+    cgt::init(params);
 
 #ifdef DATACOLLECTOR
     DataCollector dataCollector;
     EmulateCgt::setModelCgt(&dataCollector);
-    cgt::setProxyCgt(params, EmulateCgt::getEmulateCgt());
-
-    return original_buildProcessProc(params); //CG_SUCCESS
+    ProxyCgt::setProxiedCgt(EmulateCgt::getEmulateCgt());
 #else
-    cgt::setProxyCgt(params, params.cgt);
-    int res = original_buildProcessProc(params);
+    ProxyCgt::setProxiedCgt(params.cgt);
+#endif
 
+#ifdef PROXYCGT
+    cgt::setProxyCgt(ProxyCgt::getCgt());
+#endif
+
+    int res = original_buildProcessProc(params);  //CG_SUCCESS
     qDebug() << RESULT_STR << res;
     return res;
-#endif
 }
 
 DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
