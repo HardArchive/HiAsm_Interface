@@ -18,14 +18,14 @@ private:
     PContainer m_parent{};
     PElement m_linkMainPtr{};
 
-    QString m_className{};
-    QString m_codeName{};
+    QString m_className;
+    QString m_codeName;
     ElementClass m_classIndex{};
     ElementFlgs m_flags{};
-    QString m_inherit{};
+    QString m_inherit;
     int m_group{};
-    QString m_interface{};
-    QString m_infSub{};
+    QString m_interface;
+    QString m_infSub;
     bool m_linkIs{};
     int m_propCount{};
     int m_ptCount{};

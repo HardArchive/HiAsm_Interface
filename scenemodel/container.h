@@ -12,7 +12,7 @@ class Container
 private:
     const quintptr m_id;
     PElement m_parent{};
-    Elements m_elements{};
+    Elements m_elements;
 
 public:
     Container(quintptr id, PElement parent);

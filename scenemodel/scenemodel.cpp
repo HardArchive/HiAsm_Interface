@@ -25,6 +25,8 @@ SceneModel::SceneModel()
 
     //ru Корректировка указателей
     fixedPtr();
+
+    int t;
 }
 
 void SceneModel::collectingData()
@@ -235,17 +237,14 @@ quintptr SceneModel::getIdElementFromSDKByIndex(quintptr id_sdk, int index) cons
     const PContainer c = getContainerById(id_sdk);
     if (!c)
         return 0;
-
-    PElement e = c->getElementByIndex(index);
-    if (e)
-        return e->getId();
-
-    return 0;
+    return c->getIdElementByIndex(index);
 }
 
-uint SceneModel::getCountContainers(quintptr id_sdk) const
+uint SceneModel::getCountElementsInContainer(quintptr id_sdk) const
 {
     const PContainer c = getContainerById(id_sdk);
     if (!c)
         return 0;
+
+    return c->m_elements.size();
 }

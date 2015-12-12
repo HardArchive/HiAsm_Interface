@@ -37,6 +37,6 @@ public:
     PContainer getContainerById(quintptr id_sdk) const;
     PElement getElementFromSDKByIndex(quintptr id_sdk, int index) const;
     quintptr getIdElementFromSDKByIndex(quintptr id_sdk, int index) const;
-    uint getCountContainers(quintptr id_sdk) const;
+    uint getCountElementsInContainer(quintptr id_sdk) const;
 
 };
