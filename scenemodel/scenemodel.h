@@ -8,11 +8,10 @@
 
 //Qt
 
-
 class SceneModel
 {
 private:
-    const quintptr m_sdk {};
+    const quintptr m_sdk;
     bool m_isDebug{};
     TCgtParams m_cgtParams{};
 
