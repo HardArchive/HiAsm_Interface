@@ -1,19 +1,18 @@
 //Project
 #include "element.h"
+#include "point.h"
+#include "property.h"
+#include "cgt/cgt.h"
 
 //STL
 
 //Qt
 
-Element::Element(id_element eId, PContainer parent)
+Element::Element(quintptr eId, PContainer parent)
     : m_id(eId)
     , m_parent(parent)
 {
     collectingData();
-}
-
-Element::~Element()
-{
 }
 
 void Element::collectingData()
@@ -36,13 +35,18 @@ void Element::collectingData()
 
     //ru Получаем информацию о точках
     for (int i = 0; i < m_ptCount; ++i) {
-        id_prop pointId = cgt::elGetPt(m_id, i);
+        quintptr pointId = cgt::elGetPt(m_id, i);
         m_points.append(new Point(pointId, this));
     }
 
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propCount; ++i) {
-        id_prop propId = cgt::elGetProperty(m_id, i);
+        quintptr propId = cgt::elGetProperty(m_id, i);
         m_properties.append(new Property(propId, this));
     }
+}
+
+quintptr Element::getId() const
+{
+    return m_id;
 }

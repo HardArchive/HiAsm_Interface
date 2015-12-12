@@ -1,7 +1,7 @@
 #pragma once
 //Project
-#include "cgt.h"
-#include "global.h"
+#include "types.h"
+#include "cgt/CGTShare.h"
 
 //STL
 
@@ -17,7 +17,6 @@ struct DFont {
     uchar charset{};
 };
 Q_DECLARE_METATYPE(DFont)
-
 
 typedef QPair<QVariant, DataTypes> PropValue;
 typedef QList<PropValue> PropValues;

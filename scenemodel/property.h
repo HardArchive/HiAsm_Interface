@@ -1,7 +1,8 @@
 #pragma once
 
 //Project
-#include "datatypes.h"
+#include "types.h"
+#include "proptypes.h"
 
 //STL
 
@@ -10,9 +11,9 @@
 
 class Property
 {
-public:
+private:
     //ru Данные
-    const id_prop m_id;
+    const quintptr m_id;
     QString m_name;
     DataTypes m_type{};
     int m_isTranslate{};
@@ -24,11 +25,13 @@ public:
     PropValues m_propValues;
 
 public:
-    Property(id_prop propId, PElement parent);
-    ~Property();
+    Property(quintptr propId, PElement parent);
+    friend class SceneModel;
+
+private:
+    void collectingData();
 
 public:
-    void collectingData();
-    void getValues();
+    quintptr getId() const;
 
 };

@@ -2,23 +2,18 @@
 #include "point.h"
 #include "container.h"
 #include "element.h"
-
-#include "cgt.h"
+#include "cgt/cgt.h"
 
 
 //STL
 
 //Qt
 
-Point::Point(id_point pt, PElement parent)
+Point::Point(quintptr pt, PElement parent)
     : m_id(pt)
     , m_parent(parent)
 {
     collectingData();
-}
-
-Point::~Point()
-{
 }
 
 void Point::collectingData()
@@ -31,5 +26,10 @@ void Point::collectingData()
     m_RLinkPoint = cgt::ptGetRLinkPoint(m_id);
     m_type = cgt::ptGetType(m_id);
     m_dpeName = QString::fromLocal8Bit(cgt::pt_dpeGetName(m_id));
+}
+
+quintptr Point::getId() const
+{
+    return m_id;
 }
 

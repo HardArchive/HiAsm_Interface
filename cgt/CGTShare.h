@@ -274,24 +274,6 @@ enum ProjectFlags {
 };
 typedef QFlags<ProjectFlags> ProjectFlgs;
 
-//!ru Типы используемые в CodeGenTools.
-//ru Контейнер
-typedef quintptr id_sdk;
-//ru Элемент
-typedef quintptr id_element;
-//ru Точка
-typedef quintptr id_point;
-//ru Cвойство
-typedef quintptr id_prop;
-//ru Список свойств
-typedef quintptr id_proplist;
-//ru Массив
-typedef quintptr id_array;
-//ru Данные
-typedef quintptr id_data;
-//ru Шрифт
-typedef quintptr id_font;
-
 //!ru Структуры необходимые для работы кодогенератора и интерфейса.
 
 struct TCodeGenTools;
@@ -319,7 +301,7 @@ typedef TCGrec *PTCGrep;
 
 struct TBuildProcessRec {
     PCodeGenTools cgt{};
-    id_sdk sdk{};
+    quintptr sdk{};
     PTCGrep result{};
 };
 
@@ -340,8 +322,8 @@ struct TSynParams {
 
 //Требуется для export функции - hintForElement.
 struct THintParams {
-    id_point point{};
-    id_sdk sdk{};
+    quintptr point{};
+    quintptr sdk{};
     PCodeGenTools cgt{};
     char *hint{};
 };
@@ -359,83 +341,83 @@ struct TCodeGenTools {
 #define CALLBACK __stdcall
     //!~~~~~~~~~~~~~~~~~~~~~~~~ контейнер ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает количество элементов в контейнере.
-    CALLBACK int (*sdkGetCount)(id_sdk SDK);
+    CALLBACK int (*sdkGetCount)(quintptr SDK);
     //ru Возвращает ID элемента по его Z-положению(индексу) в контейнере.
-    CALLBACK id_element(*sdkGetElement)(id_sdk SDK, int Index);
+    CALLBACK quintptr(*sdkGetElement)(quintptr SDK, int Index);
     //ru Возвращает ID элемента по имени элемента.
-    CALLBACK id_element(*sdkGetElementName)(id_sdk SDK, char *Name);
+    CALLBACK quintptr(*sdkGetElementName)(quintptr SDK, char *Name);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает флаги элемента.
-    CALLBACK ElementFlags(*elGetFlag)(id_element e);
+    CALLBACK ElementFlags(*elGetFlag)(quintptr e);
     //ru Возвращает количество свойств элемента.
-    CALLBACK int (*elGetPropCount)(id_element e);
+    CALLBACK int (*elGetPropCount)(quintptr e);
     //ru Возвращает свойство элемента по индексу, с порядковым номером из INI.
-    CALLBACK id_prop(*elGetProperty)(id_element e, int Index);
+    CALLBACK quintptr(*elGetProperty)(quintptr e, int Index);
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
-    CALLBACK bool (*elIsDefProp)(id_element e, int Index);
+    CALLBACK bool (*elIsDefProp)(quintptr e, int Index);
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
-    CALLBACK id_element(*elSetCodeName)(id_element e, const char *Name);
+    CALLBACK quintptr(*elSetCodeName)(quintptr e, const char *Name);
     //ru Возвращает уникальное имя элемента
-    CALLBACK const char *(*elGetCodeName)(id_element e);
+    CALLBACK const char *(*elGetCodeName)(quintptr e);
     //ru Возвращает имя класса элемента.
-    CALLBACK const char *(*elGetClassName)(id_element e);
+    CALLBACK const char *(*elGetClassName)(quintptr e);
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
-    CALLBACK const char *(*elGetInfSub)(id_element e);
+    CALLBACK const char *(*elGetInfSub)(quintptr e);
     //ru Возвращает общее количество видимых точек у элемента.
-    CALLBACK int (*elGetPtCount)(id_element e);
+    CALLBACK int (*elGetPtCount)(quintptr e);
     //ru Возвращает ID точки по её индексу.
-    CALLBACK id_point(*elGetPt)(id_element e, int i);
+    CALLBACK quintptr(*elGetPt)(quintptr e, int i);
     //ru Возвращает ID точки по её имени.
     //[deprecated]
-    CALLBACK id_point(*elGetPtName)(id_element e, const char *Name);
+    CALLBACK quintptr(*elGetPtName)(quintptr e, const char *Name);
     //ru Возвращает индекс класса элемента.
-    CALLBACK ElementClass(*elGetClassIndex)(id_element e);
+    CALLBACK ElementClass(*elGetClassIndex)(quintptr e);
     //ru Возвращает ID внутренней схемы для контейнеров
     //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
-    CALLBACK id_sdk(*elGetSDK)(id_element e);
+    CALLBACK quintptr(*elGetSDK)(quintptr e);
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
-    CALLBACK bool (*elLinkIs)(id_element e);
+    CALLBACK bool (*elLinkIs)(quintptr e);
     //ru Возвращает ID главного элемента(тот, на который ссылаются другие).
-    CALLBACK id_element(*elLinkMain)(id_element e);
+    CALLBACK quintptr(*elLinkMain)(quintptr e);
     //ru Помещает в переменные "X" и "Y", позицию элемента в редакторе схем.
-    CALLBACK void (*elGetPos)(id_element e, int &X, int &Y);
+    CALLBACK void (*elGetPos)(quintptr e, int &X, int &Y);
     //ru Помещает в переменные "W" и "H", размеры элемента
-    CALLBACK void (*elGetSize)(id_element e, int &W, int &H);
+    CALLBACK void (*elGetSize)(quintptr e, int &W, int &H);
     //ru Возвращает внутренний ID элемента (отличается от внешнего).
     //[deprecated]
-    CALLBACK int (*elGetEID)(id_element e);
+    CALLBACK int (*elGetEID)(quintptr e);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID точки, с которой соединена указанная.
     //TODO [deprecated?], в CodeGen.dpr не используется.
-    CALLBACK id_point(*ptGetLinkPoint)(id_point p);
+    CALLBACK quintptr(*ptGetLinkPoint)(quintptr p);
     //ru Возвращает ID точки, с которой соединена указанная точка,
     //ru без учета точек разрыва и хабов.
-    CALLBACK id_point(*ptGetRLinkPoint)(id_point p);
+    CALLBACK quintptr(*ptGetRLinkPoint)(quintptr p);
     //ru Возвращает тип точек(константы PointTypes).
-    CALLBACK PointTypes(*ptGetType)(id_point p);
+    CALLBACK PointTypes(*ptGetType)(quintptr p);
     //ru Возвращает имя точки.
-    CALLBACK const char *(*ptGetName)(id_point p);
+    CALLBACK const char *(*ptGetName)(quintptr p);
     //ru Возвращает ID элемента, которому принадлежит точка.
-    CALLBACK id_element(*ptGetParent)(id_point p);
+    CALLBACK quintptr(*ptGetParent)(quintptr p);
     //ru Возвращает тип точки (PointTypes).
-    CALLBACK PointTypes(*ptGetIndex)(id_point p);
+    CALLBACK PointTypes(*ptGetIndex)(quintptr p);
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
-    CALLBACK const char *(*pt_dpeGetName)(id_point p);
+    CALLBACK const char *(*pt_dpeGetName)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип свойства.
-    CALLBACK DataTypes(*propGetType)(id_prop prop);
+    CALLBACK DataTypes(*propGetType)(quintptr prop);
     //ru Возвращает имя свойства.
-    CALLBACK const char *(*propGetName)(id_prop prop);
+    CALLBACK const char *(*propGetName)(quintptr prop);
     //ru Возвращает значение свойства в виде указателя на данные.
-    CALLBACK quintptr(*propGetValue)(id_prop prop);
+    CALLBACK quintptr(*propGetValue)(quintptr prop);
     //ru Возвращает значение свойства в формате uchar.
-    CALLBACK uchar (*propToByte)(id_prop prop);
+    CALLBACK uchar (*propToByte)(quintptr prop);
     //ru Возвращает значение свойства в формате int.
-    CALLBACK int (*propToInteger)(id_prop prop);
+    CALLBACK int (*propToInteger)(quintptr prop);
     //ru Возвращает значение свойства в формате float.
-    CALLBACK float (*propToReal)(id_prop prop);
+    CALLBACK float (*propToReal)(quintptr prop);
     //ru Возвращает значение свойства в виде C строки.
-    CALLBACK const char *(*propToString)(id_prop prop);
+    CALLBACK const char *(*propToString)(quintptr prop);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Добавляет имя файла в общий список временных файлов
     //ru для последующего удаления файла.
@@ -443,7 +425,7 @@ struct TCodeGenTools {
     //ru Добавляет иконку в ресурсы и в список временных файлов,
     //ru и возвращают имя временного файла.
     //TODO p - является свойством, которое содержит иконку?
-    CALLBACK const char *(*resAddIcon)(id_prop p);
+    CALLBACK const char *(*resAddIcon)(quintptr p);
     //ru Добавляет строку в ресурсы и в список временных файлов.
     //TODO Что возвращает?
     CALLBACK const char *(*resAddStr)(const char *p);
@@ -451,20 +433,20 @@ struct TCodeGenTools {
     //ru и возвращает имя временного файла.
     //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
     //ru работы с библиотекой.
-    CALLBACK const char *(*resAddStream)(id_prop p);
+    CALLBACK const char *(*resAddStream)(quintptr p);
     //ru Добавляет звук в ресурсы и в список временных файлов,
     //ru и возвращает имя временного файла.
     //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
     //ru работы с библиотекой.
-    CALLBACK const char *(*resAddWave)(id_prop p);
+    CALLBACK const char *(*resAddWave)(quintptr p);
     //ru Добавляет картинку в ресурсы и в список временных файлов,
     //ru и возвращает имя временного файла.
     //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
     //ru работы с библиотекой.
-    CALLBACK const char *(*resAddBitmap)(id_prop p);
+    CALLBACK const char *(*resAddBitmap)(quintptr p);
     //ru Добавляет меню в ресурсы и в список временных файлов.
     //[deprecated]
-    CALLBACK const char *(*resAddMenu)(id_prop p);
+    CALLBACK const char *(*resAddMenu)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Выводит строку Text в окно Отладка цветом Color
     //ru Всего возвращает 0.
@@ -474,104 +456,104 @@ struct TCodeGenTools {
     CALLBACK int (*GetParam)(CgtParams index, void *value);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает количество элементов в массиве.
-    CALLBACK int (*arrCount)(id_array a);
+    CALLBACK int (*arrCount)(quintptr a);
     //ru Возвращает тип элементов в массиве.
-    CALLBACK DataTypes(*arrType)(id_array a);
+    CALLBACK DataTypes(*arrType)(quintptr a);
     //ru Возвращает имя элемента с индексом Index.
-    CALLBACK const char *(*arrItemName)(id_array a, int Index);
+    CALLBACK const char *(*arrItemName)(quintptr a, int Index);
     //ru Возвращает значение элемента с индексом Index
-    CALLBACK quintptr(*arrItemData)(id_array a, int Index);
+    CALLBACK quintptr(*arrItemData)(quintptr a, int Index);
     //ru Получаем элемент массива в виде свойства,
     //ru для дальнейшей работы с ним cgt::prop* функциями.
-    CALLBACK id_data(*arrGetItem)(id_array a, int Index);
+    CALLBACK quintptr(*arrGetItem)(quintptr a, int Index);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает >0, если запускаем cборку и запуск схемы в режиме отладки,
     //ru иначе 0.
-    CALLBACK int (*isDebug)(id_sdk e);
+    CALLBACK int (*isDebug)(quintptr e);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных.
-    CALLBACK DataTypes(*dtType)(id_data d);
+    CALLBACK DataTypes(*dtType)(quintptr d);
     //ru Возвращает данные в формате: строка в стиле C.
-    CALLBACK const char *(*dtStr)(id_data d);
+    CALLBACK const char *(*dtStr)(quintptr d);
     //ru Возвращает данные в формате: целое число.
-    CALLBACK int (*dtInt)(id_data d);
+    CALLBACK int (*dtInt)(quintptr d);
     //ru Возвращает данные в формате: число с плавающей запятой.
-    CALLBACK double (*dtReal)(id_data d);
+    CALLBACK double (*dtReal)(quintptr d);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает название шрифта.
-    CALLBACK const char *(*fntName)(id_font f);
+    CALLBACK const char *(*fntName)(quintptr f);
     //ru Возвращает размер шрифта.
-    CALLBACK int (*fntSize)(id_font f);
+    CALLBACK int (*fntSize)(quintptr f);
     //ru Возвращает стиль шрифта.
-    CALLBACK uchar (*fntStyle)(id_font f);
+    CALLBACK uchar (*fntStyle)(quintptr f);
     //ru Возвращает цвет шрифта.
-    CALLBACK uint (*fntColor)(id_font f);
+    CALLBACK uint (*fntColor)(quintptr f);
     //ru Возвращает кодировку шрифта.
-    CALLBACK uchar (*fntCharSet)(id_font f);
+    CALLBACK uchar (*fntCharSet)(quintptr f);
     //!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
     //!ru Судя по CodeGen.dpr, используется для хранения указателя (ID элемента) на самого себя.
     //ru Возвращает пользовательские данные элемента.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель..
-    CALLBACK quintptr(*elGetData)(id_element e);
+    CALLBACK quintptr(*elGetData)(quintptr e);
     //ru Устанавливает пользовательские данные элементу.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
-    CALLBACK void (*elSetData)(id_element e, const quintptr data);
+    CALLBACK void (*elSetData)(quintptr e, const quintptr data);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки.
-    CALLBACK DataTypes(*ptGetDataType)(id_point p);
+    CALLBACK DataTypes(*ptGetDataType)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID родительского контейнера элемента.
-    CALLBACK id_sdk(*elGetParent)(id_element e);
+    CALLBACK quintptr(*elGetParent)(quintptr e);
     //ru Возвращает количество свойств в списке свойств(из панели свойств).
     //ru В RTCG используется аналогичная функция - elGetPropCount.
     //[deprecated]
-    CALLBACK int (*elGetPropertyListCount)(id_element e);
+    CALLBACK int (*elGetPropertyListCount)(quintptr e);
     //ru Возвращает свойство из списка свойств (PropertyList).
     //[deprecated]
-    CALLBACK id_proplist(*elGetPropertyListItem)(id_element e, int i);
+    CALLBACK quintptr(*elGetPropertyListItem)(quintptr e, int i);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ список свойств элемента ~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает имя свойства.
-    CALLBACK const char *(*plGetName)(id_prop p);
+    CALLBACK const char *(*plGetName)(quintptr p);
     //ru Возвращает описание свойства.
-    CALLBACK const char *(*plGetInfo)(id_prop p);
+    CALLBACK const char *(*plGetInfo)(quintptr p);
     //ru Возвращает группу свойсва.
-    CALLBACK const char *(*plGetGroup)(id_prop p);
+    CALLBACK const char *(*plGetGroup)(quintptr p);
     //ru Возвращает указатель на данные свойства.
-    CALLBACK quintptr(*plGetProperty)(id_prop p);
+    CALLBACK quintptr(*plGetProperty)(quintptr p);
     //ru Возвращает ID родительского элемента указанного свойства.
-    CALLBACK id_element(*plGetOwner)(id_prop p);
+    CALLBACK quintptr(*plGetOwner)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает описание точки.
-    CALLBACK const char *(*ptGetInfo)(id_point p);
+    CALLBACK const char *(*ptGetInfo)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID элемента, прилинкованного к указанному свойству.
-    CALLBACK id_element(*propGetLinkedElement)(id_element e, const char *propName);
+    CALLBACK quintptr(*propGetLinkedElement)(quintptr e, const char *propName);
     //ru Возвращает 1, если свойство помечено на перевод.
-    CALLBACK int (*propIsTranslate)(id_element e, id_prop p);
+    CALLBACK int (*propIsTranslate)(quintptr e, quintptr p);
     //ru Предназначение данной функции так и небыло найдено.
     //ru Всегда возвращает 0.
     //[deprecated]
-    CALLBACK id_element(*propGetLinkedElementInfo)(id_element e, id_prop prop, char *_int);
+    CALLBACK quintptr(*propGetLinkedElementInfo)(quintptr e, quintptr prop, char *_int);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает SDK контейнера по его индексу.
-    CALLBACK id_sdk(*elGetSDKByIndex)(id_element e, int index);
+    CALLBACK quintptr(*elGetSDKByIndex)(quintptr e, int index);
     //ru Возвращает количаство контейнеров полиморфного элемента(CI_PolyMulti).
-    CALLBACK int (*elGetSDKCount)(id_element e);
+    CALLBACK int (*elGetSDKCount)(quintptr e);
     //ru Возвращает имя контейнера по индексу.
-    CALLBACK const char *(*elGetSDKName)(id_element e, int index);
+    CALLBACK const char *(*elGetSDKName)(quintptr e, int index);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает элемент родитель для данного SDK.
     //ru Возвращает 0, если контейнер не имеет родителя.
-    CALLBACK id_element(*sdkGetParent)(id_sdk SDK);
+    CALLBACK quintptr(*sdkGetParent)(quintptr SDK);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает интерфейсы, предоставляемые элементом.
     //ru Содержимое поля Interfaces= из конфигурации элемента.
-    CALLBACK const char *(*elGetInterface)(id_element e);
+    CALLBACK const char *(*elGetInterface)(quintptr e);
     //ru Возвращает список классов, от которых наследуется элемент
     //ru Содержимое поля Inherit= из конфигурации элемента.
-    CALLBACK const char *(*elGetInherit)(id_element e);
+    CALLBACK const char *(*elGetInherit)(quintptr e);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает 1, если список ресурсов пуст, и 0 в противном случае.
     CALLBACK int (*resEmpty)();
@@ -579,13 +561,13 @@ struct TCodeGenTools {
     CALLBACK int (*resSetPref)(const char *pref);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Добавляет информацию в информационную панель
-    CALLBACK int (*_Error)(int line, id_element e, const char *text);
+    CALLBACK int (*_Error)(int line, quintptr e, const char *text);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID группы, к которой принадлежит элемент и 0, если группа отсутствует
     //[deprecated]
-    CALLBACK int (*elGetGroup)(id_element e);
+    CALLBACK int (*elGetGroup)(quintptr e);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Сохраняет данные свойства в файл.
     //[deprecated]
-    CALLBACK int (*propSaveToFile)(id_prop p, const char *fileName);
+    CALLBACK int (*propSaveToFile)(quintptr p, const char *fileName);
 };

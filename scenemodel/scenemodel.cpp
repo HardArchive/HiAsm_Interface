@@ -1,18 +1,17 @@
-//Project
-#include "datacollector.h"
+//Scene model
+#include "scenemodel.h"
 #include "container.h"
 #include "element.h"
 #include "point.h"
 #include "property.h"
-
-#include "cgt.h"
+#include "cgt/cgt.h"
 
 //STL
 
 //Qt
 #include <QDebug>
 
-DataCollector::DataCollector()
+SceneModel::SceneModel()
     : m_sdk(cgt::getMainSDK())
 {
     //ru Собираем данные о среде
@@ -24,20 +23,15 @@ DataCollector::DataCollector()
     //ru Инициализация карты объектов
     initMapObjects();
 
-    //ru Исправляем указатели
+    //ru Корректировка указателей
     fixedPtr();
 }
 
-DataCollector::~DataCollector()
-{
-
-}
-
-void DataCollector::collectingData()
+void SceneModel::collectingData()
 {
     m_isDebug = cgt::isDebug(m_sdk);
 
-    id_element eId = cgt::sdkGetElement(m_sdk, 0);
+    quintptr eId = cgt::sdkGetElement(m_sdk, 0);
 
     int iBuf{};
     QByteArray buf("", 512);
@@ -95,14 +89,14 @@ void DataCollector::collectingData()
     m_cgtParams.PARAM_COMPILER = QString::fromLocal8Bit(buf);
 }
 
-PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
+PContainer SceneModel::grabberSDK(quintptr sdk, PElement parent)
 {
     PContainer container = new Container(sdk, parent);
     m_containers.append(container);
 
     int countElements = cgt::sdkGetCount(sdk);
     for (int i = 0; i < countElements; ++i) {
-        id_element eId = cgt::sdkGetElement(sdk, i);
+        quintptr eId = cgt::sdkGetElement(sdk, i);
 
         PElement element = new Element(eId, container);
 
@@ -120,7 +114,7 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
 
                 for (int i = 0; i < countContainers; ++i) {
                     //ru Получаем контейнер
-                    id_sdk idSDK = cgt::elGetSDKByIndex(eId, i);
+                    quintptr idSDK = cgt::elGetSDKByIndex(eId, i);
 
                     //ru Добавляем контейнер в элемент
                     element->m_containers << grabberSDK(idSDK, element);
@@ -128,7 +122,7 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
             } else { //ru Элемент содержит обычный контейнер
 
                 //ru Получаем ID контейнера элемента
-                id_sdk idSDK = cgt::elGetSDK(eId);
+                quintptr idSDK = cgt::elGetSDK(eId);
 
                 //ru Добавляем контейнер в элемент
                 element->m_containers << grabberSDK(idSDK, element);
@@ -142,36 +136,84 @@ PContainer DataCollector::grabberSDK(id_sdk sdk, PElement parent)
     return container;
 }
 
-void DataCollector::initMapObjects()
+void SceneModel::initMapObjects()
 {
     for (PContainer c : m_containers) {
-        m_mapObjects.insert(c->m_id, reinterpret_cast<quintptr>(c));
+        m_mapContainers.insert(c->m_id, reinterpret_cast<quintptr>(c));
 
         for (PElement e : c->m_elements) {
-            m_mapObjects.insert(e->m_id, reinterpret_cast<quintptr>(e));
+            m_mapElements.insert(e->m_id, reinterpret_cast<quintptr>(e));
 
             for (PPoint p : e->m_points) {
-                m_mapObjects.insert(p->m_id, reinterpret_cast<quintptr>(p));
+                m_mapPoints.insert(p->m_id, reinterpret_cast<quintptr>(p));
             }
 
             for (PProperty p : e->m_properties) {
-                m_mapObjects.insert(p->m_id, reinterpret_cast<quintptr>(p));
+                m_mapProperties.insert(p->m_id, reinterpret_cast<quintptr>(p));
             }
         }
     }
 }
 
-void DataCollector::fixedPtr()
+void SceneModel::fixedPtr()
 {
     for (PContainer c : m_containers) {
         for (PElement e : c->m_elements) {
             if (e->m_linkMain != e->m_id)
-                e->m_linkMainPtr = reinterpret_cast<PElement>(m_mapObjects[e->m_linkMain]);
+                e->m_linkMainPtr = reinterpret_cast<PElement>(m_mapElements[e->m_linkMain]);
 
             for (PPoint p : e->m_points) {
-                p->m_RLinkPointPtr = reinterpret_cast<PPoint>(m_mapObjects[p->m_RLinkPoint]);
-                p->m_linkPointPtr = reinterpret_cast<PPoint>(m_mapObjects[p->m_RLinkPoint]);
+                p->m_RLinkPointPtr = reinterpret_cast<PPoint>(m_mapPoints[p->m_RLinkPoint]);
+                p->m_linkPointPtr = reinterpret_cast<PPoint>(m_mapPoints[p->m_RLinkPoint]);
             }
         }
+    }
+}
+
+
+bool SceneModel::isDebug() const
+{
+    return m_isDebug;
+}
+
+void SceneModel::getCgtParam(CgtParams index, void *value) const
+{
+    switch (index) {
+    case PARAM_CODE_PATH :
+        reinterpret_cast<char *>(value);
+        break;
+    case PARAM_DEBUG_MODE:
+        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_DEBUG_MODE;
+        break;
+    case PARAM_DEBUG_SERVER_PORT:
+        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_DEBUG_SERVER_PORT;
+        break;
+    case PARAM_DEBUG_CLIENT_PORT:
+        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_DEBUG_CLIENT_PORT;
+        break;
+    case PARAM_PROJECT_PATH:
+        reinterpret_cast<char *>(value);
+        break;
+    case PARAM_HIASM_VERSION:
+        reinterpret_cast<char *>(value);
+        break;
+    case PARAM_USER_NAME:
+        reinterpret_cast<char *>(value);
+        break;
+    case PARAM_USER_MAIL:
+        reinterpret_cast<char *>(value);
+        break;
+    case PARAM_PROJECT_NAME:
+        reinterpret_cast<char *>(value);
+        break;
+    case PARAM_SDE_WIDTH:
+        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_SDE_WIDTH;
+        break;
+    case PARAM_SDE_HEIGHT:
+        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_SDE_HEIGHT;
+        break;
+    case PARAM_COMPILER:
+        reinterpret_cast<char *>(value);
+        break;
     }
 }

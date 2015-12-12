@@ -1,22 +1,18 @@
 //Project
 #include "property.h"
 #include "element.h"
+#include "cgt/cgt.h"
 
 //STL
 
 //Qt
 #include <QFont>
 
-
-Property::Property(id_prop propId, PElement parent)
+Property::Property(quintptr propId, PElement parent)
     : m_id(propId)
     , m_parent(parent)
 {
     collectingData();
-}
-
-Property::~Property()
-{
 }
 
 void Property::collectingData()
@@ -24,11 +20,6 @@ void Property::collectingData()
     m_name = QString::fromLocal8Bit(cgt::propGetName(m_id));
     m_type = cgt::propGetType(m_id);
 
-    getValues();
-}
-
-void Property::getValues()
-{
     switch (m_type) {
     case data_int: {
         m_propValues << PropValue(cgt::propToInteger(m_id), data_int);
@@ -61,7 +52,7 @@ void Property::getValues()
         break;
     }
     case data_data: {
-        id_data data = static_cast<id_data>(cgt::propGetValue(m_id));
+        quintptr data = static_cast<quintptr>(cgt::propGetValue(m_id));
         switch (cgt::dtType(data)) {
         case data_int:
             m_propValues << PropValue(cgt::dtInt(data), data_int);
@@ -84,7 +75,7 @@ void Property::getValues()
         break;
     }
     case data_array: {
-        id_array array = static_cast<id_array>(cgt::propGetValue(m_id));
+        quintptr array = static_cast<quintptr>(cgt::propGetValue(m_id));
         DataTypes subType = cgt::arrType(array);
         for (int i = 0; i < cgt::arrCount(array); ++i) {
             switch (subType) {
@@ -107,7 +98,7 @@ void Property::getValues()
         break;
     }
     case data_element: {
-        quintptr linkedElement = reinterpret_cast<quintptr>(cgt::propGetLinkedElement(m_parent->m_id, m_name.toStdString().c_str()));
+        quintptr linkedElement = cgt::propGetLinkedElement(m_parent->getId(), m_name.toStdString().c_str());
         if (linkedElement)
             m_propValues << PropValue(linkedElement, data_element);
         break;
@@ -152,4 +143,9 @@ void Property::getValues()
     default:
         break;
     }
+}
+
+quintptr Property::getId() const
+{
+    return m_id;
 }

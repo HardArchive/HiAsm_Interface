@@ -15,8 +15,8 @@ contains(DEFINES, CNET){
 DESTDIR += $$PACKAGE
 DEFINES += HIASM_PACKAGE=\"\\\"$$PACKAGE\\\"\"
 
-#ru Подключаем DataCollector
-DEFINES += DATACOLLECTOR
+#ru Подключаем SceneModel
+DEFINES += SCENEMODEL
 
 #ru Подключаем ProxyCgt
 DEFINES += PROXYCGT

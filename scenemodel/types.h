@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //Project
 
@@ -6,10 +6,7 @@
 
 //Qt
 #include <QVector>
-
-//Дефайны
-#define DLLEXPORT extern "C" __cdecl
-#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
+#include <QMap>
 
 // Типы данных
 class Property;
@@ -28,4 +25,6 @@ class Container;
 typedef Container *PContainer;
 typedef QVector<PContainer> Containers;
 
-class DataCollector;
+typedef QMap<quintptr, quintptr> MapObjects;
+
+class SceneModel;

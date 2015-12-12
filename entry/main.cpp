@@ -1,11 +1,9 @@
 //Project
-#include "CGTShare.h"
-#include "cgt.h"
-#include "global.h"
-#include "datacollector.h"
-#include "element.h"
-#include "emulatecgt.h"
-#include "proxycgt.h"
+#include "cgt/cgt.h"
+#include "cgt/proxycgt.h"
+#include "cgt/emulatecgt.h"
+#include "scenemodel/scenemodel.h"
+#include "scenemodel/element.h"
 
 //NATIVE
 #include <windows.h>
@@ -22,6 +20,10 @@ const char CALL_STR[] = "Call:";
 const char ARG_STR[] = "Arg";
 const char RESULT_STR[] = "Return:";
 
+//Дефайны
+#define DLLEXPORT extern "C" __cdecl
+#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
+
 //Типы функций
 typedef int(*t_buildPrepareProc)(TBuildPrepareRec &params);
 typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
@@ -29,9 +31,9 @@ typedef int(*t_CheckVersionProc)(THiAsmVersion &params);
 typedef void(*t_ConfToCode)(const char *Pack, const char *UName);
 typedef void(*t_synReadFuncList)(TSynParams &params);
 typedef void(*t_hintForElement)(THintParams &params);
-typedef int(*t_isElementMaker)(PCodeGenTools cgt, id_element e);
-typedef int(*t_MakeElement)(PCodeGenTools cgt, id_element e);
-typedef bool(*t_isReadyForAdd)(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk);
+typedef int(*t_isElementMaker)(PCodeGenTools cgt, quintptr e);
+typedef int(*t_MakeElement)(PCodeGenTools cgt, quintptr e);
+typedef bool(*t_isReadyForAdd)(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr sdk);
 
 //Объявление функций проксируемого кодогенератора
 static t_buildPrepareProc original_buildPrepareProc;
@@ -126,10 +128,10 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     PRINT_FUNC_INFO
     cgt::init(params);
 
-#ifdef DATACOLLECTOR
-    DataCollector dataCollector;
-    EmulateCgt::setModelCgt(&dataCollector);
-    ProxyCgt::setProxiedCgt(EmulateCgt::getEmulateCgt());
+#ifdef SCENEMODEL
+    SceneModel sceneModel;
+    EmulateCgt::setSceneModel(sceneModel);
+    ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
 #else
     ProxyCgt::setProxiedCgt(params.cgt);
 #endif
@@ -170,7 +172,7 @@ DLLEXPORT void hintForElement(THintParams &params)
     original_hintForElement(params);
 }
 
-DLLEXPORT int isElementMaker(PCodeGenTools cgt, id_element e)
+DLLEXPORT int isElementMaker(PCodeGenTools cgt, quintptr e)
 {
     PRINT_FUNC_INFO
     int res = original_isElementMaker(cgt, e);
@@ -179,7 +181,7 @@ DLLEXPORT int isElementMaker(PCodeGenTools cgt, id_element e)
     return res;
 }
 
-DLLEXPORT int MakeElement(PCodeGenTools cgt, id_element e)
+DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr e)
 {
     PRINT_FUNC_INFO
     int res = original_MakeElement(cgt, e);
@@ -188,7 +190,7 @@ DLLEXPORT int MakeElement(PCodeGenTools cgt, id_element e)
     return res;
 }
 
-DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, id_sdk sdk)
+DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr sdk)
 {
     Q_UNUSED(cgt)
     Q_UNUSED(rfd)

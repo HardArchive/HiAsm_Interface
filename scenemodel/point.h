@@ -1,8 +1,8 @@
 #pragma once
 
 //Project
-#include "CGTShare.h"
-#include "global.h"
+#include "types.h"
+#include "cgt/CGTShare.h"
 
 //STL
 
@@ -11,11 +11,10 @@
 
 class Point
 {
-public:
-    //ru Данные
-    const id_point m_id;
-    id_point m_linkPoint{};
-    id_point m_RLinkPoint{};
+private:
+    const quintptr m_id;
+    quintptr m_linkPoint{};
+    quintptr m_RLinkPoint{};
 
     DataTypes m_dataType{};
     int m_index{};
@@ -24,15 +23,16 @@ public:
     QString m_name{};
     QString m_dpeName{};
 
-    //ru Указатели и ссылки
     PElement m_parent;
     PPoint m_linkPointPtr{};
     PPoint m_RLinkPointPtr{};
 
 public:
-    explicit Point(id_point pt, PElement parent);
-    ~Point();
+    explicit Point(quintptr pt, PElement parent);
+    friend class SceneModel;
 
-public:
+private:
     void collectingData();
+    quintptr getId() const;
+
 };

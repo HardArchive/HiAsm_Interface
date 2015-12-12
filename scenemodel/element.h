@@ -1,11 +1,8 @@
 #pragma once
 
 //Project
-#include "point.h"
-#include "property.h"
-#include "CGTShare.h"
-#include "cgt.h"
-#include "global.h"
+#include "types.h"
+#include "cgt/CGTShare.h"
 
 //STL
 
@@ -14,12 +11,10 @@
 
 class Element
 {
-public:
-    //ru Данные элемента
-    const id_element m_id{};
-    id_element m_linkMain{};
+private:
+    const quintptr m_id;
+    quintptr m_linkMain{};
 
-    //Указатели и ссылки
     PContainer m_parent{};
     PElement m_linkMainPtr{};
 
@@ -46,10 +41,13 @@ public:
     Properties m_properties;
 
 public:
-    explicit Element(id_element eId, PContainer parent);
-    ~Element();
+    explicit Element(quintptr eId, PContainer parent);
+    friend class SceneModel;
+
+private:
+    void collectingData();
 
 public:
-    void collectingData();
+    quintptr getId() const;
 
 };
