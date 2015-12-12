@@ -49,5 +49,5 @@ private:
 
 public:
     quintptr getId() const;
-
+    QString getClassName() const;
 };

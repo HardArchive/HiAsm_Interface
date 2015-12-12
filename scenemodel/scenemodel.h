@@ -17,21 +17,26 @@ private:
 
     //Контейнеры
     Containers m_containers;
-    MapObjects m_mapContainers;
-    MapObjects m_mapElements;
-    MapObjects m_mapPoints;
-    MapObjects m_mapProperties;
+    MapContainers m_mapContainers;
+    MapElements m_mapElements;
+    MapPoints m_mapPoints;
+    MapProperties m_mapProperties;
 
 public:
     explicit SceneModel();
 
 private:
     void collectingData();
-    PContainer grabberSDK(quintptr sdk, PElement parent = PElement());
+    PContainer grabberSDK(quintptr id_sdk, PElement parent = nullptr);
     void initMapObjects();
     void fixedPtr();
 
 public:
     bool isDebug() const;
-    void getCgtParam(CgtParams index, void *value) const;
+    void getCgtParam(CgtParams index, quintptr value) const;
+    PContainer getContainerById(quintptr id_sdk) const;
+    PElement getElementFromSDKByIndex(quintptr id_sdk, int index) const;
+    quintptr getIdElementFromSDKByIndex(quintptr id_sdk, int index) const;
+    uint getCountContainers(quintptr id_sdk) const;
+
 };

@@ -1,6 +1,9 @@
 //Project
 #include "emulatecgt.h"
 #include "scenemodel/container.h"
+#include "scenemodel/element.h"
+#include "scenemodel/point.h"
+#include "scenemodel/property.h"
 
 //STL
 
@@ -18,31 +21,25 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ контейнер ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает количество элементов в контейнере.
-    EXPORT int sdkGetCount(quintptr SDK)
+    EXPORT uint sdkGetCount(quintptr id_sdk)
     {
-
-        return 0;
+        return m_model->getCountContainers(id_sdk);
     }
 
     //ru Возвращает ID элемента по его Z-положению(индексу) в контейнере.
-    EXPORT quintptr sdkGetElement(quintptr SDK, int Index)
+    EXPORT quintptr sdkGetElement(quintptr id_sdk, int index)
     {
-
-
-        return 0;
+        return m_model->getIdElementFromSDKByIndex(id_sdk, index);
     }
 
     //ru Возвращает ID элемента по имени элемента.
-    EXPORT quintptr sdkGetElementName(quintptr SDK, char *Name)
+    EXPORT quintptr sdkGetElementName(quintptr id_sdk, char *name)
     {
-        /*
-        PContainer container = reinterpret_cast<PContainer>(m_model->m_mapObjects[SDK]);
-        if (!container)
+        const PContainer c = m_model->getContainerById(id_sdk);
+        if (!c)
             return 0;
 
-        return container->findElementByName(QString::fromLocal8Bit(Name));
-        */
-        return 0;
+        return c->getIdElementByName(QString::fromLocal8Bit(name));
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -345,12 +342,12 @@ namespace EmulateCgt
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает значение параметра среды по его индексу
-    EXPORT int GetParam(CgtParams index, void *value)
+    //ru На основе индекса параметра, записываем данные в память value
+    EXPORT int GetParam(CgtParams index, quintptr value)
     {
         m_model->getCgtParam(index, value);
 
-        return 0;
+        return 1;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~

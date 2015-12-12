@@ -19,6 +19,9 @@ public:
     friend class SceneModel;
 
 public:
-    quintptr findElementByName(QString name);
+    PElement getElementByName(const QString &name) const;
+    quintptr getIdElementByName(const QString &name) const;
     quintptr getId() const;
+    PElement getElementByIndex(quintptr index) const;
+    quintptr getIdElementByIndex(quintptr index) const;
 };

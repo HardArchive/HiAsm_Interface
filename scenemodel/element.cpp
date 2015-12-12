@@ -50,3 +50,8 @@ quintptr Element::getId() const
 {
     return m_id;
 }
+
+QString Element::getClassName() const
+{
+    return m_className;
+}

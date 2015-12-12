@@ -25,6 +25,9 @@ class Container;
 typedef Container *PContainer;
 typedef QVector<PContainer> Containers;
 
-typedef QMap<quintptr, quintptr> MapObjects;
+typedef QMap<quintptr, PContainer> MapContainers;
+typedef QMap<quintptr, PElement> MapElements;
+typedef QMap<quintptr, PPoint> MapPoints;
+typedef QMap<quintptr, PProperty> MapProperties;
 
 class SceneModel;
