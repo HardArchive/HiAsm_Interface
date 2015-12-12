@@ -44,67 +44,96 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает флаги элемента.
-    EXPORT ElementFlags elGetFlag(quintptr e)
+    EXPORT ElementFlags elGetFlag(quintptr id_element)
     {
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return ELEMENT_FLG_IS_FREEZE;
 
-        return ELEMENT_FLG_IS_FREEZE;
+        return e->getFlags();
     }
 
     //ru Возвращает количество свойств элемента.
-    EXPORT int elGetPropCount(quintptr e)
+    EXPORT int elGetPropCount(quintptr id_element)
     {
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getPropCount();
     }
 
     //ru Возвращает свойство элемента по индексу, с порядковым номером из INI.
-    EXPORT quintptr elGetProperty(quintptr e, int Index)
+    EXPORT quintptr elGetProperty(quintptr id_element, int index)
     {
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getIdProperty(index);
     }
 
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
-    EXPORT bool elIsDefProp(quintptr e, int Index)
+    EXPORT bool elIsDefProp(quintptr id_element, int Index)
     {
 
         return false;
     }
 
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
-    EXPORT quintptr elSetCodeName(quintptr e, const char *Name)
+    EXPORT quintptr elSetCodeName(quintptr id_element, const char *name)
     {
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        e->setCodeName(QString::fromLocal8Bit(name));
+        return id_element;
     }
 
     //ru Возвращает уникальное имя элемента
-    EXPORT const char *elGetCodeName(quintptr e)
+    EXPORT const char *elGetCodeName(quintptr id_element)
     {
-        return new char[5] {};
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return nullptr;
+
+        QString name = e->getCodeName();
+        char *buf = new char[name.size() + 1];
+        strcpy(buf, name.toStdString().c_str());
+
+        return buf;
     }
 
-    //ru Возвращает имя класса элемента.
-    EXPORT const char *elGetClassName(quintptr e)
+    //ru Возвращает имя класса элемента
+    EXPORT const char *elGetClassName(quintptr id_element)
     {
-        return new char[5] {};
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return nullptr;
+
+        QString name = e->getClassName();
+        char *str = new char[name.size() + 1];
+        strcpy(str, name.toStdString().c_str());
+
+        return str;
     }
 
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
-    EXPORT const char *elGetInfSub(quintptr e)
+    EXPORT const char *elGetInfSub(quintptr id_element)
     {
         return new char[5] {};
     }
 
     //ru Возвращает общее количество видимых точек у элемента.
-    EXPORT int elGetPtCount(quintptr e)
+    EXPORT int elGetPtCount(quintptr id_element)
     {
 
         return 0;
     }
 
     //ru Возвращает ID точки по её индексу.
-    EXPORT quintptr elGetPt(quintptr e, int i)
+    EXPORT quintptr elGetPt(quintptr id_element, int i)
     {
 
         return 0;
@@ -112,48 +141,51 @@ namespace EmulateCgt
 
     //ru Возвращает ID точки по её имени.
     //[deprecated]
-    EXPORT quintptr elGetPtName(quintptr e, const char *Name)
+    EXPORT quintptr elGetPtName(quintptr id_element, const char *Name)
     {
 
         return 0;
     }
 
     //ru Возвращает индекс класса элемента.
-    EXPORT ElementClass elGetClassIndex(quintptr e)
+    EXPORT ElementClass elGetClassIndex(quintptr id_element)
     {
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return CI_Element;
 
-        return CI_Element;
+        return e->getClassIndex();
     }
 
     //ru Возвращает ID внутренней схемы для контейнеров,
     //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
-    EXPORT quintptr elGetSDK(quintptr e)
+    EXPORT quintptr elGetSDK(quintptr id_element)
     {
 
         return 0;
     }
 
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
-    EXPORT bool elLinkIs(quintptr e)
+    EXPORT bool elLinkIs(quintptr id_element)
     {
         return false;
     }
 
     //ru Возвращает ID главного элемента(тот, на который ссылаются другие).
-    EXPORT quintptr elLinkMain(quintptr e)
+    EXPORT quintptr elLinkMain(quintptr id_element)
     {
         return 0;
     }
 
     //ru Помещает в переменные "X" и "Y", позицию элемента в редакторе схем.
-    EXPORT void elGetPos(quintptr e, int &X, int &Y)
+    EXPORT void elGetPos(quintptr id_element, int &X, int &Y)
     {
         X = 0;
         Y = 0;
     }
 
     //ru Помещает в переменные "W" и "H", размеры элемента.
-    EXPORT void elGetSize(quintptr e, int &W, int &H)
+    EXPORT void elGetSize(quintptr id_element, int &W, int &H)
     {
         W = 0;
         H = 0;
@@ -161,7 +193,7 @@ namespace EmulateCgt
 
     //ru Возвращает внутренний ID элемента (отличается от внешнего).
     //[deprecated]
-    EXPORT int elGetEID(quintptr e)
+    EXPORT int elGetEID(quintptr id_element)
     {
 
         return 0;
@@ -390,9 +422,9 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращаем >0, если запускаем схемы в режиме отладки,
     //ru иначе 0.
-    EXPORT int isDebug(quintptr e)
+    EXPORT int isDebug(quintptr id_element)
     {
-        Q_UNUSED(e)
+        Q_UNUSED(id_element)
         return m_model->isDebug();
     }
 
@@ -466,18 +498,23 @@ namespace EmulateCgt
     //ru Возвращает пользовательские данные элемента.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель..
-    EXPORT quintptr elGetData(quintptr e)
+    EXPORT quintptr elGetData(quintptr id_element)
     {
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getUserData();
     }
 
     //ru Устанавливает пользовательские данные элементу.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
-    EXPORT void elSetData(quintptr e, const quintptr data)
+    EXPORT void elSetData(quintptr id_element, quintptr data)
     {
-
+        PElement e = m_model->getElementById(id_element);
+        if (e)
+            e->setUserData(data);
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -490,16 +527,23 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID родительского контейнера элемента.
-    EXPORT quintptr elGetParent(quintptr e)
+    EXPORT quintptr elGetParent(quintptr id_element)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        const PContainer c = e->getParent();
+        if (!c)
+            return 0;
+
+        return c->getId();
     }
 
     //ru Возвращает количество свойств в списке свойств(из панели свойств).
     //ru В RTCG используется аналогичная функция - elGetPropCount.
     //[deprecated]
-    EXPORT int elGetPropertyListCount(quintptr e)
+    EXPORT int elGetPropertyListCount(quintptr id_element)
     {
 
         return 0;
@@ -507,7 +551,7 @@ namespace EmulateCgt
 
     //ru Возвращает свойство из списка свойств (PropertyList).
     //[deprecated]
-    EXPORT quintptr elGetPropertyListItem(quintptr e, int i)
+    EXPORT quintptr elGetPropertyListItem(quintptr id_element, int i)
     {
 
         return 0;
@@ -559,14 +603,14 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID элемента, прилинкованного к указанному свойству.
-    EXPORT quintptr propGetLinkedElement(quintptr e, const char *propName)
+    EXPORT quintptr propGetLinkedElement(quintptr id_element, const char *propName)
     {
 
         return 0;
     }
 
     //ru Возвращает 1, если свойство помечено на перевод.
-    EXPORT int propIsTranslate(quintptr e, quintptr p)
+    EXPORT int propIsTranslate(quintptr id_element, quintptr p)
     {
 
         return 0;
@@ -575,7 +619,7 @@ namespace EmulateCgt
     //ru Предназначение данной функции так и небыло найдено.
     //ru Всегда возвращает 0.
     //[deprecated]
-    EXPORT quintptr propGetLinkedElementInfo(quintptr e, quintptr prop, char *_int)
+    EXPORT quintptr propGetLinkedElementInfo(quintptr id_element, quintptr prop, char *_int)
     {
 
         return 0;
@@ -583,21 +627,21 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает SDK контейнера по его индексу.
-    EXPORT quintptr elGetSDKByIndex(quintptr e, int index)
+    EXPORT quintptr elGetSDKByIndex(quintptr id_element, int index)
     {
 
         return 0;
     }
 
     //ru Возвращает количаство контейнеров полиморфного элемента(CI_PolyMulti).
-    EXPORT int elGetSDKCount(quintptr e)
+    EXPORT int elGetSDKCount(quintptr id_element)
     {
 
         return 0;
     }
 
     //ru Возвращает имя контейнера по индексу.
-    EXPORT const char *elGetSDKName(quintptr e, int index)
+    EXPORT const char *elGetSDKName(quintptr id_element, int index)
     {
 
         return new char[5] {};
@@ -606,16 +650,23 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает элемент родитель для данного SDK.
     //ru Возвращает 0, если контейнер не имеет родителя.
-    EXPORT quintptr sdkGetParent(quintptr SDK)
+    EXPORT quintptr sdkGetParent(quintptr id_sdk)
     {
+        const PContainer c = m_model->getContainerById(id_sdk);
+        if (!c)
+            return 0;
 
-        return 0;
+        PElement e = c->getParent();
+        if (!e)
+            return 0;
+
+        return e->getId();
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает интерфейсы, предоставляемые элементом.
     //ru Содержимое поля Interfaces= из конфигурации элемента.
-    EXPORT const char *elGetInterface(quintptr e)
+    EXPORT const char *elGetInterface(quintptr id_element)
     {
 
         return new char[5] {};
@@ -623,7 +674,7 @@ namespace EmulateCgt
 
     //ru Возвращает список классов, от которых наследуется элемент
     //ru Содержимое поля Inherit= из конфигурации элемента.
-    EXPORT const char *elGetInherit(quintptr e)
+    EXPORT const char *elGetInherit(quintptr id_element)
     {
 
         return new char[5] {};
@@ -646,7 +697,7 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Добавляет информацию в информационную панель
-    EXPORT int _Error(int line, quintptr e, const char *text)
+    EXPORT int _Error(int line, quintptr id_element, const char *text)
     {
 
         return 0;
@@ -655,7 +706,7 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID группы, к которой принадлежит элемент и 0, если группа отсутствует
     //[deprecated]
-    EXPORT int elGetGroup(quintptr e)
+    EXPORT int elGetGroup(quintptr id_element)
     {
 
         return 0;

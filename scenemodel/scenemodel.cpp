@@ -1,4 +1,4 @@
-//Scene model
+//Project
 #include "scenemodel.h"
 #include "container.h"
 #include "element.h"
@@ -25,8 +25,6 @@ SceneModel::SceneModel()
 
     //ru Корректировка указателей
     fixedPtr();
-
-    int t;
 }
 
 void SceneModel::collectingData()
@@ -247,4 +245,9 @@ uint SceneModel::getCountElementsInContainer(quintptr id_sdk) const
         return 0;
 
     return c->m_elements.size();
+}
+
+PElement SceneModel::getElementById(quintptr id_element) const
+{
+    return m_mapElements[id_element];
 }

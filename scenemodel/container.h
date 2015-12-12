@@ -24,4 +24,5 @@ public:
     quintptr getId() const;
     PElement getElementByIndex(quintptr index) const;
     quintptr getIdElementByIndex(quintptr index) const;
+    PElement getParent() const;
 };

@@ -7,6 +7,7 @@
 
 //Qt
 
+
 Container::Container(quintptr id, PElement parent)
     : m_id(id)
     , m_parent(parent)
@@ -53,4 +54,9 @@ quintptr Container::getIdElementByIndex(quintptr index) const
         return m_elements[index]->getId();
     else
         return 0;
+}
+
+PElement Container::getParent() const
+{
+    return m_parent;
 }

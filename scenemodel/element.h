@@ -18,6 +18,7 @@ private:
     PContainer m_parent{};
     PElement m_linkMainPtr{};
 
+    quintptr m_userData{};
     QString m_className;
     QString m_codeName;
     ElementClass m_classIndex{};
@@ -50,4 +51,14 @@ private:
 public:
     quintptr getId() const;
     QString getClassName() const;
+    ElementFlags getFlags() const;
+    void setCodeName(const QString &name);
+    QString getCodeName() const;
+    quintptr getUserData() const;
+    void setUserData(quintptr userData);
+    ElementClass getClassIndex();
+    PContainer getParent() const;
+    int getPropCount() const;
+    PProperty getProperty(int index) const;
+    quintptr getIdProperty(int index) const;
 };

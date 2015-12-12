@@ -485,7 +485,7 @@ namespace cgt
     //ru Устанавливает пользовательские данные элементу.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
-    void elSetData(quintptr e, const quintptr data)
+    void elSetData(quintptr e, quintptr data)
     {
         m_cgt->elSetData(e, data);
     }

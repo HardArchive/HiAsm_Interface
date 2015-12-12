@@ -55,3 +55,61 @@ QString Element::getClassName() const
 {
     return m_className;
 }
+
+ElementFlags Element::getFlags() const
+{
+    return ElementFlags(int(m_flags));
+}
+
+void Element::setCodeName(const QString &name)
+{
+    m_codeName = name;
+}
+
+QString Element::getCodeName() const
+{
+    return m_codeName;
+}
+
+quintptr Element::getUserData() const
+{
+    return m_userData;
+}
+
+void Element::setUserData(quintptr userData)
+{
+    m_userData = userData;
+}
+
+ElementClass Element::getClassIndex()
+{
+    return m_classIndex;
+}
+
+PContainer Element::getParent() const
+{
+    return m_parent;
+}
+
+int Element::getPropCount() const
+{
+    return m_propCount;
+}
+
+PProperty Element::getProperty(int index) const
+{
+    int size = m_properties.size();
+    if ((index >= 0) && (index < size))
+        return m_properties[index];
+    else
+        return nullptr;
+}
+
+quintptr Element::getIdProperty(int index) const
+{
+    PProperty e = getProperty(index);
+    if (!e)
+        return 0;
+
+    return e->getId();
+}

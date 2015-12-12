@@ -499,7 +499,7 @@ struct TCodeGenTools {
     //ru Устанавливает пользовательские данные элементу.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
-    CALLBACK void (*elSetData)(quintptr e, const quintptr data);
+    CALLBACK void (*elSetData)(quintptr e, quintptr data);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки.
     CALLBACK DataTypes(*ptGetDataType)(quintptr p);
