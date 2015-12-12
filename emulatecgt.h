@@ -3,6 +3,6 @@
 
 namespace EmulateCgt
 {
-    void setModelCgt(PCodeGenTools cgt);
+    void setModelCgt(DataCollector *collector);
     PCodeGenTools getEmulateCgt();
 }
