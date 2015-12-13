@@ -285,6 +285,9 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в виде указателя на данные.
     EXPORT quintptr propGetValue(quintptr id_prop)
     {
+        //PProperty p = m_model->getPropertyById(id_prop);
+        //if (!p)
+        //    return 0;
 
         return 0;
     }
@@ -292,45 +295,25 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате uchar.
     EXPORT uchar propToByte(quintptr id_prop)
     {
-        PProperty p = m_model->getPropertyById(id_prop);
-        if (!p)
-            return 0;
-
-        return p->getValueByte();
+        return 0;
     }
 
     //ru Возвращает значение свойства в формате int.
     EXPORT int propToInteger(quintptr id_prop)
     {
-        PProperty p = m_model->getPropertyById(id_prop);
-        if (!p)
-            return 0;
-
-        return p->getValueInt();
+        return 0;
     }
 
     //ru Возвращает значение свойства в формате float.
     EXPORT float propToReal(quintptr id_prop)
     {
-        PProperty p = m_model->getPropertyById(id_prop);
-        if (!p)
-            return 0;
-
-        return p->getValueFloat();
+        return 0;
     }
 
     //ru Возвращает значение свойства в виде C строки.
     EXPORT const char *propToString(quintptr id_prop)
     {
-        PProperty p = m_model->getPropertyById(id_prop);
-        if (!p)
-            return 0;
-
-        QString v = p->getValueString();
-        char *buf = new char[v.size() + 1];
-        strcpy(buf, v.toStdString().c_str());
-
-        return buf;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -339,7 +322,6 @@ namespace EmulateCgt
     //ru для последующего удаления файла.
     EXPORT int resAddFile(const char *Name)
     {
-
         return 0;
     }
 
@@ -496,32 +478,41 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает название шрифта.
-    EXPORT const char *fntName(quintptr f)
+    EXPORT const char *fntName(quintptr id_font)
     {
+        /*
+        quintptr t = id_font;
+        PFont f = m_model->getValueById(id_font);
+        if (!f)
+            return 0;
 
+        QString name = f->getName();
+        char *buf = new char[name.size() + 1];
+        strcpy(buf, name.toStdString().c_str());
 
-        return nullptr;
+        */
+        return 0;
     }
     //ru Возвращает размер шрифта.
-    EXPORT int fntSize(quintptr f)
+    EXPORT int fntSize(quintptr id_font)
     {
 
         return 0;
     }
     //ru Возвращает стиль шрифта.
-    EXPORT uchar fntStyle(quintptr f)
+    EXPORT uchar fntStyle(quintptr id_font)
     {
 
         return 0;
     }
     //ru Возвращает цвет шрифта.
-    EXPORT uint fntColor(quintptr f)
+    EXPORT uint fntColor(quintptr id_font)
     {
 
         return 0;
     }
     //ru Возвращает кодировку шрифта.
-    EXPORT uchar fntCharSet(quintptr f)
+    EXPORT uchar fntCharSet(quintptr id_font)
     {
 
         return 0;

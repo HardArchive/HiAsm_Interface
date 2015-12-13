@@ -8,9 +8,10 @@
 
 //Qt
 
-Element::Element(quintptr eId, PContainer parent)
+Element::Element(quintptr eId, PContainer parent, PSceneModel model)
     : m_id(eId)
     , m_parent(parent)
+    , m_model(model)
 {
     collectingData();
 }
@@ -56,6 +57,11 @@ void Element::collectingData()
 quintptr Element::getId() const
 {
     return m_id;
+}
+
+PSceneModel Element::getModel() const
+{
+    return m_model;
 }
 
 QString Element::getClassName() const
@@ -120,3 +126,4 @@ quintptr Element::getIdProperty(int index) const
 
     return e->getId();
 }
+

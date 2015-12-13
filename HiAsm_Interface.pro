@@ -26,3 +26,4 @@ message(Build path: $$DESTDIR)
 
 SOURCES += $$files("*.cpp", true)
 HEADERS += $$files("*.h", true)
+

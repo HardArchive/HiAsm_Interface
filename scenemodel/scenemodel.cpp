@@ -98,7 +98,7 @@ PContainer SceneModel::grabberSDK(quintptr id_sdk, PElement parent)
     for (int i = 0; i < countElements; ++i) {
         quintptr eId = cgt::sdkGetElement(id_sdk, i);
 
-        PElement element = new Element(eId, container);
+        PElement element = new Element(eId, container, this);
 
         if (!fcgt::isLink(element->m_flags)) {
             container->m_elements << element;
@@ -255,4 +255,15 @@ PElement SceneModel::getElementById(quintptr id_element) const
 PProperty SceneModel::getPropertyById(quintptr id_prop) const
 {
     return m_mapProperties[id_prop];
+}
+
+PValue SceneModel::getValueById(quintptr id_value) const
+{
+    return m_mapValues[id_value];
+}
+
+void SceneModel::addValueToMap(PValue value)
+{
+    if (value)
+        m_mapValues.insert(value->getId(), value);
 }

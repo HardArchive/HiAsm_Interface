@@ -17,6 +17,7 @@ private:
 
     PContainer m_parent{};
     PElement m_linkMainPtr{};
+    PSceneModel m_model{};
 
     quintptr m_userData{};
     QString m_className;
@@ -42,7 +43,7 @@ private:
     Properties m_properties;
 
 public:
-    explicit Element(quintptr eId, PContainer parent);
+    explicit Element(quintptr eId, PContainer parent, PSceneModel model);
     friend class SceneModel;
 
 private:
@@ -50,6 +51,8 @@ private:
 
 public:
     quintptr getId() const;
+    PSceneModel getModel() const;
+
     QString getClassName() const;
     ElementFlags getFlags() const;
     void setCodeName(const QString &name);
@@ -61,4 +64,5 @@ public:
     int getPropCount() const;
     PProperty getProperty(int index) const;
     quintptr getIdProperty(int index) const;
+
 };

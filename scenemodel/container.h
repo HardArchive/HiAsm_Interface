@@ -15,7 +15,7 @@ private:
     Elements m_elements;
 
 public:
-    Container(quintptr id, PElement parent);
+    explicit Container(quintptr id, PElement parent);
     friend class SceneModel;
 
 public:

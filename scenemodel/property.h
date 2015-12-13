@@ -2,7 +2,8 @@
 
 //Project
 #include "types.h"
-#include "proptypes.h"
+#include "value.h"
+#include "cgt/CGTShare.h"
 
 //STL
 
@@ -23,7 +24,7 @@ private:
     PElement m_parent;
 
     //Данные свойства
-    PropValues m_propValues;
+    Values m_values;
 
 public:
     Property(quintptr propId, PElement parent);
@@ -37,9 +38,6 @@ public:
     DataTypes getType() const;
     bool getIsDefault() const;
     void setIsDefault(bool value);
-    int getValueInt() const;
-    QString getValueString() const;
-    float getValueFloat() const;
-    uchar getValueByte() const;
     QString getName() const;
+
 };

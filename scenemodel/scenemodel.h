@@ -2,6 +2,7 @@
 
 //Project
 #include "types.h"
+#include "value.h"
 #include "cgt/CGTShare.h"
 
 //STL
@@ -21,6 +22,7 @@ private:
     MapElements m_mapElements;
     MapPoints m_mapPoints;
     MapProperties m_mapProperties;
+    MapValues m_mapValues;
 
 public:
     explicit SceneModel();
@@ -40,5 +42,7 @@ public:
     uint getCountElementsInContainer(quintptr id_sdk) const;
     PElement getElementById(quintptr id_element) const;
     PProperty getPropertyById(quintptr id_prop) const;
+    PValue getValueById(quintptr id_value) const;
+    void addValueToMap(PValue value);
 
 };
