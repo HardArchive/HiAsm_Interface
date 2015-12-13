@@ -13,6 +13,8 @@
 #include <QDebug>
 #include <QUuid>
 
+
+
 Property::Property(quintptr propId, PElement parent)
     : m_id(propId)
     , m_parent(parent)
@@ -128,12 +130,12 @@ void Property::collectingData()
         break;
     }
     case data_font: {
-        Font font;
-        font.name = QString::fromLocal8Bit(cgt::fntName(id_value));
-        font.size = cgt::fntSize(id_value);
-        font.style = cgt::fntStyle(id_value);
-        font.color = cgt::fntColor(id_value);
-        font.charset = cgt::fntCharSet(id_value);
+        PFont font = new Font;
+        font->name = QString::fromLocal8Bit(cgt::fntName(id_value));
+        font->size = cgt::fntSize(id_value);
+        font->style = cgt::fntStyle(id_value);
+        font->color = cgt::fntColor(id_value);
+        font->charset = cgt::fntCharSet(id_value);
 
         addValue(QVariant::fromValue(font));
         break;
@@ -171,4 +173,24 @@ void Property::setIsDefault(bool value)
 QString Property::getName() const
 {
     return m_name;
+}
+
+PValue Property::getValue() const
+{
+    return m_value;
+}
+
+int Property::getValueInt() const
+{
+    return m_value->getValue().toInt();
+}
+
+qreal Property::getValueReal() const
+{
+    return m_value->getValue().toReal();
+}
+
+QString Property::getValueString() const
+{
+    return m_value->getValue().toString();
 }

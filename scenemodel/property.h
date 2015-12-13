@@ -39,5 +39,8 @@ public:
     bool getIsDefault() const;
     void setIsDefault(bool value);
     QString getName() const;
-
+    PValue getValue() const;
+    int getValueInt() const;
+    qreal getValueReal() const;
+    QString getValueString() const;
 };

@@ -4,6 +4,7 @@
 #include "scenemodel/element.h"
 #include "scenemodel/point.h"
 #include "scenemodel/property.h"
+#include "scenemodel/valuetypes.h"
 
 //STL
 
@@ -285,11 +286,11 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в виде указателя на данные.
     EXPORT quintptr propGetValue(quintptr id_prop)
     {
-        //PProperty p = m_model->getPropertyById(id_prop);
-        //if (!p)
-        //    return 0;
+        PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
 
-        return 0;
+        return p->getValue()->getId();
     }
 
     //ru Возвращает значение свойства в формате uchar.
@@ -301,19 +302,35 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате int.
     EXPORT int propToInteger(quintptr id_prop)
     {
-        return 0;
+        const PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
+
+        return p->getValueInt();
     }
 
     //ru Возвращает значение свойства в формате float.
     EXPORT qreal propToReal(quintptr id_prop)
     {
-        return 0;
+        const PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
+
+        return p->getValueReal();
     }
 
     //ru Возвращает значение свойства в виде C строки.
     EXPORT const char *propToString(quintptr id_prop)
     {
-        return 0;
+        const PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
+
+        QString name = p->getValueString();
+        char *buf = new char[name.size() + 1];
+        strcpy(buf, name.toStdString().c_str());
+
+        return buf;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -330,8 +347,6 @@ namespace EmulateCgt
     //TODO p - является свойством, которое содержит иконку?
     EXPORT const char *resAddIcon(quintptr p)
     {
-
-
         return nullptr;
     }
 
@@ -480,42 +495,70 @@ namespace EmulateCgt
     //ru Возвращает название шрифта.
     EXPORT const char *fntName(quintptr id_font)
     {
-        /*
-        quintptr t = id_font;
-        PFont f = m_model->getValueById(id_font);
-        if (!f)
-            return 0;
+        PValue v = m_model->getValueById(id_font);
+        if (!v)
+            return nullptr;
 
-        QString name = f->getName();
-        char *buf = new char[name.size() + 1];
-        strcpy(buf, name.toStdString().c_str());
+        PFont font = qvariant_cast<PFont>(v->getValue());
+        if (!font)
+            return nullptr;
 
-        */
-        return 0;
+        char *buf = new char[font->name.size() + 1];
+        strcpy(buf, font->name.toStdString().c_str());
+
+        return buf;
     }
     //ru Возвращает размер шрифта.
     EXPORT int fntSize(quintptr id_font)
     {
+        PValue v = m_model->getValueById(id_font);
+        if (!v)
+            return 0;
 
-        return 0;
+        PFont font = qvariant_cast<PFont>(v->getValue());
+        if (!font)
+            return 0;
+
+        return font->size;
     }
     //ru Возвращает стиль шрифта.
     EXPORT uchar fntStyle(quintptr id_font)
     {
+        PValue v = m_model->getValueById(id_font);
+        if (!v)
+            return 0;
 
-        return 0;
+        PFont font = qvariant_cast<PFont>(v->getValue());
+        if (!font)
+            return 0;
+
+        return font->style;
     }
     //ru Возвращает цвет шрифта.
     EXPORT uint fntColor(quintptr id_font)
     {
+        PValue v = m_model->getValueById(id_font);
+        if (!v)
+            return 0;
 
-        return 0;
+        PFont font = qvariant_cast<PFont>(v->getValue());
+        if (!font)
+            return 0;
+
+        return font->color;
     }
     //ru Возвращает кодировку шрифта.
     EXPORT uchar fntCharSet(quintptr id_font)
     {
+        PValue v = m_model->getValueById(id_font);
+        if (!v)
+            return 0;
 
-        return 0;
+        PFont font = qvariant_cast<PFont>(v->getValue());
+        if (!font)
+            return 0;
+
+        return font->charset;
     }
 
     //!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
