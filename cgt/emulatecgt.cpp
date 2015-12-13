@@ -305,7 +305,7 @@ namespace EmulateCgt
     }
 
     //ru Возвращает значение свойства в формате float.
-    EXPORT float propToReal(quintptr id_prop)
+    EXPORT qreal propToReal(quintptr id_prop)
     {
         return 0;
     }

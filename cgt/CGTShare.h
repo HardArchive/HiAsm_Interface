@@ -415,7 +415,7 @@ struct TCodeGenTools {
     //ru Возвращает значение свойства в формате int.
     CALLBACK int (*propToInteger)(quintptr prop);
     //ru Возвращает значение свойства в формате float.
-    CALLBACK float (*propToReal)(quintptr prop);
+    CALLBACK qreal (*propToReal)(quintptr prop);
     //ru Возвращает значение свойства в виде C строки.
     CALLBACK const char *(*propToString)(quintptr prop);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~

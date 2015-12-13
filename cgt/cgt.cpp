@@ -294,7 +294,7 @@ namespace cgt
     }
 
     //ru Возвращает значение свойства в формате float.
-    float propToReal(quintptr prop)
+    qreal propToReal(quintptr prop)
     {
         return m_cgt->propToReal(prop);
     }
@@ -650,7 +650,6 @@ namespace cgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Сохраняет данные свойства в файл.
-    //[deprecated]
     int propSaveToFile(quintptr p, const char *fileName)
     {
         return m_cgt->propSaveToFile(p, fileName);

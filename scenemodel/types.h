@@ -12,7 +12,6 @@
 // Типы данных
 class Value;
 typedef Value *PValue;
-typedef QVector<PValue> Values;
 typedef QMap<quintptr, PValue> MapValues;
 
 class Property;

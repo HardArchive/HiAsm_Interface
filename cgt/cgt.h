@@ -105,7 +105,7 @@ namespace cgt
     //ru Возвращает значение свойства в формате int.
     int propToInteger(quintptr prop);
     //ru Возвращает значение свойства в формате float.
-    float propToReal(quintptr prop);
+    qreal propToReal(quintptr prop);
     //ru Возвращает значение свойства в виде C строки.
     const char *propToString(quintptr prop);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~

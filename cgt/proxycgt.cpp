@@ -421,7 +421,7 @@ namespace ProxyCgt
     }
 
     //ru Возвращает значение свойства в формате float.
-    EXPORT float propToReal(quintptr prop)
+    EXPORT qreal propToReal(quintptr prop)
     {
         PRINT_FUNC_INFO
         float res = m_cgt->propToReal(prop);

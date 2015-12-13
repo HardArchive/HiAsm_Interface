@@ -21,10 +21,10 @@ private:
     bool m_isDefault{};
 
     //ru Указатели и ссылки
-    PElement m_parent;
+    PElement m_parent{};
 
     //Данные свойства
-    Values m_values;
+    PValue m_value{};
 
 public:
     Property(quintptr propId, PElement parent);
