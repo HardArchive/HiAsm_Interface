@@ -71,7 +71,7 @@ namespace EmulateCgt
         if (!e)
             return 0;
 
-        return e->getIdProperty(index);
+        return e->getIdPropertyByIndex(index);
     }
 
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
@@ -81,7 +81,7 @@ namespace EmulateCgt
         if (!e)
             return true;
 
-        PProperty p = e->getProperty(index);
+        PProperty p = e->getPropertyByIndex(index);
         if (!p)
             return true;
 
@@ -211,33 +211,33 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID точки, с которой соединена указанная.
     //TODO [deprecated?], в CodeGen.dpr не используется.
-    EXPORT quintptr ptGetLinkPoint(quintptr p)
+    EXPORT quintptr ptGetLinkPoint(quintptr id_prop)
     {
         return 0;
     }
 
     //ru Возвращает ID точки, с которой соединена указанная точка,
     //ru без учета точек разрыва и хабов.
-    EXPORT quintptr ptGetRLinkPoint(quintptr p)
+    EXPORT quintptr ptGetRLinkPoint(quintptr id_prop)
     {
         return 0;
     }
 
     //ru Возвращает тип точек(константы PointTypes).
-    EXPORT PointTypes ptGetType(quintptr p)
+    EXPORT PointTypes ptGetType(quintptr id_prop)
     {
         return pt_Work;
     }
 
     //ru Возвращает имя точки.
-    EXPORT const char *ptGetName(quintptr p)
+    EXPORT const char *ptGetName(quintptr id_prop)
     {
 
         return nullptr;
     }
 
     //ru Возвращает ID элемента, которому принадлежит точка.
-    EXPORT quintptr ptGetParent(quintptr p)
+    EXPORT quintptr ptGetParent(quintptr id_prop)
     {
 
 
@@ -245,14 +245,14 @@ namespace EmulateCgt
     }
 
     //ru Возвращает тип точки (PointTypes).
-    EXPORT PointTypes ptGetIndex(quintptr p)
+    EXPORT PointTypes ptGetIndex(quintptr id_prop)
     {
 
         return pt_Work;
     }
 
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
-    EXPORT const char *pt_dpeGetName(quintptr p)
+    EXPORT const char *pt_dpeGetName(quintptr id_prop)
     {
 
         return nullptr;
@@ -344,14 +344,12 @@ namespace EmulateCgt
 
     //ru Добавляет иконку в ресурсы и в список временных файлов,
     //ru и возвращают имя временного файла.
-    //TODO p - является свойством, которое содержит иконку?
-    EXPORT const char *resAddIcon(quintptr p)
+    EXPORT const char *resAddIcon(quintptr id_prop)
     {
         return nullptr;
     }
 
     //ru Добавляет строку в ресурсы и в список временных файлов.
-    //TODO Что возвращает?
     EXPORT const char *resAddStr(const char *p)
     {
 
@@ -362,7 +360,7 @@ namespace EmulateCgt
     //ru и возвращает имя временного файла.
     //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
     //ru работы с библиотекой.
-    EXPORT const char *resAddStream(quintptr p)
+    EXPORT const char *resAddStream(quintptr id_prop)
     {
 
         return nullptr;
@@ -372,7 +370,7 @@ namespace EmulateCgt
     //ru и возвращает имя временного файла.
     //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
     //ru работы с библиотекой.
-    EXPORT const char *resAddWave(quintptr p)
+    EXPORT const char *resAddWave(quintptr id_prop)
     {
 
         return nullptr;
@@ -382,17 +380,30 @@ namespace EmulateCgt
     //ru и возвращает имя временного файла.
     //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
     //ru работы с библиотекой.
-    EXPORT const char *resAddBitmap(quintptr p)
+    EXPORT const char *resAddBitmap(quintptr id_prop)
     {
+        const PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return nullptr;
+
+        const PValue v = p->getValue();
+        if (!v)
+            return nullptr;
+
+        QString prefix = "BITMAP";
+        const QByteArray byteArray = v->getValue().toByteArray();
+        QString currentPath = QDir::currentPath();
+        QString resFilePath = QDir::toNativeSeparators(currentPath + QDir::separator() + resFilePath);
+        QFile
 
         return nullptr;
     }
 
     //ru Добавляет меню в ресурсы и в список временных файлов.
     //[deprecated]
-    EXPORT const char *resAddMenu(quintptr p)
+    EXPORT const char *resAddMenu(quintptr id_prop)
     {
-
+        Q_UNUSED(id_prop)
         return nullptr;
     }
 
@@ -588,7 +599,7 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки.
-    EXPORT DataTypes ptGetDataType(quintptr p)
+    EXPORT DataTypes ptGetDataType(quintptr id_prop)
     {
 
         return data_null;
@@ -631,35 +642,35 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ список свойств элемента ~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает имя свойства.
-    EXPORT const char *plGetName(quintptr p)
+    EXPORT const char *plGetName(quintptr id_prop)
     {
 
         return nullptr;
     }
 
     //ru Возвращает описание свойства.
-    EXPORT const char *plGetInfo(quintptr p)
+    EXPORT const char *plGetInfo(quintptr id_prop)
     {
 
         return nullptr;
     }
 
     //ru Возвращает группу свойсва.
-    EXPORT const char *plGetGroup(quintptr p)
+    EXPORT const char *plGetGroup(quintptr id_prop)
     {
 
         return nullptr;
     }
 
     //ru Возвращает указатель на данные свойства.
-    EXPORT quintptr plGetProperty(quintptr p)
+    EXPORT quintptr plGetProperty(quintptr id_prop)
     {
 
         return 0;
     }
 
     //ru Возвращает ID родительского элемента указанного свойства.
-    EXPORT quintptr plGetOwner(quintptr p)
+    EXPORT quintptr plGetOwner(quintptr id_prop)
     {
 
         return 0;
@@ -667,7 +678,7 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает описание точки.
-    EXPORT const char *ptGetInfo(quintptr p)
+    EXPORT const char *ptGetInfo(quintptr id_prop)
     {
 
         return nullptr;
@@ -682,10 +693,17 @@ namespace EmulateCgt
     }
 
     //ru Возвращает 1, если свойство помечено на перевод.
-    EXPORT int propIsTranslate(quintptr id_element, quintptr p)
+    EXPORT int propIsTranslate(quintptr id_element, quintptr id_prop)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        const PProperty p = e->getPropertyById(id_prop);
+        if (!p)
+            return 0;
+
+        return p->getIsTranslate();
     }
 
     //ru Предназначение данной функции так и небыло найдено.
@@ -787,7 +805,7 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Сохраняет данные свойства в файл.
     //[deprecated]
-    EXPORT int propSaveToFile(quintptr p, const char *fileName)
+    EXPORT int propSaveToFile(quintptr id_prop, const char *fileName)
     {
 
         return 0;

@@ -109,7 +109,7 @@ int Element::getPropCount() const
     return m_propCount;
 }
 
-PProperty Element::getProperty(int index) const
+PProperty Element::getPropertyByIndex(int index) const
 {
     int size = m_properties.size();
     if ((index >= 0) && (index < size))
@@ -118,12 +118,26 @@ PProperty Element::getProperty(int index) const
         return nullptr;
 }
 
-quintptr Element::getIdProperty(int index) const
+quintptr Element::getIdPropertyByIndex(int index) const
 {
-    PProperty e = getProperty(index);
+    PProperty e = getPropertyByIndex(index);
     if (!e)
         return 0;
 
     return e->getId();
+}
+
+PProperty Element::getPropertyById(quintptr id_prop) const
+{
+    if (!id_prop)
+        return nullptr;
+
+    for (const PProperty p : m_properties) {
+        if (p->getId() == id_prop) {
+            return p;
+        }
+    }
+
+    return nullptr;
 }
 

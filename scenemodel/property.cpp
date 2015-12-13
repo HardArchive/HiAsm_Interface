@@ -14,7 +14,6 @@
 #include <QUuid>
 
 
-
 Property::Property(quintptr propId, PElement parent)
     : m_id(propId)
     , m_parent(parent)
@@ -193,4 +192,9 @@ qreal Property::getValueReal() const
 QString Property::getValueString() const
 {
     return m_value->getValue().toString();
+}
+
+int Property::getIsTranslate() const
+{
+    return m_isTranslate;
 }

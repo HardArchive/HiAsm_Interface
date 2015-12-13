@@ -62,7 +62,8 @@ public:
     ElementClass getClassIndex();
     PContainer getParent() const;
     int getPropCount() const;
-    PProperty getProperty(int index) const;
-    quintptr getIdProperty(int index) const;
+    PProperty getPropertyByIndex(int index) const;
+    quintptr getIdPropertyByIndex(int index) const;
+    PProperty getPropertyById(quintptr id_prop) const;
 
 };

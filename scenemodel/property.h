@@ -43,4 +43,6 @@ public:
     int getValueInt() const;
     qreal getValueReal() const;
     QString getValueString() const;
+    int getIsTranslate() const;
+
 };
