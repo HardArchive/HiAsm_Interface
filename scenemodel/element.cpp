@@ -44,6 +44,13 @@ void Element::collectingData()
         quintptr propId = cgt::elGetProperty(m_id, i);
         m_properties.append(new Property(propId, this));
     }
+
+    //ru Помечаем свойства, значения которых совпадают со стандартным из INI.
+    for (int i = 0; i < m_propCount; ++i) {
+        bool def = cgt::elIsDefProp(m_id, i);
+        m_properties[i]->setIsDefault(def);
+    }
+
 }
 
 quintptr Element::getId() const

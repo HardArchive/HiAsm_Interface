@@ -17,11 +17,12 @@ private:
     QString m_name;
     DataTypes m_type{};
     int m_isTranslate{};
+    bool m_isDefault{};
 
     //ru Указатели и ссылки
     PElement m_parent;
 
-    //Список значений свойства
+    //Данные свойства
     PropValues m_propValues;
 
 public:
@@ -33,5 +34,12 @@ private:
 
 public:
     quintptr getId() const;
-
+    DataTypes getType() const;
+    bool getIsDefault() const;
+    void setIsDefault(bool value);
+    int getValueInt() const;
+    QString getValueString() const;
+    float getValueFloat() const;
+    uchar getValueByte() const;
+    QString getName() const;
 };

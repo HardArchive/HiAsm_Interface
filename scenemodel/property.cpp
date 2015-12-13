@@ -149,3 +149,55 @@ quintptr Property::getId() const
 {
     return m_id;
 }
+
+DataTypes Property::getType() const
+{
+    return m_type;
+}
+
+bool Property::getIsDefault() const
+{
+    return m_isDefault;
+}
+
+void Property::setIsDefault(bool value)
+{
+    m_isDefault = value;
+}
+
+int Property::getValueInt() const
+{
+    if (!m_propValues.isEmpty())
+        return qvariant_cast<int>(m_propValues[0].first);
+    else
+        return 0;
+}
+
+QString Property::getValueString() const
+{
+    if (!m_propValues.isEmpty())
+        return qvariant_cast<QString>(m_propValues[0].first);
+    else
+        return 0;
+}
+
+float Property::getValueFloat() const
+{
+    if (!m_propValues.isEmpty())
+        return qvariant_cast<float>(m_propValues[0].first);
+    else
+        return 0;
+}
+
+uchar Property::getValueByte() const
+{
+    if (!m_propValues.isEmpty())
+        return qvariant_cast<uchar>(m_propValues[0].first);
+    else
+        return 0;
+}
+
+QString Property::getName() const
+{
+    return m_name;
+}

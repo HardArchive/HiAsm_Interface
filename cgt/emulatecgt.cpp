@@ -63,7 +63,7 @@ namespace EmulateCgt
         return e->getPropCount();
     }
 
-    //ru Возвращает свойство элемента по индексу, с порядковым номером из INI.
+    //ru Возвращает id свойства элемента по индексу, с порядковым номером из INI.
     EXPORT quintptr elGetProperty(quintptr id_element, int index)
     {
         PElement e = m_model->getElementById(id_element);
@@ -74,10 +74,17 @@ namespace EmulateCgt
     }
 
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
-    EXPORT bool elIsDefProp(quintptr id_element, int Index)
+    EXPORT bool elIsDefProp(quintptr id_element, int index)
     {
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return true;
 
-        return false;
+        PProperty p = e->getProperty(index);
+        if (!p)
+            return true;
+
+        return p->getIsDefault();
     }
 
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
@@ -122,7 +129,8 @@ namespace EmulateCgt
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
     EXPORT const char *elGetInfSub(quintptr id_element)
     {
-        return new char[5] {};
+        Q_UNUSED(id_element)
+        return 0;
     }
 
     //ru Возвращает общее количество видимых точек у элемента.
@@ -224,7 +232,7 @@ namespace EmulateCgt
     EXPORT const char *ptGetName(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Возвращает ID элемента, которому принадлежит точка.
@@ -246,56 +254,83 @@ namespace EmulateCgt
     EXPORT const char *pt_dpeGetName(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип свойства.
-    EXPORT DataTypes propGetType(quintptr prop)
+    EXPORT DataTypes propGetType(quintptr id_prop)
     {
-        return data_null;
+        PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return data_null;
+
+        return p->getType();
     }
 
     //ru Возвращает имя свойства.
-    EXPORT const char *propGetName(quintptr prop)
+    EXPORT const char *propGetName(quintptr id_prop)
     {
+        PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return nullptr;
 
-        return new char[5] {};
+        QString name = p->getName();
+        char *buf = new char[name.size() + 1];
+        strcpy(buf, name.toStdString().c_str());
+
+        return buf;
     }
 
     //ru Возвращает значение свойства в виде указателя на данные.
-    EXPORT quintptr propGetValue(quintptr prop)
+    EXPORT quintptr propGetValue(quintptr id_prop)
     {
 
         return 0;
     }
 
     //ru Возвращает значение свойства в формате uchar.
-    EXPORT uchar propToByte(quintptr prop)
+    EXPORT uchar propToByte(quintptr id_prop)
     {
+        PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
 
-        return 0;
+        return p->getValueByte();
     }
 
     //ru Возвращает значение свойства в формате int.
-    EXPORT int propToInteger(quintptr prop)
+    EXPORT int propToInteger(quintptr id_prop)
     {
+        PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
 
-        return 0;
+        return p->getValueInt();
     }
 
     //ru Возвращает значение свойства в формате float.
-    EXPORT float propToReal(quintptr prop)
+    EXPORT float propToReal(quintptr id_prop)
     {
+        PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
 
-        return 0.0;
+        return p->getValueFloat();
     }
 
     //ru Возвращает значение свойства в виде C строки.
-    EXPORT const char *propToString(quintptr prop)
+    EXPORT const char *propToString(quintptr id_prop)
     {
+        PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
 
-        return new char[5] {};
+        QString v = p->getValueString();
+        char *buf = new char[v.size() + 1];
+        strcpy(buf, v.toStdString().c_str());
+
+        return buf;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -315,7 +350,7 @@ namespace EmulateCgt
     {
 
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Добавляет строку в ресурсы и в список временных файлов.
@@ -323,7 +358,7 @@ namespace EmulateCgt
     EXPORT const char *resAddStr(const char *p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Добавляет поток (данные) в ресурсы и в список временных файлов,
@@ -333,7 +368,7 @@ namespace EmulateCgt
     EXPORT const char *resAddStream(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Добавляет звук в ресурсы и в список временных файлов,
@@ -343,7 +378,7 @@ namespace EmulateCgt
     EXPORT const char *resAddWave(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Добавляет картинку в ресурсы и в список временных файлов,
@@ -353,7 +388,7 @@ namespace EmulateCgt
     EXPORT const char *resAddBitmap(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Добавляет меню в ресурсы и в список временных файлов.
@@ -361,7 +396,7 @@ namespace EmulateCgt
     EXPORT const char *resAddMenu(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -401,7 +436,7 @@ namespace EmulateCgt
     EXPORT const char *arrItemName(quintptr a, int Index)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Возвращает значение элемента с индексом Index
@@ -441,7 +476,7 @@ namespace EmulateCgt
     EXPORT const char *dtStr(quintptr d)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Возвращает данные в формате: целое число.
@@ -465,7 +500,7 @@ namespace EmulateCgt
     {
 
 
-        return new char[5] {};
+        return nullptr;
     }
     //ru Возвращает размер шрифта.
     EXPORT int fntSize(quintptr f)
@@ -545,8 +580,11 @@ namespace EmulateCgt
     //[deprecated]
     EXPORT int elGetPropertyListCount(quintptr id_element)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getPropCount();
     }
 
     //ru Возвращает свойство из списка свойств (PropertyList).
@@ -562,21 +600,21 @@ namespace EmulateCgt
     EXPORT const char *plGetName(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Возвращает описание свойства.
     EXPORT const char *plGetInfo(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Возвращает группу свойсва.
     EXPORT const char *plGetGroup(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Возвращает указатель на данные свойства.
@@ -598,7 +636,7 @@ namespace EmulateCgt
     EXPORT const char *ptGetInfo(quintptr p)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -619,7 +657,7 @@ namespace EmulateCgt
     //ru Предназначение данной функции так и небыло найдено.
     //ru Всегда возвращает 0.
     //[deprecated]
-    EXPORT quintptr propGetLinkedElementInfo(quintptr id_element, quintptr prop, char *_int)
+    EXPORT quintptr propGetLinkedElementInfo(quintptr id_element, quintptr id_prop, char *_int)
     {
 
         return 0;
@@ -644,7 +682,7 @@ namespace EmulateCgt
     EXPORT const char *elGetSDKName(quintptr id_element, int index)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -669,7 +707,7 @@ namespace EmulateCgt
     EXPORT const char *elGetInterface(quintptr id_element)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //ru Возвращает список классов, от которых наследуется элемент
@@ -677,7 +715,7 @@ namespace EmulateCgt
     EXPORT const char *elGetInherit(quintptr id_element)
     {
 
-        return new char[5] {};
+        return nullptr;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~

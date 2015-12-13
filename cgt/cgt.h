@@ -44,7 +44,7 @@ namespace cgt
     //ru Возвращает свойство элемента по индексу, с порядковым номером из INI.
     quintptr elGetProperty(quintptr e, int Index);
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
-    bool elIsDefProp(quintptr e, int Index);
+    bool elIsDefProp(quintptr id_element, int index);
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
     quintptr elSetCodeName(quintptr e, const char *Name);
     //ru Возвращает уникальное имя элемента

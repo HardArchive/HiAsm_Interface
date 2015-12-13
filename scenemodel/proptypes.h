@@ -8,6 +8,7 @@
 //Qt
 #include <QObject>
 #include <QVariant>
+#include <QPair>
 
 struct DFont {
     QString name;

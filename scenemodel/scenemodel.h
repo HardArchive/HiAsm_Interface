@@ -39,5 +39,6 @@ public:
     quintptr getIdElementFromSDKByIndex(quintptr id_sdk, int index) const;
     uint getCountElementsInContainer(quintptr id_sdk) const;
     PElement getElementById(quintptr id_element) const;
+    PProperty getPropertyById(quintptr id_prop) const;
 
 };

@@ -125,9 +125,9 @@ namespace cgt
     }
 
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
-    bool elIsDefProp(quintptr e, int Index)
+    bool elIsDefProp(quintptr id_element, int index)
     {
-        return m_cgt->elIsDefProp(e, Index);
+        return m_cgt->elIsDefProp(id_element, index);
     }
 
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
