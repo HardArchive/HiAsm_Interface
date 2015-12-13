@@ -12,6 +12,8 @@
 
 class Property
 {
+    Q_DISABLE_COPY(Property)
+
 private:
     //ru Данные
     const quintptr m_id;

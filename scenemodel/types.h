@@ -36,3 +36,4 @@ typedef QMap<quintptr, PContainer> MapContainers;
 
 class SceneModel;
 typedef SceneModel *PSceneModel;
+//typedef QSharedPointer<SceneModel> SharedSceneModel;

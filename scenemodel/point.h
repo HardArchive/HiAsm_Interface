@@ -11,6 +11,8 @@
 
 class Point
 {
+    Q_DISABLE_COPY(Point)
+
 private:
     const quintptr m_id;
     quintptr m_linkPoint{};

@@ -11,12 +11,11 @@
 
 class SceneModel
 {
+    Q_DISABLE_COPY(SceneModel)
+
 private:
-    const quintptr m_sdk;
     bool m_isDebug{};
     TCgtParams m_cgtParams{};
-
-    //Контейнеры
     Containers m_containers;
     MapContainers m_mapContainers;
     MapElements m_mapElements;
@@ -25,10 +24,10 @@ private:
     MapValues m_mapValues;
 
 public:
-    explicit SceneModel();
+    explicit SceneModel(QObject *parent = 0);
 
 private:
-    void collectingData();
+    void collectingData(quintptr id_sdk);
     PContainer grabberSDK(quintptr id_sdk, PElement parent = nullptr);
     void initMapObjects();
     void fixedPtr();

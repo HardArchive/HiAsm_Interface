@@ -9,6 +9,8 @@
 
 class Container
 {
+    Q_DISABLE_COPY(Container)
+
 private:
     const quintptr m_id;
     PElement m_parent{};

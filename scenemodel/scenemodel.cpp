@@ -11,14 +11,14 @@
 //Qt
 #include <QDebug>
 
-SceneModel::SceneModel()
-    : m_sdk(cgt::getMainSDK())
+SceneModel::SceneModel(QObject *parent):
+    QObject(parent)
 {
     //ru Собираем данные о среде
-    collectingData();
+    collectingData(cgt::getMainSDK());
 
     //ru Получаем контейнер c элементами из SDK
-    grabberSDK(m_sdk);
+    grabberSDK(cgt::getMainSDK());
 
     //ru Инициализация карты объектов
     initMapObjects();
@@ -27,11 +27,11 @@ SceneModel::SceneModel()
     fixedPtr();
 }
 
-void SceneModel::collectingData()
+void SceneModel::collectingData(quintptr id_sdk)
 {
-    m_isDebug = cgt::isDebug(m_sdk);
+    m_isDebug = cgt::isDebug(id_sdk);
 
-    quintptr eId = cgt::sdkGetElement(m_sdk, 0);
+    quintptr eId = cgt::sdkGetElement(id_sdk, 0);
 
     int iBuf{};
     QByteArray buf("", 512);

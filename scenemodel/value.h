@@ -10,6 +10,8 @@
 
 class Value
 {
+    Q_DISABLE_COPY(Value)
+
 private:
     const quintptr m_id;
     DataTypes m_type{};

@@ -350,6 +350,7 @@ namespace EmulateCgt
     }
 
     //ru Добавляет строку в ресурсы и в список временных файлов.
+    //ru Возвращают имя временного файла.
     EXPORT const char *resAddStr(const char *p)
     {
 
@@ -394,7 +395,7 @@ namespace EmulateCgt
         const QByteArray byteArray = v->getValue().toByteArray();
         QString currentPath = QDir::currentPath();
         QString resFilePath = QDir::toNativeSeparators(currentPath + QDir::separator() + resFilePath);
-        QFile
+        //QFile
 
         return nullptr;
     }

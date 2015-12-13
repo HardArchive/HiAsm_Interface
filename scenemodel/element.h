@@ -11,6 +11,8 @@
 
 class Element
 {
+    Q_DISABLE_COPY(Element)
+
 private:
     const quintptr m_id;
     quintptr m_linkMain{};
