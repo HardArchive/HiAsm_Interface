@@ -27,6 +27,13 @@ SceneModel::SceneModel(QObject *parent):
     fixedPtr();
 }
 
+const char *SceneModel::strToPChar(const QString &str)
+{
+    char *buf = new char[str.size() + 1];
+    strcpy(buf, str.toStdString().c_str());
+    return buf;
+}
+
 void SceneModel::collectingData(quintptr id_sdk)
 {
     m_isDebug = cgt::isDebug(id_sdk);
@@ -266,4 +273,30 @@ void SceneModel::addValueToMap(SharedValue value)
 {
     if (value)
         m_mapValues.insert(value->getId(), value);
+}
+
+const char *SceneModel::addResByIdProp(quintptr id_prop)
+{
+    const PProperty p = getPropertyById(id_prop);
+    if (!p)
+        return false;
+
+    const SharedValue v = p->getValue();
+    const QByteArray byteArray = v->getValue().toByteArray();
+
+    static const QString nameDir = "compiler";
+    static const QString prefix = "STREAM";
+    QString suffix = QString::number(m_listResources.size());
+    QString fileName = prefix + suffix;
+
+    QString currentPath = QDir::currentPath();
+    QString resFilePath = QDir::toNativeSeparators(currentPath +
+                          QDir::separator() +
+                          nameDir +
+                          QDir::separator() +
+                          fileName);
+
+    m_listResources.append(resFilePath);
+
+    return strToPChar(fileName);
 }

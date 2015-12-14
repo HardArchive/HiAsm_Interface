@@ -24,9 +24,11 @@ private:
     MapPoints m_mapPoints;
     MapProperties m_mapProperties;
     MapValues m_mapValues;
+    QStringList m_listResources;
 
 public:
     explicit SceneModel(QObject *parent = 0);
+    static const char *strToPChar(const QString &str);
 
 private:
     void collectingData(quintptr id_sdk);
@@ -45,5 +47,6 @@ public:
     PProperty getPropertyById(quintptr id_prop) const;
     SharedValue getValueById(quintptr id_value) const;
     void addValueToMap(SharedValue value);
+    const char *addResByIdProp(quintptr id_prop);
 
 };

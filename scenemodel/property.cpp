@@ -24,7 +24,6 @@ Property::Property(quintptr id_prop, PSceneModel model, QObject *parent)
 
 void Property::collectingData()
 {
-
     m_name = QString::fromLocal8Bit(cgt::propGetName(m_id));
     m_type = cgt::propGetType(m_id);
     quintptr id_value = cgt::propGetValue(m_id);
@@ -129,7 +128,7 @@ void Property::collectingData()
         break;
     }
     case data_font: {
-        PFont font = new Font;
+        SharedFont font = SharedFont::create();
         font->name = QString::fromLocal8Bit(cgt::fntName(id_value));
         font->size = cgt::fntSize(id_value);
         font->style = cgt::fntStyle(id_value);

@@ -10,7 +10,6 @@
 
 //Qt
 
-
 namespace EmulateCgt
 {
 #define EXPORT static __stdcall
@@ -106,11 +105,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        QString name = e->getCodeName();
-        char *buf = new char[name.size() + 1];
-        strcpy(buf, name.toStdString().c_str());
-
-        return buf;
+        return SceneModel::strToPChar(e->getCodeName());
     }
 
     //ru Возвращает имя класса элемента
@@ -120,11 +115,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        QString name = e->getClassName();
-        char *str = new char[name.size() + 1];
-        strcpy(str, name.toStdString().c_str());
-
-        return str;
+        return SceneModel::strToPChar(e->getClassName());
     }
 
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
@@ -276,11 +267,7 @@ namespace EmulateCgt
         if (!p)
             return nullptr;
 
-        QString name = p->getName();
-        char *buf = new char[name.size() + 1];
-        strcpy(buf, name.toStdString().c_str());
-
-        return buf;
+        return SceneModel::strToPChar(p->getName());
     }
 
     //ru Возвращает значение свойства в виде указателя на данные.
@@ -326,11 +313,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        QString name = p->getValueString();
-        char *buf = new char[name.size() + 1];
-        strcpy(buf, name.toStdString().c_str());
-
-        return buf;
+        return SceneModel::strToPChar(p->getValueString());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -383,18 +366,7 @@ namespace EmulateCgt
     //ru работы с библиотекой.
     EXPORT const char *resAddBitmap(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
-        if (!p)
-            return nullptr;
-
-        //const SharedValue v = p->getValue();
-        //QString prefix = "BITMAP";
-        //const QByteArray byteArray = v->getValue().toByteArray();
-        //QString currentPath = QDir::currentPath();
-        //QString resFilePath = QDir::toNativeSeparators(currentPath + QDir::separator() + resFilePath);
-        //QFile
-
-        return nullptr;
+        return m_model->addResByIdProp(id_prop);
     }
 
     //ru Добавляет меню в ресурсы и в список временных файлов.
@@ -508,14 +480,8 @@ namespace EmulateCgt
         if (!v)
             return nullptr;
 
-        PFont font = qvariant_cast<PFont>(v->getValue());
-        if (!font)
-            return nullptr;
-
-        char *buf = new char[font->name.size() + 1];
-        strcpy(buf, font->name.toStdString().c_str());
-
-        return buf;
+        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
+        return SceneModel::strToPChar(font->name);
     }
     //ru Возвращает размер шрифта.
     EXPORT int fntSize(quintptr id_font)
@@ -524,7 +490,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        PFont font = qvariant_cast<PFont>(v->getValue());
+        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
         if (!font)
             return 0;
 
@@ -537,7 +503,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        PFont font = qvariant_cast<PFont>(v->getValue());
+        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
         if (!font)
             return 0;
 
@@ -550,7 +516,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        PFont font = qvariant_cast<PFont>(v->getValue());
+        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
         if (!font)
             return 0;
 
@@ -563,7 +529,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        PFont font = qvariant_cast<PFont>(v->getValue());
+        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
         if (!font)
             return 0;
 
@@ -899,7 +865,6 @@ namespace EmulateCgt
     };
 
     /*!  Служебные функции   */
-
     //Сохранение указателя для дальнейшей работы с оным
     void setSceneModel(SceneModel &collector)
     {

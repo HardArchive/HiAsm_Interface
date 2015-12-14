@@ -13,9 +13,8 @@ struct Font {
     uint color{};
     uchar charset{};
 };
-typedef Font *PFont;
-Q_DECLARE_METATYPE(Font)
-Q_DECLARE_METATYPE(PFont)
+typedef QSharedPointer<Font> SharedFont;
+Q_DECLARE_METATYPE(SharedFont)
 
 typedef QVector<int> ArrayInteger;
 Q_DECLARE_METATYPE(ArrayInteger)

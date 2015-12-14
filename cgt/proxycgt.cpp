@@ -458,7 +458,6 @@ namespace ProxyCgt
 
     //ru Добавляет иконку в ресурсы и в список временных файлов,
     //ru и возвращают имя временного файла.
-    //TODO p - является свойством, которое содержит иконку?
     EXPORT const char *resAddIcon(quintptr p)
     {
         PRINT_FUNC_INFO

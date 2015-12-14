@@ -87,13 +87,21 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
         qDebug() << "CODEGEN_PROCESS_ATTACH";
 
-        //Загружаем оригинальную DLL в память
-        QString codegen = QString("%1/CodeGen_original.dll").arg(HIASM_PACKAGE);
-        if (!QFile::exists(codegen)) {
-            MessageBoxW(0, L"Библиотека CodeGen_original.dll не найдена!", L"Ошибка!", MB_ICONERROR);
+        //ru Вычисляем путь к оригинальному кодогенератору относительно текущего модуля (hModule)
+        const uint max_path = 2048;
+        char tmpCurrentModulePath[max_path];
+        GetModuleFileNameA(hModule, tmpCurrentModulePath, max_path);
+        QFileInfo currentModulePath(QString::fromLocal8Bit(tmpCurrentModulePath));
+        QString nameOriginal = "CodeGen_original.dll";
+        QString pathOriginal = currentModulePath.absolutePath() + QDir::separator() + nameOriginal;
+
+        //ru Загружаем оригинальную DLL в память
+        if (!QFile::exists(pathOriginal)) {
+            MessageBoxW(0, QString("Библиотека %1 не найдена!").arg(nameOriginal).toStdWString().data(),
+                        L"Ошибка!", MB_ICONERROR);
             exit(0);
         }
-        m_codegen = LoadLibraryW(&codegen.toStdWString()[0]);
+        m_codegen = LoadLibraryW(pathOriginal.toStdWString().data());
 
         //Определение функций проксируемого кодогенератора
         original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
@@ -116,7 +124,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     }
     }
 
-    return (TRUE);
+    return TRUE;
 }
 
 //Экспортируемые функции
