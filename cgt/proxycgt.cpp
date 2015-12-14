@@ -43,7 +43,7 @@ namespace ProxyCgt
     }
     void printArgs(CgtParams index, const QVariant value)
     {
-        qDebug().nospace().noquote() << "  Arg1" << ": " << CgtParamsMap[index];
+        qDebug().nospace().noquote() << "  Arg1: " << CgtParamsMap[index];
         if (value.type() == QVariant::String) {
             qDebug().nospace() << "  Arg2: " << value.toString();
         } else {
