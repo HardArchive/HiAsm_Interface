@@ -1,6 +1,5 @@
 ﻿//Project
 #include "proxycgt.h"
-#include "logger.h"
 
 //STL
 
@@ -11,21 +10,20 @@
 namespace ProxyCgt
 {
     //Дефайны
-#define PRINT_FUNC_INFO LOG(INFO) << CALL_STR << Q_FUNC_INFO;
+#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
 #define PRINT_RESULT_STR(X) \
-    LOG(INFO) << RESULT_STR << '"'+QString::fromLocal8Bit(X)+'"';
+    qDebug().noquote() << RESULT_STR << '"'+QString::fromLocal8Bit(X)+'"';
 #define EXPORT static __stdcall
 
     //Константы
-    const char CALL_STR[] = "  Call: ";
+    const char CALL_STR[] = "  Call:";
     const char ARG_STR[] = "  Arg";
-    const char RESULT_STR[] = "  Return: ";
+    const char RESULT_STR[] = "  Return:";
 
 
     //Для хранения указателя на массив указателей на callback функции
     static PCodeGenTools m_cgt = nullptr;
 
-    //Служебные функции
     //Служебные функции
     void printArgs(std::initializer_list<QVariant> args, bool noquote = false)
     {
@@ -33,22 +31,23 @@ namespace ProxyCgt
         for (const QVariant &v : args) {
             if (v.type() == QVariant::String) {
                 if (noquote)
-                    LOG(INFO) << QString("  Arg%1: %2").arg(i).arg(v.toString());
+                    qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
                 else
-                    LOG(INFO) << QString("  Arg%1: \"%2\"").arg(i).arg(v.toString());
+                    qDebug().nospace() << "  Arg" << i << ": " << v.toString();
+
             } else {
-                LOG(INFO) << QString("  Arg%1: %2").arg(i).arg(v.toString());
+                qDebug().nospace().noquote() << "  Arg" << i << ": " << v.toString();
             }
-            ++i;
+            i++;
         }
     }
     void printArgs(CgtParams index, const QVariant value)
     {
-        LOG(INFO) << QString("  Arg1: %1").arg(CgtParamsMap[index]);
+        qDebug().nospace().noquote() << "  Arg1" << ": " << CgtParamsMap[index];
         if (value.type() == QVariant::String) {
-            LOG(INFO) << QString("  Arg2: \"%1\"").arg(value.toString());
+            qDebug().nospace() << "  Arg2: " << value.toString();
         } else {
-            LOG(INFO) << QString("  Arg2: %1").arg(value.toString());
+            qDebug().nospace().noquote() << "  Arg2: " << value.toString();
         }
     }
 
@@ -61,7 +60,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->sdkGetCount(SDK);
         printArgs({SDK});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -72,7 +71,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->sdkGetElement(SDK, Index);
         printArgs({SDK, Index});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -83,7 +82,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->sdkGetElementName(SDK, Name);
         printArgs({SDK, Name});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -96,7 +95,7 @@ namespace ProxyCgt
         ElementFlags res = m_cgt->elGetFlag(e);
         printArgs({e});
 
-        LOG(INFO) << RESULT_STR << ElementFlgs(res);
+        qDebug() << RESULT_STR << ElementFlgs(res);
 
         return res;
     }
@@ -107,7 +106,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->elGetPropCount(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -118,7 +117,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elGetProperty(e, Index);
         printArgs({e, Index});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -129,7 +128,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         bool res = m_cgt->elIsDefProp(e, Index);
         printArgs({e, Index});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -140,7 +139,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elSetCodeName(e, Name);
         printArgs({e, Name});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -184,7 +183,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->elGetPtCount(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -195,7 +194,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elGetPt(e, i);
         printArgs({e, i});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -207,7 +206,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elGetPtName(e, Name);
         printArgs({e, Name});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -218,7 +217,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         ElementClass res = m_cgt->elGetClassIndex(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << ElementClassMap[res];
+        qDebug().noquote() << RESULT_STR << ElementClassMap[res];
 
         return res;
     }
@@ -230,7 +229,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elGetSDK(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -241,7 +240,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         bool res = m_cgt->elLinkIs(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -252,7 +251,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elLinkMain(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -280,7 +279,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->elGetEID(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -293,7 +292,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->ptGetLinkPoint(p);
         printArgs({p});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -305,7 +304,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->ptGetRLinkPoint(p);
         printArgs({p});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -316,7 +315,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         PointTypes res = m_cgt->ptGetType(p);
         printArgs({p});
-        LOG(INFO) << RESULT_STR << PointTypesMap[res];
+        qDebug().noquote() << RESULT_STR << PointTypesMap[res];
 
         return res;
     }
@@ -338,7 +337,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->ptGetParent(p);
         printArgs({p});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -348,8 +347,8 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         PointTypes res = m_cgt->ptGetIndex(p);
-        printArgs({p});
-        LOG(INFO) << RESULT_STR << PointTypesMap[res];
+        printArgs({p}, true);
+        qDebug().noquote() << RESULT_STR << PointTypesMap[res];
 
         return res;
     }
@@ -372,7 +371,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         DataTypes res = m_cgt->propGetType(prop);
         printArgs({prop});
-        LOG(INFO) << RESULT_STR << DataTypesMap[res];
+        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
         return res;
     }
@@ -394,7 +393,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->propGetValue(prop);
         printArgs({prop});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -405,7 +404,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         uchar res = m_cgt->propToByte(prop);
         printArgs({prop});
-        LOG(INFO) << RESULT_STR << int(res);
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -416,7 +415,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->propToInteger(prop);
         printArgs({prop});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -427,7 +426,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         float res = m_cgt->propToReal(prop);
         printArgs({prop});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -452,7 +451,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->resAddFile(Name);
         printArgs({Name});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -544,7 +543,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->_Debug(Text, Color);
         printArgs({Text, Color});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -595,7 +594,7 @@ namespace ProxyCgt
             break;
         }
 
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -607,7 +606,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->arrCount(a);
         printArgs({a});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -618,7 +617,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         DataTypes res = m_cgt->arrType(a);
         printArgs({a});
-        LOG(INFO) << RESULT_STR << DataTypesMap[res];
+        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
         return res;
     }
@@ -640,7 +639,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         const quintptr res = m_cgt->arrItemData(a, Index);
         printArgs({a, Index});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -652,7 +651,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->arrGetItem(a, Index);
         printArgs({a, Index});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -665,7 +664,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->isDebug(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -678,7 +677,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         DataTypes res = m_cgt->dtType(d);
         printArgs({d});
-        LOG(INFO) << RESULT_STR << DataTypesMap[res];
+        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
         return res;
     }
@@ -700,7 +699,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->dtInt(d);
         printArgs({d});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -711,7 +710,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         double res = m_cgt->dtReal(d);
         printArgs({d});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -733,7 +732,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->fntSize(f);
         printArgs({f});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -743,7 +742,7 @@ namespace ProxyCgt
         printArgs({f});
         PRINT_FUNC_INFO
         uchar res = m_cgt->fntStyle(f);
-        LOG(INFO) << RESULT_STR << int(res);
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -753,7 +752,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->fntColor(f);
         printArgs({f});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -763,7 +762,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         uchar res = m_cgt->fntCharSet(f);
         printArgs({f});
-        LOG(INFO) << RESULT_STR << int(res);
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -779,7 +778,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         const quintptr res = m_cgt->elGetData(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -801,7 +800,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         DataTypes res = m_cgt->ptGetDataType(p);
         printArgs({p});
-        LOG(INFO) << RESULT_STR << DataTypesMap[res];
+        qDebug().noquote() << RESULT_STR << DataTypesMap[res];
 
         return res;
     }
@@ -813,7 +812,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elGetParent(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -826,7 +825,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->elGetPropertyListCount(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -838,7 +837,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elGetPropertyListItem(e, i);
         printArgs({e, i});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -883,7 +882,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->plGetProperty(p);
         printArgs({p});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -894,7 +893,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->plGetOwner(p);
         printArgs({p});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -918,7 +917,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->propGetLinkedElement(e, propName);
         printArgs({e, propName});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -929,7 +928,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->propIsTranslate(e, p);
         printArgs({e, p});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -942,7 +941,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->propGetLinkedElementInfo(e, prop, _int);
         printArgs({e, prop, _int});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return 0;
     }
@@ -954,7 +953,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->elGetSDKByIndex(e, index);
         printArgs({e, index});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -965,7 +964,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->elGetSDKCount(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -989,7 +988,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         quintptr res = m_cgt->sdkGetParent(SDK);
         printArgs({SDK});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -1025,7 +1024,7 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         int res = m_cgt->resEmpty();
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -1036,7 +1035,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->resSetPref(pref);
         printArgs({pref});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -1048,7 +1047,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->_Error(line, e, text);
         printArgs({line, e, text});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -1061,7 +1060,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->elGetGroup(e);
         printArgs({e});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }
@@ -1074,7 +1073,7 @@ namespace ProxyCgt
         PRINT_FUNC_INFO
         int res = m_cgt->propSaveToFile(p, fileName);
         printArgs({p, fileName});
-        LOG(INFO) << RESULT_STR << res;
+        qDebug() << RESULT_STR << res;
 
         return res;
     }

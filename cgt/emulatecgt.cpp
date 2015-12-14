@@ -387,11 +387,11 @@ namespace EmulateCgt
         if (!p)
             return nullptr;
 
-        const SharedValue v = p->getValue();
-        const QByteArray byteArray = v->getValue().toByteArray();
-        QString currentPath = QDir::currentPath();
-        QString prefix = "BITMAP";
-        QString resFilePath = QDir::toNativeSeparators(currentPath + QDir::separator() + prefix);
+        //const SharedValue v = p->getValue();
+        //QString prefix = "BITMAP";
+        //const QByteArray byteArray = v->getValue().toByteArray();
+        //QString currentPath = QDir::currentPath();
+        //QString resFilePath = QDir::toNativeSeparators(currentPath + QDir::separator() + resFilePath);
         //QFile
 
         return nullptr;
@@ -410,6 +410,7 @@ namespace EmulateCgt
     //ru Всего возвращает 0.
     EXPORT int _Debug(const char *Text, int Color)
     {
+
         return 0;
     }
 

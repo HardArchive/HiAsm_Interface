@@ -23,7 +23,7 @@ const char RESULT_STR[] = "Return:";
 
 //Дефайны
 #define DLLEXPORT extern "C" __cdecl
-#define PRINT_FUNC_INFO LOG(INFO) << CALL_STR << Q_FUNC_INFO;
+#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
 
 //Типы функций
 typedef int(*t_buildPrepareProc)(TBuildPrepareRec &params);
@@ -47,6 +47,15 @@ static t_isElementMaker original_isElementMaker;
 static t_MakeElement original_MakeElement;
 static t_isReadyForAdd original_isReadyForAdd;
 
+//Переопределение вывода отладочных сообщений
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(type)
+    Q_UNUSED(context)
+
+    LOG(INFO) << msg;
+}
+
 //Служебные переменные
 static HMODULE m_codegen = nullptr;
 
@@ -57,32 +66,30 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     Q_UNUSED(hModule)
     Q_UNUSED(lpReserved)
 
-    //Инициализация логгера
-    QDir makeLogDir;
-    makeLogDir.mkdir("logs");
-
-    el::Configurations conf;
-    conf.setGlobally(el::ConfigurationType::Filename, "logs/%datetime.log");
-    conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}: %msg");
-
-    el::Logger *defaultLogger = el::Loggers::getLogger("default");
-    defaultLogger->configure(conf);
-
-    el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);
-    el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
-    el::Loggers::addFlag(el::LoggingFlag::LogDetailedCrashReason);
-    el::Loggers::addFlag(el::LoggingFlag::DisableApplicationAbortOnFatalLog);
-    el::Loggers::addFlag(el::LoggingFlag::DisablePerformanceTrackingCheckpointComparison);
-    el::Loggers::addFlag(el::LoggingFlag::DisableVModules);
-    el::Loggers::addFlag(el::LoggingFlag::DisableVModulesExtensions);
-
     switch (reason) {
     case DLL_PROCESS_ATTACH: {
-        LOG(INFO) << "CODEGEN_PROCESS_ATTACH";
+        //Инициализация логгера
+        QDir makeLogDir;
+        makeLogDir.mkdir("logs");
+        el::Configurations conf;
+        conf.setGlobally(el::ConfigurationType::Filename, "logs/%datetime.log");
+        conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}: %msg");
+        el::Logger *defaultLogger = el::Loggers::getLogger("default");
+        defaultLogger->configure(conf);
+        el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);
+        el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
+        el::Loggers::addFlag(el::LoggingFlag::LogDetailedCrashReason);
+        el::Loggers::addFlag(el::LoggingFlag::DisableApplicationAbortOnFatalLog);
+        el::Loggers::addFlag(el::LoggingFlag::DisablePerformanceTrackingCheckpointComparison);
+        el::Loggers::addFlag(el::LoggingFlag::DisableVModules);
+        el::Loggers::addFlag(el::LoggingFlag::DisableVModulesExtensions);
+        qInstallMessageHandler(myMessageOutput);
+
+        qDebug() << "CODEGEN_PROCESS_ATTACH";
 
         //Загружаем оригинальную DLL в память
         QString codegen = QString("%1/CodeGen_original.dll").arg(HIASM_PACKAGE);
-        if(!QFile::exists(codegen)){
+        if (!QFile::exists(codegen)) {
             MessageBoxW(0, L"Библиотека CodeGen_original.dll не найдена!", L"Ошибка!", MB_ICONERROR);
             exit(0);
         }
@@ -103,7 +110,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     }
 
     case DLL_PROCESS_DETACH: {
-        LOG(INFO) << "CODEGEN_PROCESS_DETACH";
+        qDebug() << "CODEGEN_PROCESS_DETACH";
         FreeLibrary(m_codegen);
         break;
     }
@@ -117,7 +124,7 @@ DLLEXPORT int buildPrepareProc(TBuildPrepareRec &params)
 {
     PRINT_FUNC_INFO
     int res = original_buildPrepareProc(params);
-    LOG(INFO) << RESULT_STR << res;
+    qDebug() << RESULT_STR << res;
 
     return res;
 }
@@ -145,7 +152,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #endif
 
     int res = original_buildProcessProc(params);  //CG_SUCCESS
-    LOG(INFO) << RESULT_STR << res;
+    qDebug() << RESULT_STR << res;
     return res;
 }
 
@@ -153,7 +160,7 @@ DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
 {
     PRINT_FUNC_INFO
     int res = original_CheckVersionProc(params);
-    LOG(INFO) << RESULT_STR << res;
+    qDebug() << RESULT_STR << res;
 
     return res;
 }
@@ -180,7 +187,7 @@ DLLEXPORT int isElementMaker(PCodeGenTools cgt, quintptr e)
 {
     PRINT_FUNC_INFO
     int res = original_isElementMaker(cgt, e);
-    LOG(INFO) << RESULT_STR << res;
+    qDebug() << RESULT_STR << res;
 
     return res;
 }
@@ -189,7 +196,7 @@ DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr e)
 {
     PRINT_FUNC_INFO
     int res = original_MakeElement(cgt, e);
-    LOG(INFO) << RESULT_STR << res;
+    qDebug() << RESULT_STR << res;
 
     return res;
 }
@@ -200,10 +207,10 @@ DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr sdk
     Q_UNUSED(rfd)
     Q_UNUSED(sdk)
 
-    //PRINT_FUNC_INFO
-    bool res =  original_isReadyForAdd(cgt, rfd, sdk);
-    //LOG(INFO) << RESULT_STR << res;
+    //    PRINT_FUNC_INFO
+    //    bool res =  original_isReadyForAdd(cgt, rfd, sdk);
+    //    qDebug() << RESULT_STR << res;
 
-    return res;
+    return 1;
 }
 
