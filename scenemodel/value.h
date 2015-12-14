@@ -6,6 +6,7 @@
 //STL
 
 //Qt
+#include <QObject>
 #include <QVariant>
 
 class Value
@@ -21,6 +22,7 @@ private:
 public:
     explicit Value(quintptr id_value, DataTypes type, QVariant value = QVariant(), PProperty parent = nullptr);
 
+public:
     quintptr getId() const;
     DataTypes getType() const;
     QVariant getValue() const;

@@ -7,20 +7,20 @@
 //STL
 
 //Qt
+#include <QObject>
 #include <QString>
 
-class Element
+class Element: public QObject
 {
+    Q_OBJECT
     Q_DISABLE_COPY(Element)
 
 private:
     const quintptr m_id;
+    PSceneModel const m_model;
+
     quintptr m_linkMain{};
-
-    PContainer m_parent{};
     PElement m_linkMainPtr{};
-    PSceneModel m_model{};
-
     quintptr m_userData{};
     QString m_className;
     QString m_codeName;
@@ -33,7 +33,6 @@ private:
     bool m_linkIs{};
     int m_propCount{};
     int m_ptCount{};
-
     int m_posX{};
     int m_posY{};
     int m_sizeW{};
@@ -45,7 +44,7 @@ private:
     Properties m_properties;
 
 public:
-    explicit Element(quintptr eId, PContainer parent, PSceneModel model);
+    explicit Element(quintptr id_element, PSceneModel model, QObject *parent);
     friend class SceneModel;
 
 private:

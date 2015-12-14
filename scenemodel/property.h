@@ -8,28 +8,28 @@
 //STL
 
 //Qt
+#include <QObject>
 #include <QDebug>
 
-class Property
+class Property: public QObject
 {
+    Q_OBJECT
     Q_DISABLE_COPY(Property)
 
 private:
     //ru Данные
     const quintptr m_id;
+    PSceneModel const m_model;
     QString m_name;
     DataTypes m_type{};
     int m_isTranslate{};
     bool m_isDefault{};
 
-    //ru Указатели и ссылки
-    PElement m_parent{};
-
     //Данные свойства
-    PValue m_value{};
+    SharedValue m_value;
 
 public:
-    Property(quintptr propId, PElement parent);
+    Property(quintptr id_prop, PSceneModel model, QObject *parent);
     friend class SceneModel;
 
 private:
@@ -41,7 +41,7 @@ public:
     bool getIsDefault() const;
     void setIsDefault(bool value);
     QString getName() const;
-    PValue getValue() const;
+    SharedValue getValue() const;
     int getValueInt() const;
     qreal getValueReal() const;
     QString getValueString() const;

@@ -8,9 +8,10 @@
 //Qt
 
 
-Container::Container(quintptr id, PElement parent)
-    : m_id(id)
-    , m_parent(parent)
+Container::Container(quintptr id_sdk, PSceneModel model, QObject *parent)
+    : QObject(parent)
+    , m_id(id_sdk)
+    , m_model(model)
 {
 
 }
@@ -58,5 +59,5 @@ quintptr Container::getIdElementByIndex(quintptr index) const
 
 PElement Container::getParent() const
 {
-    return m_parent;
+    return qobject_cast<PElement>(parent());
 }

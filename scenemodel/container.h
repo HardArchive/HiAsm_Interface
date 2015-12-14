@@ -6,18 +6,20 @@
 //STL
 
 //Qt
+#include <QObject>
 
-class Container
+class Container: public QObject
 {
+    Q_OBJECT
     Q_DISABLE_COPY(Container)
 
 private:
     const quintptr m_id;
-    PElement m_parent{};
+    PSceneModel const m_model;
     Elements m_elements;
 
 public:
-    explicit Container(quintptr id, PElement parent);
+    explicit Container(quintptr id_sdk, PSceneModel model, QObject *parent);
     friend class SceneModel;
 
 public:

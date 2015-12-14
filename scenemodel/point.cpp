@@ -9,9 +9,10 @@
 
 //Qt
 
-Point::Point(quintptr pt, PElement parent)
-    : m_id(pt)
-    , m_parent(parent)
+Point::Point(quintptr id_point, PSceneModel model, QObject *parent)
+    : QObject(parent)
+    , m_id(id_point)
+    , m_model(model)
 {
     collectingData();
 }

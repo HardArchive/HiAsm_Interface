@@ -8,9 +8,11 @@
 //STL
 
 //Qt
+#include <QObject>
 
-class SceneModel
+class SceneModel: public QObject
 {
+    Q_OBJECT
     Q_DISABLE_COPY(SceneModel)
 
 private:
@@ -28,7 +30,7 @@ public:
 
 private:
     void collectingData(quintptr id_sdk);
-    PContainer grabberSDK(quintptr id_sdk, PElement parent = nullptr);
+    PContainer grabberSDK(quintptr id_sdk, QObject *parent);
     void initMapObjects();
     void fixedPtr();
 
@@ -41,7 +43,7 @@ public:
     uint getCountElementsInContainer(quintptr id_sdk) const;
     PElement getElementById(quintptr id_element) const;
     PProperty getPropertyById(quintptr id_prop) const;
-    PValue getValueById(quintptr id_value) const;
-    void addValueToMap(PValue value);
+    SharedValue getValueById(quintptr id_value) const;
+    void addValueToMap(SharedValue value);
 
 };

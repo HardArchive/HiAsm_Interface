@@ -18,7 +18,7 @@ SceneModel::SceneModel(QObject *parent):
     collectingData(cgt::getMainSDK());
 
     //ru Получаем контейнер c элементами из SDK
-    grabberSDK(cgt::getMainSDK());
+    grabberSDK(cgt::getMainSDK(), this);
 
     //ru Инициализация карты объектов
     initMapObjects();
@@ -89,16 +89,16 @@ void SceneModel::collectingData(quintptr id_sdk)
     m_cgtParams.PARAM_COMPILER = QString::fromLocal8Bit(buf);
 }
 
-PContainer SceneModel::grabberSDK(quintptr id_sdk, PElement parent)
+PContainer SceneModel::grabberSDK(quintptr id_sdk, QObject *parent)
 {
-    PContainer container = new Container(id_sdk, parent);
+    PContainer container = new Container(id_sdk, this, parent);
     m_containers.append(container);
 
     int countElements = cgt::sdkGetCount(id_sdk);
     for (int i = 0; i < countElements; ++i) {
         quintptr eId = cgt::sdkGetElement(id_sdk, i);
 
-        PElement element = new Element(eId, container, this);
+        PElement element = new Element(eId, this, container);
 
         if (!fcgt::isLink(element->m_flags)) {
             container->m_elements << element;
@@ -257,12 +257,12 @@ PProperty SceneModel::getPropertyById(quintptr id_prop) const
     return m_mapProperties[id_prop];
 }
 
-PValue SceneModel::getValueById(quintptr id_value) const
+SharedValue SceneModel::getValueById(quintptr id_value) const
 {
     return m_mapValues[id_value];
 }
 
-void SceneModel::addValueToMap(PValue value)
+void SceneModel::addValueToMap(SharedValue value)
 {
     if (value)
         m_mapValues.insert(value->getId(), value);

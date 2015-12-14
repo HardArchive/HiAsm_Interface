@@ -387,14 +387,11 @@ namespace EmulateCgt
         if (!p)
             return nullptr;
 
-        const PValue v = p->getValue();
-        if (!v)
-            return nullptr;
-
-        QString prefix = "BITMAP";
-        const QByteArray byteArray = v->getValue().toByteArray();
-        QString currentPath = QDir::currentPath();
-        QString resFilePath = QDir::toNativeSeparators(currentPath + QDir::separator() + resFilePath);
+        //const SharedValue v = p->getValue();
+        //QString prefix = "BITMAP";
+        //const QByteArray byteArray = v->getValue().toByteArray();
+        //QString currentPath = QDir::currentPath();
+        //QString resFilePath = QDir::toNativeSeparators(currentPath + QDir::separator() + resFilePath);
         //QFile
 
         return nullptr;
@@ -507,7 +504,7 @@ namespace EmulateCgt
     //ru Возвращает название шрифта.
     EXPORT const char *fntName(quintptr id_font)
     {
-        PValue v = m_model->getValueById(id_font);
+        SharedValue v = m_model->getValueById(id_font);
         if (!v)
             return nullptr;
 
@@ -523,7 +520,7 @@ namespace EmulateCgt
     //ru Возвращает размер шрифта.
     EXPORT int fntSize(quintptr id_font)
     {
-        PValue v = m_model->getValueById(id_font);
+        SharedValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 
@@ -536,7 +533,7 @@ namespace EmulateCgt
     //ru Возвращает стиль шрифта.
     EXPORT uchar fntStyle(quintptr id_font)
     {
-        PValue v = m_model->getValueById(id_font);
+        SharedValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 
@@ -549,7 +546,7 @@ namespace EmulateCgt
     //ru Возвращает цвет шрифта.
     EXPORT uint fntColor(quintptr id_font)
     {
-        PValue v = m_model->getValueById(id_font);
+        SharedValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 
@@ -562,7 +559,7 @@ namespace EmulateCgt
     //ru Возвращает кодировку шрифта.
     EXPORT uchar fntCharSet(quintptr id_font)
     {
-        PValue v = m_model->getValueById(id_font);
+        SharedValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 

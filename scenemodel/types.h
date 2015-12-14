@@ -11,8 +11,8 @@
 
 // Типы данных
 class Value;
-typedef Value *PValue;
-typedef QMap<quintptr, PValue> MapValues;
+typedef QSharedPointer<Value> SharedValue;
+typedef QMap<quintptr, SharedValue> MapValues;
 
 class Property;
 typedef Property *PProperty;

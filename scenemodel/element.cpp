@@ -1,5 +1,6 @@
 //Project
 #include "element.h"
+#include "container.h"
 #include "point.h"
 #include "property.h"
 #include "cgt/cgt.h"
@@ -8,9 +9,9 @@
 
 //Qt
 
-Element::Element(quintptr eId, PContainer parent, PSceneModel model)
-    : m_id(eId)
-    , m_parent(parent)
+Element::Element(quintptr id_element, PSceneModel model, QObject *parent)
+    : QObject(parent)
+    , m_id(id_element)
     , m_model(model)
 {
     collectingData();
@@ -37,13 +38,13 @@ void Element::collectingData()
     //ru Получаем информацию о точках
     for (int i = 0; i < m_ptCount; ++i) {
         quintptr pointId = cgt::elGetPt(m_id, i);
-        m_points.append(new Point(pointId, this));
+        m_points.append(new Point(pointId, m_model, this));
     }
 
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propCount; ++i) {
         quintptr propId = cgt::elGetProperty(m_id, i);
-        m_properties.append(new Property(propId, this));
+        m_properties.append(new Property(propId, m_model, this));
     }
 
     //ru Помечаем свойства, значения которых совпадают со стандартным из INI.
@@ -101,7 +102,7 @@ ElementClass Element::getClassIndex()
 
 PContainer Element::getParent() const
 {
-    return m_parent;
+    return qobject_cast<PContainer>(parent());
 }
 
 int Element::getPropCount() const

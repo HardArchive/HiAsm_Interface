@@ -14,9 +14,10 @@
 #include <QUuid>
 
 
-Property::Property(quintptr propId, PElement parent)
-    : m_id(propId)
-    , m_parent(parent)
+Property::Property(quintptr id_prop, PSceneModel model, QObject *parent)
+    : QObject(parent)
+    , m_id(id_prop)
+    , m_model(model)
 {
     collectingData();
 }
@@ -28,21 +29,20 @@ void Property::collectingData()
     m_type = cgt::propGetType(m_id);
     quintptr id_value = cgt::propGetValue(m_id);
 
-    const PSceneModel model = m_parent->getModel();
-    auto addValue = [this, &model, &id_value](QVariant value) {
-        m_value = new Value(id_value, m_type, value, this);
-        model->addValueToMap(m_value);
+    auto setValue = [this, &id_value](QVariant value) {
+        m_value = SharedValue::create(id_value, m_type, value, this);
+        m_model->addValueToMap(m_value);
     };
 
     switch (m_type) {
     case data_int:
     case data_color:
     case data_flags: {
-        addValue(cgt::propToInteger(m_id));
+        setValue(cgt::propToInteger(m_id));
         break;
     }
     case data_real: {
-        addValue(cgt::propToReal(m_id));
+        setValue(cgt::propToReal(m_id));
         break;
     }
     case data_str:
@@ -50,26 +50,26 @@ void Property::collectingData()
     case data_list:
     case data_script:
     case data_code: {
-        addValue(QString::fromLocal8Bit(cgt::propToString(m_id)));
+        setValue(QString::fromLocal8Bit(cgt::propToString(m_id)));
         break;
     }
     case data_data: {
         switch (cgt::dtType(id_value)) {
         case data_int:
-            addValue(cgt::dtInt(id_value));
+            setValue(cgt::dtInt(id_value));
             break;
         case data_str:
-            addValue(QString::fromLocal8Bit(cgt::dtStr(id_value)));
+            setValue(QString::fromLocal8Bit(cgt::dtStr(id_value)));
             break;
         case data_real:
-            addValue(cgt::dtReal(id_value));
+            setValue(cgt::dtReal(id_value));
         default:
             break;
         }
         break;
     }
     case data_combo: {
-        addValue(cgt::propToByte(m_id));
+        setValue(cgt::propToByte(m_id));
         break;
     }
     case data_icon: {
@@ -88,7 +88,7 @@ void Property::collectingData()
         QFile file(filePath);
         if (file.size()) {
             file.open(QIODevice::ReadOnly);
-            addValue(file.readAll());
+            setValue(file.readAll());
             file.close();
         }
         file.remove();
@@ -103,7 +103,7 @@ void Property::collectingData()
             for (int i = 0; i < arrCount; ++i) {
                 arr.append(cgt::propToInteger(cgt::arrGetItem(id_value, i)));
             }
-            addValue(QVariant::fromValue(arr));
+            setValue(QVariant::fromValue(arr));
             break;
         }
         case data_str: {
@@ -111,7 +111,7 @@ void Property::collectingData()
             for (int i = 0; i < arrCount; ++i) {
                 list.append(QString::fromLocal8Bit(cgt::propToString(cgt::arrGetItem(id_value, i))));
             }
-            addValue(list);
+            setValue(list);
             break;
         }
         case data_real: {
@@ -119,7 +119,7 @@ void Property::collectingData()
             for (int i = 0; i < arrCount; ++i) {
                 arr.append(cgt::propToReal(cgt::arrGetItem(id_value, i)));
             }
-            addValue(QVariant::fromValue(arr));
+            setValue(QVariant::fromValue(arr));
             break;
         }
         default:
@@ -136,13 +136,14 @@ void Property::collectingData()
         font->color = cgt::fntColor(id_value);
         font->charset = cgt::fntCharSet(id_value);
 
-        addValue(QVariant::fromValue(font));
+        setValue(QVariant::fromValue(font));
         break;
     }
     case data_element: {
-        quintptr linkedElement = cgt::propGetLinkedElement(m_parent->getId(), m_name.toStdString().c_str());
+        PElement e = qobject_cast<PElement>(parent());
+        quintptr linkedElement = cgt::propGetLinkedElement(e->getId(), m_name.toStdString().c_str());
         if (linkedElement)
-            addValue(linkedElement);
+            setValue(linkedElement);
         break;
     }
     default: break;
@@ -174,7 +175,7 @@ QString Property::getName() const
     return m_name;
 }
 
-PValue Property::getValue() const
+SharedValue Property::getValue() const
 {
     return m_value;
 }
