@@ -20,7 +20,7 @@ private:
     PProperty m_parent{};
 
 public:
-    explicit Value(quintptr id_value, DataTypes type, QVariant value = QVariant(), PProperty parent = nullptr);
+    explicit Value(quintptr id_value, DataTypes type, QVariant value, PProperty parent);
 
 public:
     quintptr getId() const;
