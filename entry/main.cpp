@@ -50,10 +50,25 @@ static t_isReadyForAdd original_isReadyForAdd;
 //Переопределение вывода отладочных сообщений
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    Q_UNUSED(type)
     Q_UNUSED(context)
 
-    LOG(INFO) << msg;
+    switch(type) {
+    case QtDebugMsg:
+        LOG(DEBUG) << msg;
+        break;
+    case QtInfoMsg:
+        LOG(INFO) << msg;
+        break;
+    case QtWarningMsg:
+        LOG(WARNING) << msg;
+        break;
+    case QtCriticalMsg:
+        LOG(ERROR) << msg;
+        break;
+    case QtFatalMsg:
+        LOG(FATAL) << msg;
+        abort();
+    }
 }
 
 //Служебные переменные
@@ -106,7 +121,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         if (m_codegen)
             qDebug("%s successfully loaded.", qPrintable(nameOriginal));
         else
-            qWarning("%s is not loaded.", qPrintable(nameOriginal));
+            qCritical("%s is not loaded.", qPrintable(nameOriginal));
 
         //ru Определение прототипов функций проксируемого кодогенератора
         original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
