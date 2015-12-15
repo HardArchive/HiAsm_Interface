@@ -11,9 +11,9 @@ namespace ProxyCgt
 {
     //Дефайны
 #define EXPORT static __stdcall
-#define PRINT_FUNC_INFO qDebug("  Call: %s", Q_FUNC_INFO);
-#define PRINT_RESULT_STR(X) qDebug("  Return: \"%s\"", X);
-#define PRINT_RESULT(X) qDebug() << qPrintable(QString("  Return: %1").arg(X));
+#define PRINT_FUNC_INFO qInfo("  Call: %s", Q_FUNC_INFO);
+#define PRINT_RESULT_STR(X) qInfo("  Return: \"%s\"", X);
+#define PRINT_RESULT(X) qInfo() << qPrintable(QString("  Return: %1").arg(X));
 
     //Для хранения указателя на массив указателей на callback функции
     static PCodeGenTools m_cgt = nullptr;
@@ -25,22 +25,22 @@ namespace ProxyCgt
         for (const QVariant &v : args) {
             if (v.type() == QVariant::String) {
                 if (noquote)
-                    qDebug("  Arg%d: %s", numArg, qPrintable(v.toString()));
+                    qInfo("  Arg%d: %s", numArg, qPrintable(v.toString()));
                 else
-                    qDebug("  Arg%d: \"%s\"", numArg, qPrintable(v.toString()));
+                    qInfo("  Arg%d: \"%s\"", numArg, qPrintable(v.toString()));
             } else {
-                qDebug("  Arg%d: %s", numArg, qPrintable(v.toString()));
+                qInfo("  Arg%d: %s", numArg, qPrintable(v.toString()));
             }
             ++numArg;
         }
     }
     void printArgs(CgtParams index, const QVariant &value)
     {
-        qDebug("  Arg1: %s", qPrintable(CgtParamsMap[index]));
+        qInfo("  Arg1: %s", qPrintable(CgtParamsMap[index]));
         if (value.type() == QVariant::String) {
-            qDebug("  Arg2: \"%s\"", qPrintable(value.toString()));
+            qInfo("  Arg2: \"%s\"", qPrintable(value.toString()));
         } else {
-            qDebug("  Arg2: %s", qPrintable(value.toString()));
+            qInfo("  Arg2: %s", qPrintable(value.toString()));
         }
     }
 

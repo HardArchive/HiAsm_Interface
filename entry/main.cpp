@@ -14,12 +14,11 @@
 
 //Qt
 #include <QDebug>
-#include <QDateTime>
 
 //Дефайны
 #define DLLEXPORT extern "C" __cdecl
-#define PRINT_FUNC_INFO qDebug("Call: %s", Q_FUNC_INFO);
-#define PRINT_RESULT(X) qDebug().noquote() << "Return:" << X;
+#define PRINT_FUNC_INFO qInfo("Call: %s", Q_FUNC_INFO);
+#define PRINT_RESULT(X) qInfo().noquote() << "Return:" << X;
 
 //Константы
 static const char NOT_FOUND_FUNCTION[] = "Called function is not found: %s";
@@ -100,7 +99,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         el::Loggers::addFlag(el::LoggingFlag::DisableVModulesExtensions);
         qInstallMessageHandler(myMessageOutput);
 
-        qDebug() << "CODEGEN_PROCESS_ATTACH";
+        qInfo() << "CODEGEN_PROCESS_ATTACH";
 
         //ru Вычисляем путь к оригинальному кодогенератору относительно текущего модуля (hModule)
         const uint max_path = 2048;
@@ -119,7 +118,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         }
         m_codegen = LoadLibraryW(pathOriginal.toStdWString().data());
         if (m_codegen)
-            qDebug("%s successfully loaded.", qPrintable(nameOriginal));
+            qInfo("%s successfully loaded.", qPrintable(nameOriginal));
         else
             qCritical("%s is not loaded.", qPrintable(nameOriginal));
 
@@ -138,7 +137,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     }
 
     case DLL_PROCESS_DETACH: {
-        qDebug() << "CODEGEN_PROCESS_DETACH";
+        qInfo() << "CODEGEN_PROCESS_DETACH";
         FreeLibrary(m_codegen);
         break;
     }
@@ -151,7 +150,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 DLLEXPORT int buildPrepareProc(TBuildPrepareRec &params)
 {
     if (!original_buildPrepareProc) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return 1;
     }
 
@@ -191,13 +190,13 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
 {
     if (!original_CheckVersionProc) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return 0;
     }
 
 
     PRINT_FUNC_INFO
-    qDebug("Arg1: %d.%d.%d", params.major, params.minor, params.build);
+    qInfo("Arg1: %d.%d.%d", params.major, params.minor, params.build);
     int res = original_CheckVersionProc(params);
     PRINT_RESULT(res);
     return res;
@@ -206,20 +205,20 @@ DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
 DLLEXPORT void ConfToCode(const char *pack, const char *name)
 {
     if (!original_ConfToCode) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return;
     }
 
     PRINT_FUNC_INFO
-    qDebug("Arg1: \"%s\"", pack);
-    qDebug("Arg2: \"%s\"", name);
+    qInfo("Arg1: \"%s\"", pack);
+    qInfo("Arg2: \"%s\"", name);
     original_ConfToCode(pack, name);
 }
 
 DLLEXPORT void synReadFuncList(TSynParams &params)
 {
     if (!original_synReadFuncList) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return;
     }
 
@@ -230,7 +229,7 @@ DLLEXPORT void synReadFuncList(TSynParams &params)
 DLLEXPORT void hintForElement(THintParams &params)
 {
     if (!original_hintForElement) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return;
     }
 
@@ -241,7 +240,7 @@ DLLEXPORT void hintForElement(THintParams &params)
 DLLEXPORT int isElementMaker(PCodeGenTools cgt, quintptr id_element)
 {
     if (!original_isElementMaker) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return 0;
     }
 
@@ -255,7 +254,7 @@ DLLEXPORT int isElementMaker(PCodeGenTools cgt, quintptr id_element)
 DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr id_element)
 {
     if (!original_MakeElement) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return 0;
     }
 
@@ -268,7 +267,7 @@ DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr id_element)
 DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr id_sdk)
 {
     if (!original_isReadyForAdd) {
-        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
         return true;
     }
 
