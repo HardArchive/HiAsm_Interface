@@ -52,7 +52,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
     Q_UNUSED(context)
 
     QByteArray message = msg.toLocal8Bit();
-    switch(type) {
+    switch (type) {
     case QtDebugMsg:
         LOG(DEBUG) << message.constData();
         break;
@@ -195,9 +195,8 @@ DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
         return 0;
     }
 
-
     PRINT_FUNC_INFO
-    qInfo("Arg1: %d.%d.%d", params.major, params.minor, params.build);
+    qInfo() << QString("Arg1: %1.%2.%3").arg(params.major).arg(params.minor).arg(params.build);
     int res = original_CheckVersionProc(params);
     PRINT_RESULT(res);
     return res;
