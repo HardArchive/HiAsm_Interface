@@ -34,7 +34,7 @@ typedef int(*t_isElementMaker)(PCodeGenTools cgt, quintptr e);
 typedef int(*t_MakeElement)(PCodeGenTools cgt, quintptr e);
 typedef bool(*t_isReadyForAdd)(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr sdk);
 
-//Объявление функций проксируемого кодогенератора
+//Объявление прототипов функций оригинального кодогенератора
 static t_buildPrepareProc original_buildPrepareProc;
 static t_buildProcessProc original_buildProcessProc;
 static t_CheckVersionProc original_CheckVersionProc;
@@ -82,12 +82,12 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
     switch (reason) {
     case DLL_PROCESS_ATTACH: {
-        //Инициализация логгера
+        //ru Инициализация логгера
         QDir makeLogDir;
         makeLogDir.mkdir("logs");
         el::Configurations conf;
         conf.setGlobally(el::ConfigurationType::Filename, "logs/%datetime.log");
-        conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}: %msg");
+        conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}:%levshort: %msg");
         el::Logger *defaultLogger = el::Loggers::getLogger("default");
         defaultLogger->configure(conf);
         el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);
