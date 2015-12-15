@@ -426,7 +426,7 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Выводит строку Text в окно Отладка цветом Color
     //ru Всего возвращает 0.
-    EXPORT int _Debug(const char *Text, int Color)
+    EXPORT int _Debug(const char *text, int color)
     {
 
         return 0;
@@ -437,8 +437,7 @@ namespace EmulateCgt
     EXPORT int GetParam(CgtParams index, quintptr value)
     {
         m_model->getCgtParam(index, value);
-
-        return 1;
+        return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -728,19 +727,31 @@ namespace EmulateCgt
      * Возвращает ID элемента, прилинкованного к указанному свойству.
      * В буфер buf пишется имя интерфейса элемента.
      * Например в строке из INI: FormFastening=Форма для привязки позиции|20|(empty)|ControlManager
-     * ControlManager - является той самой информации
-     *
+     * ControlManager - является той самой информацией передаваемой нам в buf.
      */
     EXPORT quintptr propGetLinkedElementInfo(quintptr id_element, quintptr id_prop, char *buf)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        const PProperty p = e->getPropertyById(id_prop);
+        if (!p)
+            return 0;
+
+        const SharedLinkedElementInfo info = p->getLinkedElementInfo();
+        if(!info)
+            return 0;
+
+        strcpy(buf, info->interface.toStdString().c_str());
+        return info->id;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает SDK контейнера по его индексу.
     EXPORT quintptr elGetSDKByIndex(quintptr id_element, int index)
     {
+
 
         return 0;
     }

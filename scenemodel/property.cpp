@@ -13,7 +13,6 @@
 #include <QDebug>
 #include <QUuid>
 
-
 Property::Property(quintptr id_prop, PSceneModel model, QObject *parent)
     : QObject(parent)
     , m_id(id_prop)
@@ -143,9 +142,13 @@ void Property::collectingData()
         char buf[PATH_MAX];
         quintptr linkedElement = cgt::propGetLinkedElementInfo(e->getId(), m_id, buf);
 
+        if (linkedElement) {
+            SharedLinkedElementInfo le = SharedLinkedElementInfo::create();
+            le->id = linkedElement;
+            le->interface = QString::fromLocal8Bit(buf);
+            setValue(QVariant::fromValue(le));
+        }
 
-        if (linkedElement)
-            setValue(linkedElement);
         break;
     }
     default: break;
@@ -184,7 +187,7 @@ SharedValue Property::getValue() const
 
 int Property::getValueInt() const
 {
-    if(!m_value)
+    if (!m_value)
         return 0;
 
     return m_value->getValue().toInt();
@@ -192,7 +195,7 @@ int Property::getValueInt() const
 
 qreal Property::getValueReal() const
 {
-    if(!m_value)
+    if (!m_value)
         return 0.0;
 
     return m_value->getValue().toReal();
@@ -200,7 +203,7 @@ qreal Property::getValueReal() const
 
 QString Property::getValueString() const
 {
-    if(!m_value)
+    if (!m_value)
         return QString();
 
     return m_value->getValue().toString();
@@ -209,4 +212,12 @@ QString Property::getValueString() const
 int Property::getIsTranslate() const
 {
     return m_isTranslate;
+}
+
+SharedLinkedElementInfo Property::getLinkedElementInfo() const
+{
+    if(!m_value)
+        return SharedLinkedElementInfo();
+
+    return qvariant_cast<SharedLinkedElementInfo>(m_value->getValue());
 }

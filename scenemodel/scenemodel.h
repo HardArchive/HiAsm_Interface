@@ -18,7 +18,7 @@ class SceneModel: public QObject
 
 private:
     bool m_isDebug{};
-    TCgtParams m_cgtParams{};
+    TCgtParams m_cgtParams;
     Containers m_containers;
     MapContainers m_mapContainers;
     MapElements m_mapElements;

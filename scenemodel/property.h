@@ -3,6 +3,7 @@
 //Project
 #include "types.h"
 #include "value.h"
+#include "valuetypes.h"
 #include "cgt/CGTShare.h"
 
 //STL
@@ -46,5 +47,5 @@ public:
     qreal getValueReal() const;
     QString getValueString() const;
     int getIsTranslate() const;
-
+    SharedLinkedElementInfo getLinkedElementInfo() const;
 };

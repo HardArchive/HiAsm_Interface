@@ -5,6 +5,14 @@
 
 //Qt
 #include <QObject>
+#include <QSharedPointer>
+
+struct LinkedElementInfo{
+    quintptr id{};
+    QString interface;
+};
+typedef QSharedPointer<LinkedElementInfo> SharedLinkedElementInfo;
+Q_DECLARE_METATYPE(SharedLinkedElementInfo)
 
 struct Font {
     QString name;

@@ -236,6 +236,7 @@ struct TCgtParams {
     uint PARAM_SDE_HEIGHT{};
     QString PARAM_COMPILER{};
 };
+typedef TCgtParams *PCgtParams;
 
 //!ru Ошибки при работе с библиотекой кодогенератора
 enum CgResult {
