@@ -16,14 +16,13 @@
 #include <QDebug>
 #include <QDateTime>
 
-//Константы
-const char CALL_STR[] = "Call:";
-const char ARG_STR[] = "Arg";
-const char RESULT_STR[] = "Return:";
-
 //Дефайны
 #define DLLEXPORT extern "C" __cdecl
-#define PRINT_FUNC_INFO qDebug() << CALL_STR << Q_FUNC_INFO;
+#define PRINT_FUNC_INFO qDebug("Call: %s", Q_FUNC_INFO);
+#define PRINT_RESULT(X) qDebug().noquote() << "Return:" << X;
+
+//Константы
+static const char NOT_FOUND_FUNCTION[] = "Called function is not found: %s";
 
 //Типы функций
 typedef int(*t_buildPrepareProc)(TBuildPrepareRec &params);
@@ -46,6 +45,7 @@ static t_hintForElement original_hintForElement;
 static t_isElementMaker original_isElementMaker;
 static t_MakeElement original_MakeElement;
 static t_isReadyForAdd original_isReadyForAdd;
+
 
 //Переопределение вывода отладочных сообщений
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -94,6 +94,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         QFileInfo currentModulePath(QString::fromLocal8Bit(tmpCurrentModulePath));
         QString nameOriginal = "CodeGen_original.dll";
         QString pathOriginal = currentModulePath.absolutePath() + QDir::separator() + nameOriginal;
+        pathOriginal = QDir::toNativeSeparators(pathOriginal);
 
         //ru Загружаем оригинальную DLL в память
         if (!QFile::exists(pathOriginal)) {
@@ -102,8 +103,12 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
             exit(0);
         }
         m_codegen = LoadLibraryW(pathOriginal.toStdWString().data());
+        if (m_codegen)
+            qDebug("%s successfully loaded.", qPrintable(nameOriginal));
+        else
+            qWarning("%s is not loaded.", qPrintable(nameOriginal));
 
-        //Определение прототипов функций проксируемого кодогенератора
+        //ru Определение прототипов функций проксируемого кодогенератора
         original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
         original_buildProcessProc = reinterpret_cast<t_buildProcessProc>(GetProcAddress(m_codegen, "buildProcessProc"));
         original_CheckVersionProc = reinterpret_cast<t_CheckVersionProc>(GetProcAddress(m_codegen, "CheckVersionProc"));
@@ -130,10 +135,14 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 //Экспортируемые функции
 DLLEXPORT int buildPrepareProc(TBuildPrepareRec &params)
 {
+    if (!original_buildPrepareProc) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return 1;
+    }
+
     PRINT_FUNC_INFO
     int res = original_buildPrepareProc(params);
-    qDebug() << RESULT_STR << res;
-
+    PRINT_RESULT(res);
     return res;
 }
 
@@ -159,66 +168,98 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::setProxyCgt(ProxyCgt::getCgt());
 #endif
 
-    int res = original_buildProcessProc(params);  //CG_SUCCESS
-    qDebug() << RESULT_STR << res;
+    int res = original_buildProcessProc(params);
+    PRINT_RESULT(CgResult(res));
     return res;
 }
 
 DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
 {
-    PRINT_FUNC_INFO
-    int res = original_CheckVersionProc(params);
-    qDebug() << RESULT_STR << res;
+    if (!original_CheckVersionProc) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return 0;
+    }
 
+
+    PRINT_FUNC_INFO
+    qDebug("Arg1: %d.%d.%d", params.major, params.minor, params.build);
+    int res = original_CheckVersionProc(params);
+    PRINT_RESULT(res);
     return res;
 }
 
-DLLEXPORT void ConfToCode(const char *Pack, const char *UName)
+DLLEXPORT void ConfToCode(const char *pack, const char *name)
 {
+    if (!original_ConfToCode) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return;
+    }
+
     PRINT_FUNC_INFO
-    original_ConfToCode(Pack, UName);
+    qDebug("Arg1: \"%s\"", pack);
+    qDebug("Arg2: \"%s\"", name);
+    original_ConfToCode(pack, name);
 }
 
 DLLEXPORT void synReadFuncList(TSynParams &params)
 {
+    if (!original_synReadFuncList) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return;
+    }
+
     PRINT_FUNC_INFO
     original_synReadFuncList(params);
 }
 
 DLLEXPORT void hintForElement(THintParams &params)
 {
+    if (!original_hintForElement) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return;
+    }
+
     PRINT_FUNC_INFO
     original_hintForElement(params);
 }
 
-DLLEXPORT int isElementMaker(PCodeGenTools cgt, quintptr e)
+DLLEXPORT int isElementMaker(PCodeGenTools cgt, quintptr id_element)
 {
-    PRINT_FUNC_INFO
-    int res = original_isElementMaker(cgt, e);
-    qDebug() << RESULT_STR << res;
+    if (!original_isElementMaker) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return 0;
+    }
 
+
+    PRINT_FUNC_INFO
+    int res = original_isElementMaker(cgt, id_element);
+    PRINT_RESULT(res);
     return res;
 }
 
-DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr e)
+DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr id_element)
 {
-    PRINT_FUNC_INFO
-    int res = original_MakeElement(cgt, e);
-    qDebug() << RESULT_STR << res;
+    if (!original_MakeElement) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return 0;
+    }
 
+    PRINT_FUNC_INFO
+    int res = original_MakeElement(cgt, id_element);
+    PRINT_RESULT(res);
     return res;
 }
 
-DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr sdk)
+DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr id_sdk)
 {
-    Q_UNUSED(cgt)
-    Q_UNUSED(rfd)
-    Q_UNUSED(sdk)
+    if (!original_isReadyForAdd) {
+        qDebug(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        return true;
+    }
 
-    //    PRINT_FUNC_INFO
-    //    bool res =  original_isReadyForAdd(cgt, rfd, sdk);
-    //    qDebug() << RESULT_STR << res;
-
-    return 1;
+    PRINT_FUNC_INFO
+    bool res =  original_isReadyForAdd(cgt, rfd, id_sdk);
+    PRINT_RESULT(res);
+    return res;
 }
 
