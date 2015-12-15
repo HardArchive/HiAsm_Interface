@@ -318,25 +318,25 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    //ru Добавляет имя файла в общий список временных файлов
+    //ru Добавляет имя файла в список временных файлов
     //ru для последующего удаления файла.
-    EXPORT int resAddFile(const char *Name)
+    EXPORT int resAddFile(const char *filePath)
     {
-        return 0;
+        return m_model->addResList(QString::fromLocal8Bit(filePath));
     }
 
     //ru Добавляет иконку в ресурсы и в список временных файлов,
     //ru и возвращают имя временного файла.
     EXPORT const char *resAddIcon(quintptr id_prop)
     {
-        return nullptr;
+        return m_model->addResByIdProp(id_prop);
     }
 
     //ru Добавляет строку в ресурсы и в список временных файлов.
     //ru Возвращают имя временного файла.
-    EXPORT const char *resAddStr(const char *p)
+    EXPORT const char *resAddStr(const char *string)
     {
-
+        return m_model->addResFromString(QString::fromLocal8Bit(string));
         return nullptr;
     }
 
@@ -346,8 +346,7 @@ namespace EmulateCgt
     //ru работы с библиотекой.
     EXPORT const char *resAddStream(quintptr id_prop)
     {
-
-        return nullptr;
+        return m_model->addResByIdProp(id_prop);
     }
 
     //ru Добавляет звук в ресурсы и в список временных файлов,
@@ -356,8 +355,7 @@ namespace EmulateCgt
     //ru работы с библиотекой.
     EXPORT const char *resAddWave(quintptr id_prop)
     {
-
-        return nullptr;
+        return m_model->addResByIdProp(id_prop);
     }
 
     //ru Добавляет картинку в ресурсы и в список временных файлов,

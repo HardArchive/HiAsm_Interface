@@ -27,6 +27,11 @@ SceneModel::SceneModel(QObject *parent):
     fixedPtr();
 }
 
+SceneModel::~SceneModel()
+{
+    deleteResources();
+}
+
 const char *SceneModel::strToPChar(const QString &str)
 {
     char *buf = new char[str.size() + 1];
@@ -177,6 +182,14 @@ void SceneModel::fixedPtr()
     }
 }
 
+void SceneModel::deleteResources()
+{
+    for (const QString &filePath : m_resources) {
+        QFile::remove(filePath);
+    }
+    m_resources.clear();
+}
+
 bool SceneModel::isDebug() const
 {
     return m_isDebug;
@@ -279,24 +292,59 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
 {
     const PProperty p = getPropertyById(id_prop);
     if (!p)
-        return false;
+        return nullptr;
 
     const SharedValue v = p->getValue();
+    if (!v)
+        return nullptr;
+
     const QByteArray byteArray = v->getValue().toByteArray();
-
     static const QString nameDir = "compiler";
-    static const QString prefix = "STREAM";
-    QString suffix = QString::number(m_listResources.size());
-    QString fileName = prefix + suffix;
+    static const QString name = "STREAM";
+    QString suffix = QString::number(m_resources.size());
+    QString fileName = name + suffix;
 
-    QString currentPath = QDir::currentPath();
-    QString resFilePath = QDir::toNativeSeparators(currentPath +
-                          QDir::separator() +
-                          nameDir +
-                          QDir::separator() +
-                          fileName);
+    QString resFilePath = QDir::toNativeSeparators(
+                              QDir::currentPath() + QDir::separator() +
+                              nameDir + QDir::separator() + fileName
+                          );
+    QFile file(resFilePath);
+    if (!file.open(QIODevice::WriteOnly))
+        return nullptr;
 
-    m_listResources.append(resFilePath);
+    file.write(byteArray);
+    file.close();
+    m_resources.insert(resFilePath);
 
     return strToPChar(fileName);
+}
+
+const char *SceneModel::addResFromString(const QString &str)
+{
+    if (str.isEmpty())
+        return nullptr;
+
+    static const QString nameDir = "compiler";
+    static const QString name = "STREAM";
+    QString suffix = QString::number(m_resources.size());
+    QString fileName = name + suffix;
+    QString resFilePath = QDir::toNativeSeparators(
+                              QDir::currentPath() + QDir::separator() +
+                              nameDir + QDir::separator() + fileName
+                          );
+    QFile file(resFilePath);
+    if (!file.open(QIODevice::WriteOnly))
+        return nullptr;
+
+    file.write(str.toLocal8Bit());
+    file.close();
+    m_resources.insert(resFilePath);
+
+    return strToPChar(fileName);
+}
+
+int SceneModel::addResList(const QString &filePath)
+{
+    m_resources.insert(filePath);
+    return 0;
 }

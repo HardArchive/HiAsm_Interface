@@ -17,7 +17,7 @@ DESTDIR += $$PACKAGE
 DEFINES += HIASM_PACKAGE=\"\\\"$$PACKAGE\\\"\"
 
 #ru Подключаем SceneModel
-#DEFINES += SCENEMODEL
+DEFINES += SCENEMODEL
 
 #ru Подключаем ProxyCgt
 DEFINES += PROXYCGT

@@ -271,9 +271,9 @@ DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, TRFD_Rec rfd, quintptr id_sdk)
         return true;
     }
 
-    PRINT_FUNC_INFO
+    //PRINT_FUNC_INFO
     bool res =  original_isReadyForAdd(cgt, rfd, id_sdk);
-    PRINT_RESULT(res);
+    //PRINT_RESULT(res);
     return res;
 }
 

@@ -9,6 +9,7 @@
 
 //Qt
 #include <QObject>
+#include <QSet>
 
 class SceneModel: public QObject
 {
@@ -24,10 +25,11 @@ private:
     MapPoints m_mapPoints;
     MapProperties m_mapProperties;
     MapValues m_mapValues;
-    QStringList m_listResources;
+    QSet<QString> m_resources;
 
 public:
     explicit SceneModel(QObject *parent = 0);
+    virtual ~SceneModel();
     static const char *strToPChar(const QString &str);
 
 private:
@@ -35,6 +37,7 @@ private:
     PContainer grabberSDK(quintptr id_sdk, QObject *parent);
     void initMapObjects();
     void fixedPtr();
+    void deleteResources();
 
 public:
     bool isDebug() const;
@@ -48,5 +51,7 @@ public:
     SharedValue getValueById(quintptr id_value) const;
     void addValueToMap(SharedValue value);
     const char *addResByIdProp(quintptr id_prop);
+    const char *addResFromString(const QString &str);
+    int addResList(const QString &filePath);
 
 };
