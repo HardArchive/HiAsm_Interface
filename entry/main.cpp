@@ -51,21 +51,22 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 {
     Q_UNUSED(context)
 
+    QByteArray message = msg.toLocal8Bit();
     switch(type) {
     case QtDebugMsg:
-        LOG(DEBUG) << msg;
+        LOG(DEBUG) << message.constData();
         break;
     case QtInfoMsg:
-        LOG(INFO) << msg;
+        LOG(INFO) << message.constData();
         break;
     case QtWarningMsg:
-        LOG(WARNING) << msg;
+        LOG(WARNING) << message.constData();
         break;
     case QtCriticalMsg:
-        LOG(ERROR) << msg;
+        LOG(ERROR) << message.constData();
         break;
     case QtFatalMsg:
-        LOG(FATAL) << msg;
+        LOG(FATAL) << message.constData();
         abort();
     }
 }
@@ -118,9 +119,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         }
         m_codegen = LoadLibraryW(pathOriginal.toStdWString().data());
         if (m_codegen)
-            qInfo("%s successfully loaded.", qPrintable(nameOriginal));
+            qInfo("%s successfully loaded.", qUtf8Printable(nameOriginal));
         else
-            qCritical("%s is not loaded.", qPrintable(nameOriginal));
+            qCritical("%s is not loaded.", qUtf8Printable(nameOriginal));
 
         //ru Определение прототипов функций проксируемого кодогенератора
         original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
