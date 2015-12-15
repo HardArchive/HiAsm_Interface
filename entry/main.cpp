@@ -210,8 +210,8 @@ DLLEXPORT void ConfToCode(const char *pack, const char *name)
     }
 
     PRINT_FUNC_INFO
-    qInfo("Arg1: \"%s\"", pack);
-    qInfo("Arg2: \"%s\"", name);
+    qInfo("Arg1: \"%s\"", qUtf8Printable(pack));
+    qInfo("Arg2: \"%s\"", qUtf8Printable(name));
     original_ConfToCode(pack, name);
 }
 
