@@ -27,8 +27,6 @@ private:
     QString m_info;
     QString m_name;
     QString m_dpeName;
-    PPoint m_linkPointPtr{};
-    PPoint m_RLinkPointPtr{};
 
 public:
     explicit Point(quintptr id_point, PSceneModel model, QObject *parent);
@@ -36,6 +34,8 @@ public:
 
 private:
     void collectingData();
+
+public:
     quintptr getId() const;
 
 };

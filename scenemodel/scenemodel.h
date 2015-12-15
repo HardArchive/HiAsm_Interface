@@ -36,7 +36,6 @@ private:
     void collectingData(quintptr id_sdk);
     PContainer grabberSDK(quintptr id_sdk, QObject *parent);
     void initMapObjects();
-    void fixedPtr();
     void deleteResources();
 
 public:

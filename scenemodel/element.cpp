@@ -158,7 +158,7 @@ PPoint Element::getPointByIndex(int index) const
 
 quintptr Element::getIdPointByIndex(int index) const
 {
-    PPoint p = getPropertyByIndex(index);
+    const PPoint p = getPointByIndex(index);
     if (!p)
         return 0;
 

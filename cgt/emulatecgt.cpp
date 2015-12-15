@@ -183,7 +183,8 @@ namespace EmulateCgt
     //ru Возвращает ID главного элемента(тот, на который ссылаются другие).
     EXPORT quintptr elLinkMain(quintptr id_element)
     {
-        e->getLinkIs();
+        //e->getLinkIs();
+        //TODO
         return 0;
     }
 

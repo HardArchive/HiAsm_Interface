@@ -20,7 +20,6 @@ private:
     PSceneModel const m_model;
 
     quintptr m_linkMain{};
-    PElement m_linkMainPtr{};
     quintptr m_userData{};
     QString m_className;
     QString m_codeName;

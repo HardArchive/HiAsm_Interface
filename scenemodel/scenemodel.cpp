@@ -22,9 +22,6 @@ SceneModel::SceneModel(QObject *parent):
 
     //ru Инициализация карты объектов
     initMapObjects();
-
-    //ru Корректировка указателей
-    fixedPtr();
 }
 
 SceneModel::~SceneModel()
@@ -162,21 +159,6 @@ void SceneModel::initMapObjects()
 
             for (PProperty p : e->m_properties) {
                 m_mapProperties.insert(p->m_id, p);
-            }
-        }
-    }
-}
-
-void SceneModel::fixedPtr()
-{
-    for (PContainer c : m_containers) {
-        for (PElement e : c->m_elements) {
-            if (e->m_linkMain != e->m_id)
-                e->m_linkMainPtr = m_mapElements[e->m_linkMain];
-
-            for (PPoint p : e->m_points) {
-                p->m_RLinkPointPtr = m_mapPoints[p->m_RLinkPoint];
-                p->m_linkPointPtr = m_mapPoints[p->m_RLinkPoint];
             }
         }
     }
