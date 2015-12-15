@@ -24,14 +24,14 @@
 static const char NOT_FOUND_FUNCTION[] = "Called function is not found: %s";
 
 //Типы функций
-typedef int(*t_buildPrepareProc)(TBuildPrepareRec &params);
+typedef int(*t_buildPrepareProc)(const TBuildPrepareRec &params);
 typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
-typedef int(*t_CheckVersionProc)(THiAsmVersion &params);
-typedef void(*t_ConfToCode)(const char *Pack, const char *UName);
+typedef int(*t_CheckVersionProc)(const THiAsmVersion &params);
+typedef void(*t_ConfToCode)(const char *pack, const char *name);
 typedef void(*t_synReadFuncList)(TSynParams &params);
 typedef void(*t_hintForElement)(THintParams &params);
-typedef int(*t_isElementMaker)(PCodeGenTools cgt, quintptr e);
-typedef int(*t_MakeElement)(PCodeGenTools cgt, quintptr e);
+typedef int(*t_isElementMaker)(PCodeGenTools cgt, quintptr id_element);
+typedef int(*t_MakeElement)(PCodeGenTools cgt, quintptr id_element);
 typedef bool(*t_isReadyForAdd)(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr sdk);
 
 //Объявление прототипов функций оригинального кодогенератора
@@ -148,7 +148,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 }
 
 //Экспортируемые функции
-DLLEXPORT int buildPrepareProc(TBuildPrepareRec &params)
+DLLEXPORT int buildPrepareProc(const TBuildPrepareRec &params)
 {
     if (!original_buildPrepareProc) {
         qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
@@ -188,7 +188,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     return res;
 }
 
-DLLEXPORT int CheckVersionProc(THiAsmVersion &params)
+DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
 {
     if (!original_CheckVersionProc) {
         qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
@@ -264,7 +264,7 @@ DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr id_element)
     return res;
 }
 
-DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr id_sdk)
+DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, TRFD_Rec rfd, quintptr id_sdk)
 {
     if (!original_isReadyForAdd) {
         qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
