@@ -21,7 +21,7 @@
 #define PRINT_RESULT(X) qInfo().noquote() << "Return:" << X;
 
 //Константы
-static const char NOT_FOUND_FUNCTION[] = "Called function is not found: %s";
+static const char NOT_FOUND_FUNCTION[] = "Вызываемая функция не найдена: %s";
 
 //Типы функций
 typedef int(*t_buildPrepareProc)(TBuildPrepareRec &params);
@@ -50,22 +50,22 @@ static t_isReadyForAdd original_isReadyForAdd;
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context)
-
-    switch(type) {
+    QByteArray localMsg = msg.toLocal8Bit();
+    switch (type) {
     case QtDebugMsg:
-        LOG(DEBUG) << msg;
+        LOG(DEBUG) << localMsg.constData();
         break;
     case QtInfoMsg:
-        LOG(INFO) << msg;
+        LOG(INFO) << localMsg.constData();
         break;
     case QtWarningMsg:
-        LOG(WARNING) << msg;
+        LOG(WARNING) << localMsg.constData();
         break;
     case QtCriticalMsg:
-        LOG(ERROR) << msg;
+        LOG(ERROR) << localMsg.constData();
         break;
     case QtFatalMsg:
-        LOG(FATAL) << msg;
+        LOG(FATAL) << localMsg.constData();
         abort();
     }
 }
@@ -100,7 +100,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         qInstallMessageHandler(myMessageOutput);
 
         qInfo() << "CODEGEN_PROCESS_ATTACH";
-
         //ru Вычисляем путь к оригинальному кодогенератору относительно текущего модуля (hModule)
         const uint max_path = 2048;
         char tmpCurrentModulePath[max_path];
@@ -112,15 +111,16 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
         //ru Загружаем оригинальную DLL в память
         if (!QFile::exists(pathOriginal)) {
+            qCritical("Модуль %s не загружен.", qPrintable(nameOriginal));
             MessageBoxW(0, QString("Библиотека %1 не найдена!").arg(nameOriginal).toStdWString().data(),
                         L"Ошибка!", MB_ICONERROR);
             exit(0);
         }
         m_codegen = LoadLibraryW(pathOriginal.toStdWString().data());
         if (m_codegen)
-            qInfo("%s successfully loaded.", qPrintable(nameOriginal));
+            qInfo("Модуль %s успешно загружен.", qPrintable(nameOriginal));
         else
-            qCritical("%s is not loaded.", qPrintable(nameOriginal));
+            qCritical("Модуль %s не загружен.", qPrintable(nameOriginal));
 
         //ru Определение прототипов функций проксируемого кодогенератора
         original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
