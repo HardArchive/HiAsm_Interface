@@ -184,7 +184,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #endif
 
     int res = original_buildProcessProc(params);
-    PRINT_RESULT(CgResult(res));
+    PRINT_RESULT(CgResultMap[res]);
     return res;
 }
 

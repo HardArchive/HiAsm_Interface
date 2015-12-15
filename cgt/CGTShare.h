@@ -257,6 +257,17 @@ enum CgResult {
     //ru Результат компиляции не найден.
     CG_APP_NOT_FOUND = 20
 };
+const static QMap<int, QString> CgResultMap{
+    {CG_SUCCESS, "CG_SUCCESS"},
+    {CG_NOT_FOUND, "CG_NOT_FOUND"},
+    {CG_INVALID_VERSION, "CG_INVALID_VERSION"},
+    {CG_ENTRY_POINT_NF, "CG_ENTRY_POINT_NF"},
+    {CG_BUILD_FAILED, "CG_BUILD_FAILED"},
+    {CG_APP_NOT_FOUND, "CG_APP_NOT_FOUND"}
+};
+
+
+
 
 //!ru Параметры проекта
 enum ProjectFlags {
@@ -273,6 +284,7 @@ enum ProjectFlags {
     CGMP_FORM_EDIT = 0x08
 };
 typedef QFlags<ProjectFlags> ProjectFlgs;
+
 
 //!ru Структуры необходимые для работы кодогенератора и интерфейса.
 
@@ -411,11 +423,11 @@ struct TCodeGenTools {
     //ru Возвращает значение свойства в виде указателя на данные.
     CALLBACK quintptr(*propGetValue)(quintptr prop);
     //ru Возвращает значение свойства в формате uchar.
-    CALLBACK uchar (*propToByte)(quintptr prop);
+    CALLBACK uchar(*propToByte)(quintptr prop);
     //ru Возвращает значение свойства в формате int.
     CALLBACK int (*propToInteger)(quintptr prop);
     //ru Возвращает значение свойства в формате float.
-    CALLBACK qreal (*propToReal)(quintptr prop);
+    CALLBACK qreal(*propToReal)(quintptr prop);
     //ru Возвращает значение свойства в виде C строки.
     CALLBACK const char *(*propToString)(quintptr prop);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -485,11 +497,11 @@ struct TCodeGenTools {
     //ru Возвращает размер шрифта.
     CALLBACK int (*fntSize)(quintptr f);
     //ru Возвращает стиль шрифта.
-    CALLBACK uchar (*fntStyle)(quintptr f);
+    CALLBACK uchar(*fntStyle)(quintptr f);
     //ru Возвращает цвет шрифта.
-    CALLBACK uint (*fntColor)(quintptr f);
+    CALLBACK uint(*fntColor)(quintptr f);
     //ru Возвращает кодировку шрифта.
-    CALLBACK uchar (*fntCharSet)(quintptr f);
+    CALLBACK uchar(*fntCharSet)(quintptr f);
     //!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
     //!ru Судя по CodeGen.dpr, используется для хранения указателя (ID элемента) на самого себя.
     //ru Возвращает пользовательские данные элемента.
