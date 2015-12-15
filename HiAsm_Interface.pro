@@ -1,7 +1,7 @@
 TARGET = CodeGen
 TEMPLATE = lib
 QT += core
-CONFIG += c++14 dll console
+CONFIG += c++14 dll
 
 #ru Путь до пакетов HiAsm
 HIASM_PACKAGES = "C:/Users/Admin/AppData/Roaming/HiAsm_AltBuild/Elements"
