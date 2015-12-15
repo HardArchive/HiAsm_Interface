@@ -29,6 +29,11 @@ QVariant Value::getValue() const
     return m_value;
 }
 
+SharedFont Value::toFont() const
+{
+    return qvariant_cast<SharedFont>(m_value);
+}
+
 void Value::setValue(QVariant v)
 {
     m_value = v;

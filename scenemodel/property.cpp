@@ -140,7 +140,10 @@ void Property::collectingData()
     }
     case data_element: {
         PElement e = qobject_cast<PElement>(parent());
-        quintptr linkedElement = cgt::propGetLinkedElement(e->getId(), m_name.toStdString().c_str());
+        char buf[PATH_MAX];
+        quintptr linkedElement = cgt::propGetLinkedElementInfo(e->getId(), m_id, buf);
+
+
         if (linkedElement)
             setValue(linkedElement);
         break;
@@ -181,16 +184,25 @@ SharedValue Property::getValue() const
 
 int Property::getValueInt() const
 {
+    if(!m_value)
+        return 0;
+
     return m_value->getValue().toInt();
 }
 
 qreal Property::getValueReal() const
 {
+    if(!m_value)
+        return 0.0;
+
     return m_value->getValue().toReal();
 }
 
 QString Property::getValueString() const
 {
+    if(!m_value)
+        return QString();
+
     return m_value->getValue().toString();
 }
 

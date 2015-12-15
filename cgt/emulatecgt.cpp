@@ -60,7 +60,7 @@ namespace EmulateCgt
         if (!e)
             return 0;
 
-        return e->getPropCount();
+        return e->getCountProps();
     }
 
     //ru Возвращает id свойства элемента по индексу, с порядковым номером из INI.
@@ -128,15 +128,21 @@ namespace EmulateCgt
     //ru Возвращает общее количество видимых точек у элемента.
     EXPORT int elGetPtCount(quintptr id_element)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getCountPoints();
     }
 
     //ru Возвращает ID точки по её индексу.
-    EXPORT quintptr elGetPt(quintptr id_element, int i)
+    EXPORT quintptr elGetPt(quintptr id_element, int index)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getIdPointByIndex(index);
     }
 
     //ru Возвращает ID точки по её имени.
@@ -157,8 +163,7 @@ namespace EmulateCgt
         return e->getClassIndex();
     }
 
-    //ru Возвращает ID внутренней схемы для контейнеров,
-    //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
+    //ru Получаем ID контейнера
     EXPORT quintptr elGetSDK(quintptr id_element)
     {
 
@@ -168,12 +173,17 @@ namespace EmulateCgt
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
     EXPORT bool elLinkIs(quintptr id_element)
     {
-        return false;
+        PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return CI_Element;
+
+        return e->getLinkIs();
     }
 
     //ru Возвращает ID главного элемента(тот, на который ссылаются другие).
     EXPORT quintptr elLinkMain(quintptr id_element)
     {
+        e->getLinkIs();
         return 0;
     }
 
@@ -277,7 +287,11 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        return p->getValue()->getId();
+        const SharedValue v = p->getValue();
+        if (!v)
+            return 0;
+
+        return v->getId();
     }
 
     //ru Возвращает значение свойства в формате uchar.
@@ -478,7 +492,10 @@ namespace EmulateCgt
         if (!v)
             return nullptr;
 
-        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
+        SharedFont font = v->toFont();
+        if (!font)
+            return nullptr;
+
         return SceneModel::strToPChar(font->name);
     }
     //ru Возвращает размер шрифта.
@@ -488,7 +505,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
+        SharedFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -501,7 +518,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
+        SharedFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -514,7 +531,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
+        SharedFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -527,7 +544,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = qvariant_cast<SharedFont>(v->getValue());
+        SharedFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -583,63 +600,68 @@ namespace EmulateCgt
     }
 
     //ru Возвращает количество свойств в списке свойств(из панели свойств).
-    //ru В RTCG используется аналогичная функция - elGetPropCount.
     //[deprecated]
     EXPORT int elGetPropertyListCount(quintptr id_element)
     {
-        const PElement e = m_model->getElementById(id_element);
-        if (!e)
-            return 0;
+        Q_UNUSED(id_element)
 
-        return e->getPropCount();
+        return 0;
     }
 
     //ru Возвращает свойство из списка свойств (PropertyList).
     //[deprecated]
-    EXPORT quintptr elGetPropertyListItem(quintptr id_element, int i)
+    EXPORT quintptr elGetPropertyListItem(quintptr id_element, int index)
     {
+        Q_UNUSED(id_element)
+        Q_UNUSED(index)
 
         return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ список свойств элемента ~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает имя свойства.
+    //[deprecated]
     EXPORT const char *plGetName(quintptr id_prop)
     {
-
+        Q_UNUSED(id_prop)
         return nullptr;
     }
 
     //ru Возвращает описание свойства.
+    //[deprecated]
     EXPORT const char *plGetInfo(quintptr id_prop)
     {
-
+        Q_UNUSED(id_prop)
         return nullptr;
     }
 
     //ru Возвращает группу свойсва.
+    //[deprecated]
     EXPORT const char *plGetGroup(quintptr id_prop)
     {
-
+        Q_UNUSED(id_prop)
         return nullptr;
     }
 
     //ru Возвращает указатель на данные свойства.
+    //[deprecated]
     EXPORT quintptr plGetProperty(quintptr id_prop)
     {
-
+        Q_UNUSED(id_prop)
         return 0;
     }
 
     //ru Возвращает ID родительского элемента указанного свойства.
+    //[deprecated]
     EXPORT quintptr plGetOwner(quintptr id_prop)
     {
-
+        Q_UNUSED(id_prop)
         return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает описание точки.
+    //[deprecated]
     EXPORT const char *ptGetInfo(quintptr id_prop)
     {
 
@@ -668,10 +690,14 @@ namespace EmulateCgt
         return p->getIsTranslate();
     }
 
-    //ru Предназначение данной функции так и небыло найдено.
-    //ru Всегда возвращает 0.
-    //[deprecated]
-    EXPORT quintptr propGetLinkedElementInfo(quintptr id_element, quintptr id_prop, char *_int)
+    /*
+     * Возвращает ID элемента, прилинкованного к указанному свойству.
+     * В буфер buf пишется имя интерфейса элемента.
+     * Например в строке из INI: FormFastening=Форма для привязки позиции|20|(empty)|ControlManager
+     * ControlManager - является той самой информации
+     *
+     */
+    EXPORT quintptr propGetLinkedElementInfo(quintptr id_element, quintptr id_prop, char *buf)
     {
 
         return 0;

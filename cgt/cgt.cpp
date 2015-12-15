@@ -570,12 +570,11 @@ namespace cgt
         return m_cgt->propIsTranslate(e, p);
     }
 
-    //ru Предназначение данной функции так и небыло найдено.
-    //ru Всегда возвращает 0.
-    //[deprecated]
-    quintptr propGetLinkedElementInfo(quintptr e, quintptr prop, char *_int)
+    //ru Возвращает ID элемента, прилинкованного к указанному свойству.
+    //ru Так же в буфере buf передаётся имя элемента.
+    quintptr propGetLinkedElementInfo(quintptr e, quintptr prop, char *buf)
     {
-        return m_cgt->propGetLinkedElementInfo(e, prop, _int);
+        return m_cgt->propGetLinkedElementInfo(e, prop, buf);
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~

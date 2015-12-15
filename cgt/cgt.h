@@ -224,7 +224,7 @@ namespace cgt
     //ru Предназначение данной функции так и небыло найдено.
     //ru Всегда возвращает 0.
     //[deprecated]
-    quintptr propGetLinkedElementInfo(quintptr e, quintptr prop, char *_int);
+    quintptr propGetLinkedElementInfo(quintptr e, quintptr prop, char *buf);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает SDK контейнера по его индексу.
     quintptr elGetSDKByIndex(quintptr e, int index);

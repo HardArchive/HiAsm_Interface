@@ -105,7 +105,7 @@ PContainer Element::getParent() const
     return qobject_cast<PContainer>(parent());
 }
 
-int Element::getPropCount() const
+int Element::getCountProps() const
 {
     return m_propCount;
 }
@@ -142,3 +142,30 @@ PProperty Element::getPropertyById(quintptr id_prop) const
     return nullptr;
 }
 
+int Element::getCountPoints() const
+{
+    return m_ptCount;
+}
+
+PPoint Element::getPointByIndex(int index) const
+{
+    int size = m_points.size();
+    if ((index >= 0) && (index < size))
+        return m_points[index];
+    else
+        return nullptr;
+}
+
+quintptr Element::getIdPointByIndex(int index) const
+{
+    PPoint p = getPropertyByIndex(index);
+    if (!p)
+        return 0;
+
+    return p->getId();
+}
+
+bool Element::getLinkIs() const
+{
+    return m_linkIs;
+}

@@ -1,6 +1,7 @@
 #pragma once
 //Project
 #include "property.h"
+#include "valuetypes.h"
 #include "cgt/CGTShare.h"
 
 //STL
@@ -26,6 +27,7 @@ public:
     quintptr getId() const;
     DataTypes getType() const;
     QVariant getValue() const;
+    SharedFont toFont() const;
     void setValue(QVariant v);
     PProperty getParent() const;
 };

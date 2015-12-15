@@ -62,9 +62,12 @@ public:
     void setUserData(quintptr userData);
     ElementClass getClassIndex();
     PContainer getParent() const;
-    int getPropCount() const;
+    int getCountProps() const;
     PProperty getPropertyByIndex(int index) const;
     quintptr getIdPropertyByIndex(int index) const;
     PProperty getPropertyById(quintptr id_prop) const;
-
+    int getCountPoints() const;
+    PPoint getPointByIndex(int index) const;
+    quintptr getIdPointByIndex(int index) const;
+    bool getLinkIs() const;
 };
