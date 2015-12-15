@@ -169,3 +169,23 @@ bool Element::getLinkIs() const
 {
     return m_linkIs;
 }
+
+int Element::getPosX() const
+{
+    return m_posX;
+}
+
+int Element::getPosY() const
+{
+    return m_posY;
+}
+
+int Element::getSizeW() const
+{
+    return m_sizeW;
+}
+
+int Element::getSizeH() const
+{
+    return m_sizeH;
+}

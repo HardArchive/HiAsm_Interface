@@ -251,7 +251,7 @@ namespace cgt
     }
 
     //ru Возвращает тип точки (PointTypes).
-    PointTypes ptGetIndex(quintptr p)
+    int ptGetIndex(quintptr p)
     {
         return m_cgt->ptGetIndex(p);
     }

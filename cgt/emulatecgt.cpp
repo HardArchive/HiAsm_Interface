@@ -46,7 +46,7 @@ namespace EmulateCgt
     //ru Возвращает флаги элемента.
     EXPORT ElementFlags elGetFlag(quintptr id_element)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return ELEMENT_FLG_IS_FREEZE;
 
@@ -56,7 +56,7 @@ namespace EmulateCgt
     //ru Возвращает количество свойств элемента.
     EXPORT int elGetPropCount(quintptr id_element)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return 0;
 
@@ -66,7 +66,7 @@ namespace EmulateCgt
     //ru Возвращает id свойства элемента по индексу, с порядковым номером из INI.
     EXPORT quintptr elGetProperty(quintptr id_element, int index)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return 0;
 
@@ -76,11 +76,11 @@ namespace EmulateCgt
     //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
     EXPORT bool elIsDefProp(quintptr id_element, int index)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return true;
 
-        PProperty p = e->getPropertyByIndex(index);
+        const PProperty p = e->getPropertyByIndex(index);
         if (!p)
             return true;
 
@@ -90,7 +90,7 @@ namespace EmulateCgt
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
     EXPORT quintptr elSetCodeName(quintptr id_element, const char *name)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return 0;
 
@@ -101,7 +101,7 @@ namespace EmulateCgt
     //ru Возвращает уникальное имя элемента
     EXPORT const char *elGetCodeName(quintptr id_element)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return nullptr;
 
@@ -111,7 +111,7 @@ namespace EmulateCgt
     //ru Возвращает имя класса элемента
     EXPORT const char *elGetClassName(quintptr id_element)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return nullptr;
 
@@ -156,7 +156,7 @@ namespace EmulateCgt
     //ru Возвращает индекс класса элемента.
     EXPORT ElementClass elGetClassIndex(quintptr id_element)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return CI_Element;
 
@@ -173,7 +173,7 @@ namespace EmulateCgt
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
     EXPORT bool elLinkIs(quintptr id_element)
     {
-        PElement e = m_model->getElementById(id_element);
+        const PElement e = m_model->getElementById(id_element);
         if (!e)
             return CI_Element;
 
@@ -183,88 +183,121 @@ namespace EmulateCgt
     //ru Возвращает ID главного элемента(тот, на который ссылаются другие).
     EXPORT quintptr elLinkMain(quintptr id_element)
     {
-        //e->getLinkIs();
-        //TODO
-        return 0;
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
+
+        return e->getLinkIs();
     }
 
     //ru Помещает в переменные "X" и "Y", позицию элемента в редакторе схем.
     EXPORT void elGetPos(quintptr id_element, int &X, int &Y)
     {
-        X = 0;
-        Y = 0;
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return;
+
+        X = e->getPosX();
+        Y = e->getPosY();
     }
 
-    //ru Помещает в переменные "W" и "H", размеры элемента.
+    //ru Помещает в переменные "w" и "h", размеры элемента.
     EXPORT void elGetSize(quintptr id_element, int &W, int &H)
     {
-        W = 0;
-        H = 0;
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return;
+
+        W = e->getSizeW();
+        H = e->getSizeH();
     }
 
     //ru Возвращает внутренний ID элемента (отличается от внешнего).
     //[deprecated]
     EXPORT int elGetEID(quintptr id_element)
     {
-
+        Q_UNUSED(id_element)
         return 0;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает ID точки, с которой соединена указанная.
-    //TODO [deprecated?], в CodeGen.dpr не используется.
-    EXPORT quintptr ptGetLinkPoint(quintptr id_prop)
+    //ru Получаем ID точки с которой соединена указанная.
+    EXPORT quintptr ptGetLinkPoint(quintptr id_point)
     {
-        return 0;
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return 0;
+
+        return p->getLinkPoint();
     }
 
-    //ru Возвращает ID точки, с которой соединена указанная точка,
+    //ru Получаем ID точки с которой соединена указанная,
     //ru без учета точек разрыва и хабов.
-    EXPORT quintptr ptGetRLinkPoint(quintptr id_prop)
+    EXPORT quintptr ptGetRLinkPoint(quintptr id_point)
     {
-        return 0;
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return 0;
+
+        return p->getRLinkPoint();
     }
 
-    //ru Возвращает тип точек(константы PointTypes).
-    EXPORT PointTypes ptGetType(quintptr id_prop)
+    //ru Получаем тип точки.
+    EXPORT PointTypes ptGetType(quintptr id_point)
     {
-        return pt_Work;
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return pt_Work;
+
+        return p->getType();
     }
 
     //ru Возвращает имя точки.
-    EXPORT const char *ptGetName(quintptr id_prop)
+    EXPORT const char *ptGetName(quintptr id_point)
     {
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return nullptr;
 
-        return nullptr;
+        return SceneModel::strToPChar(p->getName());
     }
 
-    //ru Возвращает ID элемента, которому принадлежит точка.
-    EXPORT quintptr ptGetParent(quintptr id_prop)
+    //ru Получаем ID родителя (элемент) точки.
+    EXPORT quintptr ptGetParent(quintptr id_point)
     {
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return 0;
+        const PElement e = qobject_cast<PElement>(p->parent());
 
-
-        return 0;
+        return e->getId();
     }
 
-    //ru Возвращает тип точки (PointTypes).
-    EXPORT PointTypes ptGetIndex(quintptr id_prop)
+    //ru Получаем индекс точки относительно точек того же типа.
+    EXPORT int ptGetIndex(quintptr id_point)
     {
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return 0;
 
-        return pt_Work;
+        return p->getIndex();
     }
 
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
-    EXPORT const char *pt_dpeGetName(quintptr id_prop)
+    EXPORT const char *pt_dpeGetName(quintptr id_point)
     {
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return nullptr;
 
-        return nullptr;
+        return SceneModel::strToPChar(p->getDpeName());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип свойства.
     EXPORT DataTypes propGetType(quintptr id_prop)
     {
-        PProperty p = m_model->getPropertyById(id_prop);
+        const PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return data_null;
 
@@ -274,7 +307,7 @@ namespace EmulateCgt
     //ru Возвращает имя свойства.
     EXPORT const char *propGetName(quintptr id_prop)
     {
-        PProperty p = m_model->getPropertyById(id_prop);
+        const PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return nullptr;
 
@@ -284,7 +317,7 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в виде указателя на данные.
     EXPORT quintptr propGetValue(quintptr id_prop)
     {
-        PProperty p = m_model->getPropertyById(id_prop);
+        const PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 

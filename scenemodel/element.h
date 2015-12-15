@@ -69,4 +69,8 @@ public:
     PPoint getPointByIndex(int index) const;
     quintptr getIdPointByIndex(int index) const;
     bool getLinkIs() const;
+    int getPosX() const;
+    int getPosY() const;
+    int getSizeW() const;
+    int getSizeH() const;
 };

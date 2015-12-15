@@ -90,7 +90,7 @@ namespace cgt
     //ru Возвращает ID элемента, которому принадлежит точка.
     quintptr ptGetParent(quintptr p);
     //ru Возвращает тип точки (PointTypes).
-    PointTypes ptGetIndex(quintptr p);
+    int ptGetIndex(quintptr p);
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
     const char *pt_dpeGetName(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -335,12 +335,12 @@ namespace ProxyCgt
     }
 
     //ru Возвращает тип точки (PointTypes).
-    EXPORT PointTypes ptGetIndex(quintptr p)
+    EXPORT int ptGetIndex(quintptr p)
     {
         PRINT_FUNC_INFO
-        PointTypes res = m_cgt->ptGetIndex(p);
+        int res = m_cgt->ptGetIndex(p);
         printArgs({p}, true);
-        PRINT_RESULT(PointTypesMap[res])
+        PRINT_RESULT(res)
 
         return res;
     }

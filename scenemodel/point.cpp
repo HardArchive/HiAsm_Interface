@@ -34,3 +34,43 @@ quintptr Point::getId() const
     return m_id;
 }
 
+
+QString Point::getInfo() const
+{
+    return m_info;
+}
+
+QString Point::getName() const
+{
+    return m_name;
+}
+
+QString Point::getDpeName() const
+{
+    return m_dpeName;
+}
+
+quintptr Point::getLinkPoint() const
+{
+    return m_linkPoint;
+}
+
+quintptr Point::getRLinkPoint() const
+{
+    return m_RLinkPoint;
+}
+
+DataTypes Point::getDataType() const
+{
+    return m_dataType;
+}
+
+PointTypes Point::getType() const
+{
+    return m_type;
+}
+
+int Point::getIndex() const
+{
+    return m_index;
+}

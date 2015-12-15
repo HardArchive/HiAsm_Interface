@@ -412,7 +412,7 @@ struct TCodeGenTools {
     //ru Возвращает ID элемента, которому принадлежит точка.
     CALLBACK quintptr(*ptGetParent)(quintptr p);
     //ru Возвращает тип точки (PointTypes).
-    CALLBACK PointTypes(*ptGetIndex)(quintptr p);
+    CALLBACK int(*ptGetIndex)(quintptr p);
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
     CALLBACK const char *(*pt_dpeGetName)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~

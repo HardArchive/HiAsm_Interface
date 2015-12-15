@@ -254,6 +254,11 @@ PElement SceneModel::getElementById(quintptr id_element) const
     return m_mapElements[id_element];
 }
 
+PPoint SceneModel::getPointById(quintptr id_point) const
+{
+    return m_mapPoints[id_point];
+}
+
 PProperty SceneModel::getPropertyById(quintptr id_prop) const
 {
     return m_mapProperties[id_prop];
