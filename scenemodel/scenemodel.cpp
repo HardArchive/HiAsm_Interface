@@ -11,8 +11,6 @@
 //Qt
 #include <QDebug>
 
-
-
 SceneModel::SceneModel(QObject *parent):
     QObject(parent)
 {
@@ -33,7 +31,7 @@ SceneModel::~SceneModel()
 
 const char *SceneModel::strToPChar(const QString &str)
 {
-    char *buf = new char[str.size() + 1];
+    char *buf = new char[uint(str.size() + 1)];
     strcpy(buf, str.toStdString().c_str());
     return buf;
 }
@@ -50,54 +48,54 @@ void SceneModel::collectingData(quintptr id_sdk)
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_CODE_PATH, buf.data());
-    m_cgtParams.PARAM_CODE_PATH = QString::fromLocal8Bit(buf);
+    m_cgtParams.CODE_PATH = QString::fromLocal8Bit(buf);
 
     cgt::GetParam(PARAM_DEBUG_MODE, &iBuf);
-    m_cgtParams.PARAM_DEBUG_MODE = iBuf;
+    m_cgtParams.DEBUG_MODE = iBuf;
 
     cgt::GetParam(PARAM_DEBUG_SERVER_PORT, &iBuf);
-    m_cgtParams.PARAM_DEBUG_SERVER_PORT = iBuf;
+    m_cgtParams.DEBUG_SERVER_PORT = iBuf;
 
     cgt::GetParam(PARAM_DEBUG_CLIENT_PORT, &iBuf);
-    m_cgtParams.PARAM_DEBUG_CLIENT_PORT = iBuf;
+    m_cgtParams.DEBUG_CLIENT_PORT = iBuf;
 
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_PROJECT_PATH, buf.data());
-    m_cgtParams.PARAM_PROJECT_PATH = QString::fromLocal8Bit(buf);
+    m_cgtParams.PROJECT_PATH = QString::fromLocal8Bit(buf);
 
     const char f[] = "%mj.%mn.%bl";
     char *tmpBuf = new char[strlen(f) + 1];
     strcpy(tmpBuf, f);
     cgt::GetParam(PARAM_HIASM_VERSION, tmpBuf);
-    m_cgtParams.PARAM_HIASM_VERSION = QString::fromLatin1(tmpBuf);
-    delete tmpBuf;
+    m_cgtParams.HIASM_VERSION = QString::fromLatin1(tmpBuf);
+    delete[] tmpBuf;
 
     buf.fill('\0');
     cgt::GetParam(PARAM_USER_NAME, buf.data());
-    m_cgtParams.PARAM_USER_NAME = QString::fromLocal8Bit(buf);
+    m_cgtParams.USER_NAME = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
     cgt::GetParam(PARAM_USER_MAIL, buf.data());
-    m_cgtParams.PARAM_USER_MAIL = QString::fromLocal8Bit(buf);
+    m_cgtParams.USER_MAIL = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_PROJECT_NAME, buf.data());
-    m_cgtParams.PARAM_PROJECT_NAME = QString::fromLocal8Bit(buf);
+    m_cgtParams.PROJECT_NAME = QString::fromLocal8Bit(buf);
 
     uint tmpW[1] = {reinterpret_cast<uint>(eId)};
     cgt::GetParam(PARAM_SDE_WIDTH, tmpW);
-    m_cgtParams.PARAM_SDE_WIDTH = tmpW[0];
+    m_cgtParams.SDE_WIDTH = tmpW[0];
 
     uint tmpH[1] = {reinterpret_cast<uint>(eId)};
     cgt::GetParam(PARAM_SDE_HEIGHT, tmpH);
-    m_cgtParams.PARAM_SDE_HEIGHT = tmpH[0];
+    m_cgtParams.SDE_HEIGHT = tmpH[0];
 
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_COMPILER, buf.data());
-    m_cgtParams.PARAM_COMPILER = QString::fromLocal8Bit(buf);
+    m_cgtParams.COMPILER = QString::fromLocal8Bit(buf);
 }
 
 PContainer SceneModel::grabberSDK(quintptr id_sdk, QObject *parent)
@@ -183,40 +181,40 @@ void SceneModel::getCgtParam(CgtParams index, quintptr value) const
 {
     switch (index) {
     case PARAM_CODE_PATH :
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PARAM_CODE_PATH.toStdString().c_str());
+        strcpy(reinterpret_cast<char *>(value), m_cgtParams.CODE_PATH.toStdString().c_str());
         break;
     case PARAM_DEBUG_MODE:
-        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_DEBUG_MODE;
+        *reinterpret_cast<int *>(value) = m_cgtParams.DEBUG_MODE;
         break;
     case PARAM_DEBUG_SERVER_PORT:
-        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_DEBUG_SERVER_PORT;
+        *reinterpret_cast<int *>(value) = m_cgtParams.DEBUG_SERVER_PORT;
         break;
     case PARAM_DEBUG_CLIENT_PORT:
-        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_DEBUG_CLIENT_PORT;
+        *reinterpret_cast<int *>(value) = m_cgtParams.DEBUG_CLIENT_PORT;
         break;
     case PARAM_PROJECT_PATH:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PARAM_PROJECT_PATH.toStdString().c_str());
+        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PROJECT_PATH.toStdString().c_str());
         break;
     case PARAM_HIASM_VERSION:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PARAM_HIASM_VERSION.toStdString().c_str());
+        strcpy(reinterpret_cast<char *>(value), m_cgtParams.HIASM_VERSION.toStdString().c_str());
         break;
     case PARAM_USER_NAME:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PARAM_USER_NAME.toStdString().c_str());
+        strcpy(reinterpret_cast<char *>(value), m_cgtParams.USER_NAME.toStdString().c_str());
         break;
     case PARAM_USER_MAIL:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PARAM_USER_MAIL.toStdString().c_str());
+        strcpy(reinterpret_cast<char *>(value), m_cgtParams.USER_MAIL.toStdString().c_str());
         break;
     case PARAM_PROJECT_NAME:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PARAM_PROJECT_NAME.toStdString().c_str());
+        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PROJECT_NAME.toStdString().c_str());
         break;
     case PARAM_SDE_WIDTH:
-        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_SDE_WIDTH;
+        *reinterpret_cast<int *>(value) = m_cgtParams.SDE_WIDTH;
         break;
     case PARAM_SDE_HEIGHT:
-        *reinterpret_cast<int *>(value) = m_cgtParams.PARAM_SDE_HEIGHT;
+        *reinterpret_cast<int *>(value) = m_cgtParams.SDE_HEIGHT;
         break;
     case PARAM_COMPILER:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PARAM_COMPILER.toStdString().c_str());
+        strcpy(reinterpret_cast<char *>(value), m_cgtParams.COMPILER.toStdString().c_str());
         break;
     }
 }

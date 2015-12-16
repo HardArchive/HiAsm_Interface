@@ -1,31 +1,37 @@
 #pragma once
 //Project
+#include "cgt/CGTShare.h"
 
 //STL
 
 //Qt
 #include <QObject>
+#include <QVariant>
 #include <QSharedPointer>
 
-struct LinkedElementInfo{
+struct LinkedElementInfo {
     quintptr id{};
     QString interface;
 };
 typedef QSharedPointer<LinkedElementInfo> SharedLinkedElementInfo;
 Q_DECLARE_METATYPE(SharedLinkedElementInfo)
 
-struct Font {
+struct ValueFont {
     QString name;
     uint size{};
     uchar style{};
     uint color{};
     uchar charset{};
 };
-typedef QSharedPointer<Font> SharedFont;
-Q_DECLARE_METATYPE(SharedFont)
+typedef QSharedPointer<ValueFont> SharedValueFont;
+Q_DECLARE_METATYPE(SharedValueFont)
 
-typedef QVector<int> ArrayInteger;
-Q_DECLARE_METATYPE(ArrayInteger)
-
-typedef QVector<qreal> ArrayReal;
-Q_DECLARE_METATYPE(ArrayReal)
+struct ArrayValue {
+    QString name;
+    DataTypes type{};
+    QVariant data;
+};
+typedef QSharedPointer<ArrayValue> SharedArrayValue;
+Q_DECLARE_METATYPE(SharedArrayValue)
+typedef QVector<SharedArrayValue> ArrayValues;
+Q_DECLARE_METATYPE(ArrayValues)

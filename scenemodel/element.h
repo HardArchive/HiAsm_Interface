@@ -52,7 +52,6 @@ private:
 public:
     quintptr getId() const;
     PSceneModel getModel() const;
-
     QString getClassName() const;
     ElementFlags getFlags() const;
     void setCodeName(const QString &name);
@@ -73,4 +72,6 @@ public:
     int getPosY() const;
     int getSizeW() const;
     int getSizeH() const;
+    PContainer getContainer() const;
+    quintptr getIdContainer() const;
 };

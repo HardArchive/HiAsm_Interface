@@ -43,6 +43,7 @@ public:
     void setIsDefault(bool value);
     QString getName() const;
     SharedValue getValue() const;
+    uchar getValueByte() const;
     int getValueInt() const;
     qreal getValueReal() const;
     QString getValueString() const;

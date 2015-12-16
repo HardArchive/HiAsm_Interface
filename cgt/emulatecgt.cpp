@@ -147,8 +147,10 @@ namespace EmulateCgt
 
     //ru Возвращает ID точки по её имени.
     //[deprecated]
-    EXPORT quintptr elGetPtName(quintptr id_element, const char *Name)
+    EXPORT quintptr elGetPtName(quintptr id_element, const char *name)
     {
+        Q_UNUSED(id_element)
+        Q_UNUSED(name)
 
         return 0;
     }
@@ -166,8 +168,11 @@ namespace EmulateCgt
     //ru Получаем ID контейнера
     EXPORT quintptr elGetSDK(quintptr id_element)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getIdContainer();
     }
 
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
@@ -175,7 +180,7 @@ namespace EmulateCgt
     {
         const PElement e = m_model->getElementById(id_element);
         if (!e)
-            return CI_Element;
+            return false;
 
         return e->getLinkIs();
     }
@@ -331,7 +336,11 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате uchar.
     EXPORT uchar propToByte(quintptr id_prop)
     {
-        return 0;
+        const PProperty p = m_model->getPropertyById(id_prop);
+        if (!p)
+            return 0;
+
+        return p->getValueByte();
     }
 
     //ru Возвращает значение свойства в формате int.
@@ -385,7 +394,6 @@ namespace EmulateCgt
     EXPORT const char *resAddStr(const char *string)
     {
         return m_model->addResFromString(QString::fromLocal8Bit(string));
-        return nullptr;
     }
 
     //ru Добавляет поток (данные) в ресурсы и в список временных файлов,
@@ -441,43 +449,56 @@ namespace EmulateCgt
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает количество элементов в массиве.
-    EXPORT int arrCount(quintptr a)
+    //ru Получаем количество элементов в массиве.
+    EXPORT int arrCount(quintptr id_array)
     {
-
+        /*
+        const SharedValue v = m_model->getValueById(id_array);
+        if (!v)
+            return 0;
+        */
         return 0;
     }
 
-    //ru Возвращает тип элементов в массиве.
-    EXPORT DataTypes arrType(quintptr a)
+    //ru Получаем тип элементов в массиве.
+    EXPORT DataTypes arrType(quintptr id_array)
     {
+        /*
+        const SharedValue v = m_model->getValueById(id_array);
+        if (!v)
+            return data_null;
 
+        */
         return data_null;
     }
 
-    //ru Возвращает имя элемента с индексом Index.
-    EXPORT const char *arrItemName(quintptr a, int Index)
+    //ru Получаем имя элемента по индексу.
+    EXPORT const char *arrItemName(quintptr id_array, int index)
     {
-
+        /*
+        const SharedValue v = m_model->getValueById(id_array);
+        if (!v)
+            return nullptr;
+        */
         return nullptr;
     }
 
-    //ru Возвращает значение элемента с индексом Index
-    EXPORT quintptr arrItemData(quintptr a, int Index)
+    //ru Получаем элемент (id_arrayValue) массива  по индексу.
+    //[deprecated]
+    EXPORT quintptr arrItemData(quintptr id_array, int index)
     {
-
         return 0;
     }
 
-    //ru Получаем элемент массива в виде свойства,
+    //ru Получаем элемент массива в виде свойства (id_prop) Оо,
     //ru для дальнейшей работы с ним cgt::prop* функциями.
-    EXPORT quintptr arrGetItem(quintptr a, int Index)
+    EXPORT quintptr arrGetItem(quintptr id_array, int index)
     {
 
         return 0;
     }
 
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращаем >0, если запускаем схемы в режиме отладки,
     //ru иначе 0.
     EXPORT int isDebug(quintptr id_element)
@@ -525,7 +546,7 @@ namespace EmulateCgt
         if (!v)
             return nullptr;
 
-        SharedFont font = v->toFont();
+        SharedValueFont font = v->toFont();
         if (!font)
             return nullptr;
 
@@ -538,7 +559,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = v->toFont();
+        SharedValueFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -551,7 +572,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = v->toFont();
+        SharedValueFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -564,7 +585,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = v->toFont();
+        SharedValueFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -577,7 +598,7 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        SharedFont font = v->toFont();
+        SharedValueFont font = v->toFont();
         if (!font)
             return 0;
 
@@ -740,7 +761,7 @@ namespace EmulateCgt
             return 0;
 
         const SharedLinkedElementInfo info = p->getLinkedElementInfo();
-        if(!info)
+        if (!info)
             return 0;
 
         strcpy(buf, info->interface.toStdString().c_str());

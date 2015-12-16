@@ -26,7 +26,7 @@ public:
     PElement getElementByName(const QString &name) const;
     quintptr getIdElementByName(const QString &name) const;
     quintptr getId() const;
-    PElement getElementByIndex(quintptr index) const;
-    quintptr getIdElementByIndex(quintptr index) const;
+    PElement getElementByIndex(int index) const;
+    quintptr getIdElementByIndex(int index) const;
     PElement getParent() const;
 };

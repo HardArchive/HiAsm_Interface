@@ -27,7 +27,9 @@ public:
     quintptr getId() const;
     DataTypes getType() const;
     QVariant getValue() const;
-    SharedFont toFont() const;
+    SharedValueFont toFont() const;
     void setValue(QVariant v);
     PProperty getParent() const;
+    size_t getArraySize() const;
+    DataTypes getArrayType() const;
 };

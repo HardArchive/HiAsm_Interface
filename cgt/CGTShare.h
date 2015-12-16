@@ -223,20 +223,21 @@ const static QMap<int, QString> CgtParamsMap{
     {PARAM_COMPILER, "PARAM_COMPILER"}
 };
 struct TCgtParams {
-    QString PARAM_CODE_PATH{};
-    int PARAM_DEBUG_MODE{};
-    int PARAM_DEBUG_SERVER_PORT{};
-    int PARAM_DEBUG_CLIENT_PORT{};
-    QString PARAM_PROJECT_PATH{};
-    QString PARAM_HIASM_VERSION{};
-    QString PARAM_USER_NAME{};
-    QString PARAM_USER_MAIL{};
-    QString PARAM_PROJECT_NAME{};
-    uint PARAM_SDE_WIDTH{};
-    uint PARAM_SDE_HEIGHT{};
-    QString PARAM_COMPILER{};
+    QString CODE_PATH{};
+    int DEBUG_MODE{};
+    int DEBUG_SERVER_PORT{};
+    int DEBUG_CLIENT_PORT{};
+    QString PROJECT_PATH{};
+    QString HIASM_VERSION{};
+    QString USER_NAME{};
+    QString USER_MAIL{};
+    QString PROJECT_NAME{};
+    uint SDE_WIDTH{};
+    uint SDE_HEIGHT{};
+    QString COMPILER{};
 };
 typedef TCgtParams *PCgtParams;
+
 
 //!ru Ошибки при работе с библиотекой кодогенератора
 enum CgResult {

@@ -41,20 +41,21 @@ quintptr Container::getId() const
     return m_id;
 }
 
-PElement Container::getElementByIndex(quintptr index) const
+PElement Container::getElementByIndex(int index) const
 {
     if (index < m_elements.size())
         return m_elements[index];
-    else
-        return nullptr;
+
+    return nullptr;
 }
 
-quintptr Container::getIdElementByIndex(quintptr index) const
+quintptr Container::getIdElementByIndex(int index) const
 {
-    if (index < m_elements.size())
-        return m_elements[index]->getId();
-    else
+    const PElement e = getElementByIndex(index);
+    if (!e)
         return 0;
+
+    return e->getId();
 }
 
 PElement Container::getParent() const

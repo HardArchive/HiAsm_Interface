@@ -189,3 +189,20 @@ int Element::getSizeH() const
 {
     return m_sizeH;
 }
+
+PContainer Element::getContainer() const
+{
+    if (!m_containers.isEmpty())
+        return nullptr;
+
+    return m_containers[0];
+}
+
+quintptr Element::getIdContainer() const
+{
+    const PContainer c = getContainer();
+    if (!c)
+        return 0;
+
+    return c->getId();
+}

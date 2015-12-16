@@ -95,39 +95,34 @@ void Property::collectingData()
     }
     case data_array: {
         int arrCount = cgt::arrCount(id_value);
-        switch (cgt::arrType(id_value)) {
-        case data_int: {
-            ArrayInteger arr;
-            for (int i = 0; i < arrCount; ++i) {
-                arr.append(cgt::propToInteger(cgt::arrGetItem(id_value, i)));
+        DataTypes type = cgt::arrType(id_value);
+        ArrayValues arrayValues;
+
+        for (int i = 0; i < arrCount; ++i) {
+            SharedArrayValue arrayValue;
+
+            arrayValue->name = QString::fromLocal8Bit(cgt::arrItemName(id_value, i));
+            arrayValue->type = type;
+            switch (type) {
+            case data_int:
+                arrayValue->data = cgt::propToInteger(cgt::arrGetItem(id_value, i));
+                break;
+            case data_str:
+                arrayValue->data = QString::fromLocal8Bit(cgt::propToString(cgt::arrGetItem(id_value, i)));
+                break;
+            case data_real:
+                arrayValue->data = cgt::propToReal(cgt::arrGetItem(id_value, i));
+                break;
             }
-            setValue(QVariant::fromValue(arr));
-            break;
-        }
-        case data_str: {
-            QStringList list;
-            for (int i = 0; i < arrCount; ++i) {
-                list.append(QString::fromLocal8Bit(cgt::propToString(cgt::arrGetItem(id_value, i))));
-            }
-            setValue(list);
-            break;
-        }
-        case data_real: {
-            ArrayReal arr;
-            for (int i = 0; i < arrCount; ++i) {
-                arr.append(cgt::propToReal(cgt::arrGetItem(id_value, i)));
-            }
-            setValue(QVariant::fromValue(arr));
-            break;
-        }
-        default:
-            break;
+
+            arrayValues.append(arrayValue);
         }
 
+        setValue(QVariant::fromValue(arrayValues));
         break;
     }
     case data_font: {
-        SharedFont font = SharedFont::create();
+        SharedValueFont font;
         font->name = QString::fromLocal8Bit(cgt::fntName(id_value));
         font->size = cgt::fntSize(id_value);
         font->style = cgt::fntStyle(id_value);
@@ -143,10 +138,10 @@ void Property::collectingData()
         quintptr linkedElement = cgt::propGetLinkedElementInfo(e->getId(), m_id, buf);
 
         if (linkedElement) {
-            SharedLinkedElementInfo le = SharedLinkedElementInfo::create();
-            le->id = linkedElement;
-            le->interface = QString::fromLocal8Bit(buf);
-            setValue(QVariant::fromValue(le));
+            SharedLinkedElementInfo LEI;
+            LEI->id = linkedElement;
+            LEI->interface = QString::fromLocal8Bit(buf);
+            setValue(QVariant::fromValue(LEI));
         }
 
         break;
@@ -185,6 +180,14 @@ SharedValue Property::getValue() const
     return m_value;
 }
 
+uchar Property::getValueByte() const
+{
+    if (!m_value)
+        return 0;
+
+    return qvariant_cast<uchar>(m_value->getValue());
+}
+
 int Property::getValueInt() const
 {
     if (!m_value)
@@ -216,7 +219,7 @@ int Property::getIsTranslate() const
 
 SharedLinkedElementInfo Property::getLinkedElementInfo() const
 {
-    if(!m_value)
+    if (!m_value)
         return SharedLinkedElementInfo();
 
     return qvariant_cast<SharedLinkedElementInfo>(m_value->getValue());
