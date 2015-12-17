@@ -47,11 +47,13 @@ public:
     uint getCountElementsInContainer(quintptr id_sdk) const;
     PElement getElementById(quintptr id_element) const;
     PPoint getPointById(quintptr id_point) const;
-    PProperty getPropertyById(quintptr id_prop) const;
+    SharedProperty getPropertyById(quintptr id_prop) const;
     SharedValue getValueById(quintptr id_value) const;
     void addValueToMap(SharedValue value);
+    void addPropertyToMap(SharedProperty prop);
     const char *addResByIdProp(quintptr id_prop);
     const char *addResFromString(const QString &str);
     int addResList(const QString &filePath);
+
 
 };

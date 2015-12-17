@@ -10,14 +10,15 @@
 #include <QMetaType>
 
 // Типы данных
+class Property;
+typedef Property *PProperty;
+typedef QSharedPointer<Property> SharedProperty;
+typedef QMap<quintptr, SharedProperty> MapProperties;
+typedef QVector<SharedProperty> Properties;
+
 class Value;
 typedef QSharedPointer<Value> SharedValue;
 typedef QMap<quintptr, SharedValue> MapValues;
-
-class Property;
-typedef Property *PProperty;
-typedef QVector<PProperty> Properties;
-typedef QMap<quintptr, PProperty> MapProperties;
 
 class Point;
 typedef Point *PPoint;
@@ -36,4 +37,3 @@ typedef QMap<quintptr, PContainer> MapContainers;
 
 class SceneModel;
 typedef SceneModel *PSceneModel;
-//typedef QSharedPointer<SceneModel> SharedSceneModel;

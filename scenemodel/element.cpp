@@ -44,7 +44,7 @@ void Element::collectingData()
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propCount; ++i) {
         quintptr propId = cgt::elGetProperty(m_id, i);
-        m_properties.append(new Property(propId, m_model, this));
+        m_properties.append(SharedProperty::create(propId, m_model, this));
     }
 
     //ru Помечаем свойства, значения которых совпадают со стандартным из INI.
@@ -110,36 +110,36 @@ int Element::getCountProps() const
     return m_propCount;
 }
 
-PProperty Element::getPropertyByIndex(int index) const
+SharedProperty Element::getPropertyByIndex(int index) const
 {
     int size = m_properties.size();
     if ((index >= 0) && (index < size))
         return m_properties[index];
     else
-        return nullptr;
+        return SharedProperty();
 }
 
 quintptr Element::getIdPropertyByIndex(int index) const
 {
-    PProperty e = getPropertyByIndex(index);
+    const SharedProperty e = getPropertyByIndex(index);
     if (!e)
         return 0;
 
     return e->getId();
 }
 
-PProperty Element::getPropertyById(quintptr id_prop) const
+SharedProperty Element::getPropertyById(quintptr id_prop) const
 {
     if (!id_prop)
-        return nullptr;
+        return SharedProperty();
 
-    for (const PProperty p : m_properties) {
+    for (SharedProperty p : m_properties) {
         if (p->getId() == id_prop) {
             return p;
         }
     }
 
-    return nullptr;
+    return SharedProperty();
 }
 
 int Element::getCountPoints() const

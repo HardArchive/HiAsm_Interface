@@ -13,12 +13,27 @@
 #include <QDebug>
 #include <QUuid>
 
-Property::Property(quintptr id_prop, PSceneModel model, QObject *parent)
-    : QObject(parent)
-    , m_id(id_prop)
+Property::Property()
+{
+    m_id = 0;
+    m_type = data_null;
+}
+
+Property::Property(quintptr id_prop, PSceneModel model, const PElement parent)
+    : m_id(id_prop)
     , m_model(model)
+    , m_parent(parent)
 {
     collectingData();
+}
+
+Property::Property(quintptr id_prop, const QString &name, DataTypes type, const SharedValue &value)
+    : m_id(id_prop)
+    , m_name(name)
+    , m_type(type)
+    , m_value(value)
+{
+
 }
 
 void Property::collectingData()
@@ -27,7 +42,7 @@ void Property::collectingData()
     m_type = cgt::propGetType(m_id);
     quintptr id_value = cgt::propGetValue(m_id);
 
-    auto setValue = [this, &id_value](QVariant value) {
+    auto setValue = [this, &id_value](const QVariant & value) {
         m_value = SharedValue::create(id_value, m_type, value, this);
         m_model->addValueToMap(m_value);
     };
@@ -96,33 +111,40 @@ void Property::collectingData()
     case data_array: {
         int arrCount = cgt::arrCount(id_value);
         DataTypes type = cgt::arrType(id_value);
-        ArrayValues arrayValues;
+        Properties arrayValues;
 
         for (int i = 0; i < arrCount; ++i) {
-            SharedArrayValue arrayValue;
+            quintptr id_prop = cgt::arrGetItem(id_value, i);
 
-            arrayValue->name = QString::fromLocal8Bit(cgt::arrItemName(id_value, i));
-            arrayValue->type = type;
+            QString name = QString::fromLocal8Bit(cgt::arrItemName(id_value, i));
+            QVariant data;
             switch (type) {
             case data_int:
-                arrayValue->data = cgt::propToInteger(cgt::arrGetItem(id_value, i));
+                data = cgt::propToInteger(id_prop);
                 break;
             case data_str:
-                arrayValue->data = QString::fromLocal8Bit(cgt::propToString(cgt::arrGetItem(id_value, i)));
+                data = QString::fromLocal8Bit(cgt::propToString(id_prop));
                 break;
             case data_real:
-                arrayValue->data = cgt::propToReal(cgt::arrGetItem(id_value, i));
+                data = cgt::propToReal(id_prop);
                 break;
+            default: break;
             }
 
-            arrayValues.append(arrayValue);
+            SharedValue value = SharedValue::create(0, type, data);
+            SharedProperty property = SharedProperty::create(id_prop, name, type, value);
+            arrayValues.append(property);
+            m_model->addPropertyToMap(property);
         }
 
-        setValue(QVariant::fromValue(arrayValues));
+        m_value = SharedValue::create(id_value, m_type, QVariant::fromValue(arrayValues), this);
+        m_value->setArrayType(type);
+        m_model->addValueToMap(m_value);
+
         break;
     }
     case data_font: {
-        SharedValueFont font;
+        SharedValueFont font = SharedValueFont::create();
         font->name = QString::fromLocal8Bit(cgt::fntName(id_value));
         font->size = cgt::fntSize(id_value);
         font->style = cgt::fntStyle(id_value);
@@ -133,12 +155,14 @@ void Property::collectingData()
         break;
     }
     case data_element: {
-        PElement e = qobject_cast<PElement>(parent());
+        if (!m_parent)
+            return;
+
         char buf[PATH_MAX];
-        quintptr linkedElement = cgt::propGetLinkedElementInfo(e->getId(), m_id, buf);
+        quintptr linkedElement = cgt::propGetLinkedElementInfo(m_parent->getId(), m_id, buf);
 
         if (linkedElement) {
-            SharedLinkedElementInfo LEI;
+            SharedLinkedElementInfo LEI = SharedLinkedElementInfo::create();
             LEI->id = linkedElement;
             LEI->interface = QString::fromLocal8Bit(buf);
             setValue(QVariant::fromValue(LEI));
@@ -185,7 +209,7 @@ uchar Property::getValueByte() const
     if (!m_value)
         return 0;
 
-    return qvariant_cast<uchar>(m_value->getValue());
+    return m_value->getVariant().value<uchar>();
 }
 
 int Property::getValueInt() const
@@ -193,7 +217,7 @@ int Property::getValueInt() const
     if (!m_value)
         return 0;
 
-    return m_value->getValue().toInt();
+    return m_value->getVariant().toInt();
 }
 
 qreal Property::getValueReal() const
@@ -201,7 +225,7 @@ qreal Property::getValueReal() const
     if (!m_value)
         return 0.0;
 
-    return m_value->getValue().toReal();
+    return m_value->getVariant().toReal();
 }
 
 QString Property::getValueString() const
@@ -209,7 +233,7 @@ QString Property::getValueString() const
     if (!m_value)
         return QString();
 
-    return m_value->getValue().toString();
+    return m_value->getVariant().toString();
 }
 
 int Property::getIsTranslate() const
@@ -217,10 +241,10 @@ int Property::getIsTranslate() const
     return m_isTranslate;
 }
 
-SharedLinkedElementInfo Property::getLinkedElementInfo() const
+const SharedLinkedElementInfo Property::getLinkedElementInfo() const
 {
     if (!m_value)
         return SharedLinkedElementInfo();
 
-    return qvariant_cast<SharedLinkedElementInfo>(m_value->getValue());
+    return m_value->getVariant().value<SharedLinkedElementInfo>();
 }

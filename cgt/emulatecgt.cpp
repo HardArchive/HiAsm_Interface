@@ -80,7 +80,7 @@ namespace EmulateCgt
         if (!e)
             return true;
 
-        const PProperty p = e->getPropertyByIndex(index);
+        const SharedProperty p = e->getPropertyByIndex(index);
         if (!p)
             return true;
 
@@ -302,7 +302,7 @@ namespace EmulateCgt
     //ru Возвращает тип свойства.
     EXPORT DataTypes propGetType(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
+        const SharedProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return data_null;
 
@@ -312,7 +312,7 @@ namespace EmulateCgt
     //ru Возвращает имя свойства.
     EXPORT const char *propGetName(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
+        const SharedProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return nullptr;
 
@@ -322,7 +322,7 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в виде указателя на данные.
     EXPORT quintptr propGetValue(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
+        const SharedProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -336,7 +336,7 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате uchar.
     EXPORT uchar propToByte(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
+        const SharedProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -346,7 +346,7 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате int.
     EXPORT int propToInteger(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
+        const SharedProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -356,7 +356,7 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате float.
     EXPORT qreal propToReal(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
+        const SharedProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -366,7 +366,7 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в виде C строки.
     EXPORT const char *propToString(quintptr id_prop)
     {
-        const PProperty p = m_model->getPropertyById(id_prop);
+        const SharedProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -452,35 +452,31 @@ namespace EmulateCgt
     //ru Получаем количество элементов в массиве.
     EXPORT int arrCount(quintptr id_array)
     {
-        /*
         const SharedValue v = m_model->getValueById(id_array);
         if (!v)
             return 0;
-        */
-        return 0;
+
+        return v->getArraySize();
     }
 
     //ru Получаем тип элементов в массиве.
     EXPORT DataTypes arrType(quintptr id_array)
     {
-        /*
         const SharedValue v = m_model->getValueById(id_array);
         if (!v)
             return data_null;
 
-        */
-        return data_null;
+        return v->getArrayType();
     }
 
     //ru Получаем имя элемента по индексу.
     EXPORT const char *arrItemName(quintptr id_array, int index)
     {
-        /*
         const SharedValue v = m_model->getValueById(id_array);
         if (!v)
             return nullptr;
-        */
-        return nullptr;
+
+        return SceneModel::strToPChar(v->getArrayItemName(index));
     }
 
     //ru Получаем элемент (id_arrayValue) массива  по индексу.
@@ -494,8 +490,11 @@ namespace EmulateCgt
     //ru для дальнейшей работы с ним cgt::prop* функциями.
     EXPORT quintptr arrGetItem(quintptr id_array, int index)
     {
+        const SharedValue v = m_model->getValueById(id_array);
+        if (!v)
+            return 0;
 
-        return 0;
+        return v->getArrayIdItemByIndex(index);
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -737,7 +736,7 @@ namespace EmulateCgt
         if (!e)
             return 0;
 
-        const PProperty p = e->getPropertyById(id_prop);
+        const SharedProperty p = e->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -756,7 +755,7 @@ namespace EmulateCgt
         if (!e)
             return 0;
 
-        const PProperty p = e->getPropertyById(id_prop);
+        const SharedProperty p = e->getPropertyById(id_prop);
         if (!p)
             return 0;
 

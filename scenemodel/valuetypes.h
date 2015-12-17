@@ -1,6 +1,7 @@
 #pragma once
 //Project
 #include "cgt/CGTShare.h"
+#include "types.h"
 
 //STL
 
@@ -8,6 +9,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QSharedPointer>
+#include <QList>
 
 struct LinkedElementInfo {
     quintptr id{};
@@ -26,12 +28,3 @@ struct ValueFont {
 typedef QSharedPointer<ValueFont> SharedValueFont;
 Q_DECLARE_METATYPE(SharedValueFont)
 
-struct ArrayValue {
-    QString name;
-    DataTypes type{};
-    QVariant data;
-};
-typedef QSharedPointer<ArrayValue> SharedArrayValue;
-Q_DECLARE_METATYPE(SharedArrayValue)
-typedef QVector<SharedArrayValue> ArrayValues;
-Q_DECLARE_METATYPE(ArrayValues)

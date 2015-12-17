@@ -157,7 +157,7 @@ void SceneModel::initMapObjects()
                 m_mapPoints.insert(p->m_id, p);
             }
 
-            for (PProperty p : e->m_properties) {
+            for (SharedProperty p : e->m_properties) {
                 m_mapProperties.insert(p->m_id, p);
             }
         }
@@ -259,7 +259,7 @@ PPoint SceneModel::getPointById(quintptr id_point) const
     return m_mapPoints[id_point];
 }
 
-PProperty SceneModel::getPropertyById(quintptr id_prop) const
+SharedProperty SceneModel::getPropertyById(quintptr id_prop) const
 {
     return m_mapProperties[id_prop];
 }
@@ -275,9 +275,15 @@ void SceneModel::addValueToMap(SharedValue value)
         m_mapValues.insert(value->getId(), value);
 }
 
+void SceneModel::addPropertyToMap(SharedProperty prop)
+{
+    if (prop)
+        m_mapProperties.insert(prop->getId(), prop);
+}
+
 const char *SceneModel::addResByIdProp(quintptr id_prop)
 {
-    const PProperty p = getPropertyById(id_prop);
+    const SharedProperty p = getPropertyById(id_prop);
     if (!p)
         return nullptr;
 
@@ -285,7 +291,7 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
     if (!v)
         return nullptr;
 
-    const QByteArray byteArray = v->getValue().toByteArray();
+    const QByteArray byteArray = v->getVariant().toByteArray();
     static const QString nameDir = "compiler";
     static const QString name = "STREAM";
     QString suffix = QString::number(m_resources.size());

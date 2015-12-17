@@ -2,6 +2,7 @@
 
 //Project
 #include "types.h"
+#include "property.h"
 #include "cgt/CGTShare.h"
 
 //STL
@@ -61,9 +62,9 @@ public:
     ElementClass getClassIndex();
     PContainer getParent() const;
     int getCountProps() const;
-    PProperty getPropertyByIndex(int index) const;
+    SharedProperty getPropertyByIndex(int index) const;
     quintptr getIdPropertyByIndex(int index) const;
-    PProperty getPropertyById(quintptr id_prop) const;
+    SharedProperty getPropertyById(quintptr id_prop) const;
     int getCountPoints() const;
     PPoint getPointByIndex(int index) const;
     quintptr getIdPointByIndex(int index) const;
