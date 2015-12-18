@@ -78,11 +78,11 @@ namespace EmulateCgt
     {
         const PElement e = m_model->getElementById(id_element);
         if (!e)
-            return true;
+            return false;
 
         const SharedProperty p = e->getPropertyByIndex(index);
         if (!p)
-            return true;
+            return false;
 
         return p->getIsDefault();
     }
@@ -990,9 +990,9 @@ namespace EmulateCgt
 
     /*!  Служебные функции   */
     //Сохранение указателя для дальнейшей работы с оным
-    void setSceneModel(SceneModel &collector)
+    void setSceneModel(SceneModel *collector)
     {
-        m_model = &collector;
+        m_model = collector;
     }
 
     //Получаем массив указателей на функции

@@ -147,8 +147,8 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #endif
 
 #ifdef SCENEMODEL
-    sceneModel = new SceneModel();
-    EmulateCgt::setSceneModel(*sceneModel);
+    sceneModel = new SceneModel;
+    EmulateCgt::setSceneModel(sceneModel);
     ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
 #else
     ProxyCgt::setProxiedCgt(params.cgt);

@@ -9,6 +9,6 @@
 
 namespace EmulateCgt
 {
-    void setSceneModel(SceneModel &collector);
+    void setSceneModel(SceneModel *collector);
     PCodeGenTools getCgt();
 }
