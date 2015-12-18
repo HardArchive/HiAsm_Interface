@@ -165,14 +165,23 @@ namespace EmulateCgt
         return e->getClassIndex();
     }
 
-    //ru Получаем ID контейнера
+    //ru Получаем ID контейнера из элемента.
+    //ru Если элемент не содержит контейнеры, возвращаем ID элемента родителя текущего контейнера.
     EXPORT quintptr elGetSDK(quintptr id_element)
     {
         const PElement e = m_model->getElementById(id_element);
         if (!e)
             return 0;
 
-        return e->getIdContainer();
+        const PContainer c = e->getContainer();
+        if (!c) {
+            const PElement p = qobject_cast<PElement>(e->parent()->parent());
+            if (p) {
+                return p->getId();
+            }
+        }
+
+        return c->getId();
     }
 
     //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
@@ -747,11 +756,11 @@ namespace EmulateCgt
             return 0;
 
         const SharedProperty p = e->getPropertyByName(QString::fromLocal8Bit(propName));
-        if(!p)
+        if (!p)
             return 0;
 
         const SharedLinkedElementInfo info = p->getLinkedElementInfo();
-        if(!info)
+        if (!info)
             return 0;
 
         return info->id;

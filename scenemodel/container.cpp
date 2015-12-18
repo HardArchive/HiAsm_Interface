@@ -19,7 +19,7 @@ Container::Container(quintptr id_sdk, PSceneModel model, QObject *parent)
 PElement Container::getElementByName(const QString &name) const
 {
     for (PElement e : m_elements) {
-        if (e->getClassName() == name) {
+        if (QString::compare(e->getClassName(), name, Qt::CaseInsensitive) == 0) {
             return e;
         }
     }

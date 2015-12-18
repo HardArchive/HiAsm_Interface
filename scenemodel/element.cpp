@@ -241,7 +241,7 @@ QString Element::getInherit() const
 PPoint Element::getPointByName(const QString &name) const
 {
     for (const PPoint p : m_points) {
-        if (p->getName() == name) {
+        if (QString::compare(p->getName(), name, Qt::CaseInsensitive) == 0) {
             return p;
         }
     }
@@ -261,7 +261,7 @@ quintptr Element::getIdPointByName(const QString &name) const
 const SharedProperty Element::getPropertyByName(const QString &name) const
 {
     for (const SharedProperty p : m_properties) {
-        if (p->getName() == name) {
+        if (QString::compare(p->getName(), name, Qt::CaseInsensitive) == 0) {
             return p;
         }
     }

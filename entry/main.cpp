@@ -151,7 +151,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #endif
 
 #ifdef PROXY_ORIGINAL
-    ProxyCgt::setProxiedCgt(params.cgt);
+    ProxyCgt::setProxiedCgt(cgt::getOriginalCgt());
     cgt::setProxyCgt(ProxyCgt::getCgt());
 #endif
 
