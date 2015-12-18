@@ -293,8 +293,12 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
         return nullptr;
 
     const SharedValue v = p->getValue();
-    if (!v)
+    if (!v) {
+        if (p->getType() == data_icon)
+            return strToPChar(QString("ASMA"));
+
         return nullptr;
+    }
 
     const QByteArray byteArray = v->getVariant().toByteArray();
     static const QString nameDir = "compiler";

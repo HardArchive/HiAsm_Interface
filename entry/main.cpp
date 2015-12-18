@@ -73,6 +73,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 
 //Служебные переменные
 static HMODULE m_codegen = nullptr;
+static SceneModel *sceneModel = nullptr;
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -140,6 +141,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
     case DLL_PROCESS_DETACH: {
         qInfo() << "CODEGEN_PROCESS_DETACH";
+        delete sceneModel;
         FreeLibrary(m_codegen);
         break;
     }
@@ -173,8 +175,8 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #endif
 
 #ifdef SCENEMODEL
-    SceneModel sceneModel;
-    EmulateCgt::setSceneModel(sceneModel);
+    sceneModel = new SceneModel();
+    EmulateCgt::setSceneModel(*sceneModel);
     ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
 #else
     ProxyCgt::setProxiedCgt(params.cgt);
