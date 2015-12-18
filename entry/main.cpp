@@ -24,7 +24,7 @@
 static const char NOT_FOUND_FUNCTION[] = "Called function is not found: %s";
 
 //Типы функций
-typedef int(*t_buildPrepareProc)(const TBuildPrepareRec &params);
+typedef int(*t_buildPrepareProc)(void *params);
 typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
 typedef int(*t_CheckVersionProc)(const THiAsmVersion &params);
 

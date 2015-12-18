@@ -8,7 +8,7 @@ HIASM_PACKAGES = "C:/Users/Admin/AppData/Roaming/HiAsm_AltBuild/Elements"
 DESTDIR += $$HIASM_PACKAGES/CNET
 
 #ru Подключаем SceneModel
-DEFINES += SCENEMODEL
+#DEFINES += SCENEMODEL
 
 #ru Подключаем ProxyCgt
 DEFINES += PROXYCGT
