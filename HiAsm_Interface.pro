@@ -11,7 +11,7 @@ DESTDIR += $$HIASM_PACKAGES/CNET
 #DEFINES += SCENEMODEL
 
 #ru Подключаем ProxyCgt
-DEFINES += PROXYCGT
+#DEFINES += PROXYCGT
 
 #ru Где сохраняется собранный кодогенератор
 message(Build path: $$DESTDIR)

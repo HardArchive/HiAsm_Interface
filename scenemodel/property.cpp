@@ -77,6 +77,7 @@ void Property::collectingData()
         case data_real:
             setValue(cgt::dtReal(id_value));
         default:
+            setValue(QVariant());
             break;
         }
         break;

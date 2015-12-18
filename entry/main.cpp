@@ -20,9 +20,6 @@
 #define PRINT_FUNC_INFO qInfo("Call: %s", Q_FUNC_INFO);
 #define PRINT_RESULT(X) qInfo().noquote() << "Return:" << X;
 
-//Константы
-static const char NOT_FOUND_FUNCTION[] = "Called function is not found: %s";
-
 //Типы функций
 typedef int(*t_buildPrepareProc)(void *params);
 typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
@@ -133,6 +130,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 //Экспортируемые функции
 DLLEXPORT int buildPrepareProc(void *params)
 {
+    Q_UNUSED(params)
     return CG_SUCCESS;
 }
 
@@ -141,21 +139,20 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     PRINT_FUNC_INFO
     cgt::init(params);
 
-#ifdef PROXYCGT
-    //ProxyCgt::setProxiedCgt(params.cgt);
-    //cgt::setProxyCgt(ProxyCgt::getCgt());
-#endif
-
 #ifdef SCENEMODEL
     sceneModel = new SceneModel;
     EmulateCgt::setSceneModel(sceneModel);
-    ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
-#else
-    ProxyCgt::setProxiedCgt(params.cgt);
-#endif
-
 #ifdef PROXYCGT
+    ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
     cgt::setProxyCgt(ProxyCgt::getCgt());
+#else
+    cgt::setProxyCgt(EmulateCgt::getCgt());
+#endif
+#else
+#ifdef PROXYCGT
+    ProxyCgt::setProxiedCgt(params.cgt);
+    cgt::setProxyCgt(ProxyCgt::getCgt());
+#endif
 #endif
 
     int res = original_buildProcessProc(params);
@@ -166,7 +163,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
 {
     if (!original_CheckVersionProc) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
+        qInfo("Called function is not found: %s", Q_FUNC_INFO);
         return 0;
     }
 

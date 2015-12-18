@@ -109,7 +109,7 @@ PContainer SceneModel::grabberSDK(quintptr id_sdk, QObject *parent)
 
         PElement element = new Element(id_element, this, container);
 
-        if (!fcgt::isLink(element->m_flags)) {
+        if (fcgt::isLink(element->m_flags)) {
             container->m_elements << element;
             continue;
         }
