@@ -27,23 +27,12 @@ static const char NOT_FOUND_FUNCTION[] = "Called function is not found: %s";
 typedef int(*t_buildPrepareProc)(const TBuildPrepareRec &params);
 typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
 typedef int(*t_CheckVersionProc)(const THiAsmVersion &params);
-typedef void(*t_ConfToCode)(const char *pack, const char *name);
-typedef void(*t_synReadFuncList)(TSynParams &params);
-typedef void(*t_hintForElement)(THintParams &params);
-typedef int(*t_isElementMaker)(PCodeGenTools cgt, quintptr id_element);
-typedef int(*t_MakeElement)(PCodeGenTools cgt, quintptr id_element);
-typedef bool(*t_isReadyForAdd)(PCodeGenTools cgt, const TRFD_Rec rfd, quintptr sdk);
+
 
 //Объявление прототипов функций оригинального кодогенератора
 static t_buildPrepareProc original_buildPrepareProc;
 static t_buildProcessProc original_buildProcessProc;
 static t_CheckVersionProc original_CheckVersionProc;
-static t_ConfToCode original_ConfToCode;
-static t_synReadFuncList original_synReadFuncList;
-static t_hintForElement original_hintForElement;
-static t_isElementMaker original_isElementMaker;
-static t_MakeElement original_MakeElement;
-static t_isReadyForAdd original_isReadyForAdd;
 
 
 //Переопределение вывода отладочных сообщений
@@ -129,13 +118,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
         original_buildProcessProc = reinterpret_cast<t_buildProcessProc>(GetProcAddress(m_codegen, "buildProcessProc"));
         original_CheckVersionProc = reinterpret_cast<t_CheckVersionProc>(GetProcAddress(m_codegen, "CheckVersionProc"));
-        original_ConfToCode = reinterpret_cast<t_ConfToCode>(GetProcAddress(m_codegen, "ConfToCode"));
-        original_synReadFuncList = reinterpret_cast<t_synReadFuncList>(GetProcAddress(m_codegen, "synReadFuncList"));
-        original_hintForElement = reinterpret_cast<t_hintForElement>(GetProcAddress(m_codegen, "hintForElement"));
-        original_isElementMaker = reinterpret_cast<t_isElementMaker>(GetProcAddress(m_codegen, "isElementMaker"));
-        original_MakeElement = reinterpret_cast<t_MakeElement>(GetProcAddress(m_codegen, "MakeElement"));
-        original_isReadyForAdd = reinterpret_cast<t_isReadyForAdd>(GetProcAddress(m_codegen, "isReadyForAdd"));
-
         break;
     }
 
@@ -204,79 +186,3 @@ DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
     PRINT_RESULT(res);
     return res;
 }
-
-DLLEXPORT void ConfToCode(const char *pack, const char *name)
-{
-    if (!original_ConfToCode) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
-        return;
-    }
-
-    PRINT_FUNC_INFO
-    qInfo("Arg1: \"%s\"", qUtf8Printable(QString::fromLocal8Bit(pack)));
-    qInfo("Arg2: \"%s\"", qUtf8Printable(QString::fromLocal8Bit(name)));
-    original_ConfToCode(pack, name);
-}
-
-DLLEXPORT void synReadFuncList(TSynParams &params)
-{
-    if (!original_synReadFuncList) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
-        return;
-    }
-
-    PRINT_FUNC_INFO
-    original_synReadFuncList(params);
-}
-
-DLLEXPORT void hintForElement(THintParams &params)
-{
-    if (!original_hintForElement) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
-        return;
-    }
-
-    PRINT_FUNC_INFO
-    original_hintForElement(params);
-}
-
-DLLEXPORT int isElementMaker(PCodeGenTools cgt, quintptr id_element)
-{
-    if (!original_isElementMaker) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
-        return 0;
-    }
-
-
-    PRINT_FUNC_INFO
-    int res = original_isElementMaker(cgt, id_element);
-    PRINT_RESULT(res);
-    return res;
-}
-
-DLLEXPORT int MakeElement(PCodeGenTools cgt, quintptr id_element)
-{
-    if (!original_MakeElement) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
-        return 0;
-    }
-
-    PRINT_FUNC_INFO
-    int res = original_MakeElement(cgt, id_element);
-    PRINT_RESULT(res);
-    return res;
-}
-
-DLLEXPORT bool isReadyForAdd(PCodeGenTools cgt, TRFD_Rec rfd, quintptr id_sdk)
-{
-    if (!original_isReadyForAdd) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
-        return true;
-    }
-
-    //PRINT_FUNC_INFO
-    bool res =  original_isReadyForAdd(cgt, rfd, id_sdk);
-    //PRINT_RESULT(res);
-    return res;
-}
-

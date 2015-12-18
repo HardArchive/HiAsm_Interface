@@ -5,16 +5,7 @@ CONFIG += c++14 dll
 
 #ru Путь до пакетов HiAsm
 HIASM_PACKAGES = "C:/Users/Admin/AppData/Roaming/HiAsm_AltBuild/Elements"
-
-DEFINES += #CNET
-#ru Копируем кодогенератор в интересующий пакет
-contains(DEFINES, CNET){
-    PACKAGE += $$HIASM_PACKAGES/CNET
-} else {
-    PACKAGE += $$HIASM_PACKAGES/delphi
-}
-DESTDIR += $$PACKAGE
-DEFINES += HIASM_PACKAGE=\"\\\"$$PACKAGE\\\"\"
+DESTDIR += $$HIASM_PACKAGES/CNET
 
 #ru Подключаем SceneModel
 DEFINES += SCENEMODEL

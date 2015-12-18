@@ -191,7 +191,7 @@ int Element::getSizeH() const
 
 PContainer Element::getContainer() const
 {
-    if (!m_containers.isEmpty())
+    if (m_containers.isEmpty())
         return nullptr;
 
     return m_containers[0];

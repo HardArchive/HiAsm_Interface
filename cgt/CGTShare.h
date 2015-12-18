@@ -305,18 +305,10 @@ struct TBuildPrepareRec {
     // none
 };
 
-//Требуется для export функции - buildProcessProc.
-struct TCGrec {
-    char *MainForm{};
-    //char *Units;
-    //char *IBody;
-};
-typedef TCGrec *PTCGrep;
-
 struct TBuildProcessRec {
     PCodeGenTools cgt{};
     quintptr sdk{};
-    PTCGrep result{};
+    void *result{};
 };
 
 //Требуется для export функции - synReadFuncList.
@@ -492,7 +484,7 @@ struct TCodeGenTools {
     //ru Возвращает данные в формате: целое число.
     CALLBACK int (*dtInt)(quintptr d);
     //ru Возвращает данные в формате: число с плавающей запятой.
-    CALLBACK qreal (*dtReal)(quintptr d);
+    CALLBACK qreal(*dtReal)(quintptr d);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает название шрифта.
     CALLBACK const char *(*fntName)(quintptr f);
