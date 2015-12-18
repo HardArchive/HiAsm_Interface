@@ -8,18 +8,18 @@
 #include <QtCore>
 #include <QBitArray>
 
-//!!! ========== Поддерживается только HiAsm 4, пакет Delphi ==========
+//!!! ========== Поддерживается только HiAsm 4, пакет RTCG ==========
 
 //!ru Флаги элемента
 enum ElementFlags {
     //ru Элемент заморожен (нельзя перемещать).
     ELEMENT_FLG_IS_FREEZE = 0x0,
 
+    //ru Элемент является частью интерфейса.
+    ELEMENT_FLG_ONE_WIDGET = 0x1,
+
     //ru Элемент нельзя удалить.
     ELEMENT_FLG_IS_NODELETE = 0x2,
-
-    //ru Элемент является частью интерфейса.
-    ELEMENT_FLG_ONE_WIDGET = 0x8,
 
     //ru Элемент является редактором контейнера.
     //ru Например: EditMulti, EditMultiEx, EditPoliMulti.
@@ -40,10 +40,6 @@ enum ElementFlags {
 
     //ru Элемент является ссылкой, либо на него ссылаются.
     ELEMENT_FLG_IS_LINK = 0x800,
-
-    //ru С элементом нельзя взаимодействовать с помощью мыши?
-    //TODO Нужна дополнительная информация по этому флагу.
-    ELEMENT_FLG_IS_NOMOUSE = 0x2000,
 };
 typedef QFlags<ElementFlags> ElementFlgs;
 
@@ -238,7 +234,6 @@ struct TCgtParams {
 };
 typedef TCgtParams *PCgtParams;
 
-
 //!ru Ошибки при работе с библиотекой кодогенератора
 enum CgResult {
     //ru Успешное завершение.
@@ -267,8 +262,6 @@ const static QMap<int, QString> CgResultMap{
     {CG_BUILD_FAILED, "CG_BUILD_FAILED"},
     {CG_APP_NOT_FOUND, "CG_APP_NOT_FOUND"}
 };
-
-
 
 
 //!ru Параметры проекта
@@ -300,47 +293,10 @@ struct THiAsmVersion {
     short int build{};
 };
 
-//Требуется для export функции - buildPrepareProc.
-struct TBuildPrepareRec {
-    // none
-};
-
 struct TBuildProcessRec {
     PCodeGenTools cgt{};
     quintptr sdk{};
     void *result{};
-};
-
-//Требуется для export функции - synReadFuncList.
-struct TSynParams {
-    //ru Имя текущего элемента.
-    char *elName{};
-
-    //ru Имя объекта.
-    char *objName{};
-
-    //ru Список методов и полей для вставки в редактор.
-    char *inst_list{};
-
-    //ru Список, отображаемый во всплывающей подсказке.
-    char *disp_list{};
-};
-
-//Требуется для export функции - hintForElement.
-struct THintParams {
-    quintptr point{};
-    quintptr sdk{};
-    PCodeGenTools cgt{};
-    char *hint{};
-};
-
-//Требуется для export функции - isReadyForAdd.
-struct TRFD_Rec {
-    char *name{};
-    char *className{};
-    char *inherit{};
-    char *interfaces{};
-    char *sub{};
 };
 
 struct TCodeGenTools {

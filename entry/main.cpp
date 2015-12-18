@@ -28,12 +28,10 @@ typedef int(*t_buildPrepareProc)(const TBuildPrepareRec &params);
 typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
 typedef int(*t_CheckVersionProc)(const THiAsmVersion &params);
 
-
 //Объявление прототипов функций оригинального кодогенератора
 static t_buildPrepareProc original_buildPrepareProc;
 static t_buildProcessProc original_buildProcessProc;
 static t_CheckVersionProc original_CheckVersionProc;
-
 
 //Переопределение вывода отладочных сообщений
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -133,17 +131,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 }
 
 //Экспортируемые функции
-DLLEXPORT int buildPrepareProc(const TBuildPrepareRec &params)
+DLLEXPORT int buildPrepareProc(void *params)
 {
-    if (!original_buildPrepareProc) {
-        qInfo(NOT_FOUND_FUNCTION, Q_FUNC_INFO);
-        return 1;
-    }
-
-    PRINT_FUNC_INFO
-    int res = original_buildPrepareProc(params);
-    PRINT_RESULT(res);
-    return res;
+    return CG_SUCCESS;
 }
 
 DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
