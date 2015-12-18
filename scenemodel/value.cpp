@@ -24,14 +24,23 @@ DataTypes Value::getType() const
     return m_type;
 }
 
+DataTypes Value::getDataType() const
+{
+    switch (m_value.type()) {
+    case QMetaType::Int:
+        return data_int;
+    case QMetaType::QString:
+        return data_str;
+    case QMetaType::QReal:
+        return data_real;
+    default:
+        return data_null;
+    }
+}
+
 QVariant Value::getVariant() const
 {
     return m_value;
-}
-
-SharedValueFont Value::toFont() const
-{
-    return m_value.value<SharedValueFont>();
 }
 
 void Value::setValue(QVariant v)
@@ -97,3 +106,34 @@ QString Value::getArrayItemName(uint index) const
     return arrItem->getName();
 }
 
+SharedValueFont Value::toFont() const
+{
+    if (!m_value.canConvert<SharedValueFont>())
+        return SharedValueFont();
+
+    return m_value.value<SharedValueFont>();
+}
+
+QString Value::toString() const
+{
+    if (!m_value.canConvert<QString>())
+        return QString();
+
+    return m_value.value<QString>();
+}
+
+int Value::toInt() const
+{
+    if (!m_value.canConvert<int>())
+        return int();
+
+    return m_value.value<int>();
+}
+
+qreal Value::toReal() const
+{
+    if (!m_value.canConvert<qreal>())
+        return qreal();
+
+    return m_value.value<qreal>();
+}

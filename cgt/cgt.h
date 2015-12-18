@@ -167,7 +167,7 @@ namespace cgt
     //ru Возвращает данные в формате: целое число.
     int dtInt(quintptr d);
     //ru Возвращает данные в формате: число с плавающей запятой.
-    double dtReal(quintptr d);
+    qreal dtReal(quintptr d);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает название шрифта.
     const char *fntName(quintptr f);

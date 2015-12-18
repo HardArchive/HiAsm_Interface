@@ -492,7 +492,7 @@ struct TCodeGenTools {
     //ru Возвращает данные в формате: целое число.
     CALLBACK int (*dtInt)(quintptr d);
     //ru Возвращает данные в формате: число с плавающей запятой.
-    CALLBACK double (*dtReal)(quintptr d);
+    CALLBACK qreal (*dtReal)(quintptr d);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает название шрифта.
     CALLBACK const char *(*fntName)(quintptr f);

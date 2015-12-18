@@ -26,8 +26,8 @@ public:
 public:
     quintptr getId() const;
     DataTypes getType() const;
+    DataTypes getDataType() const;
     QVariant getVariant() const;
-    SharedValueFont toFont() const;
     void setValue(QVariant v);
     void setType(DataTypes type);
     void setArrayType(DataTypes type);
@@ -37,6 +37,11 @@ public:
     const SharedProperty getArrayItemByIndex(uint index) const;
     quintptr getArrayIdItemByIndex(uint index) const;
     QString getArrayItemName(uint index) const;
+
+    SharedValueFont toFont() const;
+    QString toString() const;
+    int toInt() const;
+    qreal toReal() const;
 
 };
 

@@ -439,7 +439,7 @@ namespace cgt
     }
 
     //ru Возвращает данные в формате: число с плавающей запятой.
-    double dtReal(quintptr d)
+    qreal dtReal(quintptr d)
     {
         return m_cgt->dtReal(d);
     }

@@ -696,10 +696,10 @@ namespace ProxyCgt
     }
 
     //ru Возвращает данные в формате: число с плавающей запятой.
-    EXPORT double dtReal(quintptr d)
+    EXPORT qreal dtReal(quintptr d)
     {
         PRINT_FUNC_INFO
-        double res = m_cgt->dtReal(d);
+        qreal res = m_cgt->dtReal(d);
         printArgs({d});
         PRINT_RESULT(res)
 

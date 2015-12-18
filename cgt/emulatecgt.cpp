@@ -509,32 +509,43 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     //ru Возвращает тип данных.
-    EXPORT DataTypes dtType(quintptr d)
+    EXPORT DataTypes dtType(quintptr id_value)
     {
+        const SharedValue v = m_model->getValueById(id_value);
+        if (!v)
+            return data_null;
 
-        return data_null;
+        return v->getDataType();
     }
 
     //ru Возвращает данные в формате: строка в стиле C.
-    EXPORT const char *dtStr(quintptr d)
+    EXPORT const char *dtStr(quintptr id_value)
     {
+        const SharedValue v = m_model->getValueById(id_value);
+        if (!v)
+            return nullptr;
 
-        return nullptr;
+        return SceneModel::strToPChar(v->toString());
     }
 
     //ru Возвращает данные в формате: целое число.
-    EXPORT int dtInt(quintptr d)
+    EXPORT int dtInt(quintptr id_value)
     {
+        const SharedValue v = m_model->getValueById(id_value);
+        if (!v)
+            return 0;
 
-        return 0;
+        return v->toInt();
     }
 
     //ru Возвращает данные в формате: число с плавающей запятой.
-    EXPORT double dtReal(quintptr d)
+    EXPORT qreal dtReal(quintptr id_value)
     {
+        const SharedValue v = m_model->getValueById(id_value);
+        if (!v)
+            return 0.0;
 
-
-        return 0.0;
+        return v->toReal();
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
