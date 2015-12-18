@@ -146,13 +146,13 @@ namespace EmulateCgt
     }
 
     //ru Возвращает ID точки по её имени.
-    //[deprecated]
     EXPORT quintptr elGetPtName(quintptr id_element, const char *name)
     {
-        Q_UNUSED(id_element)
-        Q_UNUSED(name)
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getIdPointByName(QString::fromLocal8Bit(name));
     }
 
     //ru Возвращает индекс класса элемента.

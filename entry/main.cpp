@@ -171,7 +171,7 @@ DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
     }
 
     PRINT_FUNC_INFO
-    qInfo() << QString("Arg1: %1.%2.%3").arg(params.major).arg(params.minor).arg(params.build);
+    qInfo().noquote() << QString("Arg1: %1.%2.%3").arg(params.major).arg(params.minor).arg(params.build);
     int res = original_CheckVersionProc(params);
     PRINT_RESULT(res);
     return res;

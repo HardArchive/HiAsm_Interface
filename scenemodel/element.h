@@ -78,7 +78,8 @@ public:
     PContainer getContainerByIndex(uint index);
     quintptr getIdContainerByIndex(uint index);
     int getCountContainers() const;
-
     QString getInterface() const;
     QString getInherit() const;
+    PPoint getPointByName(const QString &name) const;
+    quintptr getIdPointByName(const QString &name) const;
 };

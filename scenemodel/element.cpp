@@ -208,7 +208,7 @@ quintptr Element::getIdContainer() const
 
 PContainer Element::getContainerByIndex(uint index)
 {
-    if (index < m_containers.size())
+    if (index < uint(m_containers.size()))
         return m_containers[index];
     else
         return nullptr;
@@ -225,7 +225,7 @@ quintptr Element::getIdContainerByIndex(uint index)
 
 int Element::getCountContainers() const
 {
-    m_containers.size();
+    return m_containers.size();
 }
 
 QString Element::getInterface() const
@@ -236,4 +236,24 @@ QString Element::getInterface() const
 QString Element::getInherit() const
 {
     return m_inherit;
+}
+
+PPoint Element::getPointByName(const QString &name) const
+{
+    for (const PPoint p : m_points) {
+        if (p->getName() == name) {
+            return p;
+        }
+    }
+
+    return nullptr;
+}
+
+quintptr Element::getIdPointByName(const QString &name) const
+{
+    const PPoint p = getPointByName(name);
+    if(!p)
+        return 0;
+
+    return p->getId();
 }
