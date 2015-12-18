@@ -750,11 +750,11 @@ namespace EmulateCgt
         if(!p)
             return 0;
 
-        const SharedLinkedElementInfo lei = p->getLinkedElementInfo();
-        if(!lei)
+        const SharedLinkedElementInfo info = p->getLinkedElementInfo();
+        if(!info)
             return 0;
 
-        return lei->id;
+        return info->id;
     }
 
     //ru Возвращает 1, если свойство помечено на перевод.

@@ -162,11 +162,6 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 
 DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
 {
-    if (!original_CheckVersionProc) {
-        qInfo("Called function is not found: %s", Q_FUNC_INFO);
-        return 0;
-    }
-
     PRINT_FUNC_INFO
     qInfo().noquote() << QString("Arg1: %1.%2.%3").arg(params.major).arg(params.minor).arg(params.build);
     int res = original_CheckVersionProc(params);
