@@ -88,7 +88,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         makeLogDir.mkdir("logs");
         el::Configurations conf;
         conf.setGlobally(el::ConfigurationType::Filename, "logs/%datetime.log");
-        conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}:%levshort: %msg");
+        //conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}:%levshort: %msg");
+        conf.setGlobally(el::ConfigurationType::Format, "%msg");
         el::Logger *defaultLogger = el::Loggers::getLogger("default");
         defaultLogger->configure(conf);
         el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);

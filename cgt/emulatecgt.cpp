@@ -642,10 +642,13 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки.
-    EXPORT DataTypes ptGetDataType(quintptr id_prop)
+    EXPORT DataTypes ptGetDataType(quintptr id_point)
     {
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return data_null;
 
-        return data_null;
+        return p->getDataType();
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -726,10 +729,13 @@ namespace EmulateCgt
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает описание точки.
     //[deprecated]
-    EXPORT const char *ptGetInfo(quintptr id_prop)
+    EXPORT const char *ptGetInfo(quintptr id_point)
     {
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return nullptr;
 
-        return nullptr;
+        return SceneModel::strToPChar(p->getInfo());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -779,26 +785,38 @@ namespace EmulateCgt
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает SDK контейнера по его индексу.
+    //ru Возвращает id_sdk контейнера по его индексу из элемента.
     EXPORT quintptr elGetSDKByIndex(quintptr id_element, int index)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-
-        return 0;
+        return e->getIdContainerByIndex(index);
     }
 
     //ru Возвращает количаство контейнеров полиморфного элемента(CI_PolyMulti).
     EXPORT int elGetSDKCount(quintptr id_element)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        return e->getCountContainers();
     }
 
     //ru Возвращает имя контейнера по индексу.
     EXPORT const char *elGetSDKName(quintptr id_element, int index)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return nullptr;
 
-        return nullptr;
+        const PContainer c = e->getContainerByIndex(index);
+        if (!c)
+            return nullptr;
+
+        return SceneModel::strToPChar(c->getName());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -822,27 +840,33 @@ namespace EmulateCgt
     //ru Содержимое поля Interfaces= из конфигурации элемента.
     EXPORT const char *elGetInterface(quintptr id_element)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return nullptr;
 
-        return nullptr;
+        return SceneModel::strToPChar(e->getInterface());
     }
 
     //ru Возвращает список классов, от которых наследуется элемент
     //ru Содержимое поля Inherit= из конфигурации элемента.
     EXPORT const char *elGetInherit(quintptr id_element)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return nullptr;
 
-        return nullptr;
+        return SceneModel::strToPChar(e->getInherit());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает 1, если список ресурсов пуст, и 0 в противном случае.
     EXPORT int resEmpty()
     {
-
-        return 0;
+        return m_model->resIsEmpty();
     }
 
     //ru Устанавливает префикс для имен ресурсов.
+    //[deprecated]
     EXPORT int resSetPref(const char *pref)
     {
 

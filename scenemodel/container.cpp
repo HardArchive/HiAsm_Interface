@@ -62,3 +62,13 @@ PElement Container::getParent() const
 {
     return qobject_cast<PElement>(parent());
 }
+
+QString Container::getName() const
+{
+    return m_name;
+}
+
+void Container::setName(const QString &name)
+{
+    m_name = name;
+}

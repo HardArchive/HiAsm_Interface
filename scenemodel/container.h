@@ -16,6 +16,7 @@ class Container: public QObject
 private:
     const quintptr m_id;
     PSceneModel const m_model;
+    QString m_name;
     Elements m_elements;
 
 public:
@@ -29,4 +30,6 @@ public:
     PElement getElementByIndex(int index) const;
     quintptr getIdElementByIndex(int index) const;
     PElement getParent() const;
+    QString getName() const;
+    void setName(const QString &name);
 };

@@ -26,9 +26,9 @@ private:
     QString m_codeName;
     ElementClass m_classIndex{};
     ElementFlgs m_flags{};
-    QString m_inherit;
     int m_group{};
     QString m_interface;
+    QString m_inherit;
     QString m_infSub;
     bool m_linkIs{};
     int m_propCount{};
@@ -62,12 +62,12 @@ public:
     ElementClass getClassIndex();
     PContainer getParent() const;
     int getCountProps() const;
-    SharedProperty getPropertyByIndex(int index) const;
-    quintptr getIdPropertyByIndex(int index) const;
+    SharedProperty getPropertyByIndex(uint index) const;
+    quintptr getIdPropertyByIndex(uint index) const;
     SharedProperty getPropertyById(quintptr id_prop) const;
     int getCountPoints() const;
-    PPoint getPointByIndex(int index) const;
-    quintptr getIdPointByIndex(int index) const;
+    PPoint getPointByIndex(uint index) const;
+    quintptr getIdPointByIndex(uint index) const;
     bool getLinkIs() const;
     int getPosX() const;
     int getPosY() const;
@@ -75,4 +75,10 @@ public:
     int getSizeH() const;
     PContainer getContainer() const;
     quintptr getIdContainer() const;
+    PContainer getContainerByIndex(uint index);
+    quintptr getIdContainerByIndex(uint index);
+    int getCountContainers() const;
+
+    QString getInterface() const;
+    QString getInherit() const;
 };

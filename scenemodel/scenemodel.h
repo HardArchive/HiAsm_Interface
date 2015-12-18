@@ -54,6 +54,7 @@ public:
     const char *addResByIdProp(quintptr id_prop);
     const char *addResFromString(const QString &str);
     int addResList(const QString &filePath);
+    bool resIsEmpty() const;
 
 
 };

@@ -105,9 +105,9 @@ PContainer SceneModel::grabberSDK(quintptr id_sdk, QObject *parent)
 
     int countElements = cgt::sdkGetCount(id_sdk);
     for (int i = 0; i < countElements; ++i) {
-        quintptr eId = cgt::sdkGetElement(id_sdk, i);
+        quintptr id_element = cgt::sdkGetElement(id_sdk, i);
 
-        PElement element = new Element(eId, this, container);
+        PElement element = new Element(id_element, this, container);
 
         if (!fcgt::isLink(element->m_flags)) {
             container->m_elements << element;
@@ -119,19 +119,24 @@ PContainer SceneModel::grabberSDK(quintptr id_sdk, QObject *parent)
             //ru Элемен содержит полиморфный контейнер
             if (fcgt::isPolyMulti(element->m_classIndex)) {
                 //ru Получаем к-во контейнеров, которое содержит элемент
-                int countContainers = cgt::elGetSDKCount(eId);
+                int countContainers = cgt::elGetSDKCount(id_element);
 
                 for (int i = 0; i < countContainers; ++i) {
+                    //ru Получаем ID контейнера
+                    quintptr idSDK = cgt::elGetSDKByIndex(id_element, i);
+                    QString name = QString::fromLocal8Bit(cgt::elGetSDKName(id_element, i));
+
                     //ru Получаем контейнер
-                    quintptr idSDK = cgt::elGetSDKByIndex(eId, i);
+                    PContainer container = grabberSDK(idSDK, element);
+                    container->setName(name);
 
                     //ru Добавляем контейнер в элемент
-                    element->m_containers << grabberSDK(idSDK, element);
+                    element->m_containers << container;
                 }
             } else { //ru Элемент содержит обычный контейнер
 
                 //ru Получаем ID контейнера элемента
-                quintptr idSDK = cgt::elGetSDK(eId);
+                quintptr idSDK = cgt::elGetSDK(id_element);
 
                 //ru Добавляем контейнер в элемент
                 element->m_containers << grabberSDK(idSDK, element);
@@ -340,4 +345,9 @@ int SceneModel::addResList(const QString &filePath)
 {
     m_resources.insert(filePath);
     return 0;
+}
+
+bool SceneModel::resIsEmpty() const
+{
+    return m_resources.isEmpty();
 }

@@ -9,6 +9,7 @@
 
 //Qt
 
+
 Element::Element(quintptr id_element, PSceneModel model, QObject *parent)
     : QObject(parent)
     , m_id(id_element)
@@ -110,16 +111,15 @@ int Element::getCountProps() const
     return m_propCount;
 }
 
-SharedProperty Element::getPropertyByIndex(int index) const
+SharedProperty Element::getPropertyByIndex(uint index) const
 {
-    int size = m_properties.size();
-    if ((index >= 0) && (index < size))
+    if (index < m_properties.size())
         return m_properties[index];
     else
         return SharedProperty();
 }
 
-quintptr Element::getIdPropertyByIndex(int index) const
+quintptr Element::getIdPropertyByIndex(uint index) const
 {
     const SharedProperty e = getPropertyByIndex(index);
     if (!e)
@@ -147,16 +147,15 @@ int Element::getCountPoints() const
     return m_ptCount;
 }
 
-PPoint Element::getPointByIndex(int index) const
+PPoint Element::getPointByIndex(uint index) const
 {
-    int size = m_points.size();
-    if ((index >= 0) && (index < size))
+    if (index < m_points.size())
         return m_points[index];
     else
         return nullptr;
 }
 
-quintptr Element::getIdPointByIndex(int index) const
+quintptr Element::getIdPointByIndex(uint index) const
 {
     const PPoint p = getPointByIndex(index);
     if (!p)
@@ -205,4 +204,36 @@ quintptr Element::getIdContainer() const
         return 0;
 
     return c->getId();
+}
+
+PContainer Element::getContainerByIndex(uint index)
+{
+    if (index < m_containers.size())
+        return m_containers[index];
+    else
+        return nullptr;
+}
+
+quintptr Element::getIdContainerByIndex(uint index)
+{
+    const PContainer c = getContainerByIndex(index);
+    if (!c)
+        return 0;
+
+    return c->getId();
+}
+
+int Element::getCountContainers() const
+{
+    m_containers.size();
+}
+
+QString Element::getInterface() const
+{
+    return m_interface;
+}
+
+QString Element::getInherit() const
+{
+    return m_inherit;
 }
