@@ -742,8 +742,19 @@ namespace EmulateCgt
     //ru Возвращает ID элемента, прилинкованного к указанному свойству.
     EXPORT quintptr propGetLinkedElement(quintptr id_element, const char *propName)
     {
+        const PElement e = m_model->getElementById(id_element);
+        if (!e)
+            return 0;
 
-        return 0;
+        const SharedProperty p = e->getPropertyByName(QString::fromLocal8Bit(propName));
+        if(!p)
+            return 0;
+
+        const SharedLinkedElementInfo lei = p->getLinkedElementInfo();
+        if(!lei)
+            return 0;
+
+        return lei->id;
     }
 
     //ru Возвращает 1, если свойство помечено на перевод.

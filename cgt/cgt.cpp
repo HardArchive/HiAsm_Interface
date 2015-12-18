@@ -74,10 +74,15 @@ namespace cgt
         m_sdk = params.sdk;
     }
 
-    void setProxyCgt(PCodeGenTools proxyCgt)
+    void setProxyCgt(PCodeGenTools cgt)
     {
-        m_cgt = proxyCgt;
-        m_buildProcess->cgt = proxyCgt;
+        m_cgt = cgt;
+        m_buildProcess->cgt = cgt;
+    }
+
+    PCodeGenTools getOriginalCgt()
+    {
+        return m_origCgt;
     }
 
     quintptr getMainSDK()
@@ -653,9 +658,5 @@ namespace cgt
     {
         return m_cgt->propSaveToFile(p, fileName);
     }
-
-
-
-
 
 }

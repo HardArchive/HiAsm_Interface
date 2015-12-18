@@ -139,20 +139,20 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     PRINT_FUNC_INFO
     cgt::init(params);
 
-#ifdef SCENEMODEL
+#ifdef MODEL
     sceneModel = new SceneModel;
     EmulateCgt::setSceneModel(sceneModel);
-#ifdef PROXYCGT
-    ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
-    cgt::setProxyCgt(ProxyCgt::getCgt());
-#else
     cgt::setProxyCgt(EmulateCgt::getCgt());
 #endif
-#else
-#ifdef PROXYCGT
-    ProxyCgt::setProxiedCgt(params.cgt);
+
+#ifdef PROXY_MODEL
+    ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
     cgt::setProxyCgt(ProxyCgt::getCgt());
 #endif
+
+#ifdef PROXY_ORIGINAL
+    ProxyCgt::setProxiedCgt(params.cgt);
+    cgt::setProxyCgt(ProxyCgt::getCgt());
 #endif
 
     int res = original_buildProcessProc(params);

@@ -82,4 +82,6 @@ public:
     QString getInherit() const;
     PPoint getPointByName(const QString &name) const;
     quintptr getIdPointByName(const QString &name) const;
+    const SharedProperty getPropertyByName(const QString &name) const;
+    quintptr getIdPropertyByName(const QString &name) const;
 };

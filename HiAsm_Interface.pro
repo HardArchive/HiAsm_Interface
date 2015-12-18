@@ -13,9 +13,6 @@ DESTDIR += $$HIASM_PACKAGES/CNET
 #ru Подключаем ProxyCgt
 #DEFINES += PROXYCGT
 
-#ru Где сохраняется собранный кодогенератор
-message(Build path: $$DESTDIR)
-
 SOURCES += $$files("*.cpp", true)
 HEADERS += $$files("*.h", true)
 

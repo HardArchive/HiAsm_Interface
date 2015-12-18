@@ -26,7 +26,8 @@ namespace cgt
     //!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
     //ru Устанавливаем параметры
     void init(TBuildProcessRec &params);
-    void setProxyCgt(PCodeGenTools proxyCgt);
+    void setProxyCgt(PCodeGenTools cgt);
+    PCodeGenTools getOriginalCgt();
     quintptr getMainSDK();
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ контейнер ~~~~~~~~~~~~~~~~~~~~~~~~~~

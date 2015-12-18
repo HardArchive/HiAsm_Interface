@@ -252,7 +252,27 @@ PPoint Element::getPointByName(const QString &name) const
 quintptr Element::getIdPointByName(const QString &name) const
 {
     const PPoint p = getPointByName(name);
-    if(!p)
+    if (!p)
+        return 0;
+
+    return p->getId();
+}
+
+const SharedProperty Element::getPropertyByName(const QString &name) const
+{
+    for (const SharedProperty p : m_properties) {
+        if (p->getName() == name) {
+            return p;
+        }
+    }
+
+    return SharedProperty();
+}
+
+quintptr Element::getIdPropertyByName(const QString &name) const
+{
+    const SharedProperty p = getPropertyByName(name);
+    if (!p)
         return 0;
 
     return p->getId();
