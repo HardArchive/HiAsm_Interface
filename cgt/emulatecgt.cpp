@@ -527,6 +527,8 @@ namespace EmulateCgt
     //[deprecated]
     EXPORT quintptr arrItemData(quintptr id_array, int index)
     {
+        Q_UNUSED(id_array)
+        Q_UNUSED(index)
         return 0;
     }
 
@@ -923,7 +925,7 @@ namespace EmulateCgt
     //[deprecated]
     EXPORT int resSetPref(const char *pref)
     {
-
+        Q_UNUSED(pref)
         return 0;
     }
 
@@ -931,7 +933,9 @@ namespace EmulateCgt
     //ru Добавляет информацию в информационную панель
     EXPORT int _Error(int line, quintptr id_element, const char *text)
     {
-
+        Q_UNUSED(line)
+        Q_UNUSED(id_element)
+        Q_UNUSED(text)
         return 0;
     }
 
@@ -940,7 +944,7 @@ namespace EmulateCgt
     //[deprecated]
     EXPORT int elGetGroup(quintptr id_element)
     {
-
+        Q_UNUSED(id_element)
         return 0;
     }
 
@@ -949,6 +953,8 @@ namespace EmulateCgt
     //[deprecated]
     EXPORT int propSaveToFile(quintptr id_prop, const char *fileName)
     {
+        Q_UNUSED(id_prop)
+        Q_UNUSED(fileName)
 
         return 0;
     }

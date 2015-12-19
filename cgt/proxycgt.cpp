@@ -46,8 +46,6 @@ namespace ProxyCgt
 
     //~~~~~~~~~~~~~~~~~ Проксированные функции ~~~~~~~~~~~~~~~~~~~
 
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ контейнер ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает количество элементов в контейнере.
     EXPORT int sdkGetCount(quintptr SDK)
     {
         PRINT_FUNC_INFO
@@ -57,8 +55,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID элемента по его Z-положению(индексу) в контейнере.
     EXPORT quintptr sdkGetElement(quintptr SDK, int Index)
     {
         PRINT_FUNC_INFO
@@ -68,8 +64,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID элемента по имени элемента.
     EXPORT quintptr sdkGetElementName(quintptr SDK, char *Name)
     {
         PRINT_FUNC_INFO
@@ -79,9 +73,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает флаги элемента.
     EXPORT ElementFlags elGetFlag(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -91,8 +82,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает количество свойств элемента.
     EXPORT int elGetPropCount(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -102,8 +91,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает свойство элемента по индексу, с порядковым номером из INI.
     EXPORT quintptr elGetProperty(quintptr e, int Index)
     {
         PRINT_FUNC_INFO
@@ -113,8 +100,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает True, если значение свойства совпадает с заданным в INI файле, иначе False.
     EXPORT bool elIsDefProp(quintptr e, int Index)
     {
         PRINT_FUNC_INFO
@@ -124,8 +109,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
     EXPORT quintptr elSetCodeName(quintptr e, const char *Name)
     {
         PRINT_FUNC_INFO
@@ -135,8 +118,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает уникальное имя элемента
     EXPORT const char *elGetCodeName(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -146,8 +127,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает имя класса элемента.
     EXPORT const char *elGetClassName(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -157,8 +136,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
     EXPORT const char *elGetInfSub(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -168,8 +145,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает общее количество видимых точек у элемента.
     EXPORT int elGetPtCount(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -179,8 +154,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID точки по её индексу.
     EXPORT quintptr elGetPt(quintptr e, int i)
     {
         PRINT_FUNC_INFO
@@ -190,9 +163,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID точки по её имени.
-    //[deprecated]
     EXPORT quintptr elGetPtName(quintptr e, const char *Name)
     {
         PRINT_FUNC_INFO
@@ -202,8 +172,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает индекс класса элемента.
     EXPORT ElementClass elGetClassIndex(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -213,9 +181,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID внутренней схемы для контейнеров,
-    //ru или ID родителя id_element для редактора контейнера (ELEMENT_FLG_IS_EDIT).
     EXPORT quintptr elGetSDK(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -225,8 +190,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает True, если данный элемент является ссылкой, либо на него ссылаются.
     EXPORT bool elLinkIs(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -236,8 +199,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID главного элемента(тот, на который ссылаются другие).
     EXPORT quintptr elLinkMain(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -247,25 +208,18 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Помещает в переменные "X" и "Y", позицию элемента в редакторе схем.
     EXPORT void elGetPos(quintptr e, int &X, int &Y)
     {
         PRINT_FUNC_INFO
         m_cgt->elGetPos(e, X, Y);
         printArgs({e, X, Y});
     }
-
-    //ru Помещает в переменные "W" и "H", размеры элемента.
     EXPORT void elGetSize(quintptr e, int &W, int &H)
     {
         PRINT_FUNC_INFO
         m_cgt->elGetSize(e, W, H);
         printArgs({e, W, H});
     }
-
-    //ru Возвращает внутренний ID элемента (отличается от внешнего).
-    //[deprecated]
     EXPORT int elGetEID(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -275,10 +229,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает ID точки, с которой соединена указанная.
-    //TODO [deprecated?], в CodeGen.dpr не используется.
     EXPORT quintptr ptGetLinkPoint(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -288,9 +238,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID точки, с которой соединена указанная точка,
-    //ru без учета точек разрыва и хабов.
     EXPORT quintptr ptGetRLinkPoint(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -300,8 +247,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает тип точек(константы PointTypes).
     EXPORT PointTypes ptGetType(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -311,8 +256,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает имя точки.
     EXPORT const char *ptGetName(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -322,8 +265,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID элемента, которому принадлежит точка.
     EXPORT quintptr ptGetParent(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -333,8 +274,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает тип точки (PointTypes).
     EXPORT int ptGetIndex(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -344,8 +283,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).
     EXPORT const char *pt_dpeGetName(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -355,9 +292,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает тип свойства.
     EXPORT DataTypes propGetType(quintptr prop)
     {
         PRINT_FUNC_INFO
@@ -367,8 +301,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает имя свойства.
     EXPORT const char *propGetName(quintptr prop)
     {
         PRINT_FUNC_INFO
@@ -378,8 +310,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает значение свойства в виде указателя на данные.
     EXPORT quintptr propGetValue(quintptr prop)
     {
         PRINT_FUNC_INFO
@@ -389,8 +319,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает значение свойства в формате uchar.
     EXPORT uchar propToByte(quintptr prop)
     {
         PRINT_FUNC_INFO
@@ -400,8 +328,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает значение свойства в формате int.
     EXPORT int propToInteger(quintptr prop)
     {
         PRINT_FUNC_INFO
@@ -411,8 +337,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает значение свойства в формате float.
     EXPORT qreal propToReal(quintptr prop)
     {
         PRINT_FUNC_INFO
@@ -422,8 +346,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает значение свойства в виде C строки.
     EXPORT const char *propToString(quintptr prop)
     {
         PRINT_FUNC_INFO
@@ -433,11 +355,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    //ru Добавляет имя файла в общий список временных файлов
-    //ru для последующего удаления файла.
     EXPORT int resAddFile(const char *Name)
     {
         PRINT_FUNC_INFO
@@ -447,9 +364,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Добавляет иконку в ресурсы и в список временных файлов,
-    //ru и возвращают имя временного файла.
     EXPORT const char *resAddIcon(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -459,9 +373,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Добавляет строку в ресурсы и в список временных файлов.
-    //TODO Что возвращает?
     EXPORT const char *resAddStr(const char *p)
     {
         PRINT_FUNC_INFO
@@ -471,11 +382,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Добавляет поток (данные) в ресурсы и в список временных файлов,
-    //ru и возвращает имя временного файла.
-    //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
-    //ru работы с библиотекой.
     EXPORT const char *resAddStream(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -485,11 +391,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Добавляет звук в ресурсы и в список временных файлов,
-    //ru и возвращает имя временного файла.
-    //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
-    //ru работы с библиотекой.
     EXPORT const char *resAddWave(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -499,11 +400,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Добавляет картинку в ресурсы и в список временных файлов,
-    //ru и возвращает имя временного файла.
-    //ru Временный файл создаётся в папке %HiAsm%\compiler и существует до конца
-    //ru работы с библиотекой.
     EXPORT const char *resAddBitmap(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -513,9 +409,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Добавляет меню в ресурсы и в список временных файлов.
-    //[deprecated]
     EXPORT const char *resAddMenu(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -525,10 +418,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Выводит строку Text в окно Отладка цветом Color
-    //ru Всего возвращает 0.
     EXPORT int _Debug(const char *Text, int Color)
     {
         PRINT_FUNC_INFO
@@ -538,9 +427,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает значение параметра среды по его индексу
     EXPORT int GetParam(CgtParams index, void *value)
     {
         PRINT_FUNC_INFO
@@ -589,9 +475,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ массив ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает количество элементов в массиве.
     EXPORT int arrCount(quintptr a)
     {
         PRINT_FUNC_INFO
@@ -601,8 +484,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает тип элементов в массиве.
     EXPORT DataTypes arrType(quintptr a)
     {
         PRINT_FUNC_INFO
@@ -612,8 +493,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает имя элемента с индексом Index.
     EXPORT const char *arrItemName(quintptr a, int Index)
     {
         PRINT_FUNC_INFO
@@ -623,8 +502,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает значение элемента с индексом Index
     EXPORT quintptr arrItemData(quintptr a, int Index)
     {
         PRINT_FUNC_INFO
@@ -634,9 +511,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Получаем элемент массива в виде свойства,
-    //ru для дальнейшей работы с ним cgt::prop* функциями.
     EXPORT quintptr arrGetItem(quintptr a, int Index)
     {
         PRINT_FUNC_INFO
@@ -646,10 +520,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает >0, если запускаем cборку и запуск схемы в режиме отладки,
-    //ru иначе 0.
     EXPORT int isDebug(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -659,10 +529,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    //ru Возвращает тип данных.
     EXPORT DataTypes dtType(quintptr d)
     {
         PRINT_FUNC_INFO
@@ -672,8 +538,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает данные в формате: строка в стиле C.
     EXPORT const char *dtStr(quintptr d)
     {
         PRINT_FUNC_INFO
@@ -683,8 +547,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает данные в формате: целое число.
     EXPORT int dtInt(quintptr d)
     {
         PRINT_FUNC_INFO
@@ -694,8 +556,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает данные в формате: число с плавающей запятой.
     EXPORT qreal dtReal(quintptr d)
     {
         PRINT_FUNC_INFO
@@ -705,9 +565,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ шрифт ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает название шрифта.
     EXPORT const char *fntName(quintptr f)
     {
         PRINT_FUNC_INFO
@@ -717,7 +574,6 @@ namespace ProxyCgt
 
         return res;
     }
-    //ru Возвращает размер шрифта.
     EXPORT int fntSize(quintptr f)
     {
         PRINT_FUNC_INFO
@@ -727,7 +583,6 @@ namespace ProxyCgt
 
         return res;
     }
-    //ru Возвращает стиль шрифта.
     EXPORT uchar fntStyle(quintptr f)
     {
         printArgs({f});
@@ -737,7 +592,6 @@ namespace ProxyCgt
 
         return res;
     }
-    //ru Возвращает цвет шрифта.
     EXPORT uint fntColor(quintptr f)
     {
         PRINT_FUNC_INFO
@@ -747,7 +601,6 @@ namespace ProxyCgt
 
         return res;
     }
-    //ru Возвращает кодировку шрифта.
     EXPORT uchar fntCharSet(quintptr f)
     {
         PRINT_FUNC_INFO
@@ -757,13 +610,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~элемент | пользовательские данные ~~~~~~~~~~~~~
-    //!ru Судя по CodeGen.dpr, используется для хранения указателя (ID элемента) на самого себя.
-
-    //ru Возвращает пользовательские данные элемента.
-    //ru Коммент из hiasm5 - user data used in FTCG codegen.
-    //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель..
     EXPORT quintptr elGetData(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -773,19 +619,12 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Устанавливает пользовательские данные элементу.
-    //ru Коммент из hiasm5 - user data used in FTCG codegen.
-    //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
     EXPORT void elSetData(quintptr e, quintptr data)
     {
         PRINT_FUNC_INFO
         m_cgt->elSetData(e, data);
         printArgs({e, data});
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает тип данных точки.
     EXPORT DataTypes ptGetDataType(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -795,9 +634,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает ID родительского контейнера элемента.
     EXPORT quintptr elGetParent(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -807,10 +643,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает количество свойств в списке свойств(из панели свойств).
-    //ru В RTCG используется аналогичная функция - elGetPropCount.
-    //[deprecated]
     EXPORT int elGetPropertyListCount(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -820,9 +652,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает свойство из списка свойств (PropertyList).
-    //[deprecated]
     EXPORT quintptr elGetPropertyListItem(quintptr e, int i)
     {
         PRINT_FUNC_INFO
@@ -832,9 +661,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ список свойств элемента ~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает имя свойства.
     EXPORT const char *plGetName(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -844,8 +670,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает описание свойства.
     EXPORT const char *plGetInfo(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -855,8 +679,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает группу свойсва.
     EXPORT const char *plGetGroup(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -866,8 +688,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает указатель на данные свойства.
     EXPORT quintptr plGetProperty(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -877,8 +697,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает ID родительского элемента указанного свойства.
     EXPORT quintptr plGetOwner(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -888,9 +706,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает описание точки.
     EXPORT const char *ptGetInfo(quintptr p)
     {
         PRINT_FUNC_INFO
@@ -900,9 +715,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает ID элемента, прилинкованного к указанному свойству.
     EXPORT quintptr propGetLinkedElement(quintptr e, const char *propName)
     {
         PRINT_FUNC_INFO
@@ -912,8 +724,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает 1, если свойство помечено на перевод.
     EXPORT int propIsTranslate(quintptr e, quintptr p)
     {
         PRINT_FUNC_INFO
@@ -923,10 +733,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Предназначение данной функции так и небыло найдено.
-    //ru Всегда возвращает 0.
-    //[deprecated]
     EXPORT quintptr propGetLinkedElementInfo(quintptr e, quintptr prop, char *_int)
     {
         PRINT_FUNC_INFO
@@ -936,9 +742,6 @@ namespace ProxyCgt
 
         return 0;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент - CI_PolyMulti ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает SDK контейнера по его индексу.
     EXPORT quintptr elGetSDKByIndex(quintptr e, int index)
     {
         PRINT_FUNC_INFO
@@ -948,8 +751,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает количаство контейнеров полиморфного элемента(CI_PolyMulti).
     EXPORT int elGetSDKCount(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -959,8 +760,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает имя контейнера по индексу.
     EXPORT const char *elGetSDKName(quintptr e, int index)
     {
         PRINT_FUNC_INFO
@@ -970,10 +769,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает элемент родитель для данного SDK.
-    //ru Возвращает 0, если контейнер не имеет родителя.
     EXPORT quintptr sdkGetParent(quintptr SDK)
     {
         PRINT_FUNC_INFO
@@ -983,10 +778,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает интерфейсы, предоставляемые элементом.
-    //ru Содержимое поля Interfaces= из конфигурации элемента.
     EXPORT const char *elGetInterface(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -996,9 +787,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Возвращает список классов, от которых наследуется элемент
-    //ru Содержимое поля Inherit= из конфигурации элемента.
     EXPORT const char *elGetInherit(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -1008,9 +796,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает 1, если список ресурсов пуст, и 0 в противном случае.
     EXPORT int resEmpty()
     {
         PRINT_FUNC_INFO
@@ -1019,8 +804,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //ru Устанавливает префикс для имен ресурсов.
     EXPORT int resSetPref(const char *pref)
     {
         PRINT_FUNC_INFO
@@ -1030,9 +813,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Добавляет информацию в информационную панель
     EXPORT int _Error(int line, quintptr e, const char *text)
     {
         PRINT_FUNC_INFO
@@ -1042,10 +822,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Возвращает ID группы, к которой принадлежит элемент и 0, если группа отсутствует
-    //[deprecated]
     EXPORT int elGetGroup(quintptr e)
     {
         PRINT_FUNC_INFO
@@ -1055,10 +831,6 @@ namespace ProxyCgt
 
         return res;
     }
-
-    //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Сохраняет данные свойства в файл.
-    //[deprecated]
     EXPORT int propSaveToFile(quintptr p, const char *fileName)
     {
         PRINT_FUNC_INFO
@@ -1069,7 +841,6 @@ namespace ProxyCgt
         return res;
     }
 
-    //Заполняем массив указателей
     static uintptr_t arrayPointers[] {
         reinterpret_cast<quintptr>(sdkGetCount),
         reinterpret_cast<quintptr>(sdkGetElement),
