@@ -45,7 +45,7 @@ void Element::collectingData()
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propCount; ++i) {
         quintptr propId = cgt::elGetProperty(m_id, i);
-        m_properties.append(SharedProperty::create(propId, m_model, this));
+        m_properties.append(new Property(propId, m_model, this));
     }
 
     //ru Помечаем свойства, значения которых совпадают со стандартным из INI.
@@ -111,35 +111,35 @@ int Element::getCountProps() const
     return m_propCount;
 }
 
-SharedProperty Element::getPropertyByIndex(uint index) const
+PProperty Element::getPropertyByIndex(uint index) const
 {
     if (index < m_properties.size())
         return m_properties[index];
     else
-        return SharedProperty();
+        return PProperty();
 }
 
 quintptr Element::getIdPropertyByIndex(uint index) const
 {
-    const SharedProperty e = getPropertyByIndex(index);
+    PProperty e = getPropertyByIndex(index);
     if (!e)
         return 0;
 
     return e->getId();
 }
 
-SharedProperty Element::getPropertyById(quintptr id_prop) const
+PProperty Element::getPropertyById(quintptr id_prop) const
 {
     if (!id_prop)
-        return SharedProperty();
+        return PProperty();
 
-    for (SharedProperty p : m_properties) {
+    for (PProperty p : m_properties) {
         if (p->getId() == id_prop) {
             return p;
         }
     }
 
-    return SharedProperty();
+    return PProperty();
 }
 
 int Element::getCountPoints() const
@@ -258,20 +258,20 @@ quintptr Element::getIdPointByName(const QString &name) const
     return p->getId();
 }
 
-const SharedProperty Element::getPropertyByName(const QString &name) const
+PProperty Element::getPropertyByName(const QString &name) const
 {
-    for (const SharedProperty p : m_properties) {
+    for (PProperty p : m_properties) {
         if (QString::compare(p->getName(), name, Qt::CaseInsensitive) == 0) {
             return p;
         }
     }
 
-    return SharedProperty();
+    return PProperty();
 }
 
 quintptr Element::getIdPropertyByName(const QString &name) const
 {
-    const SharedProperty p = getPropertyByName(name);
+    PProperty p = getPropertyByName(name);
     if (!p)
         return 0;
 

@@ -80,7 +80,7 @@ namespace EmulateCgt
         if (!e)
             return false;
 
-        const SharedProperty p = e->getPropertyByIndex(index);
+        PProperty p = e->getPropertyByIndex(index);
         if (!p)
             return false;
 
@@ -311,7 +311,7 @@ namespace EmulateCgt
     //ru Возвращает тип свойства.
     EXPORT DataTypes propGetType(quintptr id_prop)
     {
-        const SharedProperty p = m_model->getPropertyById(id_prop);
+        PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return data_null;
 
@@ -321,7 +321,7 @@ namespace EmulateCgt
     //ru Возвращает имя свойства.
     EXPORT const char *propGetName(quintptr id_prop)
     {
-        const SharedProperty p = m_model->getPropertyById(id_prop);
+        PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return nullptr;
 
@@ -331,7 +331,7 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в виде указателя на данные.
     EXPORT quintptr propGetValue(quintptr id_prop)
     {
-        const SharedProperty p = m_model->getPropertyById(id_prop);
+        PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -345,7 +345,15 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате uchar.
     EXPORT uchar propToByte(quintptr id_prop)
     {
-        const SharedProperty p = m_model->getPropertyById(id_prop);
+        if (id_prop == 1) {
+            const SharedValue v = m_model->getPropArrayValue();
+            if(!v)
+                return 0;
+
+            return v->toByte();
+        }
+
+        PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -355,7 +363,15 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате int.
     EXPORT int propToInteger(quintptr id_prop)
     {
-        const SharedProperty p = m_model->getPropertyById(id_prop);
+        if (id_prop == 1) {
+            const SharedValue v = m_model->getPropArrayValue();
+            if(!v)
+                return 0;
+
+            return v->toInt();
+        }
+
+        PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -365,7 +381,15 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в формате float.
     EXPORT qreal propToReal(quintptr id_prop)
     {
-        const SharedProperty p = m_model->getPropertyById(id_prop);
+        if (id_prop == 1) {
+            const SharedValue v = m_model->getPropArrayValue();
+            if(!v)
+                return 0;
+
+            return v->toReal();
+        }
+
+        PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -375,7 +399,15 @@ namespace EmulateCgt
     //ru Возвращает значение свойства в виде C строки.
     EXPORT const char *propToString(quintptr id_prop)
     {
-        const SharedProperty p = m_model->getPropertyById(id_prop);
+        if (id_prop == 1) {
+            const SharedValue v = m_model->getPropArrayValue();
+            if(!v)
+                return 0;
+
+            return SceneModel::strToPChar(v->toString());
+        }
+
+        PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
@@ -485,7 +517,7 @@ namespace EmulateCgt
         if (!v)
             return nullptr;
 
-        return SceneModel::strToPChar(v->getArrayItemName(index));
+        return SceneModel::strToPChar(v->getArrayValueName(index));
     }
 
     //ru Получаем элемент (id_arrayValue) массива  по индексу.
@@ -503,7 +535,11 @@ namespace EmulateCgt
         if (!v)
             return 0;
 
-        return v->getArrayIdItemByIndex(index);
+        const SharedValue arrValue = v->getArrayItemByIndex(index);
+        if (arrValue)
+            m_model->setPropArrayValue(arrValue);
+
+        return 1;
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -755,7 +791,7 @@ namespace EmulateCgt
         if (!e)
             return 0;
 
-        const SharedProperty p = e->getPropertyByName(QString::fromLocal8Bit(propName));
+        PProperty p = e->getPropertyByName(QString::fromLocal8Bit(propName));
         if (!p)
             return 0;
 
@@ -767,17 +803,12 @@ namespace EmulateCgt
     }
 
     //ru Возвращает 1, если свойство помечено на перевод.
+    //[deprecated]
     EXPORT int propIsTranslate(quintptr id_element, quintptr id_prop)
     {
-        const PElement e = m_model->getElementById(id_element);
-        if (!e)
-            return 0;
-
-        const SharedProperty p = e->getPropertyById(id_prop);
-        if (!p)
-            return 0;
-
-        return p->getIsTranslate();
+        Q_UNUSED(id_element)
+        Q_UNUSED(id_prop)
+        return 0;
     }
 
     /*
@@ -792,7 +823,7 @@ namespace EmulateCgt
         if (!e)
             return 0;
 
-        const SharedProperty p = e->getPropertyById(id_prop);
+        PProperty p = e->getPropertyById(id_prop);
         if (!p)
             return 0;
 

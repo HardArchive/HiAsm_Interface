@@ -5,9 +5,10 @@
 
 //Qt
 
-Value::Value(quintptr id_value, DataTypes type, const QVariant &value, PProperty parent):
+Value::Value(quintptr id_value, DataTypes type, const QString &name, const QVariant &value, PProperty parent):
     m_id(id_value),
     m_type(type),
+    m_name(name),
     m_value(value),
     m_parent(parent)
 {
@@ -65,10 +66,10 @@ PProperty Value::getParent() const
 
 size_t Value::getArraySize() const
 {
-    if (!m_value.canConvert<Properties>())
+    if (!m_value.canConvert<Values>())
         return 0;
 
-    return m_value.value<Properties>().size();
+    return m_value.value<Values>().size();
 }
 
 DataTypes Value::getArrayType() const
@@ -76,34 +77,25 @@ DataTypes Value::getArrayType() const
     return m_arrayType;
 }
 
-const SharedProperty Value::getArrayItemByIndex(uint index) const
+SharedValue Value::getArrayItemByIndex(uint index) const
 {
-    if (!m_value.canConvert<Properties>())
-        return SharedProperty();
+    if (!m_value.canConvert<Values>())
+        return SharedValue();
 
-    const Properties arrayValues = m_value.value<Properties>();
+    const Values arrayValues = m_value.value<Values>();
     if (index < uint(arrayValues.size()))
         return arrayValues[index];
 
-    return SharedProperty();
+    return SharedValue();
 }
 
-quintptr Value::getArrayIdItemByIndex(uint index) const
+QString Value::getArrayValueName(uint index) const
 {
-    const SharedProperty arrItem = getArrayItemByIndex(index);
-    if (!arrItem)
-        return 0;
-
-    return arrItem->getId();
-}
-
-QString Value::getArrayItemName(uint index) const
-{
-    const SharedProperty arrItem = getArrayItemByIndex(index);
-    if (!arrItem)
+    const SharedValue arrValue = getArrayItemByIndex(index);
+    if (!arrValue)
         return QString();
 
-    return arrItem->getName();
+    return arrValue->getName();
 }
 
 SharedValueFont Value::toFont() const
@@ -144,4 +136,9 @@ uchar Value::toByte() const
         return uchar();
 
     return m_value.value<uchar>();
+}
+
+QString Value::getName() const
+{
+    return m_name;
 }

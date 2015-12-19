@@ -62,9 +62,9 @@ public:
     ElementClass getClassIndex();
     PContainer getParent() const;
     int getCountProps() const;
-    SharedProperty getPropertyByIndex(uint index) const;
+    PProperty getPropertyByIndex(uint index) const;
     quintptr getIdPropertyByIndex(uint index) const;
-    SharedProperty getPropertyById(quintptr id_prop) const;
+    PProperty getPropertyById(quintptr id_prop) const;
     int getCountPoints() const;
     PPoint getPointByIndex(uint index) const;
     quintptr getIdPointByIndex(uint index) const;
@@ -82,6 +82,6 @@ public:
     QString getInherit() const;
     PPoint getPointByName(const QString &name) const;
     quintptr getIdPointByName(const QString &name) const;
-    const SharedProperty getPropertyByName(const QString &name) const;
+    PProperty getPropertyByName(const QString &name) const;
     quintptr getIdPropertyByName(const QString &name) const;
 };

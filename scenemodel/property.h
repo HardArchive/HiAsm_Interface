@@ -9,9 +9,12 @@
 //STL
 
 //Qt
+#include <QObject>
 
-class Property
+class Property: public QObject
 {
+    Q_OBJECT
+    Q_DISABLE_COPY(Property)
 
 private:
     //ru Данные о свойстве
@@ -19,17 +22,13 @@ private:
     PSceneModel m_model{};
     QString m_name;
     DataTypes m_type{};
-    int m_isTranslate{};
     bool m_isDefault{};
-    PElement m_parent{};
 
     //Данные свойства
     SharedValue m_value;
 
 public:
-    explicit Property();
-    explicit Property(quintptr id_prop, PSceneModel model, const PElement parent);
-    explicit Property(quintptr id_prop, const QString &name, DataTypes type, const SharedValue &value);
+    explicit Property(quintptr id_prop, PSceneModel model, QObject *parent);
     friend class SceneModel;
 
 private:
@@ -46,9 +45,7 @@ public:
     int getValueInt() const;
     qreal getValueReal() const;
     QString getValueString() const;
-    int getIsTranslate() const;
     const SharedLinkedElementInfo getLinkedElementInfo() const;
 };
 
 Q_DECLARE_METATYPE(Properties)
-Q_DECLARE_METATYPE(SharedProperty)

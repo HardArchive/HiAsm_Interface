@@ -18,6 +18,7 @@ class SceneModel: public QObject
 
 private:
     bool m_isDebug{};
+    SharedValue m_propArrayValue;
     TCgtParams m_cgtParams;
     Containers m_containers;
     MapContainers m_mapContainers;
@@ -47,14 +48,16 @@ public:
     uint getCountElementsInContainer(quintptr id_sdk) const;
     PElement getElementById(quintptr id_element) const;
     PPoint getPointById(quintptr id_point) const;
-    SharedProperty getPropertyById(quintptr id_prop) const;
+    PProperty getPropertyById(quintptr id_prop) const;
     SharedValue getValueById(quintptr id_value) const;
     void addValueToMap(SharedValue value);
-    void addPropertyToMap(SharedProperty prop);
+    void addPropertyToMap(PProperty prop);
     const char *addResByIdProp(quintptr id_prop);
     const char *addResFromString(const QString &str);
     int addResList(const QString &filePath);
     bool resIsEmpty() const;
+    void setPropArrayValue(const SharedValue &value);
+    const SharedValue getPropArrayValue();
 
 
 };

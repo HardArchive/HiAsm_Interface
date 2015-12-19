@@ -12,13 +12,13 @@
 // Типы данных
 class Property;
 typedef Property *PProperty;
-typedef QSharedPointer<Property> SharedProperty;
-typedef QMap<quintptr, SharedProperty> MapProperties;
-typedef QVector<SharedProperty> Properties;
+typedef QMap<quintptr, PProperty> MapProperties;
+typedef QVector<PProperty> Properties;
 
 class Value;
 typedef QSharedPointer<Value> SharedValue;
 typedef QMap<quintptr, SharedValue> MapValues;
+typedef QVector<SharedValue> Values;
 
 class Point;
 typedef Point *PPoint;
