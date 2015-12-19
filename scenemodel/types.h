@@ -9,7 +9,6 @@
 #include <QMap>
 #include <QMetaType>
 
-// Типы данных
 class Property;
 typedef Property *PProperty;
 typedef QMap<quintptr, PProperty> MapProperties;

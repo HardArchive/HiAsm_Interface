@@ -14,7 +14,8 @@ class Value
 {
 
 private:
-    quintptr m_id{};
+    //Self
+    const quintptr m_id;
     DataTypes m_type = data_null;
     QString m_name;
     QVariant m_value;

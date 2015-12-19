@@ -62,5 +62,3 @@ public:
     //Model
     PSceneModel getModel();
 };
-
-Q_DECLARE_METATYPE(Properties)
