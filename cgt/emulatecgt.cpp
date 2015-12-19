@@ -484,7 +484,7 @@ namespace EmulateCgt
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ среда ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru На основе индекса параметра, записываем данные в память value
-    EXPORT int GetParam(CgtParams index, quintptr value)
+    EXPORT int GetParam(CgtParams index, void *value)
     {
         m_model->getCgtParam(index, value);
         return 0;

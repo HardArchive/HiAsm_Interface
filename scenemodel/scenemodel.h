@@ -89,7 +89,7 @@ public:
 
     //Параметры CGT
     bool isDebug() const;
-    void getCgtParam(CgtParams index, quintptr value) const;
+    void getCgtParam(CgtParams index, void *buf) const;
 
 };
 

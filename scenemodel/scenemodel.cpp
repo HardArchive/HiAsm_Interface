@@ -17,7 +17,7 @@ SceneModel::SceneModel(QObject *parent):
     //ru Собираем данные о среде
     collectingData(cgt::getMainSDK());
 
-    //ru Получаем контейнер c элементами из SDK
+    //ru Запуск процесса сборка данных о схеме
     m_container = new Container(cgt::getMainSDK(), this);
 }
 
@@ -26,19 +26,17 @@ SceneModel::~SceneModel()
     deleteResources();
 }
 
-
-
 void SceneModel::collectingData(quintptr id_sdk)
 {
     m_isDebug = cgt::isDebug(id_sdk);
+    quintptr id_element = cgt::sdkGetElement(id_sdk, 0);
 
-    quintptr eId = cgt::sdkGetElement(id_sdk, 0);
-
+    //ru Тут мощная магия, однако;D
     int iBuf{};
     QByteArray buf("", 512);
 
     buf.fill('\0');
-    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
     cgt::GetParam(PARAM_CODE_PATH, buf.data());
     m_cgtParams.CODE_PATH = QString::fromLocal8Bit(buf);
 
@@ -52,7 +50,7 @@ void SceneModel::collectingData(quintptr id_sdk)
     m_cgtParams.DEBUG_CLIENT_PORT = iBuf;
 
     buf.fill('\0');
-    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
     cgt::GetParam(PARAM_PROJECT_PATH, buf.data());
     m_cgtParams.PROJECT_PATH = QString::fromLocal8Bit(buf);
 
@@ -72,20 +70,20 @@ void SceneModel::collectingData(quintptr id_sdk)
     m_cgtParams.USER_MAIL = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
-    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
     cgt::GetParam(PARAM_PROJECT_NAME, buf.data());
     m_cgtParams.PROJECT_NAME = QString::fromLocal8Bit(buf);
 
-    uint tmpW[1] = {reinterpret_cast<uint>(eId)};
+    uint tmpW[1] = {reinterpret_cast<uint>(id_element)};
     cgt::GetParam(PARAM_SDE_WIDTH, tmpW);
     m_cgtParams.SDE_WIDTH = tmpW[0];
 
-    uint tmpH[1] = {reinterpret_cast<uint>(eId)};
+    uint tmpH[1] = {reinterpret_cast<uint>(id_element)};
     cgt::GetParam(PARAM_SDE_HEIGHT, tmpH);
     m_cgtParams.SDE_HEIGHT = tmpH[0];
 
     buf.fill('\0');
-    reinterpret_cast<quintptr *>(buf.data())[0] = eId;
+    reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
     cgt::GetParam(PARAM_COMPILER, buf.data());
     m_cgtParams.COMPILER = QString::fromLocal8Bit(buf);
 }
@@ -98,187 +96,9 @@ void SceneModel::deleteResources()
     m_resources.clear();
 }
 
-bool SceneModel::isDebug() const
+PSceneModel SceneModel::getModel()
 {
-    return m_isDebug;
-}
-
-void SceneModel::getCgtParam(CgtParams index, quintptr value) const
-{
-    switch (index) {
-    case PARAM_CODE_PATH :
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.CODE_PATH.toStdString().c_str());
-        break;
-    case PARAM_DEBUG_MODE:
-        *reinterpret_cast<int *>(value) = m_cgtParams.DEBUG_MODE;
-        break;
-    case PARAM_DEBUG_SERVER_PORT:
-        *reinterpret_cast<int *>(value) = m_cgtParams.DEBUG_SERVER_PORT;
-        break;
-    case PARAM_DEBUG_CLIENT_PORT:
-        *reinterpret_cast<int *>(value) = m_cgtParams.DEBUG_CLIENT_PORT;
-        break;
-    case PARAM_PROJECT_PATH:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PROJECT_PATH.toStdString().c_str());
-        break;
-    case PARAM_HIASM_VERSION:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.HIASM_VERSION.toStdString().c_str());
-        break;
-    case PARAM_USER_NAME:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.USER_NAME.toStdString().c_str());
-        break;
-    case PARAM_USER_MAIL:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.USER_MAIL.toStdString().c_str());
-        break;
-    case PARAM_PROJECT_NAME:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.PROJECT_NAME.toStdString().c_str());
-        break;
-    case PARAM_SDE_WIDTH:
-        *reinterpret_cast<int *>(value) = m_cgtParams.SDE_WIDTH;
-        break;
-    case PARAM_SDE_HEIGHT:
-        *reinterpret_cast<int *>(value) = m_cgtParams.SDE_HEIGHT;
-        break;
-    case PARAM_COMPILER:
-        strcpy(reinterpret_cast<char *>(value), m_cgtParams.COMPILER.toStdString().c_str());
-        break;
-    }
-}
-
-PContainer SceneModel::getContainerById(quintptr id_sdk) const
-{
-    return m_mapContainers[id_sdk];
-}
-
-PElement SceneModel::getElementFromSDKByIndex(quintptr id_sdk, int index) const
-{
-    const PContainer c = getContainerById(id_sdk);
-    if (!c)
-        return nullptr;
-    return c->getElementByIndex(index);
-}
-
-quintptr SceneModel::getIdElementFromSDKByIndex(quintptr id_sdk, int index) const
-{
-    const PContainer c = getContainerById(id_sdk);
-    if (!c)
-        return 0;
-    return c->getIdElementByIndex(index);
-}
-
-size_t SceneModel::getCountElementsInContainer(quintptr id_sdk) const
-{
-    const PContainer c = getContainerById(id_sdk);
-    if (!c)
-        return 0;
-
-    return c->getCountElements();
-}
-
-PElement SceneModel::getElementById(quintptr id_element) const
-{
-    return m_mapElements[id_element];
-}
-
-PPoint SceneModel::getPointById(quintptr id_point) const
-{
-    return m_mapPoints[id_point];
-}
-
-PProperty SceneModel::getPropertyById(quintptr id_prop) const
-{
-    return m_mapProperties[id_prop];
-}
-
-SharedValue SceneModel::getValueById(quintptr id_value) const
-{
-    return m_mapValues[id_value];
-}
-
-void SceneModel::addValueToMap(SharedValue value)
-{
-    if (value)
-        m_mapValues.insert(value->getId(), value);
-}
-
-const char *SceneModel::addResByIdProp(quintptr id_prop)
-{
-    PProperty p = getPropertyById(id_prop);
-    if (!p)
-        return nullptr;
-
-    const SharedValue v = p->getValue();
-    if (!v) {
-        if (p->getType() == data_icon)
-            return fcgt::strToPChar(QString("ASMA"));
-
-        return nullptr;
-    }
-
-    const QByteArray byteArray = v->getVariant().toByteArray();
-    static const QString nameDir = "compiler";
-    static const QString name = "STREAM";
-    QString suffix = QString::number(m_resources.size());
-    QString fileName = name + suffix;
-
-    QString resFilePath = QDir::toNativeSeparators(
-                              QDir::currentPath() + QDir::separator() +
-                              nameDir + QDir::separator() + fileName
-                          );
-    QFile file(resFilePath);
-    if (!file.open(QIODevice::WriteOnly))
-        return nullptr;
-
-    file.write(byteArray);
-    file.close();
-    m_resources.insert(resFilePath);
-
-    return fcgt::strToPChar(fileName);
-}
-
-const char *SceneModel::addResFromString(const QString &str)
-{
-    if (str.isEmpty())
-        return nullptr;
-
-    static const QString nameDir = "compiler";
-    static const QString name = "STREAM";
-    QString suffix = QString::number(m_resources.size());
-    QString fileName = name + suffix;
-    QString resFilePath = QDir::toNativeSeparators(
-                              QDir::currentPath() + QDir::separator() +
-                              nameDir + QDir::separator() + fileName
-                          );
-    QFile file(resFilePath);
-    if (!file.open(QIODevice::WriteOnly))
-        return nullptr;
-
-    file.write(str.toLocal8Bit());
-    file.close();
-    m_resources.insert(resFilePath);
-
-    return fcgt::strToPChar(fileName);
-}
-
-int SceneModel::addResList(const QString &filePath)
-{
-    m_resources.insert(filePath);
-    return 0;
-}
-
-bool SceneModel::resIsEmpty() const
-{
-    return m_resources.isEmpty();
-}
-
-void SceneModel::setPropArrayValue(const SharedValue &value)
-{
-    m_propArrayValue = value;
-}
-
-const SharedValue SceneModel::getPropArrayValue()
-{
-    return m_propArrayValue;
+    return this;
 }
 
 void SceneModel::addContainerToMap(PContainer id_sdk)
@@ -305,7 +125,193 @@ void SceneModel::addPointToMap(PPoint id_point)
         m_mapPoints.insert(id_point->getId(), id_point);
 }
 
-PSceneModel SceneModel::getModel()
+void SceneModel::addValueToMap(SharedValue value)
 {
-    return this;
+    if (value)
+        m_mapValues.insert(value->getId(), value);
 }
+
+PContainer SceneModel::getContainerById(quintptr id_sdk) const
+{
+    return m_mapContainers[id_sdk];
+}
+
+size_t SceneModel::getCountElementsInContainer(quintptr id_sdk) const
+{
+    const PContainer c = getContainerById(id_sdk);
+    if (!c)
+        return 0;
+
+    return c->getCountElements();
+}
+
+PElement SceneModel::getElementById(quintptr id_element) const
+{
+    return m_mapElements[id_element];
+}
+
+PElement SceneModel::getElementFromSDKByIndex(quintptr id_sdk, int index) const
+{
+    const PContainer c = getContainerById(id_sdk);
+    if (!c)
+        return nullptr;
+    return c->getElementByIndex(index);
+}
+
+quintptr SceneModel::getIdElementFromSDKByIndex(quintptr id_sdk, int index) const
+{
+    const PContainer c = getContainerById(id_sdk);
+    if (!c)
+        return 0;
+    return c->getIdElementByIndex(index);
+}
+
+PProperty SceneModel::getPropertyById(quintptr id_prop) const
+{
+    return m_mapProperties[id_prop];
+}
+
+void SceneModel::setPropArrayValue(const SharedValue &value)
+{
+    m_propArrayValue = value;
+}
+
+const SharedValue SceneModel::getPropArrayValue()
+{
+    return m_propArrayValue;
+}
+
+PPoint SceneModel::getPointById(quintptr id_point) const
+{
+    return m_mapPoints[id_point];
+}
+
+SharedValue SceneModel::getValueById(quintptr id_value) const
+{
+    return m_mapValues[id_value];
+}
+
+const char *SceneModel::addResByIdProp(quintptr id_prop)
+{
+    PProperty p = getPropertyById(id_prop);
+    if (!p)
+        return nullptr;
+
+    const SharedValue v = p->getValue();
+    if (!v) {
+        if (p->getType() == data_icon)
+            return fcgt::strToPChar(QString("ASMA"));
+
+        return nullptr;
+    }
+
+    const QByteArray byteArray = v->getVariant().toByteArray();
+    static const QString nameDir = "compiler";
+    static const QString name = "STREAM";
+    QString suffix = QString::number(m_resources.size());
+    QString fileName = name + suffix;
+
+    QString resFilePath = QDir::toNativeSeparators(
+                QDir::currentPath() + QDir::separator() +
+                nameDir + QDir::separator() + fileName
+                );
+    QFile file(resFilePath);
+    if (!file.open(QIODevice::WriteOnly))
+        return nullptr;
+
+    file.write(byteArray);
+    file.close();
+    m_resources.insert(resFilePath);
+
+    return fcgt::strToPChar(fileName);
+}
+
+const char *SceneModel::addResFromString(const QString &str)
+{
+    if (str.isEmpty())
+        return nullptr;
+
+    static const QString nameDir = "compiler";
+    static const QString name = "STREAM";
+    QString suffix = QString::number(m_resources.size());
+    QString fileName = name + suffix;
+    QString resFilePath = QDir::toNativeSeparators(
+                QDir::currentPath() + QDir::separator() +
+                nameDir + QDir::separator() + fileName
+                );
+    QFile file(resFilePath);
+    if (!file.open(QIODevice::WriteOnly))
+        return nullptr;
+
+    file.write(str.toLocal8Bit());
+    file.close();
+    m_resources.insert(resFilePath);
+
+    return fcgt::strToPChar(fileName);
+}
+
+int SceneModel::addResList(const QString &filePath)
+{
+    m_resources.insert(filePath);
+    return 0;
+}
+
+bool SceneModel::resIsEmpty() const
+{
+    return m_resources.isEmpty();
+}
+
+bool SceneModel::isDebug() const
+{
+    return m_isDebug;
+}
+
+void SceneModel::getCgtParam(CgtParams index, void *buf) const
+{
+    auto writeString = [buf](const QString & str) {
+        strcpy(reinterpret_cast<char *>(buf), str.toStdString().c_str());
+    };
+    auto writeInt = [buf](int value) {
+        *reinterpret_cast<int *>(buf) = value;
+    };
+
+    switch (index) {
+    case PARAM_CODE_PATH :
+        writeString(m_cgtParams.CODE_PATH);
+        break;
+    case PARAM_DEBUG_MODE:
+        writeInt(m_cgtParams.DEBUG_MODE);
+        break;
+    case PARAM_DEBUG_SERVER_PORT:
+        writeInt(m_cgtParams.DEBUG_SERVER_PORT);
+        break;
+    case PARAM_DEBUG_CLIENT_PORT:
+        writeInt(m_cgtParams.DEBUG_CLIENT_PORT);
+        break;
+    case PARAM_PROJECT_PATH:
+        writeString(m_cgtParams.PROJECT_PATH);
+        break;
+    case PARAM_HIASM_VERSION:
+        writeString(m_cgtParams.HIASM_VERSION);
+        break;
+    case PARAM_USER_NAME:
+        writeString(m_cgtParams.USER_NAME);
+        break;
+    case PARAM_USER_MAIL:
+        writeString(m_cgtParams.USER_MAIL);
+        break;
+    case PARAM_PROJECT_NAME:
+        writeString(m_cgtParams.PROJECT_NAME);
+        break;
+    case PARAM_SDE_WIDTH:
+        writeInt(m_cgtParams.SDE_WIDTH);
+        break;
+    case PARAM_SDE_HEIGHT:
+        writeInt(m_cgtParams.SDE_HEIGHT);
+        break;
+    case PARAM_COMPILER:
+        writeString(m_cgtParams.COMPILER);
+        break;
+    }
+}
+
