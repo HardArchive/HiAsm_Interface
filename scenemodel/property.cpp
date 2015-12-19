@@ -42,8 +42,9 @@ void Property::collectingData()
     m_type = cgt::propGetType(m_id);
     quintptr id_value = cgt::propGetValue(m_id);
 
-    auto setValue = [this, &id_value](const QVariant & value) {
+    auto setValue = [this, &id_value](const QVariant & value, DataTypes arrType = data_null) {
         m_value = SharedValue::create(id_value, m_type, value, this);
+        m_value->setArrayType(arrType);
         m_model->addValueToMap(m_value);
     };
 
@@ -67,15 +68,17 @@ void Property::collectingData()
         break;
     }
     case data_data: {
-        switch (cgt::dtType(id_value)) {
+        const DataTypes arrType = cgt::dtType(id_value);
+        switch (arrType) {
         case data_int:
-            setValue(cgt::dtInt(id_value));
+            setValue(cgt::dtInt(id_value), arrType);
             break;
         case data_str:
-            setValue(QString::fromLocal8Bit(cgt::dtStr(id_value)));
+            setValue(QString::fromLocal8Bit(cgt::dtStr(id_value)), arrType);
             break;
         case data_real:
-            setValue(cgt::dtReal(id_value));
+            setValue(cgt::dtReal(id_value), arrType);
+            break;
         default:
             setValue(QVariant());
             break;
@@ -115,7 +118,7 @@ void Property::collectingData()
         Properties arrayValues;
 
         for (int i = 0; i < arrCount; ++i) {
-            quintptr id_prop = cgt::arrGetItem(id_value, i);
+            const quintptr id_prop = cgt::arrGetItem(id_value, i);
 
             QString name = QString::fromLocal8Bit(cgt::arrItemName(id_value, i));
             QVariant data;
@@ -210,7 +213,7 @@ uchar Property::getValueByte() const
     if (!m_value)
         return 0;
 
-    return m_value->getVariant().value<uchar>();
+    return m_value->toByte();
 }
 
 int Property::getValueInt() const
@@ -218,7 +221,7 @@ int Property::getValueInt() const
     if (!m_value)
         return 0;
 
-    return m_value->getVariant().toInt();
+    return m_value->toInt();
 }
 
 qreal Property::getValueReal() const
@@ -226,7 +229,7 @@ qreal Property::getValueReal() const
     if (!m_value)
         return 0.0;
 
-    return m_value->getVariant().toReal();
+    return m_value->toReal();
 }
 
 QString Property::getValueString() const
@@ -234,7 +237,7 @@ QString Property::getValueString() const
     if (!m_value)
         return QString();
 
-    return m_value->getVariant().toString();
+    return m_value->toString();
 }
 
 int Property::getIsTranslate() const

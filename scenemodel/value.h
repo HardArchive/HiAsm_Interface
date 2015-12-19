@@ -42,6 +42,7 @@ public:
     QString toString() const;
     int toInt() const;
     qreal toReal() const;
+    uchar toByte() const;
 
 };
 

@@ -137,3 +137,11 @@ qreal Value::toReal() const
 
     return m_value.value<qreal>();
 }
+
+uchar Value::toByte() const
+{
+    if (!m_value.canConvert<uchar>())
+        return uchar();
+
+    return m_value.value<uchar>();
+}
