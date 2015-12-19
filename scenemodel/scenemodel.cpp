@@ -125,7 +125,7 @@ void SceneModel::addPointToMap(PPoint id_point)
         m_mapPoints.insert(id_point->getId(), id_point);
 }
 
-void SceneModel::addValueToMap(SharedValue value)
+void SceneModel::addValueToMap(const SharedValue &value)
 {
     if (value)
         m_mapValues.insert(value->getId(), value);
@@ -212,9 +212,9 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
     QString fileName = name + suffix;
 
     QString resFilePath = QDir::toNativeSeparators(
-                QDir::currentPath() + QDir::separator() +
-                nameDir + QDir::separator() + fileName
-                );
+                              QDir::currentPath() + QDir::separator() +
+                              nameDir + QDir::separator() + fileName
+                          );
     QFile file(resFilePath);
     if (!file.open(QIODevice::WriteOnly))
         return nullptr;
@@ -231,14 +231,14 @@ const char *SceneModel::addResFromString(const QString &str)
     if (str.isEmpty())
         return nullptr;
 
-    static const QString nameDir = "compiler";
-    static const QString name = "STREAM";
+    static const QString nameCompilerDir = "compiler";
+    static const QString nameFileRes = "STREAM";
     QString suffix = QString::number(m_resources.size());
-    QString fileName = name + suffix;
+    QString fileName = nameFileRes + suffix;
     QString resFilePath = QDir::toNativeSeparators(
-                QDir::currentPath() + QDir::separator() +
-                nameDir + QDir::separator() + fileName
-                );
+                              QDir::currentPath() + QDir::separator() +
+                              nameCompilerDir + QDir::separator() + fileName
+                          );
     QFile file(resFilePath);
     if (!file.open(QIODevice::WriteOnly))
         return nullptr;

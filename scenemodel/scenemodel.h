@@ -17,9 +17,6 @@ class SceneModel: public QObject
     Q_DISABLE_COPY(SceneModel)
 
 private:
-    //Model
-    Q_PROPERTY(PSceneModel model READ getModel)
-
     //Map
     MapContainers m_mapContainers;
     MapElements m_mapElements;
@@ -40,6 +37,9 @@ private:
     bool m_isDebug{};
     TCgtParams m_cgtParams;
 
+private:
+    Q_PROPERTY(PSceneModel model READ getModel)
+
 public:
     explicit SceneModel(QObject *parent = 0);
     virtual ~SceneModel();
@@ -57,7 +57,7 @@ public:
     void addElementToMap(PElement id_element);
     void addPropertyToMap(PProperty id_prop);
     void addPointToMap(PPoint id_point);
-    void addValueToMap(SharedValue value);
+    void addValueToMap(const SharedValue &value);
 
     //Container
     PContainer getContainerById(quintptr id_sdk) const;

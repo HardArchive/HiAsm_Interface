@@ -28,6 +28,53 @@ void Container::collectingData()
     }
 }
 
+quintptr Container::getId() const
+{
+    return m_id;
+}
+
+PElement Container::getParent() const
+{
+    return qobject_cast<PElement>(parent());
+}
+
+void Container::setName(const QString &name)
+{
+    m_name = name;
+}
+
+QString Container::getName() const
+{
+    return m_name;
+}
+
+PSceneModel Container::getModel() const
+{
+    return m_model;
+}
+
+size_t Container::getCountElements() const
+{
+    return m_elements.size();
+}
+
+PElement Container::getElementByIndex(uint index) const
+{
+    if (index < uint(m_elements.size()))
+        return m_elements[index];
+
+    return nullptr;
+}
+
+quintptr Container::getIdElementByIndex(uint index) const
+{
+    const PElement e = getElementByIndex(index);
+    if (!e)
+        return 0;
+
+    return e->getId();
+}
+
 PElement Container::getElementByName(const QString &name) const
 {
     for (PElement e : m_elements) {
@@ -46,51 +93,4 @@ quintptr Container::getIdElementByName(const QString &name) const
         return e->getId();
 
     return 0;
-}
-
-quintptr Container::getId() const
-{
-    return m_id;
-}
-
-PElement Container::getElementByIndex(int index) const
-{
-    if (index < m_elements.size())
-        return m_elements[index];
-
-    return nullptr;
-}
-
-quintptr Container::getIdElementByIndex(int index) const
-{
-    const PElement e = getElementByIndex(index);
-    if (!e)
-        return 0;
-
-    return e->getId();
-}
-
-PElement Container::getParent() const
-{
-    return qobject_cast<PElement>(parent());
-}
-
-QString Container::getName() const
-{
-    return m_name;
-}
-
-void Container::setName(const QString &name)
-{
-    m_name = name;
-}
-
-PSceneModel Container::getModel() const
-{
-    return m_model;
-}
-
-size_t Container::getCountElements() const
-{
-    m_elements.size();
 }

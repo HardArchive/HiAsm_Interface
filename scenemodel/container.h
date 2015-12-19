@@ -14,9 +14,14 @@ class Container: public QObject
     Q_DISABLE_COPY(Container)
 
 private:
+    //Self
     const quintptr m_id;
-    PSceneModel const m_model;
     QString m_name;
+
+    //Model
+    PSceneModel const m_model;
+
+    //Element
     Elements m_elements;
 
 private:
@@ -29,14 +34,19 @@ private:
     void collectingData();
 
 public:
+    //Self
+    quintptr getId() const;
+    PElement getParent() const;
+    void setName(const QString &name);
+    QString getName() const;
+
+    //Model
+    PSceneModel getModel() const;
+
+    //Element
+    size_t getCountElements() const;
+    PElement getElementByIndex(uint index) const;
+    quintptr getIdElementByIndex(uint index) const;
     PElement getElementByName(const QString &name) const;
     quintptr getIdElementByName(const QString &name) const;
-    quintptr getId() const;
-    PElement getElementByIndex(int index) const;
-    quintptr getIdElementByIndex(int index) const;
-    PElement getParent() const;
-    QString getName() const;
-    void setName(const QString &name);
-    PSceneModel getModel() const;
-    size_t getCountElements() const;
 };
