@@ -7,13 +7,12 @@
 #include "logger.h"
 
 //NATIVE
-#include <windows.h>
 
 //STL
-#include <iostream>
 
 //Qt
 #include <QDebug>
+#include <QLibrary>
 
 //Дефайны
 #define DLLEXPORT extern "C" __cdecl
@@ -55,37 +54,39 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
     }
 }
 
-//Служебные переменные
-static HMODULE m_codegen = nullptr;
-static SceneModel *sceneModel = nullptr;
-
 INITIALIZE_EASYLOGGINGPP
+void initLogger()
+{
+    QDir makeLogDir;
+    makeLogDir.mkdir("logs");
+    el::Configurations conf;
+    conf.setGlobally(el::ConfigurationType::Filename, "logs/%datetime.log");
+    //conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}:%levshort: %msg");
+    conf.setGlobally(el::ConfigurationType::Format, "%msg");
+    el::Logger *defaultLogger = el::Loggers::getLogger("default");
+    defaultLogger->configure(conf);
+    el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);
+    el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
+    el::Loggers::addFlag(el::LoggingFlag::LogDetailedCrashReason);
+    el::Loggers::addFlag(el::LoggingFlag::DisableApplicationAbortOnFatalLog);
+    el::Loggers::addFlag(el::LoggingFlag::DisablePerformanceTrackingCheckpointComparison);
+    el::Loggers::addFlag(el::LoggingFlag::DisableVModules);
+    el::Loggers::addFlag(el::LoggingFlag::DisableVModulesExtensions);
+    qInstallMessageHandler(myMessageOutput);
+}
+
+//Служебные переменные
+static QLibrary codegen;
+static SceneModel *sceneModel = nullptr;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 {
-    Q_UNUSED(hModule)
     Q_UNUSED(lpReserved)
 
     switch (reason) {
     case DLL_PROCESS_ATTACH: {
         //ru Инициализация логгера
-        QDir makeLogDir;
-        makeLogDir.mkdir("logs");
-        el::Configurations conf;
-        conf.setGlobally(el::ConfigurationType::Filename, "logs/%datetime.log");
-        //conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}:%levshort: %msg");
-        conf.setGlobally(el::ConfigurationType::Format, "%msg");
-        el::Logger *defaultLogger = el::Loggers::getLogger("default");
-        defaultLogger->configure(conf);
-        el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);
-        el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
-        el::Loggers::addFlag(el::LoggingFlag::LogDetailedCrashReason);
-        el::Loggers::addFlag(el::LoggingFlag::DisableApplicationAbortOnFatalLog);
-        el::Loggers::addFlag(el::LoggingFlag::DisablePerformanceTrackingCheckpointComparison);
-        el::Loggers::addFlag(el::LoggingFlag::DisableVModules);
-        el::Loggers::addFlag(el::LoggingFlag::DisableVModulesExtensions);
-        qInstallMessageHandler(myMessageOutput);
-
+        initLogger();
         qInfo() << "CODEGEN_PROCESS_ATTACH";
 
         //ru Вычисляем путь к оригинальному кодогенератору относительно текущего модуля (hModule)
@@ -93,33 +94,32 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
         char tmpCurrentModulePath[max_path];
         GetModuleFileNameA(hModule, tmpCurrentModulePath, max_path);
         QFileInfo currentModulePath(QString::fromLocal8Bit(tmpCurrentModulePath));
-        QString nameOriginal = "CodeGen_original.dll";
+        const QString nameOriginal = "CodeGen_original.dll";
         QString pathOriginal = currentModulePath.absolutePath() + QDir::separator() + nameOriginal;
         pathOriginal = QDir::toNativeSeparators(pathOriginal);
 
         //ru Загружаем оригинальную DLL в память
         if (!QFile::exists(pathOriginal)) {
-            MessageBoxW(0, QString("Библиотека %1 не найдена!").arg(nameOriginal).toStdWString().data(),
-                        L"Ошибка!", MB_ICONERROR);
+            qCritical("Библиотека %s не найдена!", qPrintable(nameOriginal));
             exit(0);
         }
-        m_codegen = LoadLibraryW(pathOriginal.toStdWString().data());
-        if (m_codegen)
+        codegen.setFileName(pathOriginal);
+        if (codegen.load())
             qInfo("%s successfully loaded.", qUtf8Printable(nameOriginal));
         else
             qCritical("%s is not loaded.", qUtf8Printable(nameOriginal));
 
         //ru Определение прототипов функций проксируемого кодогенератора
-        original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(GetProcAddress(m_codegen, "buildPrepareProc"));
-        original_buildProcessProc = reinterpret_cast<t_buildProcessProc>(GetProcAddress(m_codegen, "buildProcessProc"));
-        original_CheckVersionProc = reinterpret_cast<t_CheckVersionProc>(GetProcAddress(m_codegen, "CheckVersionProc"));
+        original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(codegen.resolve("buildPrepareProc"));
+        original_buildProcessProc = reinterpret_cast<t_buildProcessProc>(codegen.resolve("buildProcessProc"));
+        original_CheckVersionProc = reinterpret_cast<t_CheckVersionProc>(codegen.resolve("CheckVersionProc"));
         break;
     }
 
     case DLL_PROCESS_DETACH: {
         qInfo() << "CODEGEN_PROCESS_DETACH";
         delete sceneModel;
-        FreeLibrary(m_codegen);
+        codegen.unload();
         break;
     }
     }
@@ -163,7 +163,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
 {
     PRINT_FUNC_INFO
-    qInfo().noquote() << QString("Arg1: %1.%2.%3").arg(params.major).arg(params.minor).arg(params.build);
+    qInfo("Arg1: %d.%d.%d", params.major, params.minor, params.build);
     int res = original_CheckVersionProc(params);
     PRINT_RESULT(res);
     return res;
