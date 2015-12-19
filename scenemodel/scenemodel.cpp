@@ -205,7 +205,7 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
         return nullptr;
     }
 
-    const QByteArray byteArray = v->getVariant().toByteArray();
+    const QByteArray byteArray = v->getValue().toByteArray();
     static const QString nameDir = "compiler";
     static const QString name = "STREAM";
     QString suffix = QString::number(m_resources.size());

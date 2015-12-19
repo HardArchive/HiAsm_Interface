@@ -60,37 +60,50 @@ public:
     quintptr getId() const;
     PContainer getParent() const;
 
-    void *getUserData() const;
-    ElementClass getClassIndex();
-    ElementFlags getFlags() const;
-    int getGroup() const;
-    bool getLinkIs() const;
-    quintptr getLinkMain() const;
-    int getPosX() const;
-    int getPosY() const;
-    int getSizeW() const;
-    int getSizeH() const;
-    QString getClassName() const;
-    QString getCodeName() const;
-    QString getInterface() const;
-    QString getInherit() const;
-    QString getInfSub() const;
-
     void setUserData(void *userData);
-    void setClassIndex(const ElementClass &classIndex);
+    void *getUserData() const;
+
+    void setClassIndex(ElementClass classIndex);
+    ElementClass getClassIndex();
+
     void setFlags(const ElementFlgs &flags);
+    ElementFlags getFlags() const;
+
     void setGroup(int group);
+    int getGroup() const;
+
     void setLinkIs(bool linkIs);
-    void setLinkMain(const quintptr &linkMain);
+    bool getLinkIs() const;
+
+    void setLinkMain(quintptr linkMain);
+    quintptr getLinkMain() const;
+
     void setPosX(int posX);
+    int getPosX() const;
+
     void setPosY(int posY);
+    int getPosY() const;
+
     void setSizeW(int sizeW);
+    int getSizeW() const;
+
     void setSizeH(int sizeH);
+    int getSizeH() const;
+
     void setClassName(const QString &className);
+    QString getClassName() const;
+
     void setCodeName(const QString &name);
+    QString getCodeName() const;
+
     void setInterface(const QString &interface);
+    QString getInterface() const;
+
     void setInherit(const QString &inherit);
+    QString getInherit() const;
+
     void setInfSub(const QString &infSub);
+    QString getInfSub() const;
 
     //Model
     PSceneModel getModel();

@@ -41,9 +41,19 @@ PElement Point::getParent() const
     return qobject_cast<PElement>(parent());
 }
 
+void Point::setType(PointTypes type)
+{
+    m_type = type;
+}
+
 PointTypes Point::getType() const
 {
     return m_type;
+}
+
+void Point::setDataType(DataTypes dataType)
+{
+    m_dataType = dataType;
 }
 
 DataTypes Point::getDataType() const
@@ -51,50 +61,14 @@ DataTypes Point::getDataType() const
     return m_dataType;
 }
 
+void Point::setIndex(uint index)
+{
+    m_index = index;
+}
+
 uint Point::getIndex() const
 {
     return m_index;
-}
-
-QString Point::getName() const
-{
-    return m_name;
-}
-
-QString Point::getDpeName() const
-{
-    return m_dpeName;
-}
-
-QString Point::getInfo() const
-{
-    return m_info;
-}
-
-quintptr Point::getLinkPoint() const
-{
-    return m_linkPoint;
-}
-
-quintptr Point::getRLinkPoint() const
-{
-    return m_RLinkPoint;
-}
-
-
-void Point::setType(const PointTypes &type)
-{
-    m_type = type;
-}
-
-void Point::setDataType(const DataTypes &dataType)
-{
-    m_dataType = dataType;
-}
-
-void Point::setIndex(const uint &index)
-{
-    m_index = index;
 }
 
 void Point::setName(const QString &name)
@@ -102,9 +76,19 @@ void Point::setName(const QString &name)
     m_name = name;
 }
 
+QString Point::getName() const
+{
+    return m_name;
+}
+
 void Point::setDpeName(const QString &dpeName)
 {
     m_dpeName = dpeName;
+}
+
+QString Point::getDpeName() const
+{
+    return m_dpeName;
 }
 
 void Point::setInfo(const QString &info)
@@ -112,16 +96,30 @@ void Point::setInfo(const QString &info)
     m_info = info;
 }
 
-void Point::setLinkPoint(const quintptr &linkPoint)
+QString Point::getInfo() const
+{
+    return m_info;
+}
+
+void Point::setLinkPoint(quintptr linkPoint)
 {
     m_linkPoint = linkPoint;
 }
 
-void Point::setRLinkPoint(const quintptr &RLinkPoint)
+quintptr Point::getLinkPoint() const
+{
+    return m_linkPoint;
+}
+
+void Point::setRLinkPoint(quintptr RLinkPoint)
 {
     m_RLinkPoint = RLinkPoint;
 }
 
+quintptr Point::getRLinkPoint() const
+{
+    return m_RLinkPoint;
+}
 
 PSceneModel Point::getModel()
 {

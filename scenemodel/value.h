@@ -18,37 +18,54 @@ private:
     const quintptr m_id;
     DataTypes m_type = data_null;
     QString m_name;
-    QVariant m_value;
-    PProperty m_parent{};
     DataTypes m_arrayType = data_null;
+    QVariant m_value;
 
 public:
     explicit Value(quintptr id_value = 0,
                    DataTypes type = data_null,
                    const QString &name = QString(),
-                   const QVariant &value = QVariant(),
-                   PProperty parent = nullptr);
+                   const QVariant &value = QVariant());
 
 public:
+    //Self
     quintptr getId() const;
-    DataTypes getType() const;
-    DataTypes getDataType() const;
-    QVariant getVariant() const;
-    void setValue(QVariant v);
     void setType(DataTypes type);
-    void setArrayType(DataTypes type);
-    PProperty getParent() const;
+    DataTypes getType() const;
+    void setName(const QString &name);
+    QString getName() const;
+
+    //Value
+    void setValue(const QVariant &value);
+    QVariant getValue() const;
+
+    //Byte
+    uchar toByte() const;
+
+    //Int
+    int toInt() const;
+
+    //Real
+    qreal toReal() const;
+
+    //String
+    QString toString() const;
+
+    //Data
+    DataTypes getDataType() const;
+
+    //Array
     size_t getArraySize() const;
+    void setArrayType(DataTypes type);
     DataTypes getArrayType() const;
     SharedValue getArrayItemByIndex(uint index) const;
-    QString getArrayValueName(uint index) const;
+    QString getArrayItemName(uint index) const;
+
+    //Font
     SharedValueFont toFont() const;
-    QString toString() const;
-    int toInt() const;
-    qreal toReal() const;
-    uchar toByte() const;
+
+    //LinkedElementInfo
     const SharedLinkedElementInfo toLinkedElementInfo() const;
-    QString getName() const;
 };
 
 Q_DECLARE_METATYPE(SharedValue)

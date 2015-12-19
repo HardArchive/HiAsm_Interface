@@ -5,12 +5,11 @@
 
 //Qt
 
-Value::Value(quintptr id_value, DataTypes type, const QString &name, const QVariant &value, PProperty parent):
+Value::Value(quintptr id_value, DataTypes type, const QString &name, const QVariant &value):
     m_id(id_value),
     m_type(type),
     m_name(name),
-    m_value(value),
-    m_parent(parent)
+    m_value(value)
 {
 
 }
@@ -20,9 +19,66 @@ quintptr Value::getId() const
     return m_id;
 }
 
+void Value::setType(DataTypes type)
+{
+    m_type = type;
+}
+
 DataTypes Value::getType() const
 {
     return m_type;
+}
+
+void Value::setName(const QString &name)
+{
+    m_name = name;
+}
+
+QString Value::getName() const
+{
+    return m_name;
+}
+
+void Value::setValue(const QVariant &value)
+{
+    m_value = value;
+}
+
+QVariant Value::getValue() const
+{
+    return m_value;
+}
+
+uchar Value::toByte() const
+{
+    if (!m_value.canConvert<uchar>())
+        return uchar();
+
+    return m_value.value<uchar>();
+}
+
+int Value::toInt() const
+{
+    if (!m_value.canConvert<int>())
+        return int();
+
+    return m_value.value<int>();
+}
+
+qreal Value::toReal() const
+{
+    if (!m_value.canConvert<qreal>())
+        return qreal();
+
+    return m_value.value<qreal>();
+}
+
+QString Value::toString() const
+{
+    if (!m_value.canConvert<QString>())
+        return QString();
+
+    return m_value.value<QString>();
 }
 
 DataTypes Value::getDataType() const
@@ -39,37 +95,17 @@ DataTypes Value::getDataType() const
     }
 }
 
-QVariant Value::getVariant() const
-{
-    return m_value;
-}
-
-void Value::setValue(QVariant v)
-{
-    m_value = v;
-}
-
-void Value::setType(DataTypes type)
-{
-    m_type = type;
-}
-
-void Value::setArrayType(DataTypes type)
-{
-    m_arrayType = type;
-}
-
-PProperty Value::getParent() const
-{
-    return m_parent;
-}
-
 size_t Value::getArraySize() const
 {
     if (!m_value.canConvert<Values>())
         return 0;
 
     return m_value.value<Values>().size();
+}
+
+void Value::setArrayType(DataTypes type)
+{
+    m_arrayType = type;
 }
 
 DataTypes Value::getArrayType() const
@@ -89,7 +125,7 @@ SharedValue Value::getArrayItemByIndex(uint index) const
     return SharedValue();
 }
 
-QString Value::getArrayValueName(uint index) const
+QString Value::getArrayItemName(uint index) const
 {
     const SharedValue arrValue = getArrayItemByIndex(index);
     if (!arrValue)
@@ -106,47 +142,10 @@ SharedValueFont Value::toFont() const
     return m_value.value<SharedValueFont>();
 }
 
-QString Value::toString() const
-{
-    if (!m_value.canConvert<QString>())
-        return QString();
-
-    return m_value.value<QString>();
-}
-
-int Value::toInt() const
-{
-    if (!m_value.canConvert<int>())
-        return int();
-
-    return m_value.value<int>();
-}
-
-qreal Value::toReal() const
-{
-    if (!m_value.canConvert<qreal>())
-        return qreal();
-
-    return m_value.value<qreal>();
-}
-
-uchar Value::toByte() const
-{
-    if (!m_value.canConvert<uchar>())
-        return uchar();
-
-    return m_value.value<uchar>();
-}
-
 const SharedLinkedElementInfo Value::toLinkedElementInfo() const
 {
     if (!m_value.canConvert<SharedLinkedElementInfo>())
         return SharedLinkedElementInfo();
 
     return m_value.value<SharedLinkedElementInfo>();
-}
-
-QString Value::getName() const
-{
-    return m_name;
 }

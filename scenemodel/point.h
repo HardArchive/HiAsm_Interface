@@ -44,23 +44,29 @@ public:
     quintptr getId() const;
     PElement getParent() const;
 
+    void setType(PointTypes type);
     PointTypes getType() const;
-    DataTypes getDataType() const;
-    uint getIndex() const;
-    QString getName() const;
-    QString getDpeName() const;
-    QString getInfo() const;
-    quintptr getLinkPoint() const;
-    quintptr getRLinkPoint() const;
 
-    void setType(const PointTypes &type);
-    void setDataType(const DataTypes &dataType);
-    void setIndex(const uint &index);
+    void setDataType(DataTypes dataType);
+    DataTypes getDataType() const;
+
+    void setIndex(uint index);
+    uint getIndex() const;
+
     void setName(const QString &name);
+    QString getName() const;
+
     void setDpeName(const QString &dpeName);
+    QString getDpeName() const;
+
     void setInfo(const QString &info);
-    void setLinkPoint(const quintptr &linkPoint);
-    void setRLinkPoint(const quintptr &RLinkPoint);
+    QString getInfo() const;
+
+    void setLinkPoint(quintptr linkPoint);
+    quintptr getLinkPoint() const;
+
+    void setRLinkPoint(quintptr RLinkPoint);
+    quintptr getRLinkPoint() const;
 
     //Model
     PSceneModel getModel();

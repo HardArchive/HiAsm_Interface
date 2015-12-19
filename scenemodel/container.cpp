@@ -43,14 +43,14 @@ QString Container::getName() const
     return m_name;
 }
 
-void Container::setName(const QString &name)
-{
-    m_name = name;
-}
-
 PSceneModel Container::getModel() const
 {
     return m_model;
+}
+
+void Container::setName(const QString &name)
+{
+    m_name = name;
 }
 
 size_t Container::getCountElements() const

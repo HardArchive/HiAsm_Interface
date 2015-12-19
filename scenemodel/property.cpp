@@ -29,7 +29,7 @@ void Property::collectingData()
     quintptr id_value = cgt::propGetValue(m_id);
 
     auto setValue = [this, &id_value](const QVariant & value, DataTypes type = data_null, DataTypes arrType = data_null, const QString &name = QString()) {
-        m_value = SharedValue::create(id_value, type, name, value, this);
+        m_value = SharedValue::create(id_value, type, name, value);
         m_value->setArrayType(arrType);
         m_model->addValueToMap(m_value);
     };
@@ -163,24 +163,14 @@ quintptr Property::getId() const
     return m_id;
 }
 
-QString Property::getName() const
-{
-    return m_name;
-}
-
-DataTypes Property::getType() const
-{
-    return m_type;
-}
-
-bool Property::getIsDefProp() const
-{
-    return m_isDefProp;
-}
-
 void Property::setName(const QString &name)
 {
     m_name = name;
+}
+
+QString Property::getName() const
+{
+    return m_name;
 }
 
 void Property::setType(DataTypes type)
@@ -188,9 +178,19 @@ void Property::setType(DataTypes type)
     m_type = type;
 }
 
+DataTypes Property::getType() const
+{
+    return m_type;
+}
+
 void Property::setIsDefProp(bool value)
 {
     m_isDefProp = value;
+}
+
+bool Property::getIsDefProp() const
+{
+    return m_isDefProp;
 }
 
 void Property::setValue(const SharedValue &value)

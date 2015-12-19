@@ -137,7 +137,7 @@ bool Element::getLinkIs() const
     return m_linkIs;
 }
 
-void Element::setLinkMain(quintptr linkMain)
+void Element::setLinkMain(const quintptr &linkMain)
 {
     m_linkMain = linkMain;
 }

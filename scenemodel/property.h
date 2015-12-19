@@ -42,13 +42,14 @@ public:
     //Self
     quintptr getId() const;
 
-    QString getName() const;
-    DataTypes getType() const;
-    bool getIsDefProp() const;
-
     void setName(const QString &name);
+    QString getName() const;
+
     void setType(DataTypes type);
+    DataTypes getType() const;
+
     void setIsDefProp(bool value);
+    bool getIsDefProp() const;
 
     //Value
     void setValue(const SharedValue &value);

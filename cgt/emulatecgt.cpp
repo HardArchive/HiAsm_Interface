@@ -520,7 +520,7 @@ namespace EmulateCgt
         if (!v)
             return nullptr;
 
-        return fcgt::strToPChar(v->getArrayValueName(index));
+        return fcgt::strToPChar(v->getArrayItemName(index));
     }
 
     //ru Получаем элемент (id_arrayValue) массива  по индексу.
