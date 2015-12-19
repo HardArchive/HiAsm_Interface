@@ -13,11 +13,12 @@
 #include <QDebug>
 #include <QUuid>
 
-Property::Property(quintptr id_prop, PSceneModel model, QObject *parent)
+Property::Property(quintptr id_prop, QObject *parent)
     : QObject(parent)
     , m_id(id_prop)
-    , m_model(model)
+    , m_model(parent->property("model").value<PSceneModel>())
 {
+    m_model->addPropertyToMap(this);
     collectingData();
 }
 
@@ -227,4 +228,9 @@ const SharedLinkedElementInfo Property::getLinkedElementInfo() const
         return SharedLinkedElementInfo();
 
     return m_value->getVariant().value<SharedLinkedElementInfo>();
+}
+
+PSceneModel Property::getModel()
+{
+    return m_model;
 }

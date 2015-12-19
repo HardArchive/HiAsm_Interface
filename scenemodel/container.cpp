@@ -1,19 +1,31 @@
 //Project
 #include "container.h"
 #include "element.h"
+#include "scenemodel.h"
 #include "cgt/cgt.h"
 
 //STL
 
 //Qt
 
-
-Container::Container(quintptr id_sdk, PSceneModel model, QObject *parent)
+Container::Container(quintptr id_sdk, QObject *parent)
     : QObject(parent)
     , m_id(id_sdk)
-    , m_model(model)
+    , m_model(parent->property("model").value<PSceneModel>())
 {
+    m_model->addContainerToMap(this);
+    collectingData();
+}
 
+void Container::collectingData()
+{
+    int countElements = cgt::sdkGetCount(m_id);
+    for (int i = 0; i < countElements; ++i) {
+        quintptr id_element = cgt::sdkGetElement(m_id, i);
+
+        //ru Добавляем элемент в контейнер
+        m_elements.append(new Element(id_element, this)) ;
+    }
 }
 
 PElement Container::getElementByName(const QString &name) const
@@ -71,4 +83,14 @@ QString Container::getName() const
 void Container::setName(const QString &name)
 {
     m_name = name;
+}
+
+PSceneModel Container::getModel() const
+{
+    return m_model;
+}
+
+size_t Container::getCountElements() const
+{
+    m_elements.size();
 }

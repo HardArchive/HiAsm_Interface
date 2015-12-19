@@ -18,10 +18,7 @@ SceneModel::SceneModel(QObject *parent):
     collectingData(cgt::getMainSDK());
 
     //ru Получаем контейнер c элементами из SDK
-    grabberSDK(cgt::getMainSDK(), this);
-
-    //ru Инициализация карты объектов
-    initMapObjects();
+    m_container = new Container(cgt::getMainSDK(), this);
 }
 
 SceneModel::~SceneModel()
@@ -96,77 +93,6 @@ void SceneModel::collectingData(quintptr id_sdk)
     reinterpret_cast<quintptr *>(buf.data())[0] = eId;
     cgt::GetParam(PARAM_COMPILER, buf.data());
     m_cgtParams.COMPILER = QString::fromLocal8Bit(buf);
-}
-
-PContainer SceneModel::grabberSDK(quintptr id_sdk, QObject *parent)
-{
-    PContainer container = new Container(id_sdk, this, parent);
-    m_containers.append(container);
-
-    int countElements = cgt::sdkGetCount(id_sdk);
-    for (int i = 0; i < countElements; ++i) {
-        quintptr id_element = cgt::sdkGetElement(id_sdk, i);
-
-        PElement element = new Element(id_element, this, container);
-
-        if (fcgt::isLink(element->m_flags)) {
-            container->m_elements << element;
-            continue;
-        }
-
-        //ru Элемент содержит контейнер(ы)
-        if (fcgt::isMulti(element->m_flags)) {
-            //ru Элемен содержит полиморфный контейнер
-            if (fcgt::isPolyMulti(element->m_classIndex)) {
-                //ru Получаем к-во контейнеров, которое содержит элемент
-                int countContainers = cgt::elGetSDKCount(id_element);
-
-                for (int i = 0; i < countContainers; ++i) {
-                    //ru Получаем ID контейнера
-                    quintptr idSDK = cgt::elGetSDKByIndex(id_element, i);
-                    QString name = QString::fromLocal8Bit(cgt::elGetSDKName(id_element, i));
-
-                    //ru Получаем контейнер
-                    PContainer container = grabberSDK(idSDK, element);
-                    container->setName(name);
-
-                    //ru Добавляем контейнер в элемент
-                    element->m_containers << container;
-                }
-            } else { //ru Элемент содержит обычный контейнер
-
-                //ru Получаем ID контейнера элемента
-                quintptr idSDK = cgt::elGetSDK(id_element);
-
-                //ru Добавляем контейнер в элемент
-                element->m_containers << grabberSDK(idSDK, element);
-            }
-        }
-
-        //ru Добавляем элемент в контейнер
-        container->m_elements << element;
-    }
-
-    return container;
-}
-
-void SceneModel::initMapObjects()
-{
-    for (PContainer c : m_containers) {
-        m_mapContainers.insert(c->m_id, c);
-
-        for (PElement e : c->m_elements) {
-            m_mapElements.insert(e->m_id, e);
-
-            for (PPoint p : e->m_points) {
-                m_mapPoints.insert(p->m_id, p);
-            }
-
-            for (PProperty p : e->m_properties) {
-                m_mapProperties.insert(p->m_id, p);
-            }
-        }
-    }
 }
 
 void SceneModel::deleteResources()
@@ -251,7 +177,7 @@ uint SceneModel::getCountElementsInContainer(quintptr id_sdk) const
     if (!c)
         return 0;
 
-    return c->m_elements.size();
+    return c->getCountElements();
 }
 
 PElement SceneModel::getElementById(quintptr id_element) const
@@ -278,12 +204,6 @@ void SceneModel::addValueToMap(SharedValue value)
 {
     if (value)
         m_mapValues.insert(value->getId(), value);
-}
-
-void SceneModel::addPropertyToMap(PProperty prop)
-{
-    if (prop)
-        m_mapProperties.insert(prop->getId(), prop);
 }
 
 const char *SceneModel::addResByIdProp(quintptr id_prop)
@@ -364,4 +284,33 @@ void SceneModel::setPropArrayValue(const SharedValue &value)
 const SharedValue SceneModel::getPropArrayValue()
 {
     return m_propArrayValue;
+}
+
+void SceneModel::addContainerToMap(PContainer id_sdk)
+{
+    if (id_sdk)
+        m_mapContainers.insert(id_sdk->getId(), id_sdk);
+}
+
+void SceneModel::addElementToMap(PElement id_element)
+{
+    if (id_element)
+        m_mapElements.insert(id_element->getId(), id_element);
+}
+
+void SceneModel::addPropertyToMap(PProperty id_prop)
+{
+    if (id_prop)
+        m_mapProperties.insert(id_prop->getId(), id_prop);
+}
+
+void SceneModel::addPointToMap(PPoint id_point)
+{
+    if (id_point)
+        m_mapPoints.insert(id_point->getId(), id_point);
+}
+
+PSceneModel SceneModel::getModel()
+{
+    return this;
 }

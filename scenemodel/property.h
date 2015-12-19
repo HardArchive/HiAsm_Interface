@@ -27,9 +27,11 @@ private:
     //Данные свойства
     SharedValue m_value;
 
+private:
+    Q_PROPERTY(PSceneModel model READ getModel)
+
 public:
-    explicit Property(quintptr id_prop, PSceneModel model, QObject *parent);
-    friend class SceneModel;
+    explicit Property(quintptr id_prop, QObject *parent);
 
 private:
     void collectingData();
@@ -46,6 +48,7 @@ public:
     qreal getValueReal() const;
     QString getValueString() const;
     const SharedLinkedElementInfo getLinkedElementInfo() const;
+    PSceneModel getModel();
 };
 
 Q_DECLARE_METATYPE(Properties)

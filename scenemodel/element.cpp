@@ -3,6 +3,7 @@
 #include "container.h"
 #include "point.h"
 #include "property.h"
+#include "scenemodel.h"
 #include "cgt/cgt.h"
 
 //STL
@@ -10,11 +11,12 @@
 //Qt
 
 
-Element::Element(quintptr id_element, PSceneModel model, QObject *parent)
+Element::Element(quintptr id_element, QObject *parent)
     : QObject(parent)
     , m_id(id_element)
-    , m_model(model)
+    , m_model(parent->property("model").value<PSceneModel>())
 {
+    m_model->addElementToMap(this);
     collectingData();
 }
 
@@ -39,19 +41,51 @@ void Element::collectingData()
     //ru Получаем информацию о точках
     for (int i = 0; i < m_ptCount; ++i) {
         quintptr pointId = cgt::elGetPt(m_id, i);
-        m_points.append(new Point(pointId, m_model, this));
+        m_points.append(new Point(pointId, this));
     }
 
     //ru Получаем информацию о свойствах
     for (int i = 0; i < m_propCount; ++i) {
         quintptr propId = cgt::elGetProperty(m_id, i);
-        m_properties.append(new Property(propId, m_model, this));
+        m_properties.append(new Property(propId, this));
     }
 
     //ru Помечаем свойства, значения которых совпадают со стандартным из INI.
     for (int i = 0; i < m_propCount; ++i) {
         bool def = cgt::elIsDefProp(m_id, i);
         m_properties[i]->setIsDefault(def);
+    }
+
+    if (fcgt::isLink(m_flags))
+        return;
+
+    //ru Элемент содержит контейнер(ы)
+    if (fcgt::isMulti(m_flags)) {
+        //ru Элемен содержит полиморфный контейнер
+        if (fcgt::isPolyMulti(m_classIndex)) {
+            //ru Получаем к-во контейнеров, которое содержит текущий элемент
+            int countContainers = cgt::elGetSDKCount(m_id);
+
+            for (int i = 0; i < countContainers; ++i) {
+                //ru Получаем ID контейнера
+                quintptr id_sdk = cgt::elGetSDKByIndex(m_id, i);
+                QString name = QString::fromLocal8Bit(cgt::elGetSDKName(id_sdk, i));
+
+                //ru Получаем контейнер
+                PContainer container = new Container(id_sdk, this);
+                container->setName(name);
+
+                //ru Добавляем контейнер в элемент
+                m_containers << container;
+            }
+        } else { //ru Элемент содержит обычный контейнер
+
+            //ru Получаем ID контейнера элемента
+            quintptr id_sdk = cgt::elGetSDK(m_id);
+
+            //ru Добавляем контейнер в элемент
+            m_containers << new Container(id_sdk, this);
+        }
     }
 
 }
@@ -61,7 +95,7 @@ quintptr Element::getId() const
     return m_id;
 }
 
-PSceneModel Element::getModel() const
+PSceneModel Element::getModel()
 {
     return m_model;
 }
@@ -113,7 +147,7 @@ int Element::getCountProps() const
 
 PProperty Element::getPropertyByIndex(uint index) const
 {
-    if (index < m_properties.size())
+    if (index < uint(m_properties.size()))
         return m_properties[index];
     else
         return PProperty();
@@ -149,7 +183,7 @@ int Element::getCountPoints() const
 
 PPoint Element::getPointByIndex(uint index) const
 {
-    if (index < m_points.size())
+    if (index < uint(m_points.size()))
         return m_points[index];
     else
         return nullptr;

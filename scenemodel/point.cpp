@@ -2,6 +2,7 @@
 #include "point.h"
 #include "container.h"
 #include "element.h"
+#include "scenemodel.h"
 #include "cgt/cgt.h"
 
 
@@ -9,11 +10,12 @@
 
 //Qt
 
-Point::Point(quintptr id_point, PSceneModel model, QObject *parent)
+Point::Point(quintptr id_point, QObject *parent)
     : QObject(parent)
     , m_id(id_point)
-    , m_model(model)
+    , m_model(parent->property("model").value<PSceneModel>())
 {
+    m_model->addPointToMap(this);
     collectingData();
 }
 
@@ -73,4 +75,9 @@ PointTypes Point::getType() const
 int Point::getIndex() const
 {
     return m_index;
+}
+
+PSceneModel Point::getModel()
+{
+    return m_model;
 }

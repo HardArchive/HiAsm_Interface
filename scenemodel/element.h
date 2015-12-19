@@ -43,16 +43,18 @@ private:
     Points m_points;
     Properties m_properties;
 
+private:
+    Q_PROPERTY(PSceneModel model READ getModel)
+
 public:
-    explicit Element(quintptr id_element, PSceneModel model, QObject *parent);
-    friend class SceneModel;
+    explicit Element(quintptr id_element, QObject *parent);
 
 private:
     void collectingData();
 
 public:
     quintptr getId() const;
-    PSceneModel getModel() const;
+    PSceneModel getModel();
     QString getClassName() const;
     ElementFlags getFlags() const;
     void setCodeName(const QString &name);

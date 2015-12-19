@@ -28,9 +28,11 @@ private:
     PointTypes m_type{};
     int m_index{};
 
+private:
+    Q_PROPERTY(PSceneModel model READ getModel)
+
 public:
-    explicit Point(quintptr id_point, PSceneModel model, QObject *parent);
-    friend class SceneModel;
+    explicit Point(quintptr id_point, QObject *parent);
 
 private:
     void collectingData();
@@ -45,4 +47,5 @@ public:
     DataTypes getDataType() const;
     PointTypes getType() const;
     int getIndex() const;
+    PSceneModel getModel();
 };

@@ -19,9 +19,14 @@ private:
     QString m_name;
     Elements m_elements;
 
+private:
+    Q_PROPERTY(PSceneModel model READ getModel)
+
 public:
-    explicit Container(quintptr id_sdk, PSceneModel model, QObject *parent);
-    friend class SceneModel;
+    explicit Container(quintptr id_sdk, QObject *parent);
+
+private:
+    void collectingData();
 
 public:
     PElement getElementByName(const QString &name) const;
@@ -32,4 +37,6 @@ public:
     PElement getParent() const;
     QString getName() const;
     void setName(const QString &name);
+    PSceneModel getModel() const;
+    size_t getCountElements() const;
 };

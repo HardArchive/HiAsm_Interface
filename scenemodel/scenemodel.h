@@ -20,13 +20,16 @@ private:
     bool m_isDebug{};
     SharedValue m_propArrayValue;
     TCgtParams m_cgtParams;
-    Containers m_containers;
+    PContainer m_container;
     MapContainers m_mapContainers;
     MapElements m_mapElements;
     MapPoints m_mapPoints;
     MapProperties m_mapProperties;
     MapValues m_mapValues;
     QSet<QString> m_resources;
+
+private:
+    Q_PROPERTY(PSceneModel model READ getModel)
 
 public:
     explicit SceneModel(QObject *parent = 0);
@@ -35,8 +38,6 @@ public:
 
 private:
     void collectingData(quintptr id_sdk);
-    PContainer grabberSDK(quintptr id_sdk, QObject *parent);
-    void initMapObjects();
     void deleteResources();
 
 public:
@@ -51,7 +52,6 @@ public:
     PProperty getPropertyById(quintptr id_prop) const;
     SharedValue getValueById(quintptr id_value) const;
     void addValueToMap(SharedValue value);
-    void addPropertyToMap(PProperty prop);
     const char *addResByIdProp(quintptr id_prop);
     const char *addResFromString(const QString &str);
     int addResList(const QString &filePath);
@@ -59,5 +59,12 @@ public:
     void setPropArrayValue(const SharedValue &value);
     const SharedValue getPropArrayValue();
 
+    void addContainerToMap(PContainer id_sdk);
+    void addElementToMap(PElement id_element);
+    void addPropertyToMap(PProperty id_prop);
+    void addPointToMap(PPoint id_point);
 
+    PSceneModel getModel();
 };
+
+Q_DECLARE_METATYPE(PSceneModel)
