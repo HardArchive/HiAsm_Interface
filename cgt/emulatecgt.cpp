@@ -15,7 +15,7 @@ namespace EmulateCgt
 {
 #define EXPORT static __stdcall
 
-    //ru Храним указатель на модель схемы
+    //ru Храним указатель на модель данных
     static SceneModel *m_model = nullptr;
 
     //~~~~~~~~~~~~~~~~~ Проксированные функции ~~~~~~~~~~~~~~~~~~~
