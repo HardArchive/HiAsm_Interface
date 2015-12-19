@@ -37,8 +37,8 @@ public:
     //Self
     quintptr getId() const;
     PElement getParent() const;
-    void setName(const QString &name);
     QString getName() const;
+    void setName(const QString &name);
 
     //Model
     PSceneModel getModel() const;
@@ -49,4 +49,6 @@ public:
     quintptr getIdElementByIndex(uint index) const;
     PElement getElementByName(const QString &name) const;
     quintptr getIdElementByName(const QString &name) const;
+    PElement addElement(PElement element);
+    void removeElement(uint index);
 };

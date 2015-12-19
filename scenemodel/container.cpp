@@ -38,14 +38,14 @@ PElement Container::getParent() const
     return qobject_cast<PElement>(parent());
 }
 
-void Container::setName(const QString &name)
-{
-    m_name = name;
-}
-
 QString Container::getName() const
 {
     return m_name;
+}
+
+void Container::setName(const QString &name)
+{
+    m_name = name;
 }
 
 PSceneModel Container::getModel() const
@@ -93,4 +93,15 @@ quintptr Container::getIdElementByName(const QString &name) const
         return e->getId();
 
     return 0;
+}
+
+PElement Container::addElement(PElement element)
+{
+    m_elements.append(element);
+    return element;
+}
+
+void Container::removeElement(uint index)
+{
+    m_elements.remove(index);
 }
