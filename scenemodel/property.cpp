@@ -125,7 +125,6 @@ void Property::collectingData()
         }
 
         setValue(QVariant::fromValue(values), m_type, arrItemType);
-
         break;
     }
     case data_font: {
@@ -148,12 +147,11 @@ void Property::collectingData()
         quintptr linkedElement = cgt::propGetLinkedElementInfo(e->getId(), m_id, buf);
 
         if (linkedElement) {
-            SharedLinkedElementInfo LEI = SharedLinkedElementInfo::create();
-            LEI->id = linkedElement;
-            LEI->interface = QString::fromLocal8Bit(buf);
-            setValue(QVariant::fromValue(LEI));
+            SharedLinkedElementInfo elementInfo = SharedLinkedElementInfo::create();
+            elementInfo->id = linkedElement;
+            elementInfo->interface = QString::fromLocal8Bit(buf);
+            setValue(QVariant::fromValue(elementInfo));
         }
-
         break;
     }
     default: break;

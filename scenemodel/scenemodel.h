@@ -17,6 +17,9 @@ class SceneModel: public QObject
     Q_DISABLE_COPY(SceneModel)
 
 private:
+    //Model
+    Q_PROPERTY(PSceneModel model READ getModel)
+
     //Map
     MapContainers m_mapContainers;
     MapElements m_mapElements;
@@ -27,8 +30,6 @@ private:
     //Container
     PContainer m_container;
 
-    //Element
-
     //Property
     SharedValue m_propArrayValue;
 
@@ -38,9 +39,6 @@ private:
     //Параметры CGT
     bool m_isDebug{};
     TCgtParams m_cgtParams;
-
-private:
-    Q_PROPERTY(PSceneModel model READ getModel)
 
 public:
     explicit SceneModel(QObject *parent = 0);
@@ -90,7 +88,6 @@ public:
     //Параметры CGT
     bool isDebug() const;
     void getCgtParam(CgtParams index, void *buf) const;
-
 };
 
 Q_DECLARE_METATYPE(PSceneModel)

@@ -348,7 +348,7 @@ namespace EmulateCgt
     {
         if (id_prop == 1) {
             const SharedValue v = m_model->getPropArrayValue();
-            if(!v)
+            if (!v)
                 return 0;
 
             return v->toByte();
@@ -366,7 +366,7 @@ namespace EmulateCgt
     {
         if (id_prop == 1) {
             const SharedValue v = m_model->getPropArrayValue();
-            if(!v)
+            if (!v)
                 return 0;
 
             return v->toInt();
@@ -384,7 +384,7 @@ namespace EmulateCgt
     {
         if (id_prop == 1) {
             const SharedValue v = m_model->getPropArrayValue();
-            if(!v)
+            if (!v)
                 return 0;
 
             return v->toReal();
@@ -402,7 +402,7 @@ namespace EmulateCgt
     {
         if (id_prop == 1) {
             const SharedValue v = m_model->getPropArrayValue();
-            if(!v)
+            if (!v)
                 return 0;
 
             return fcgt::strToPChar(v->toString());
@@ -474,11 +474,13 @@ namespace EmulateCgt
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ информационные сообщения ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ru Выводит строку Text в окно Отладка цветом Color
+    //ru Выводит строку text в окно Отладка цветом color
     //ru Всего возвращает 0.
     EXPORT int _Debug(const char *text, int color)
     {
+        Q_UNUSED(color)
 
+        qDebug("%s", text);
         return 0;
     }
 
