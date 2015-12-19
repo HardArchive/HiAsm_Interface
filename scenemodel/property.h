@@ -17,14 +17,16 @@ class Property: public QObject
     Q_DISABLE_COPY(Property)
 
 private:
-    //ru Данные о свойстве
-    quintptr m_id;
-    PSceneModel m_model{};
+    //Self
+    const quintptr m_id;
     QString m_name;
     DataTypes m_type{};
-    bool m_isDefault{};
+    bool m_isDefProp{};
 
-    //Данные свойства
+    //Model
+    PSceneModel m_model{};
+
+    //Value
     SharedValue m_value;
 
 private:
@@ -37,17 +39,27 @@ private:
     void collectingData();
 
 public:
+    //Self
     quintptr getId() const;
-    DataTypes getType() const;
-    bool getIsDefault() const;
-    void setIsDefault(bool value);
+
     QString getName() const;
+    DataTypes getType() const;
+    bool getIsDefProp() const;
+
+    void setName(const QString &name);
+    void setType(DataTypes type);
+    void setIsDefProp(bool value);
+
+    //Value
+    void setValue(const SharedValue &value);
     SharedValue getValue() const;
-    uchar getValueByte() const;
-    int getValueInt() const;
-    qreal getValueReal() const;
-    QString getValueString() const;
-    const SharedLinkedElementInfo getLinkedElementInfo() const;
+    uchar toByte() const;
+    int toInt() const;
+    qreal toReal() const;
+    QString toString() const;
+    const SharedLinkedElementInfo toLinkedElementInfo() const;
+
+    //Model
     PSceneModel getModel();
 };
 

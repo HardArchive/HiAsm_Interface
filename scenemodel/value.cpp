@@ -138,6 +138,14 @@ uchar Value::toByte() const
     return m_value.value<uchar>();
 }
 
+const SharedLinkedElementInfo Value::toLinkedElementInfo() const
+{
+    if (!m_value.canConvert<SharedLinkedElementInfo>())
+        return SharedLinkedElementInfo();
+
+    return m_value.value<SharedLinkedElementInfo>();
+}
+
 QString Value::getName() const
 {
     return m_name;

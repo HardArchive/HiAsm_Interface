@@ -2,7 +2,6 @@
 
 //Project
 #include "types.h"
-#include "property.h"
 #include "cgt/CGTShare.h"
 
 //STL

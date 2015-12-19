@@ -46,6 +46,7 @@ public:
     int toInt() const;
     qreal toReal() const;
     uchar toByte() const;
+    const SharedLinkedElementInfo toLinkedElementInfo() const;
     QString getName() const;
 };
 

@@ -85,7 +85,7 @@ namespace EmulateCgt
         if (!p)
             return false;
 
-        return p->getIsDefault();
+        return p->getIsDefProp();
     }
 
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
@@ -358,7 +358,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        return p->getValueByte();
+        return p->toByte();
     }
 
     //ru Возвращает значение свойства в формате int.
@@ -376,7 +376,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        return p->getValueInt();
+        return p->toInt();
     }
 
     //ru Возвращает значение свойства в формате float.
@@ -394,7 +394,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        return p->getValueReal();
+        return p->toReal();
     }
 
     //ru Возвращает значение свойства в виде C строки.
@@ -412,7 +412,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        return fcgt::strToPChar(p->getValueString());
+        return fcgt::strToPChar(p->toString());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -798,7 +798,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        const SharedLinkedElementInfo info = p->getLinkedElementInfo();
+        const SharedLinkedElementInfo info = p->toLinkedElementInfo();
         if (!info)
             return 0;
 
@@ -830,7 +830,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        const SharedLinkedElementInfo info = p->getLinkedElementInfo();
+        const SharedLinkedElementInfo info = p->toLinkedElementInfo();
         if (!info)
             return 0;
 

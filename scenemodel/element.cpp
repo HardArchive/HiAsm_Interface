@@ -47,7 +47,7 @@ void Element::collectingData()
     for (int i = 0; i < propCount; ++i) {
         quintptr propId = cgt::elGetProperty(m_id, i);
         bool defProp = cgt::elIsDefProp(m_id, i);
-        addProperty(new Property(propId, this))->setIsDefault(defProp);
+        addProperty(new Property(propId, this))->setIsDefProp(defProp);
     }
 
     if (fcgt::isLink(m_flags))

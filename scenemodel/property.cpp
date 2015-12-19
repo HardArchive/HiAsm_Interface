@@ -163,24 +163,39 @@ quintptr Property::getId() const
     return m_id;
 }
 
+QString Property::getName() const
+{
+    return m_name;
+}
+
 DataTypes Property::getType() const
 {
     return m_type;
 }
 
-bool Property::getIsDefault() const
+bool Property::getIsDefProp() const
 {
-    return m_isDefault;
+    return m_isDefProp;
 }
 
-void Property::setIsDefault(bool value)
+void Property::setName(const QString &name)
 {
-    m_isDefault = value;
+    m_name = name;
 }
 
-QString Property::getName() const
+void Property::setType(DataTypes type)
 {
-    return m_name;
+    m_type = type;
+}
+
+void Property::setIsDefProp(bool value)
+{
+    m_isDefProp = value;
+}
+
+void Property::setValue(const SharedValue &value)
+{
+    m_value = value;
 }
 
 SharedValue Property::getValue() const
@@ -188,7 +203,7 @@ SharedValue Property::getValue() const
     return m_value;
 }
 
-uchar Property::getValueByte() const
+uchar Property::toByte() const
 {
     if (!m_value)
         return 0;
@@ -196,7 +211,7 @@ uchar Property::getValueByte() const
     return m_value->toByte();
 }
 
-int Property::getValueInt() const
+int Property::toInt() const
 {
     if (!m_value)
         return 0;
@@ -204,7 +219,7 @@ int Property::getValueInt() const
     return m_value->toInt();
 }
 
-qreal Property::getValueReal() const
+qreal Property::toReal() const
 {
     if (!m_value)
         return 0.0;
@@ -212,7 +227,7 @@ qreal Property::getValueReal() const
     return m_value->toReal();
 }
 
-QString Property::getValueString() const
+QString Property::toString() const
 {
     if (!m_value)
         return QString();
@@ -220,12 +235,12 @@ QString Property::getValueString() const
     return m_value->toString();
 }
 
-const SharedLinkedElementInfo Property::getLinkedElementInfo() const
+const SharedLinkedElementInfo Property::toLinkedElementInfo() const
 {
     if (!m_value)
         return SharedLinkedElementInfo();
 
-    return m_value->getVariant().value<SharedLinkedElementInfo>();
+    return m_value->toLinkedElementInfo();
 }
 
 PSceneModel Property::getModel()
