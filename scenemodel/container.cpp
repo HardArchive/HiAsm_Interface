@@ -24,7 +24,7 @@ void Container::collectingData()
         quintptr id_element = cgt::sdkGetElement(m_id, i);
 
         //ru Добавляем элемент в контейнер
-        m_elements.append(new Element(id_element, this)) ;
+        addElement(new Element(id_element, this));
     }
 }
 
