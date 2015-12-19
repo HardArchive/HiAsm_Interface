@@ -4,7 +4,7 @@
 //STL
 
 //Qt
-#include <QDebug>
+#include <QtCore>
 #include <QFlags>
 
 namespace fcgt
@@ -54,15 +54,22 @@ namespace fcgt
     {
         return eClass == CI_PolyMulti;
     }
+
+    const char *strToPChar(const QString &str)
+    {
+        char *buf = new char[uint(str.size() + 1)];
+        strcpy(buf, str.toStdString().c_str());
+        return buf;
+    }
 }
 
 
 namespace cgt
 {
-    //!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
-    static TBuildProcessRec *m_buildProcess;
-    static PCodeGenTools m_origCgt{};
-    static PCodeGenTools m_cgt{};
+//!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
+static TBuildProcessRec *m_buildProcess;
+static PCodeGenTools m_origCgt{};
+static PCodeGenTools m_cgt{};
     static quintptr m_sdk{};
 
     //ru Инициализация параметров

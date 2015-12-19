@@ -26,12 +26,7 @@ SceneModel::~SceneModel()
     deleteResources();
 }
 
-const char *SceneModel::strToPChar(const QString &str)
-{
-    char *buf = new char[uint(str.size() + 1)];
-    strcpy(buf, str.toStdString().c_str());
-    return buf;
-}
+
 
 void SceneModel::collectingData(quintptr id_sdk)
 {
@@ -171,7 +166,7 @@ quintptr SceneModel::getIdElementFromSDKByIndex(quintptr id_sdk, int index) cons
     return c->getIdElementByIndex(index);
 }
 
-uint SceneModel::getCountElementsInContainer(quintptr id_sdk) const
+size_t SceneModel::getCountElementsInContainer(quintptr id_sdk) const
 {
     const PContainer c = getContainerById(id_sdk);
     if (!c)
@@ -215,7 +210,7 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
     const SharedValue v = p->getValue();
     if (!v) {
         if (p->getType() == data_icon)
-            return strToPChar(QString("ASMA"));
+            return fcgt::strToPChar(QString("ASMA"));
 
         return nullptr;
     }
@@ -238,7 +233,7 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
     file.close();
     m_resources.insert(resFilePath);
 
-    return strToPChar(fileName);
+    return fcgt::strToPChar(fileName);
 }
 
 const char *SceneModel::addResFromString(const QString &str)
@@ -262,7 +257,7 @@ const char *SceneModel::addResFromString(const QString &str)
     file.close();
     m_resources.insert(resFilePath);
 
-    return strToPChar(fileName);
+    return fcgt::strToPChar(fileName);
 }
 
 int SceneModel::addResList(const QString &filePath)

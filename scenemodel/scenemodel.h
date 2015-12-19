@@ -17,16 +17,27 @@ class SceneModel: public QObject
     Q_DISABLE_COPY(SceneModel)
 
 private:
-    bool m_isDebug{};
-    SharedValue m_propArrayValue;
-    TCgtParams m_cgtParams;
-    PContainer m_container;
+    //Map
     MapContainers m_mapContainers;
     MapElements m_mapElements;
-    MapPoints m_mapPoints;
     MapProperties m_mapProperties;
+    MapPoints m_mapPoints;
     MapValues m_mapValues;
+
+    //Container
+    PContainer m_container;
+
+    //Element
+
+    //Property
+    SharedValue m_propArrayValue;
+
+    //Resource
     QSet<QString> m_resources;
+
+    //Параметры CGT
+    bool m_isDebug{};
+    TCgtParams m_cgtParams;
 
 private:
     Q_PROPERTY(PSceneModel model READ getModel)
@@ -34,37 +45,52 @@ private:
 public:
     explicit SceneModel(QObject *parent = 0);
     virtual ~SceneModel();
-    static const char *strToPChar(const QString &str);
 
 private:
     void collectingData(quintptr id_sdk);
     void deleteResources();
 
 public:
-    bool isDebug() const;
-    void getCgtParam(CgtParams index, quintptr value) const;
-    PContainer getContainerById(quintptr id_sdk) const;
-    PElement getElementFromSDKByIndex(quintptr id_sdk, int index) const;
-    quintptr getIdElementFromSDKByIndex(quintptr id_sdk, int index) const;
-    uint getCountElementsInContainer(quintptr id_sdk) const;
-    PElement getElementById(quintptr id_element) const;
-    PPoint getPointById(quintptr id_point) const;
-    PProperty getPropertyById(quintptr id_prop) const;
-    SharedValue getValueById(quintptr id_value) const;
-    void addValueToMap(SharedValue value);
-    const char *addResByIdProp(quintptr id_prop);
-    const char *addResFromString(const QString &str);
-    int addResList(const QString &filePath);
-    bool resIsEmpty() const;
-    void setPropArrayValue(const SharedValue &value);
-    const SharedValue getPropArrayValue();
+    //Model
+    PSceneModel getModel();
 
+    //Map
     void addContainerToMap(PContainer id_sdk);
     void addElementToMap(PElement id_element);
     void addPropertyToMap(PProperty id_prop);
     void addPointToMap(PPoint id_point);
+    void addValueToMap(SharedValue value);
 
-    PSceneModel getModel();
+    //Container
+    PContainer getContainerById(quintptr id_sdk) const;
+    size_t getCountElementsInContainer(quintptr id_sdk) const;
+
+    //Element
+    PElement getElementById(quintptr id_element) const;
+    PElement getElementFromSDKByIndex(quintptr id_sdk, int index) const;
+    quintptr getIdElementFromSDKByIndex(quintptr id_sdk, int index) const;
+
+    //Property
+    PProperty getPropertyById(quintptr id_prop) const;
+    void setPropArrayValue(const SharedValue &value);
+    const SharedValue getPropArrayValue();
+
+    //Point
+    PPoint getPointById(quintptr id_point) const;
+
+    //Value
+    SharedValue getValueById(quintptr id_value) const;
+
+    //Resource
+    const char *addResByIdProp(quintptr id_prop);
+    const char *addResFromString(const QString &str);
+    int addResList(const QString &filePath);
+    bool resIsEmpty() const;
+
+    //Параметры CGT
+    bool isDebug() const;
+    void getCgtParam(CgtParams index, quintptr value) const;
+
 };
 
 Q_DECLARE_METATYPE(PSceneModel)

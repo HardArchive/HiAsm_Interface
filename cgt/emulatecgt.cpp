@@ -1,5 +1,6 @@
 //Project
 #include "emulatecgt.h"
+#include "cgt.h"
 #include "scenemodel/container.h"
 #include "scenemodel/element.h"
 #include "scenemodel/point.h"
@@ -105,7 +106,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        return SceneModel::strToPChar(e->getCodeName());
+        return fcgt::strToPChar(e->getCodeName());
     }
 
     //ru Возвращает имя класса элемента
@@ -115,7 +116,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        return SceneModel::strToPChar(e->getClassName());
+        return fcgt::strToPChar(e->getClassName());
     }
 
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
@@ -273,7 +274,7 @@ namespace EmulateCgt
         if (!p)
             return nullptr;
 
-        return SceneModel::strToPChar(p->getName());
+        return fcgt::strToPChar(p->getName());
     }
 
     //ru Получаем ID родителя (элемент) точки.
@@ -304,7 +305,7 @@ namespace EmulateCgt
         if (!p)
             return nullptr;
 
-        return SceneModel::strToPChar(p->getDpeName());
+        return fcgt::strToPChar(p->getDpeName());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -325,7 +326,7 @@ namespace EmulateCgt
         if (!p)
             return nullptr;
 
-        return SceneModel::strToPChar(p->getName());
+        return fcgt::strToPChar(p->getName());
     }
 
     //ru Возвращает значение свойства в виде указателя на данные.
@@ -404,14 +405,14 @@ namespace EmulateCgt
             if(!v)
                 return 0;
 
-            return SceneModel::strToPChar(v->toString());
+            return fcgt::strToPChar(v->toString());
         }
 
         PProperty p = m_model->getPropertyById(id_prop);
         if (!p)
             return 0;
 
-        return SceneModel::strToPChar(p->getValueString());
+        return fcgt::strToPChar(p->getValueString());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -517,7 +518,7 @@ namespace EmulateCgt
         if (!v)
             return nullptr;
 
-        return SceneModel::strToPChar(v->getArrayValueName(index));
+        return fcgt::strToPChar(v->getArrayValueName(index));
     }
 
     //ru Получаем элемент (id_arrayValue) массива  по индексу.
@@ -570,7 +571,7 @@ namespace EmulateCgt
         if (!v)
             return nullptr;
 
-        return SceneModel::strToPChar(v->toString());
+        return fcgt::strToPChar(v->toString());
     }
 
     //ru Возвращает данные в формате: целое число.
@@ -605,7 +606,7 @@ namespace EmulateCgt
         if (!font)
             return nullptr;
 
-        return SceneModel::strToPChar(font->name);
+        return fcgt::strToPChar(font->name);
     }
     //ru Возвращает размер шрифта.
     EXPORT int fntSize(quintptr id_font)
@@ -780,7 +781,7 @@ namespace EmulateCgt
         if (!p)
             return nullptr;
 
-        return SceneModel::strToPChar(p->getInfo());
+        return fcgt::strToPChar(p->getInfo());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -867,7 +868,7 @@ namespace EmulateCgt
         if (!c)
             return nullptr;
 
-        return SceneModel::strToPChar(c->getName());
+        return fcgt::strToPChar(c->getName());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ схема ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -895,7 +896,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        return SceneModel::strToPChar(e->getInterface());
+        return fcgt::strToPChar(e->getInterface());
     }
 
     //ru Возвращает список классов, от которых наследуется элемент
@@ -906,7 +907,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        return SceneModel::strToPChar(e->getInherit());
+        return fcgt::strToPChar(e->getInherit());
     }
 
     //!~~~~~~~~~~~~~~~~~~~~~~~~ ресурсы ~~~~~~~~~~~~~~~~~~~~~~~~~~
