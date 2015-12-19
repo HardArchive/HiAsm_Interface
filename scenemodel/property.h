@@ -52,7 +52,7 @@ public:
     bool getIsDefProp() const;
 
     //Value
-    void setValue(const SharedValue &value);
+    SharedValue setValue(const SharedValue &value);
     SharedValue getValue() const;
     uchar toByte() const;
     int toInt() const;

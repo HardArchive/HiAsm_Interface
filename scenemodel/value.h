@@ -17,15 +17,15 @@ private:
     //Self
     const quintptr m_id;
     DataTypes m_type = data_null;
-    QString m_name;
     DataTypes m_arrayType = data_null;
     QVariant m_value;
+    QString m_name;
 
 public:
     explicit Value(quintptr id_value = 0,
                    DataTypes type = data_null,
-                   const QString &name = QString(),
-                   const QVariant &value = QVariant());
+                   const QVariant &value = QVariant(),
+                   const QString &name = QString());
 
 public:
     //Self

@@ -28,21 +28,15 @@ void Property::collectingData()
     m_type = cgt::propGetType(m_id);
     quintptr id_value = cgt::propGetValue(m_id);
 
-    auto setValue = [this, &id_value](const QVariant & value, DataTypes type = data_null, DataTypes arrType = data_null, const QString &name = QString()) {
-        m_value = SharedValue::create(id_value, type, name, value);
-        m_value->setArrayType(arrType);
-        m_model->addValueToMap(m_value);
-    };
-
     switch (m_type) {
     case data_int:
     case data_color:
     case data_flags: {
-        setValue(cgt::propToInteger(m_id), m_type);
+        setValue(SharedValue::create(id_value, m_type, cgt::propToInteger(m_id)));
         break;
     }
     case data_real: {
-        setValue(cgt::propToReal(m_id), m_type);
+        setValue(SharedValue::create(id_value, m_type, cgt::propToReal(m_id)));
         break;
     }
     case data_str:
@@ -50,29 +44,29 @@ void Property::collectingData()
     case data_list:
     case data_script:
     case data_code: {
-        setValue(QString::fromLocal8Bit(cgt::propToString(m_id)), m_type);
+        setValue(SharedValue::create(id_value, m_type, QString::fromLocal8Bit(cgt::propToString(m_id))));
         break;
     }
     case data_data: {
         const DataTypes dataType = cgt::dtType(id_value);
         switch (dataType) {
         case data_int:
-            setValue(cgt::dtInt(id_value), m_type);
+            setValue(SharedValue::create(id_value, m_type, cgt::dtInt(id_value)));
             break;
         case data_str:
-            setValue(QString::fromLocal8Bit(cgt::dtStr(id_value)), m_type);
+            setValue(SharedValue::create(id_value, m_type, cgt::dtStr(id_value)));
             break;
         case data_real:
-            setValue(cgt::dtReal(id_value), m_type);
+            setValue(SharedValue::create(id_value, m_type, cgt::dtReal(id_value)));
             break;
         default:
-            setValue(QVariant(), m_type);
+            setValue(SharedValue::create(id_value, m_type));
             break;
         }
         break;
     }
     case data_combo: {
-        setValue(cgt::propToByte(m_id), m_type);
+        setValue(SharedValue::create(id_value, m_type, cgt::propToByte(m_id)));
         break;
     }
     case data_icon: {
@@ -91,7 +85,7 @@ void Property::collectingData()
         QFile file(filePath);
         if (file.size()) {
             file.open(QIODevice::ReadOnly);
-            setValue(file.readAll(), m_type);
+            setValue(SharedValue::create(id_value, m_type, file.readAll()));
             file.close();
         }
         file.remove();
@@ -121,10 +115,10 @@ void Property::collectingData()
             default: break;
             }
 
-            values.append(SharedValue::create(0, arrItemType, name, data));
+            values.append(SharedValue::create(0, arrItemType, data, name));
         }
 
-        setValue(QVariant::fromValue(values), m_type, arrItemType);
+        setValue(SharedValue::create(id_value, m_type, QVariant::fromValue(values)))->setArrayType(arrItemType);
         break;
     }
     case data_font: {
@@ -135,7 +129,7 @@ void Property::collectingData()
         font->color = cgt::fntColor(id_value);
         font->charset = cgt::fntCharSet(id_value);
 
-        setValue(QVariant::fromValue(font));
+        setValue(SharedValue::create(id_value, m_type, QVariant::fromValue(font)));
         break;
     }
     case data_element: {
@@ -150,7 +144,8 @@ void Property::collectingData()
             SharedLinkedElementInfo elementInfo = SharedLinkedElementInfo::create();
             elementInfo->id = linkedElement;
             elementInfo->interface = QString::fromLocal8Bit(buf);
-            setValue(QVariant::fromValue(elementInfo));
+
+            setValue(SharedValue::create(id_value, m_type, QVariant::fromValue(elementInfo)));
         }
         break;
     }
@@ -193,9 +188,11 @@ bool Property::getIsDefProp() const
     return m_isDefProp;
 }
 
-void Property::setValue(const SharedValue &value)
+SharedValue Property::setValue(const SharedValue &value)
 {
     m_value = value;
+    m_model->addValueToMap(value);
+    return value;
 }
 
 SharedValue Property::getValue() const
