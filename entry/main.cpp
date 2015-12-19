@@ -100,14 +100,14 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
         //ru Загружаем оригинальную DLL в память
         if (!QFile::exists(pathOriginal)) {
-            qCritical("Библиотека %s не найдена!", qPrintable(nameOriginal));
+            qCritical("«%s» library not found!", qPrintable(nameOriginal));
             exit(0);
         }
         codegen.setFileName(pathOriginal);
         if (codegen.load())
-            qInfo("%s successfully loaded.", qUtf8Printable(nameOriginal));
+            qInfo("%s library successfully loaded.", qUtf8Printable(nameOriginal));
         else
-            qCritical("%s is not loaded.", qUtf8Printable(nameOriginal));
+            qCritical("%s library is not loaded.", qUtf8Printable(nameOriginal));
 
         //ru Определение прототипов функций проксируемого кодогенератора
         original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(codegen.resolve("buildPrepareProc"));
