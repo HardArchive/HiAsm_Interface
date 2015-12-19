@@ -22,38 +22,32 @@ Element::Element(quintptr id_element, QObject *parent)
 
 void Element::collectingData()
 {
-    m_className = QString::fromLocal8Bit(cgt::elGetClassName(m_id));
-    m_codeName = QString::fromLocal8Bit(cgt::elGetCodeName(m_id));
     m_classIndex = cgt::elGetClassIndex(m_id);
     m_flags = cgt::elGetFlag(m_id);
-    m_inherit = QString::fromLocal8Bit(cgt::elGetInherit(m_id));
     m_group = cgt::elGetGroup(m_id);
-    m_interface = QString::fromLocal8Bit(cgt::elGetInterface(m_id));
-    m_infSub = QString::fromLocal8Bit(cgt::elGetInfSub(m_id));
     m_linkIs = cgt::elLinkIs(m_id);
     m_linkMain = cgt::elLinkMain(m_id);
-    m_propCount = cgt::elGetPropCount(m_id);
-    m_ptCount = cgt::elGetPtCount(m_id);
-
     cgt::elGetPos(m_id, m_posX, m_posY);
     cgt::elGetSize(m_id, m_sizeW, m_sizeH);
+    m_className = QString::fromLocal8Bit(cgt::elGetClassName(m_id));
+    m_codeName = QString::fromLocal8Bit(cgt::elGetCodeName(m_id));
+    m_inherit = QString::fromLocal8Bit(cgt::elGetInherit(m_id));
+    m_interface = QString::fromLocal8Bit(cgt::elGetInterface(m_id));
+    m_infSub = QString::fromLocal8Bit(cgt::elGetInfSub(m_id));
+    int ptCount = cgt::elGetPtCount(m_id);
+    int propCount = cgt::elGetPropCount(m_id);
 
     //ru Получаем информацию о точках
-    for (int i = 0; i < m_ptCount; ++i) {
+    for (int i = 0; i < ptCount; ++i) {
         quintptr pointId = cgt::elGetPt(m_id, i);
-        m_points.append(new Point(pointId, this));
+        addPoint(new Point(pointId, this));
     }
 
     //ru Получаем информацию о свойствах
-    for (int i = 0; i < m_propCount; ++i) {
+    for (int i = 0; i < propCount; ++i) {
         quintptr propId = cgt::elGetProperty(m_id, i);
-        m_properties.append(new Property(propId, this));
-    }
-
-    //ru Помечаем свойства, значения которых совпадают со стандартным из INI.
-    for (int i = 0; i < m_propCount; ++i) {
-        bool def = cgt::elIsDefProp(m_id, i);
-        m_properties[i]->setIsDefault(def);
+        bool defProp = cgt::elIsDefProp(m_id, i);
+        addProperty(new Property(propId, this))->setIsDefault(defProp);
     }
 
     if (fcgt::isLink(m_flags))
@@ -71,12 +65,8 @@ void Element::collectingData()
                 quintptr id_sdk = cgt::elGetSDKByIndex(m_id, i);
                 QString name = QString::fromLocal8Bit(cgt::elGetSDKName(id_sdk, i));
 
-                //ru Получаем контейнер
-                PContainer container = new Container(id_sdk, this);
-                container->setName(name);
-
                 //ru Добавляем контейнер в элемент
-                m_containers << container;
+                addContainer(new Container(id_sdk, this))->setName(name);
             }
         } else { //ru Элемент содержит обычный контейнер
 
@@ -84,10 +74,9 @@ void Element::collectingData()
             quintptr id_sdk = cgt::elGetSDK(m_id);
 
             //ru Добавляем контейнер в элемент
-            m_containers << new Container(id_sdk, this);
+            addContainer(new Container(id_sdk, this));
         }
     }
-
 }
 
 quintptr Element::getId() const
@@ -95,39 +84,14 @@ quintptr Element::getId() const
     return m_id;
 }
 
-PSceneModel Element::getModel()
+PContainer Element::getParent() const
 {
-    return m_model;
+    return qobject_cast<PContainer>(parent());
 }
 
-QString Element::getClassName() const
-{
-    return m_className;
-}
-
-ElementFlags Element::getFlags() const
-{
-    return ElementFlags(int(m_flags));
-}
-
-void Element::setCodeName(const QString &name)
-{
-    m_codeName = name;
-}
-
-QString Element::getCodeName() const
-{
-    return m_codeName;
-}
-
-quintptr Element::getUserData() const
+void *Element::getUserData() const
 {
     return m_userData;
-}
-
-void Element::setUserData(quintptr userData)
-{
-    m_userData = userData;
 }
 
 ElementClass Element::getClassIndex()
@@ -135,72 +99,24 @@ ElementClass Element::getClassIndex()
     return m_classIndex;
 }
 
-PContainer Element::getParent() const
+ElementFlags Element::getFlags() const
 {
-    return qobject_cast<PContainer>(parent());
+    return ElementFlags(int(m_flags));
 }
 
-int Element::getCountProps() const
+int Element::getGroup() const
 {
-    return m_propCount;
-}
-
-PProperty Element::getPropertyByIndex(uint index) const
-{
-    if (index < uint(m_properties.size()))
-        return m_properties[index];
-    else
-        return PProperty();
-}
-
-quintptr Element::getIdPropertyByIndex(uint index) const
-{
-    PProperty e = getPropertyByIndex(index);
-    if (!e)
-        return 0;
-
-    return e->getId();
-}
-
-PProperty Element::getPropertyById(quintptr id_prop) const
-{
-    if (!id_prop)
-        return PProperty();
-
-    for (PProperty p : m_properties) {
-        if (p->getId() == id_prop) {
-            return p;
-        }
-    }
-
-    return PProperty();
-}
-
-int Element::getCountPoints() const
-{
-    return m_ptCount;
-}
-
-PPoint Element::getPointByIndex(uint index) const
-{
-    if (index < uint(m_points.size()))
-        return m_points[index];
-    else
-        return nullptr;
-}
-
-quintptr Element::getIdPointByIndex(uint index) const
-{
-    const PPoint p = getPointByIndex(index);
-    if (!p)
-        return 0;
-
-    return p->getId();
+    return m_group;
 }
 
 bool Element::getLinkIs() const
 {
     return m_linkIs;
+}
+
+quintptr Element::getLinkMain() const
+{
+    return m_linkMain;
 }
 
 int Element::getPosX() const
@@ -221,6 +137,120 @@ int Element::getSizeW() const
 int Element::getSizeH() const
 {
     return m_sizeH;
+}
+
+QString Element::getClassName() const
+{
+    return m_className;
+}
+
+QString Element::getCodeName() const
+{
+    return m_codeName;
+}
+
+QString Element::getInterface() const
+{
+    return m_interface;
+}
+
+QString Element::getInherit() const
+{
+    return m_inherit;
+}
+
+QString Element::getInfSub() const
+{
+    return m_infSub;
+}
+
+void Element::setUserData(void *userData)
+{
+    m_userData = userData;
+}
+
+void Element::setClassIndex(const ElementClass &classIndex)
+{
+    m_classIndex = classIndex;
+}
+
+void Element::setFlags(const ElementFlgs &flags)
+{
+    m_flags = flags;
+}
+
+void Element::setGroup(int group)
+{
+    m_group = group;
+}
+
+void Element::setLinkIs(bool linkIs)
+{
+    m_linkIs = linkIs;
+}
+
+void Element::setLinkMain(const quintptr &linkMain)
+{
+    m_linkMain = linkMain;
+}
+
+void Element::setPosX(int posX)
+{
+    m_posX = posX;
+}
+
+void Element::setPosY(int posY)
+{
+    m_posY = posY;
+}
+
+void Element::setSizeW(int sizeW)
+{
+    m_sizeW = sizeW;
+}
+
+void Element::setSizeH(int sizeH)
+{
+    m_sizeH = sizeH;
+}
+
+void Element::setClassName(const QString &className)
+{
+    m_className = className;
+}
+
+void Element::setCodeName(const QString &name)
+{
+    m_codeName = name;
+}
+
+void Element::setInterface(const QString &interface)
+{
+    m_interface = interface;
+}
+
+void Element::setInherit(const QString &inherit)
+{
+    m_inherit = inherit;
+}
+
+void Element::setInfSub(const QString &infSub)
+{
+    m_infSub = infSub;
+}
+
+PSceneModel Element::getModel()
+{
+    return m_model;
+}
+
+
+
+
+
+size_t Element::getCountContainers() const
+{
+    return m_containers.size();
 }
 
 PContainer Element::getContainer() const
@@ -257,19 +287,38 @@ quintptr Element::getIdContainerByIndex(uint index)
     return c->getId();
 }
 
-int Element::getCountContainers() const
+PContainer Element::addContainer(PContainer container)
 {
-    return m_containers.size();
+    m_containers.append(container);
+    return container;
 }
 
-QString Element::getInterface() const
+void Element::removeContainer(uint index)
 {
-    return m_interface;
+    m_containers.remove(index);
 }
 
-QString Element::getInherit() const
+
+size_t Element::getCountPoints() const
 {
-    return m_inherit;
+    return m_points.size();
+}
+
+PPoint Element::getPointByIndex(uint index) const
+{
+    if (index < uint(m_points.size()))
+        return m_points[index];
+    else
+        return nullptr;
+}
+
+quintptr Element::getIdPointByIndex(uint index) const
+{
+    const PPoint p = getPointByIndex(index);
+    if (!p)
+        return 0;
+
+    return p->getId();
 }
 
 PPoint Element::getPointByName(const QString &name) const
@@ -292,6 +341,57 @@ quintptr Element::getIdPointByName(const QString &name) const
     return p->getId();
 }
 
+PPoint Element::addPoint(PPoint point)
+{
+    m_points.append(point);
+    return point;
+}
+
+void Element::removePoint(uint index)
+{
+    m_points.remove(index);
+}
+
+
+
+
+
+size_t Element::getCountProps() const
+{
+    return m_properties.size();
+}
+
+PProperty Element::getPropertyByIndex(uint index) const
+{
+    if (index < uint(m_properties.size()))
+        return m_properties[index];
+    else
+        return PProperty();
+}
+
+quintptr Element::getIdPropertyByIndex(uint index) const
+{
+    const PProperty e = getPropertyByIndex(index);
+    if (!e)
+        return 0;
+
+    return e->getId();
+}
+
+PProperty Element::getPropertyById(quintptr id_prop) const
+{
+    if (!id_prop)
+        return PProperty();
+
+    for (PProperty p : m_properties) {
+        if (p->getId() == id_prop) {
+            return p;
+        }
+    }
+
+    return PProperty();
+}
+
 PProperty Element::getPropertyByName(const QString &name) const
 {
     for (PProperty p : m_properties) {
@@ -310,4 +410,15 @@ quintptr Element::getIdPropertyByName(const QString &name) const
         return 0;
 
     return p->getId();
+}
+
+PProperty Element::addProperty(PProperty property)
+{
+    m_properties.append(property);
+    return property;
+}
+
+void Element::removeProperty(uint index)
+{
+    m_points.remove(index);
 }
