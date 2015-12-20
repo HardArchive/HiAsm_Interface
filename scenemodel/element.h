@@ -18,7 +18,7 @@ class Element: public QObject
 private:
     //Self
     const quintptr m_id;
-    void *m_userData{};
+    quintptr m_userData{};
     ElementClass m_classIndex{};
     ElementFlgs m_flags{};
     int m_group{};
@@ -63,8 +63,8 @@ public:
     quintptr getId() const;
     PContainer getParent() const;
 
-    void setUserData(void *userData);
-    void *getUserData() const;
+    void setUserData(quintptr userData);
+    quintptr getUserData() const;
 
     void setClassIndex(ElementClass classIndex);
     ElementClass getClassIndex();

@@ -1,5 +1,6 @@
 //Project
 #include "value.h"
+#include "cgt/CGTShare.h"
 
 //STL
 
@@ -25,16 +26,18 @@ QVariantMap Value::serialize()
     data.insert("arrayType", m_arrayType);
 
     switch (m_type) {
+    case data_icon:
     case data_stream:
     case data_bitmap:
     case data_jpeg:
     case data_wave: {
+        data.insert("value", m_value.toByteArray().toHex());
         break;
     }
     case data_array: {
         QVariantList array;
         for (const SharedValue &v : m_value.value<Values>()) {
-            array.append(v->serialize());;
+            array.append(v->serialize());
         }
 
         data.insert("ArrayValues", array);

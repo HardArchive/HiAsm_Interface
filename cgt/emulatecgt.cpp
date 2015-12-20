@@ -671,7 +671,8 @@ namespace EmulateCgt
     //ru Возвращает пользовательские данные элемента.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель..
-    EXPORT void *elGetData(quintptr id_element)
+    //ru Так же, скорее всего используется для хранения ID элемента
+    EXPORT quintptr elGetData(quintptr id_element)
     {
         PElement e = m_model->getElementById(id_element);
         if (!e)
@@ -683,7 +684,8 @@ namespace EmulateCgt
     //ru Устанавливает пользовательские данные элементу.
     //ru Коммент из hiasm5 - user data used in FTCG codegen.
     //ru Судя по всему, данные могут быть любого типа, ибо хранит указатель.
-    EXPORT void elSetData(quintptr id_element, void *data)
+    //ru Так же, скорее всего используется для хранения ID элемента
+    EXPORT void elSetData(quintptr id_element, quintptr data)
     {
         PElement e = m_model->getElementById(id_element);
         if (e)

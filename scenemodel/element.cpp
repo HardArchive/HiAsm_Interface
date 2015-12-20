@@ -81,6 +81,7 @@ QVariantMap Element::serialize()
 {
     QVariantMap data;
     data.insert("id", m_id);
+    data.insert("userData", m_userData);
     data.insert("classIndex", m_classIndex);
     data.insert("flags", int(m_flags));
     data.insert("group", m_group);
@@ -130,12 +131,12 @@ PContainer Element::getParent() const
     return qobject_cast<PContainer>(parent());
 }
 
-void Element::setUserData(void *userData)
+void Element::setUserData(quintptr userData)
 {
     m_userData = userData;
 }
 
-void *Element::getUserData() const
+quintptr Element::getUserData() const
 {
     return m_userData;
 }

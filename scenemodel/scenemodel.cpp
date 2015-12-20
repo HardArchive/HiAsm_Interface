@@ -130,7 +130,7 @@ void SceneModel::save()
 
     QFile file("test.json");
     file.open(QIODevice::WriteOnly);
-    file.write(doc.toJson());
+    file.write(doc.toJson(QJsonDocument::Compact));
 
     //qDebug() << doc;
 }
