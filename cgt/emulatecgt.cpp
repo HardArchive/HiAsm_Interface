@@ -336,7 +336,7 @@ namespace EmulateCgt
         if (!p)
             return 0;
 
-        const SharedValue v = p->getValue();
+        const PValue v = p->getValue();
         if (!v)
             return 0;
 
@@ -496,7 +496,7 @@ namespace EmulateCgt
     //ru Получаем количество элементов в массиве.
     EXPORT int arrCount(quintptr id_array)
     {
-        const SharedValue v = m_model->getValueById(id_array);
+        const PValue v = m_model->getValueById(id_array);
         if (!v)
             return 0;
 
@@ -506,7 +506,7 @@ namespace EmulateCgt
     //ru Получаем тип элементов в массиве.
     EXPORT DataTypes arrType(quintptr id_array)
     {
-        const SharedValue v = m_model->getValueById(id_array);
+        const PValue v = m_model->getValueById(id_array);
         if (!v)
             return data_null;
 
@@ -516,7 +516,7 @@ namespace EmulateCgt
     //ru Получаем имя элемента по индексу.
     EXPORT const char *arrItemName(quintptr id_array, int index)
     {
-        const SharedValue v = m_model->getValueById(id_array);
+        const PValue v = m_model->getValueById(id_array);
         if (!v)
             return nullptr;
 
@@ -536,7 +536,7 @@ namespace EmulateCgt
     //ru для дальнейшей работы с ним cgt::prop* функциями.
     EXPORT quintptr arrGetItem(quintptr id_array, int index)
     {
-        const SharedValue v = m_model->getValueById(id_array);
+        const PValue v = m_model->getValueById(id_array);
         if (!v)
             return 0;
 
@@ -561,7 +561,7 @@ namespace EmulateCgt
     //ru Возвращает тип данных.
     EXPORT DataTypes dtType(quintptr id_value)
     {
-        const SharedValue v = m_model->getValueById(id_value);
+        const PValue v = m_model->getValueById(id_value);
         if (!v)
             return data_null;
 
@@ -571,7 +571,7 @@ namespace EmulateCgt
     //ru Возвращает данные в формате: строка в стиле C.
     EXPORT const char *dtStr(quintptr id_value)
     {
-        const SharedValue v = m_model->getValueById(id_value);
+        const PValue v = m_model->getValueById(id_value);
         if (!v)
             return nullptr;
 
@@ -581,7 +581,7 @@ namespace EmulateCgt
     //ru Возвращает данные в формате: целое число.
     EXPORT int dtInt(quintptr id_value)
     {
-        const SharedValue v = m_model->getValueById(id_value);
+        const PValue v = m_model->getValueById(id_value);
         if (!v)
             return 0;
 
@@ -591,7 +591,7 @@ namespace EmulateCgt
     //ru Возвращает данные в формате: число с плавающей запятой.
     EXPORT qreal dtReal(quintptr id_value)
     {
-        const SharedValue v = m_model->getValueById(id_value);
+        const PValue v = m_model->getValueById(id_value);
         if (!v)
             return 0.0;
 
@@ -602,7 +602,7 @@ namespace EmulateCgt
     //ru Возвращает название шрифта.
     EXPORT const char *fntName(quintptr id_font)
     {
-        SharedValue v = m_model->getValueById(id_font);
+        PValue v = m_model->getValueById(id_font);
         if (!v)
             return nullptr;
 
@@ -615,7 +615,7 @@ namespace EmulateCgt
     //ru Возвращает размер шрифта.
     EXPORT int fntSize(quintptr id_font)
     {
-        SharedValue v = m_model->getValueById(id_font);
+        PValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 
@@ -628,7 +628,7 @@ namespace EmulateCgt
     //ru Возвращает стиль шрифта.
     EXPORT uchar fntStyle(quintptr id_font)
     {
-        SharedValue v = m_model->getValueById(id_font);
+        PValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 
@@ -641,7 +641,7 @@ namespace EmulateCgt
     //ru Возвращает цвет шрифта.
     EXPORT uint fntColor(quintptr id_font)
     {
-        SharedValue v = m_model->getValueById(id_font);
+        PValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 
@@ -654,7 +654,7 @@ namespace EmulateCgt
     //ru Возвращает кодировку шрифта.
     EXPORT uchar fntCharSet(quintptr id_font)
     {
-        SharedValue v = m_model->getValueById(id_font);
+        PValue v = m_model->getValueById(id_font);
         if (!v)
             return 0;
 

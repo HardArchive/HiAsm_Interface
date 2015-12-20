@@ -1,6 +1,5 @@
 #pragma once
 //Project
-#include "property.h"
 #include "valuetypes.h"
 #include "cgt/CGTShare.h"
 
@@ -15,7 +14,7 @@ class Value
 
 private:
     //Self
-    const quintptr m_id;
+    quintptr m_id;
     DataTypes m_type = data_null;
     QVariant m_value;
     QString m_name;
@@ -33,6 +32,7 @@ public:
     QVariantMap serialize();
 
     //Self
+    void setId(quintptr id);
     quintptr getId() const;
     void setType(DataTypes type);
     DataTypes getType() const;
@@ -72,5 +72,4 @@ public:
     const SharedLinkedElementInfo toLinkedElementInfo() const;
 };
 
-Q_DECLARE_METATYPE(SharedValue)
 Q_DECLARE_METATYPE(Values)

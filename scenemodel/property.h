@@ -2,9 +2,10 @@
 
 //Project
 #include "types.h"
-#include "value.h"
+
 #include "valuetypes.h"
 #include "cgt/CGTShare.h"
+#include "value.h"
 
 //STL
 
@@ -27,7 +28,7 @@ private:
     PSceneModel m_model{};
 
     //Value
-    SharedValue m_value;
+    Value m_value;
 
 private:
     Q_PROPERTY(PSceneModel model READ getModel)
@@ -55,13 +56,13 @@ public:
     bool getIsDefProp() const;
 
     //Value
-    SharedValue setValue(quintptr id = 0,
+    void setValue(quintptr id = 0,
                          DataTypes type = data_null,
                          const QVariant &data = QVariant(),
                          const QString &name = QString(),
                          DataTypes arrayType = data_null);
-    SharedValue setValue(const SharedValue &value);
-    SharedValue getValue() const;
+
+    PValue getValue();
     uchar toByte() const;
     int toInt() const;
     qreal toReal() const;

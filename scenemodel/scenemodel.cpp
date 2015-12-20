@@ -155,7 +155,7 @@ void SceneModel::addPointToMap(PPoint id_point)
         m_mapPoints.insert(id_point->getId(), id_point);
 }
 
-void SceneModel::addValueToMap(const SharedValue &value)
+void SceneModel::addValueToMap(PValue value)
 {
     if (value)
         m_mapValues.insert(value->getId(), value);
@@ -206,7 +206,7 @@ void SceneModel::setPropArrayValue(const SharedValue &value)
     m_propArrayValue = value;
 }
 
-const SharedValue SceneModel::getPropArrayValue()
+const SharedValue &SceneModel::getPropArrayValue()
 {
     return m_propArrayValue;
 }
@@ -216,7 +216,7 @@ PPoint SceneModel::getPointById(quintptr id_point) const
     return m_mapPoints[id_point];
 }
 
-SharedValue SceneModel::getValueById(quintptr id_value) const
+PValue SceneModel::getValueById(quintptr id_value) const
 {
     return m_mapValues[id_value];
 }
@@ -227,13 +227,10 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
     if (!p)
         return nullptr;
 
-    const SharedValue v = p->getValue();
-    if (!v) {
-        if (p->getType() == data_icon)
+    const PValue v = p->getValue();
+    if (p->getType() == data_icon)
+        if (v->getValue().isNull())
             return fcgt::strToPChar(QString("ASMA"));
-
-        return nullptr;
-    }
 
     const QByteArray byteArray = v->getValue().toByteArray();
     static const QString nameDir = "compiler";

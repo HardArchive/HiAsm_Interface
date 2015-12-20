@@ -5,6 +5,7 @@
 
 //Qt
 
+
 Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QString &name, DataTypes arrayType):
     m_id(id_value),
     m_type(type),
@@ -18,6 +19,11 @@ Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QSt
 QVariantMap Value::serialize()
 {
     return QVariantMap();
+}
+
+void Value::setId(quintptr id)
+{
+    m_id = id;
 }
 
 quintptr Value::getId() const

@@ -61,7 +61,7 @@ public:
     void addElementToMap(PElement id_element);
     void addPropertyToMap(PProperty id_prop);
     void addPointToMap(PPoint id_point);
-    void addValueToMap(const SharedValue &value);
+    void addValueToMap(PValue value);
 
     //Container
     PContainer getContainerById(quintptr id_sdk) const;
@@ -75,13 +75,13 @@ public:
     //Property
     PProperty getPropertyById(quintptr id_prop) const;
     void setPropArrayValue(const SharedValue &value);
-    const SharedValue getPropArrayValue();
+    const SharedValue &getPropArrayValue();
 
     //Point
     PPoint getPointById(quintptr id_point) const;
 
     //Value
-    SharedValue getValueById(quintptr id_value) const;
+    PValue getValueById(quintptr id_value) const;
 
     //Resource
     const char *addResByIdProp(quintptr id_prop);

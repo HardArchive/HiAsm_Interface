@@ -9,15 +9,16 @@
 #include <QMap>
 #include <QMetaType>
 
+class Value;
+typedef Value *PValue;
+typedef QMap<quintptr, PValue> MapValues;
+typedef QSharedPointer<Value> SharedValue;
+typedef QVector<SharedValue> Values;
+
 class Property;
 typedef Property *PProperty;
 typedef QMap<quintptr, PProperty> MapProperties;
 typedef QVector<PProperty> Properties;
-
-class Value;
-typedef QSharedPointer<Value> SharedValue;
-typedef QMap<quintptr, SharedValue> MapValues;
-typedef QVector<SharedValue> Values;
 
 class Point;
 typedef Point *PPoint;

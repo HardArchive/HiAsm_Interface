@@ -95,7 +95,7 @@ void Property::collectingData()
     case data_array: {
         int arrCount = cgt::arrCount(id_value);
         DataTypes arrItemType = cgt::arrType(id_value);
-        Values values;
+        Values arrayItems;
 
         for (int i = 0; i < arrCount; ++i) {
             const quintptr id_prop = cgt::arrGetItem(id_value, i);
@@ -115,10 +115,10 @@ void Property::collectingData()
             default: break;
             }
 
-            values.append(SharedValue::create(0, arrItemType, data, name));
+            arrayItems.append(SharedValue::create(0, arrItemType, data, name));
         }
 
-        setValue(id_value, m_type, QVariant::fromValue(values), QString(), arrItemType);
+        setValue(id_value, m_type, QVariant::fromValue(arrayItems), QString(), arrItemType);
         break;
     }
     case data_font: {
@@ -202,63 +202,44 @@ bool Property::getIsDefProp() const
     return m_isDefProp;
 }
 
-SharedValue Property::setValue(quintptr id, DataTypes type, const QVariant &data, const QString &name, DataTypes arrayType)
+void Property::setValue(quintptr id, DataTypes type, const QVariant &data, const QString &name, DataTypes arrayType)
 {
-    m_value = SharedValue::create(id, type, data, name, arrayType);
-    m_model->addValueToMap(m_value);
-    return m_value;
+    m_value.setId(id);
+    m_value.setType(type);
+    m_value.setValue(data);
+    m_value.setName(name);
+    m_value.setArrayType(arrayType);
+    m_model->addValueToMap(&m_value);
 }
 
-SharedValue Property::setValue(const SharedValue &value)
+PValue Property::getValue()
 {
-    m_value = value;
-    m_model->addValueToMap(m_value);
-    return value;
-}
-
-SharedValue Property::getValue() const
-{
-    return m_value;
+    return &m_value;
 }
 
 uchar Property::toByte() const
 {
-    if (!m_value)
-        return 0;
-
-    return m_value->toByte();
+    return m_value.toByte();
 }
 
 int Property::toInt() const
 {
-    if (!m_value)
-        return 0;
-
-    return m_value->toInt();
+    return m_value.toInt();
 }
 
 qreal Property::toReal() const
 {
-    if (!m_value)
-        return 0.0;
-
-    return m_value->toReal();
+    return m_value.toReal();
 }
 
 QString Property::toString() const
 {
-    if (!m_value)
-        return QString();
-
-    return m_value->toString();
+    return m_value.toString();
 }
 
 const SharedLinkedElementInfo Property::toLinkedElementInfo() const
 {
-    if (!m_value)
-        return SharedLinkedElementInfo();
-
-    return m_value->toLinkedElementInfo();
+    return m_value.toLinkedElementInfo();
 }
 
 PSceneModel Property::getModel()
