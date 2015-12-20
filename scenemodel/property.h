@@ -57,10 +57,10 @@ public:
 
     //Value
     void setValue(quintptr id = 0,
-                         DataTypes type = data_null,
-                         const QVariant &data = QVariant(),
-                         const QString &name = QString(),
-                         DataTypes arrayType = data_null);
+                  DataTypes type = data_null,
+                  const QVariant &data = QVariant(),
+                  const QString &name = QString(),
+                  DataTypes arrayType = data_null);
 
     PValue getValue();
     uchar toByte() const;

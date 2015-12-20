@@ -44,10 +44,7 @@ QVariantMap Point::serialize()
     data.insert("linkPoint", m_linkPoint);
     data.insert("RLinkPoint", m_RLinkPoint);
 
-    QVariantMap point;
-    point.insert("Data", data);
-
-    return point;
+    return data;
 }
 
 quintptr Point::getId() const

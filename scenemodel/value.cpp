@@ -18,7 +18,55 @@ Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QSt
 
 QVariantMap Value::serialize()
 {
-    return QVariantMap();
+    QVariantMap data;
+    data.insert("id", m_id);
+    data.insert("name", m_name);
+    data.insert("type", m_type);
+    data.insert("arrayType", m_arrayType);
+
+    switch (m_type) {
+    case data_stream:
+    case data_bitmap:
+    case data_jpeg:
+    case data_wave: {
+        break;
+    }
+    case data_array: {
+        QVariantList array;
+        for (const SharedValue &v : m_value.value<Values>()) {
+            array.append(v->serialize());;
+        }
+
+        data.insert("ArrayValues", array);
+        break;
+    }
+    case data_font: {
+        const SharedValueFont font = m_value.value<SharedValueFont>();
+        QVariantMap fontMap;
+        fontMap.insert("name", font->name);
+        fontMap.insert("size", font->size);
+        fontMap.insert("style", font->style);
+        fontMap.insert("color", font->color);
+        fontMap.insert("charset", font->charset);
+
+        data.insert("value", fontMap);
+        break;
+    }
+    case data_element: {
+        const SharedLinkedElementInfo info = m_value.value<SharedLinkedElementInfo>();
+        QVariantMap infoMap;
+        infoMap.insert("id", info->id);
+        infoMap.insert("interface", info->interface);
+
+        data.insert("value", infoMap);
+        break;
+    }
+    default: {
+        data.insert("value", m_value);
+    }
+    }
+
+    return data;
 }
 
 void Value::setId(quintptr id)

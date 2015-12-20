@@ -128,7 +128,11 @@ void SceneModel::save()
 {
     QJsonDocument doc = QJsonDocument::fromVariant(serialize());
 
-    qDebug() << doc;
+    QFile file("test.json");
+    file.open(QIODevice::WriteOnly);
+    file.write(doc.toJson());
+
+    //qDebug() << doc;
 }
 
 void SceneModel::addContainerToMap(PContainer id_sdk)
