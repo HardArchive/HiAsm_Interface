@@ -96,7 +96,7 @@ void SceneModel::deleteResources()
     m_resources.clear();
 }
 
-QVariantMap SceneModel::serialize()
+QJsonDocument SceneModel::serialize()
 {
     QVariantMap cgtParams;
     cgtParams.insert("CODE_PATH", m_cgtParams.CODE_PATH);
@@ -116,7 +116,7 @@ QVariantMap SceneModel::serialize()
     model.insert("CGTParams", cgtParams);
     model.insert("Container", m_container->serialize());
 
-    return model;
+    return QJsonDocument::fromVariant(model);
 }
 
 PSceneModel SceneModel::getModel()
@@ -126,7 +126,7 @@ PSceneModel SceneModel::getModel()
 
 void SceneModel::save()
 {
-    QJsonDocument doc = QJsonDocument::fromVariant(serialize());
+    QJsonDocument doc = serialize();
 
     QFile file("test.json");
     file.open(QIODevice::WriteOnly);

@@ -50,7 +50,7 @@ private:
 
 public:
     //Serialize
-    QVariantMap serialize();
+    QJsonDocument serialize();
 
     //Model
     PSceneModel getModel();
