@@ -17,15 +17,16 @@ private:
     //Self
     const quintptr m_id;
     DataTypes m_type = data_null;
-    DataTypes m_arrayType = data_null;
     QVariant m_value;
     QString m_name;
+    DataTypes m_arrayType = data_null;
 
 public:
     explicit Value(quintptr id_value = 0,
                    DataTypes type = data_null,
                    const QVariant &value = QVariant(),
-                   const QString &name = QString());
+                   const QString &name = QString(),
+                   DataTypes arrayType = data_null);
 
 public:
     //Serialize

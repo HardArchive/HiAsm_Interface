@@ -5,11 +5,12 @@
 
 //Qt
 
-Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QString &name):
+Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QString &name, DataTypes arrayType):
     m_id(id_value),
     m_type(type),
     m_value(value),
-    m_name(name)
+    m_name(name),
+    m_arrayType(arrayType)
 {
 
 }

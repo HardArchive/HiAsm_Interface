@@ -55,6 +55,11 @@ public:
     bool getIsDefProp() const;
 
     //Value
+    SharedValue setValue(quintptr id = 0,
+                         DataTypes type = data_null,
+                         const QVariant &data = QVariant(),
+                         const QString &name = QString(),
+                         DataTypes arrayType = data_null);
     SharedValue setValue(const SharedValue &value);
     SharedValue getValue() const;
     uchar toByte() const;

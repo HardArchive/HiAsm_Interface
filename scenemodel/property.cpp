@@ -32,11 +32,11 @@ void Property::collectingData()
     case data_int:
     case data_color:
     case data_flags: {
-        setValue(SharedValue::create(id_value, m_type, cgt::propToInteger(m_id)));
+        setValue(id_value, m_type, cgt::propToInteger(m_id));
         break;
     }
     case data_real: {
-        setValue(SharedValue::create(id_value, m_type, cgt::propToReal(m_id)));
+        setValue(id_value, m_type, cgt::propToReal(m_id));
         break;
     }
     case data_str:
@@ -44,29 +44,29 @@ void Property::collectingData()
     case data_list:
     case data_script:
     case data_code: {
-        setValue(SharedValue::create(id_value, m_type, QString::fromLocal8Bit(cgt::propToString(m_id))));
+        setValue(id_value, m_type, QString::fromLocal8Bit(cgt::propToString(m_id)));
         break;
     }
     case data_data: {
         const DataTypes dataType = cgt::dtType(id_value);
         switch (dataType) {
         case data_int:
-            setValue(SharedValue::create(id_value, m_type, cgt::dtInt(id_value)));
+            setValue(id_value, m_type, cgt::dtInt(id_value));
             break;
         case data_str:
-            setValue(SharedValue::create(id_value, m_type, cgt::dtStr(id_value)));
+            setValue(id_value, m_type, cgt::dtStr(id_value));
             break;
         case data_real:
-            setValue(SharedValue::create(id_value, m_type, cgt::dtReal(id_value)));
+            setValue(id_value, m_type, cgt::dtReal(id_value));
             break;
         default:
-            setValue(SharedValue::create(id_value, m_type));
+            setValue(id_value, m_type);
             break;
         }
         break;
     }
     case data_combo: {
-        setValue(SharedValue::create(id_value, m_type, cgt::propToByte(m_id)));
+        setValue(id_value, m_type, cgt::propToByte(m_id));
         break;
     }
     case data_icon: {
@@ -85,7 +85,7 @@ void Property::collectingData()
         QFile file(filePath);
         if (file.size()) {
             file.open(QIODevice::ReadOnly);
-            setValue(SharedValue::create(id_value, m_type, file.readAll()));
+            setValue(id_value, m_type, file.readAll());
             file.close();
         }
         file.remove();
@@ -118,7 +118,7 @@ void Property::collectingData()
             values.append(SharedValue::create(0, arrItemType, data, name));
         }
 
-        setValue(SharedValue::create(id_value, m_type, QVariant::fromValue(values)))->setArrayType(arrItemType);
+        setValue(id_value, m_type, QVariant::fromValue(values), QString(), arrItemType);
         break;
     }
     case data_font: {
@@ -129,7 +129,7 @@ void Property::collectingData()
         font->color = cgt::fntColor(id_value);
         font->charset = cgt::fntCharSet(id_value);
 
-        setValue(SharedValue::create(id_value, m_type, QVariant::fromValue(font)));
+        setValue(id_value, m_type, QVariant::fromValue(font));
         break;
     }
     case data_element: {
@@ -139,13 +139,12 @@ void Property::collectingData()
 
         char buf[PATH_MAX];
         quintptr linkedElement = cgt::propGetLinkedElementInfo(e->getId(), m_id, buf);
-
         if (linkedElement) {
             SharedLinkedElementInfo elementInfo = SharedLinkedElementInfo::create();
             elementInfo->id = linkedElement;
             elementInfo->interface = QString::fromLocal8Bit(buf);
 
-            setValue(SharedValue::create(id_value, m_type, QVariant::fromValue(elementInfo)));
+            setValue(id_value, m_type, QVariant::fromValue(elementInfo));
         }
         break;
     }
@@ -203,10 +202,17 @@ bool Property::getIsDefProp() const
     return m_isDefProp;
 }
 
+SharedValue Property::setValue(quintptr id, DataTypes type, const QVariant &data, const QString &name, DataTypes arrayType)
+{
+    m_value = SharedValue::create(id, type, data, name, arrayType);
+    m_model->addValueToMap(m_value);
+    return m_value;
+}
+
 SharedValue Property::setValue(const SharedValue &value)
 {
     m_value = value;
-    m_model->addValueToMap(value);
+    m_model->addValueToMap(m_value);
     return value;
 }
 
