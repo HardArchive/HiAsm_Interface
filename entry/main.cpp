@@ -141,6 +141,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 
 #ifdef MODEL
     sceneModel = new SceneModel;
+    sceneModel->save();
     EmulateCgt::setSceneModel(sceneModel);
     cgt::setProxyCgt(EmulateCgt::getCgt());
 #endif
@@ -155,9 +156,9 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::setProxyCgt(ProxyCgt::getCgt());
 #endif
 
-    int res = original_buildProcessProc(params);
-    PRINT_RESULT(CgResultMap[res]);
-    return res;
+    //int res = original_buildProcessProc(params);
+    //PRINT_RESULT(CgResultMap[res]);
+    return CG_SUCCESS;//res;
 }
 
 DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)

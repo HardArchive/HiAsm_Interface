@@ -49,8 +49,12 @@ private:
     void deleteResources();
 
 public:
+    //Serialize
+    QVariantMap serialize();
+
     //Model
     PSceneModel getModel();
+    void save();
 
     //Map
     void addContainerToMap(PContainer id_sdk);

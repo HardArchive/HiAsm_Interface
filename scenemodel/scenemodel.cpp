@@ -96,9 +96,39 @@ void SceneModel::deleteResources()
     m_resources.clear();
 }
 
+QVariantMap SceneModel::serialize()
+{
+    QVariantMap cgtParams;
+    cgtParams.insert("CODE_PATH", m_cgtParams.CODE_PATH);
+    cgtParams.insert("DEBUG_MODE", m_cgtParams.DEBUG_MODE);
+    cgtParams.insert("DEBUG_SERVER_PORT", m_cgtParams.DEBUG_SERVER_PORT);
+    cgtParams.insert("DEBUG_CLIENT_PORT", m_cgtParams.DEBUG_CLIENT_PORT);
+    cgtParams.insert("PROJECT_PATH", m_cgtParams.PROJECT_PATH);
+    cgtParams.insert("HIASM_VERSION", m_cgtParams.HIASM_VERSION);
+    cgtParams.insert("USER_NAME", m_cgtParams.USER_NAME);
+    cgtParams.insert("USER_MAIL", m_cgtParams.USER_MAIL);
+    cgtParams.insert("PROJECT_NAME", m_cgtParams.PROJECT_NAME);
+    cgtParams.insert("SDE_WIDTH", m_cgtParams.SDE_WIDTH);
+    cgtParams.insert("SDE_HEIGHT", m_cgtParams.SDE_HEIGHT);
+    cgtParams.insert("COMPILER", m_cgtParams.COMPILER);
+
+    QVariantMap model;
+    model.insert("CGTParams", cgtParams);
+    model.insert("Container", m_container->serialize());
+
+    return model;
+}
+
 PSceneModel SceneModel::getModel()
 {
     return this;
+}
+
+void SceneModel::save()
+{
+    QJsonDocument doc = QJsonDocument::fromVariant(serialize());
+
+    qDebug() << doc;
 }
 
 void SceneModel::addContainerToMap(PContainer id_sdk)

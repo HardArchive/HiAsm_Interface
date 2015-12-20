@@ -28,6 +28,9 @@ public:
                    const QString &name = QString());
 
 public:
+    //Serialize
+    QVariantMap serialize();
+
     //Self
     quintptr getId() const;
     void setType(DataTypes type);

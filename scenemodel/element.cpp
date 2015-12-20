@@ -77,6 +77,49 @@ void Element::collectingData()
     }
 }
 
+QVariantMap Element::serialize()
+{
+    QVariantMap data;
+    data.insert("id", m_id);
+    data.insert("classIndex", m_classIndex);
+    data.insert("flags", int(m_flags));
+    data.insert("group", m_group);
+    data.insert("linkIs", m_linkIs);
+    data.insert("linkMain", m_linkMain);
+    data.insert("posX", m_posX);
+    data.insert("posY", m_posY);
+    data.insert("sizeW", m_sizeW);
+    data.insert("sizeH", m_sizeH);
+    data.insert("className", m_className);
+    data.insert("codeName", m_codeName);
+    data.insert("interface", m_interface);
+    data.insert("inherit", m_inherit);
+    data.insert("infSub", m_infSub);
+
+    QVariantList containers;
+    for (const PContainer c : m_containers) {
+        containers.append(c->serialize());
+    }
+
+    QVariantList points;
+    for (const PPoint p : m_points) {
+        points.append(p->serialize());
+    }
+
+    QVariantList properties;
+    for (const PProperty p : m_properties) {
+        properties.append(p->serialize());
+    }
+
+    QVariantMap element;
+    element.insert("Data", data);
+    element.insert("Containers", containers);
+    element.insert("Points", points);
+    element.insert("Properties", properties);
+
+    return element;
+}
+
 quintptr Element::getId() const
 {
     return m_id;

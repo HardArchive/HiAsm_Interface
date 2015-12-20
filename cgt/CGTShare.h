@@ -233,6 +233,8 @@ struct TCgtParams {
     QString COMPILER{};
 };
 typedef TCgtParams *PCgtParams;
+Q_DECLARE_METATYPE(TCgtParams)
+
 
 //!ru Ошибки при работе с библиотекой кодогенератора
 enum CgResult {

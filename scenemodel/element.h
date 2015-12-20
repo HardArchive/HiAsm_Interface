@@ -56,6 +56,9 @@ private:
     void collectingData();
 
 public:
+    //Serialize
+    QVariantMap serialize();
+
     //Self
     quintptr getId() const;
     PContainer getParent() const;

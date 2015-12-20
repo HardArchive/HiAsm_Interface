@@ -31,6 +31,25 @@ void Point::collectingData()
     m_RLinkPoint = cgt::ptGetRLinkPoint(m_id);
 }
 
+QVariantMap Point::serialize()
+{
+    QVariantMap data;
+    data.insert("id", m_id);
+    data.insert("type", m_type);
+    data.insert("dataType", m_dataType);
+    data.insert("index", m_index);
+    data.insert("name", m_name);
+    data.insert("dpeName", m_dpeName);
+    data.insert("info", m_info);
+    data.insert("linkPoint", m_linkPoint);
+    data.insert("RLinkPoint", m_RLinkPoint);
+
+    QVariantMap point;
+    point.insert("Data", data);
+
+    return point;
+}
+
 quintptr Point::getId() const
 {
     return m_id;

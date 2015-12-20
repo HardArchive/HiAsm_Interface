@@ -28,6 +28,24 @@ void Container::collectingData()
     }
 }
 
+QVariantMap Container::serialize()
+{
+    QVariantMap data;
+    data.insert("id", m_id);
+    data.insert("name", m_name);
+
+    QVariantList elements;
+    for (const PElement e : m_elements) {
+        elements.append(e->serialize());
+    }
+
+    QVariantMap container;
+    container.insert("Data", data);
+    container.insert("Elements", elements);
+
+    return container;
+}
+
 quintptr Container::getId() const
 {
     return m_id;

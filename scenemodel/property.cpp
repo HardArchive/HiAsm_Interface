@@ -153,6 +153,21 @@ void Property::collectingData()
     }
 }
 
+QVariantMap Property::serialize()
+{
+    QVariantMap data;
+    data.insert("id", m_id);
+    data.insert("name", m_name);
+    data.insert("type", m_type);
+    data.insert("isDefProp", m_isDefProp);
+    //data.insert("value", m_value);
+
+    QVariantMap property;
+    property.insert("Data", data);
+
+    return property;
+}
+
 quintptr Property::getId() const
 {
     return m_id;

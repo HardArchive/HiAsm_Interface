@@ -14,6 +14,11 @@ Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QSt
 
 }
 
+QVariantMap Value::serialize()
+{
+    return QVariantMap();
+}
+
 quintptr Value::getId() const
 {
     return m_id;

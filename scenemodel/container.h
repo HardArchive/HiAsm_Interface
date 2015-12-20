@@ -34,6 +34,9 @@ private:
     void collectingData();
 
 public:
+    //Serialize
+    QVariantMap serialize();
+
     //Self
     quintptr getId() const;
     PElement getParent() const;
