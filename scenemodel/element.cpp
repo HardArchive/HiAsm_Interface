@@ -88,7 +88,7 @@ QVariantMap Element::serialize()
 {
     QVariantMap data;
     data.insert("id", m_id);
-    data.insert("userData", m_userData);
+    //data.insert("userData", m_userData);
     data.insert("classIndex", m_classIndex);
     data.insert("flags", int(m_flags));
     data.insert("group", m_group);
@@ -138,7 +138,7 @@ void Element::deserialize(const QJsonObject &object)
     m_id = data["id"].toVariant().toUInt();
     m_model->addElementToMap(this);
 
-    m_userData = data["userData"].toVariant().toUInt();
+    //m_userData = data["userData"].toVariant().toUInt();
     m_classIndex = ElementClass(data["classIndex"].toInt());
     m_flags = ElementFlgs(data["flags"].toInt());
     m_group = data["group"].toInt();

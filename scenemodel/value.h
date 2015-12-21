@@ -18,14 +18,14 @@ private:
     DataTypes m_type = data_null;
     QVariant m_value;
     QString m_name;
-    DataTypes m_arrayType = data_null;
+    DataTypes m_subType = data_null;
 
 public:
     explicit Value(quintptr id_value = 0,
                    DataTypes type = data_null,
                    const QVariant &value = QVariant(),
                    const QString &name = QString(),
-                   DataTypes arrayType = data_null);
+                   DataTypes subType = data_null);
 
     explicit Value(const QJsonObject &object);
 
@@ -59,13 +59,15 @@ public:
     //String
     QString toString() const;
 
+    //SubType
+    void setSubType(DataTypes type);
+    DataTypes getSubType() const;
+
     //Data
     DataTypes getDataType() const;
 
     //Array
     size_t getArraySize() const;
-    void setArrayType(DataTypes type);
-    DataTypes getArrayType() const;
     SharedValue getArrayItemByIndex(uint index) const;
     QString getArrayItemName(uint index) const;
 

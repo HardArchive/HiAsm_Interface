@@ -7,12 +7,12 @@
 //Qt
 
 
-Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QString &name, DataTypes arrayType):
+Value::Value(quintptr id_value, DataTypes type, const QVariant &value, const QString &name, DataTypes subType):
     m_id(id_value),
     m_type(type),
     m_value(value),
     m_name(name),
-    m_arrayType(arrayType)
+    m_subType(subType)
 {
 
 }
@@ -28,9 +28,23 @@ QVariantMap Value::serialize()
     data.insert("id", m_id);
     data.insert("name", m_name);
     data.insert("type", m_type);
-    data.insert("arrayType", m_arrayType);
+    data.insert("subType", m_subType);
 
     switch (m_type) {
+    case data_int:
+    case data_color:
+    case data_flags: {
+        data.insert("value", m_value.toInt());
+        break;
+    }
+    case data_real: {
+        data.insert("value", m_value.toReal());
+        break;
+    }
+    case data_data: {
+        data.insert("value", m_value);
+        break;
+    }
     case data_icon:
     case data_stream:
     case data_bitmap:
@@ -82,13 +96,35 @@ void Value::deserialize(const QJsonObject &object)
     m_id = object["id"].toVariant().toUInt();
     m_type = DataTypes(object["type"].toInt());
     m_name = object["name"].toString();
-    m_arrayType = DataTypes(object["arrayType"].toInt());
+    m_subType = DataTypes(object["subType"].toInt());
 
     switch (m_type) {
     case data_int:
     case data_color:
     case data_flags: {
         m_value = object["value"].toInt();
+        break;
+    }
+    case data_real: {
+        m_value = object["value"].toVariant().toReal();
+        break;
+    }
+    case data_data: {
+        const QVariant var = object["value"].toVariant();
+        switch (m_subType) {
+        case data_int:
+            m_value = var.toInt();
+            break;
+        case data_str:
+            m_value = var.toString();
+            break;
+        case data_real:
+            m_value = var.toReal();
+            break;
+        default:
+            m_value = var;
+            break;
+        }
         break;
     }
     case data_icon:
@@ -109,7 +145,7 @@ void Value::deserialize(const QJsonObject &object)
 
             QString name = item["name"].toString();
             QVariant data;
-            switch (m_arrayType) {
+            switch (m_subType) {
             case data_int:
                 data = item["value"].toInt();
                 break;
@@ -122,7 +158,7 @@ void Value::deserialize(const QJsonObject &object)
             default: break;
             }
 
-            arrayItem.append(SharedValue::create(0, m_arrayType, data, name));
+            arrayItem.append(SharedValue::create(0, m_subType, data, name));
         }
 
         m_value = QVariant::fromValue(arrayItem);
@@ -230,16 +266,7 @@ QString Value::toString() const
 
 DataTypes Value::getDataType() const
 {
-    switch (m_value.type()) {
-    case QMetaType::Int:
-        return data_int;
-    case QMetaType::QString:
-        return data_str;
-    case QMetaType::QReal:
-        return data_real;
-    default:
-        return data_null;
-    }
+    return m_subType;
 }
 
 size_t Value::getArraySize() const
@@ -250,14 +277,14 @@ size_t Value::getArraySize() const
     return m_value.value<Values>().size();
 }
 
-void Value::setArrayType(DataTypes type)
+void Value::setSubType(DataTypes type)
 {
-    m_arrayType = type;
+    m_subType = type;
 }
 
-DataTypes Value::getArrayType() const
+DataTypes Value::getSubType() const
 {
-    return m_arrayType;
+    return m_subType;
 }
 
 SharedValue Value::getArrayItemByIndex(uint index) const

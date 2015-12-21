@@ -510,7 +510,7 @@ namespace EmulateCgt
         if (!v)
             return data_null;
 
-        return v->getArrayType();
+        return v->getSubType();
     }
 
     //ru Получаем имя элемента по индексу.

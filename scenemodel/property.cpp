@@ -58,13 +58,13 @@ void Property::collectingData()
         const DataTypes dataType = cgt::dtType(id_value);
         switch (dataType) {
         case data_int:
-            setValue(id_value, m_type, cgt::dtInt(id_value));
+            setValue(id_value, m_type, cgt::dtInt(id_value), QString(), dataType);
             break;
         case data_str:
-            setValue(id_value, m_type, cgt::dtStr(id_value));
+            setValue(id_value, m_type, cgt::dtStr(id_value), QString(), dataType);
             break;
         case data_real:
-            setValue(id_value, m_type, cgt::dtReal(id_value));
+            setValue(id_value, m_type, cgt::dtReal(id_value), QString(), dataType);
             break;
         default:
             setValue(id_value, m_type);
@@ -224,7 +224,7 @@ void Property::setValue(quintptr id, DataTypes type, const QVariant &data, const
     m_value.setType(type);
     m_value.setValue(data);
     m_value.setName(name);
-    m_value.setArrayType(arrayType);
+    m_value.setSubType(arrayType);
     m_model->addValueToMap(&m_value);
 }
 

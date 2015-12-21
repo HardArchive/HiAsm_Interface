@@ -12,25 +12,21 @@ namespace ProxyCgt
     //Дефайны
 #define EXPORT static __stdcall
 #define PRINT_FUNC_INFO qInfo("  Call: %s", Q_FUNC_INFO);
-#define PRINT_RESULT_STR(X) qInfo("  Return: \"%s\"", qUtf8Printable(QString::fromLocal8Bit(X)));
 #define PRINT_RESULT(X) qInfo() << qUtf8Printable(QString("  Return: %1").arg(X));
+
+#define id(X) QString("id(%1)").arg(X)
+#define str(X) QString("\"%1\"").arg(X)
+#define p(X) QString("p(%1)").arg(X)
 
     //Для хранения указателя на массив указателей на callback функции
     static PCodeGenTools m_cgt = nullptr;
 
     //Служебные функции
-    void printArgs(const std::initializer_list<QVariant> &args, bool noquote = false)
+    void printArgs(const std::initializer_list<QVariant> &args)
     {
         uint numArg = 1;
         for (const QVariant &v : args) {
-            if (v.type() == QVariant::String) {
-                if (noquote)
-                    qInfo("  Arg%d: %s", numArg, qUtf8Printable(v.toString()));
-                else
-                    qInfo("  Arg%d: \"%s\"", numArg, qUtf8Printable(v.toString()));
-            } else {
-                qInfo("  Arg%d: %s", numArg, qUtf8Printable(v.toString()));
-            }
+            qInfo("  Arg%d: %s", numArg, qUtf8Printable(v.toString()));
             ++numArg;
         }
     }
@@ -44,385 +40,386 @@ namespace ProxyCgt
         }
     }
 
+
     //~~~~~~~~~~~~~~~~~ Проксированные функции ~~~~~~~~~~~~~~~~~~~
 
-    EXPORT int sdkGetCount(quintptr SDK)
+    EXPORT int sdkGetCount(quintptr id_sdk)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->sdkGetCount(SDK);
-        printArgs({SDK});
+        int res = m_cgt->sdkGetCount(id_sdk);
+        printArgs({id(id_sdk)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT quintptr sdkGetElement(quintptr SDK, int Index)
+    EXPORT quintptr sdkGetElement(quintptr id_sdk, int index)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->sdkGetElement(SDK, Index);
-        printArgs({SDK, Index});
-        PRINT_RESULT(res)
+        quintptr res = m_cgt->sdkGetElement(id_sdk, index);
+        printArgs({id(id_sdk), index});
+        PRINT_RESULT(id(res))
 
         return res;
     }
-    EXPORT quintptr sdkGetElementName(quintptr SDK, char *Name)
+    EXPORT quintptr sdkGetElementName(quintptr id_sdk, char *name)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->sdkGetElementName(SDK, Name);
-        printArgs({SDK, Name});
-        PRINT_RESULT(res)
+        quintptr res = m_cgt->sdkGetElementName(id_sdk, name);
+        printArgs({id(id_sdk), str(name)});
+        PRINT_RESULT(id(res))
 
         return res;
     }
-    EXPORT ElementFlags elGetFlag(quintptr e)
+    EXPORT ElementFlags elGetFlag(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        ElementFlags res = m_cgt->elGetFlag(e);
-        printArgs({e});
+        ElementFlags res = m_cgt->elGetFlag(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(ElementFlgs(res))
 
         return res;
     }
-    EXPORT int elGetPropCount(quintptr e)
+    EXPORT int elGetPropCount(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->elGetPropCount(e);
-        printArgs({e});
+        int res = m_cgt->elGetPropCount(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT quintptr elGetProperty(quintptr e, int Index)
+    EXPORT quintptr elGetProperty(quintptr id_element, int index)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->elGetProperty(e, Index);
-        printArgs({e, Index});
+        quintptr res = m_cgt->elGetProperty(id_element, index);
+        printArgs({id(id_element), index});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT bool elIsDefProp(quintptr id_element, int index)
+    {
+        PRINT_FUNC_INFO
+        bool res = m_cgt->elIsDefProp(id_element, index);
+        printArgs({id(id_element), index});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT bool elIsDefProp(quintptr e, int Index)
+    EXPORT quintptr elSetCodeName(quintptr id_element, const char *name)
     {
         PRINT_FUNC_INFO
-        bool res = m_cgt->elIsDefProp(e, Index);
-        printArgs({e, Index});
+        quintptr res = m_cgt->elSetCodeName(id_element, name);
+        printArgs({id(id_element), name});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT const char *elGetCodeName(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        const char *res = m_cgt->elGetCodeName(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT const char *elGetClassName(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        const char *res = m_cgt->elGetClassName(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT const char *elGetInfSub(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        const char *res = m_cgt->elGetInfSub(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT int elGetPtCount(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->elGetPtCount(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT quintptr elSetCodeName(quintptr e, const char *Name)
+    EXPORT quintptr elGetPt(quintptr id_element, int index)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->elSetCodeName(e, Name);
-        printArgs({e, Name});
-        PRINT_RESULT(res)
+        quintptr res = m_cgt->elGetPt(id_element, index);
+        printArgs({id(id_element), index});
+        PRINT_RESULT(id(res))
 
         return res;
     }
-    EXPORT const char *elGetCodeName(quintptr e)
+    EXPORT quintptr elGetPtName(quintptr id_element, const char *name)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetCodeName(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
+        quintptr res = m_cgt->elGetPtName(id_element, name);
+        printArgs({id(id_element), str(name)});
+        PRINT_RESULT(id(res))
 
         return res;
     }
-    EXPORT const char *elGetClassName(quintptr e)
+    EXPORT ElementClass elGetClassIndex(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetClassName(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT const char *elGetInfSub(quintptr e)
-    {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetInfSub(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT int elGetPtCount(quintptr e)
-    {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetPtCount(e);
-        printArgs({e});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT quintptr elGetPt(quintptr e, int i)
-    {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->elGetPt(e, i);
-        printArgs({e, i});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT quintptr elGetPtName(quintptr e, const char *Name)
-    {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->elGetPtName(e, Name);
-        printArgs({e, Name});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT ElementClass elGetClassIndex(quintptr e)
-    {
-        PRINT_FUNC_INFO
-        ElementClass res = m_cgt->elGetClassIndex(e);
-        printArgs({e});
+        ElementClass res = m_cgt->elGetClassIndex(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(ElementClassMap[res])
 
         return res;
     }
-    EXPORT quintptr elGetSDK(quintptr e)
+    EXPORT quintptr elGetSDK(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->elGetSDK(e);
-        printArgs({e});
+        quintptr res = m_cgt->elGetSDK(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT bool elLinkIs(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        bool res = m_cgt->elLinkIs(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT bool elLinkIs(quintptr e)
+    EXPORT quintptr elLinkMain(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        bool res = m_cgt->elLinkIs(e);
-        printArgs({e});
+        quintptr res = m_cgt->elLinkMain(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT void elGetPos(quintptr id_element, int &X, int &Y)
+    {
+        PRINT_FUNC_INFO
+        m_cgt->elGetPos(id_element, X, Y);
+        printArgs({id(id_element), X, Y});
+    }
+    EXPORT void elGetSize(quintptr id_element, int &W, int &H)
+    {
+        PRINT_FUNC_INFO
+        m_cgt->elGetSize(id_element, W, H);
+        printArgs({id(id_element), W, H});
+    }
+    EXPORT int elGetEID(quintptr id_point)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->elGetEID(id_point);
+        printArgs({id(id_point)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT quintptr elLinkMain(quintptr e)
+    EXPORT quintptr ptGetLinkPoint(quintptr id_point)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->elLinkMain(e);
-        printArgs({e});
-        PRINT_RESULT(res)
+        quintptr res = m_cgt->ptGetLinkPoint(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(id(res))
 
         return res;
     }
-    EXPORT void elGetPos(quintptr e, int &X, int &Y)
+    EXPORT quintptr ptGetRLinkPoint(quintptr id_point)
     {
         PRINT_FUNC_INFO
-        m_cgt->elGetPos(e, X, Y);
-        printArgs({e, X, Y});
-    }
-    EXPORT void elGetSize(quintptr e, int &W, int &H)
-    {
-        PRINT_FUNC_INFO
-        m_cgt->elGetSize(e, W, H);
-        printArgs({e, W, H});
-    }
-    EXPORT int elGetEID(quintptr e)
-    {
-        PRINT_FUNC_INFO
-        int res = m_cgt->elGetEID(e);
-        printArgs({e});
-        PRINT_RESULT(res)
+        quintptr res = m_cgt->ptGetRLinkPoint(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(id(res))
 
         return res;
     }
-    EXPORT quintptr ptGetLinkPoint(quintptr p)
+    EXPORT PointTypes ptGetType(quintptr id_point)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->ptGetLinkPoint(p);
-        printArgs({p});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT quintptr ptGetRLinkPoint(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->ptGetRLinkPoint(p);
-        printArgs({p});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT PointTypes ptGetType(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        PointTypes res = m_cgt->ptGetType(p);
-        printArgs({p});
+        PointTypes res = m_cgt->ptGetType(id_point);
+        printArgs({id(id_point)});
         PRINT_RESULT(PointTypesMap[res])
 
         return res;
     }
-    EXPORT const char *ptGetName(quintptr p)
+    EXPORT const char *ptGetName(quintptr id_point)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->ptGetName(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->ptGetName(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT quintptr ptGetParent(quintptr p)
+    EXPORT quintptr ptGetParent(quintptr id_point)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->ptGetParent(p);
-        printArgs({p});
+        quintptr res = m_cgt->ptGetParent(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT int ptGetIndex(quintptr id_point)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->ptGetIndex(id_point);
+        printArgs({id(id_point)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT int ptGetIndex(quintptr p)
+    EXPORT const char *pt_dpeGetName(quintptr id_point)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->ptGetIndex(p);
-        printArgs({p}, true);
-        PRINT_RESULT(res)
+        const char *res = m_cgt->pt_dpeGetName(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *pt_dpeGetName(quintptr p)
+    EXPORT DataTypes propGetType(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->pt_dpeGetName(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT DataTypes propGetType(quintptr prop)
-    {
-        PRINT_FUNC_INFO
-        DataTypes res = m_cgt->propGetType(prop);
-        printArgs({prop});
+        DataTypes res = m_cgt->propGetType(id_prop);
+        printArgs({id(id_prop)});
         PRINT_RESULT(DataTypesMap[res])
 
         return res;
     }
-    EXPORT const char *propGetName(quintptr prop)
+    EXPORT const char *propGetName(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->propGetName(prop);
-        printArgs({prop});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->propGetName(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT quintptr propGetValue(quintptr prop)
+    EXPORT quintptr propGetValue(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->propGetValue(prop);
-        printArgs({prop});
+        quintptr res = m_cgt->propGetValue(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT uchar propToByte(quintptr id_prop)
+    {
+        PRINT_FUNC_INFO
+        uchar res = m_cgt->propToByte(id_prop);
+        printArgs({id(id_prop)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT uchar propToByte(quintptr prop)
+    EXPORT int propToInteger(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        uchar res = m_cgt->propToByte(prop);
-        printArgs({prop});
+        int res = m_cgt->propToInteger(id_prop);
+        printArgs({id(id_prop)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT int propToInteger(quintptr prop)
+    EXPORT qreal propToReal(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->propToInteger(prop);
-        printArgs({prop});
+        float res = m_cgt->propToReal(id_prop);
+        printArgs({id(id_prop)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT qreal propToReal(quintptr prop)
+    EXPORT const char *propToString(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        float res = m_cgt->propToReal(prop);
-        printArgs({prop});
+        const char *res = m_cgt->propToString(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT int resAddFile(const char *name)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->resAddFile(name);
+        printArgs({str(name)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT const char *propToString(quintptr prop)
+    EXPORT const char *resAddIcon(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->propToString(prop);
-        printArgs({prop});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->resAddIcon(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT int resAddFile(const char *Name)
+    EXPORT const char *resAddStr(const char *str)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->resAddFile(Name);
-        printArgs({Name});
-        PRINT_RESULT(res)
+        const char *res = m_cgt->resAddStr(str);
+        printArgs({str});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *resAddIcon(quintptr p)
+    EXPORT const char *resAddStream(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddIcon(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->resAddStream(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *resAddStr(const char *p)
+    EXPORT const char *resAddWave(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddStr(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->resAddWave(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *resAddStream(quintptr p)
+    EXPORT const char *resAddBitmap(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddStream(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->resAddBitmap(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *resAddWave(quintptr p)
+    EXPORT const char *resAddMenu(quintptr id_prop)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddWave(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->resAddMenu(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *resAddBitmap(quintptr p)
+    EXPORT int _Debug(const char *text, int color)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddBitmap(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT const char *resAddMenu(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->resAddMenu(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT int _Debug(const char *Text, int Color)
-    {
-        PRINT_FUNC_INFO
-        int res = m_cgt->_Debug(Text, Color);
-        printArgs({Text, Color});
+        int res = m_cgt->_Debug(text, color);
+        printArgs({str(text), color});
         PRINT_RESULT(res)
 
         return res;
@@ -475,324 +472,324 @@ namespace ProxyCgt
 
         return res;
     }
-    EXPORT int arrCount(quintptr a)
+    EXPORT int arrCount(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->arrCount(a);
-        printArgs({a});
+        int res = m_cgt->arrCount(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT DataTypes arrType(quintptr a)
+    EXPORT DataTypes arrType(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        DataTypes res = m_cgt->arrType(a);
-        printArgs({a});
+        DataTypes res = m_cgt->arrType(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(DataTypesMap[res])
 
         return res;
     }
-    EXPORT const char *arrItemName(quintptr a, int Index)
+    EXPORT const char *arrItemName(quintptr id_value, int index)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->arrItemName(a, Index);
-        printArgs({a, Index});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->arrItemName(id_value, index);
+        printArgs({id_value, index});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT quintptr arrItemData(quintptr a, int Index)
+    EXPORT quintptr arrItemData(quintptr id_value, int index)
     {
         PRINT_FUNC_INFO
-        const quintptr res = m_cgt->arrItemData(a, Index);
-        printArgs({a, Index});
+        const quintptr res = m_cgt->arrItemData(id_value, index);
+        printArgs({id_value, index});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT quintptr arrGetItem(quintptr id_value, int index)
+    {
+        PRINT_FUNC_INFO
+        quintptr res = m_cgt->arrGetItem(id_value, index);
+        printArgs({id(id_value), index});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT int isDebug(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->isDebug(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT quintptr arrGetItem(quintptr a, int Index)
+    EXPORT DataTypes dtType(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->arrGetItem(a, Index);
-        printArgs({a, Index});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT int isDebug(quintptr e)
-    {
-        PRINT_FUNC_INFO
-        int res = m_cgt->isDebug(e);
-        printArgs({e});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT DataTypes dtType(quintptr d)
-    {
-        PRINT_FUNC_INFO
-        DataTypes res = m_cgt->dtType(d);
-        printArgs({d});
+        DataTypes res = m_cgt->dtType(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(DataTypesMap[res])
 
         return res;
     }
-    EXPORT const char *dtStr(quintptr d)
+    EXPORT const char *dtStr(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->dtStr(d);
-        printArgs({d});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->dtStr(id_value);
+        printArgs({id(id_value)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT int dtInt(quintptr d)
+    EXPORT int dtInt(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->dtInt(d);
-        printArgs({d});
+        int res = m_cgt->dtInt(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT qreal dtReal(quintptr d)
+    EXPORT qreal dtReal(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        qreal res = m_cgt->dtReal(d);
-        printArgs({d});
+        qreal res = m_cgt->dtReal(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT const char *fntName(quintptr f)
+    EXPORT const char *fntName(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->fntName(f);
-        printArgs({f});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT int fntSize(quintptr f)
-    {
-        PRINT_FUNC_INFO
-        int res = m_cgt->fntSize(f);
-        printArgs({f});
+        const char *res = m_cgt->fntName(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT uchar fntStyle(quintptr f)
+    EXPORT int fntSize(quintptr id_value)
     {
-        printArgs({f});
         PRINT_FUNC_INFO
-        uchar res = m_cgt->fntStyle(f);
+        int res = m_cgt->fntSize(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT uint fntColor(quintptr f)
+    EXPORT uchar fntStyle(quintptr id_value)
     {
+        printArgs({id(id_value)});
         PRINT_FUNC_INFO
-        int res = m_cgt->fntColor(f);
-        printArgs({f});
+        uchar res = m_cgt->fntStyle(id_value);
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT uchar fntCharSet(quintptr f)
+    EXPORT uint fntColor(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        uchar res = m_cgt->fntCharSet(f);
-        printArgs({f});
+        int res = m_cgt->fntColor(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT quintptr elGetData(quintptr e)
+    EXPORT uchar fntCharSet(quintptr id_value)
     {
         PRINT_FUNC_INFO
-        const quintptr res = m_cgt->elGetData(e);
-        printArgs({e});
+        uchar res = m_cgt->fntCharSet(id_value);
+        printArgs({id(id_value)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT void elSetData(quintptr e, quintptr data)
+    EXPORT quintptr elGetData(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        m_cgt->elSetData(e, data);
-        printArgs({e, data});
+        const quintptr res = m_cgt->elGetData(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(p(res))
+
+        return res;
     }
-    EXPORT DataTypes ptGetDataType(quintptr p)
+    EXPORT void elSetData(quintptr id_element, quintptr data)
     {
         PRINT_FUNC_INFO
-        DataTypes res = m_cgt->ptGetDataType(p);
-        printArgs({p});
+        m_cgt->elSetData(id_element, data);
+        printArgs({id(id_element), p(data)});
+    }
+    EXPORT DataTypes ptGetDataType(quintptr id_point)
+    {
+        PRINT_FUNC_INFO
+        DataTypes res = m_cgt->ptGetDataType(id_point);
+        printArgs({id(id_point)});
         PRINT_RESULT(DataTypesMap[res])
 
         return res;
     }
-    EXPORT quintptr elGetParent(quintptr e)
+    EXPORT quintptr elGetParent(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->elGetParent(e);
-        printArgs({e});
+        quintptr res = m_cgt->elGetParent(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT int elGetPropertyListCount(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->elGetPropertyListCount(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT int elGetPropertyListCount(quintptr e)
+    EXPORT quintptr elGetPropertyListItem(quintptr id_element, int index)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->elGetPropertyListCount(e);
-        printArgs({e});
+        quintptr res = m_cgt->elGetPropertyListItem(id_element, index);
+        printArgs({id(id_element), index});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT const char *plGetName(quintptr id_point)
+    {
+        PRINT_FUNC_INFO
+        const char *res = m_cgt->plGetName(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT const char *plGetInfo(quintptr id_point)
+    {
+        PRINT_FUNC_INFO
+        const char *res = m_cgt->plGetInfo(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT const char *plGetGroup(quintptr id_point)
+    {
+        PRINT_FUNC_INFO
+        const char *res = m_cgt->plGetGroup(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT quintptr plGetProperty(quintptr id_point)
+    {
+        PRINT_FUNC_INFO
+        quintptr res = m_cgt->plGetProperty(id_point);
+        printArgs({id(id_point)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT quintptr plGetOwner(quintptr id_prop)
+    {
+        PRINT_FUNC_INFO
+        quintptr res = m_cgt->plGetOwner(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT const char *ptGetInfo(quintptr id_prop)
+    {
+        PRINT_FUNC_INFO
+        const char *res = m_cgt->ptGetInfo(id_prop);
+        printArgs({id(id_prop)});
+        PRINT_RESULT(str(res))
+
+        return res;
+    }
+    EXPORT quintptr propGetLinkedElement(quintptr id_prop, const char *propName)
+    {
+        PRINT_FUNC_INFO
+        quintptr res = m_cgt->propGetLinkedElement(id_prop, propName);
+        printArgs({id(id_prop), str(propName)});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT int propIsTranslate(quintptr id_element, quintptr id_prop)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->propIsTranslate(id_element, id_prop);
+        printArgs({id(id_element), id(id_prop)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT quintptr elGetPropertyListItem(quintptr e, int i)
+    EXPORT quintptr propGetLinkedElementInfo(quintptr id_element, quintptr id_prop, char *info)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->elGetPropertyListItem(e, i);
-        printArgs({e, i});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT const char *plGetName(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->plGetName(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT const char *plGetInfo(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->plGetInfo(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT const char *plGetGroup(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->plGetGroup(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT quintptr plGetProperty(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->plGetProperty(p);
-        printArgs({p});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT quintptr plGetOwner(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->plGetOwner(p);
-        printArgs({p});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT const char *ptGetInfo(quintptr p)
-    {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->ptGetInfo(p);
-        printArgs({p});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT quintptr propGetLinkedElement(quintptr e, const char *propName)
-    {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->propGetLinkedElement(e, propName);
-        printArgs({e, propName});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT int propIsTranslate(quintptr e, quintptr p)
-    {
-        PRINT_FUNC_INFO
-        int res = m_cgt->propIsTranslate(e, p);
-        printArgs({e, p});
-        PRINT_RESULT(res)
-
-        return res;
-    }
-    EXPORT quintptr propGetLinkedElementInfo(quintptr e, quintptr prop, char *_int)
-    {
-        PRINT_FUNC_INFO
-        quintptr res = m_cgt->propGetLinkedElementInfo(e, prop, _int);
-        printArgs({e, prop, _int});
-        PRINT_RESULT(res)
+        quintptr res = m_cgt->propGetLinkedElementInfo(id_element, id_prop, info);
+        printArgs({id(id_element), id(id_prop), info});
+        PRINT_RESULT(id(res))
 
         return 0;
     }
-    EXPORT quintptr elGetSDKByIndex(quintptr e, int index)
+    EXPORT quintptr elGetSDKByIndex(quintptr id_element, int index)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->elGetSDKByIndex(e, index);
-        printArgs({e, index});
+        quintptr res = m_cgt->elGetSDKByIndex(id_element, index);
+        printArgs({id(id_element), index});
+        PRINT_RESULT(id(res))
+
+        return res;
+    }
+    EXPORT int elGetSDKCount(quintptr id_element)
+    {
+        PRINT_FUNC_INFO
+        int res = m_cgt->elGetSDKCount(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT int elGetSDKCount(quintptr e)
+    EXPORT const char *elGetSDKName(quintptr id_element, int index)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->elGetSDKCount(e);
-        printArgs({e});
-        PRINT_RESULT(res)
+        const char *res = m_cgt->elGetSDKName(id_element, index);
+        printArgs({id(id_element), index});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *elGetSDKName(quintptr e, int index)
+    EXPORT quintptr sdkGetParent(quintptr id_sdk)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetSDKName(e, index);
-        printArgs({e, index});
-        PRINT_RESULT_STR(res)
+        quintptr res = m_cgt->sdkGetParent(id_sdk);
+        printArgs({id(id(id_sdk))});
+        PRINT_RESULT(id(res))
 
         return res;
     }
-    EXPORT quintptr sdkGetParent(quintptr SDK)
+    EXPORT const char *elGetInterface(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        quintptr res = m_cgt->sdkGetParent(SDK);
-        printArgs({SDK});
-        PRINT_RESULT(res)
+        const char *res = m_cgt->elGetInterface(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
-    EXPORT const char *elGetInterface(quintptr e)
+    EXPORT const char *elGetInherit(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetInterface(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
-
-        return res;
-    }
-    EXPORT const char *elGetInherit(quintptr e)
-    {
-        PRINT_FUNC_INFO
-        const char *res = m_cgt->elGetInherit(e);
-        printArgs({e});
-        PRINT_RESULT_STR(res)
+        const char *res = m_cgt->elGetInherit(id_element);
+        printArgs({id(id_element)});
+        PRINT_RESULT(str(res))
 
         return res;
     }
@@ -813,29 +810,29 @@ namespace ProxyCgt
 
         return res;
     }
-    EXPORT int _Error(int line, quintptr e, const char *text)
+    EXPORT int _Error(int line, quintptr id_element, const char *text)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->_Error(line, e, text);
-        printArgs({line, e, text});
+        int res = m_cgt->_Error(line, id_element, text);
+        printArgs({line, id(id_element), text});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT int elGetGroup(quintptr e)
+    EXPORT int elGetGroup(quintptr id_element)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->elGetGroup(e);
-        printArgs({e});
+        int res = m_cgt->elGetGroup(id_element);
+        printArgs({id(id_element)});
         PRINT_RESULT(res)
 
         return res;
     }
-    EXPORT int propSaveToFile(quintptr p, const char *fileName)
+    EXPORT int propSaveToFile(quintptr id_prop, const char *fileName)
     {
         PRINT_FUNC_INFO
-        int res = m_cgt->propSaveToFile(p, fileName);
-        printArgs({p, fileName});
+        int res = m_cgt->propSaveToFile(id_prop, fileName);
+        printArgs({id(id_prop), fileName});
         PRINT_RESULT(res)
 
         return res;
