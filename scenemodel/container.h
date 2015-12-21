@@ -15,7 +15,7 @@ class Container: public QObject
 
 private:
     //Self
-    const quintptr m_id;
+    quintptr m_id{};
     QString m_name;
 
     //Model
@@ -29,6 +29,7 @@ private:
 
 public:
     explicit Container(quintptr id_sdk, QObject *parent);
+    explicit Container(const QJsonObject &object, QObject *parent);
 
 private:
     void collectingData();
@@ -36,6 +37,7 @@ private:
 public:
     //Serialize
     QVariantMap serialize();
+    void deserialize(const QJsonObject &object);
 
     //Self
     quintptr getId() const;

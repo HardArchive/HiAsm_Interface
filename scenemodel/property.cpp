@@ -22,6 +22,13 @@ Property::Property(quintptr id_prop, QObject *parent)
     collectingData();
 }
 
+Property::Property(const QJsonObject &object, QObject *parent)
+    : QObject(parent)
+    , m_model(parent->property("model").value<PSceneModel>())
+{
+    deserialize(object);
+}
+
 void Property::collectingData()
 {
     m_name = QString::fromLocal8Bit(cgt::propGetName(m_id));
@@ -162,6 +169,18 @@ QVariantMap Property::serialize()
     data.insert("value", m_value.serialize());
 
     return data;
+}
+
+void Property::deserialize(const QJsonObject &object)
+{
+    m_id = object["id"].toVariant().toUInt();
+    m_model->addPropertyToMap(this);
+
+    m_name = object["name"].toString();
+    m_type = DataTypes(object["type"].toInt());
+    m_isDefProp = object["isDefProp"].toBool();
+    m_value.deserialize(object["value"].toObject());
+    m_model->addValueToMap(&m_value);
 }
 
 quintptr Property::getId() const

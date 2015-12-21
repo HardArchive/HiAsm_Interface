@@ -17,6 +17,13 @@ Container::Container(quintptr id_sdk, QObject *parent)
     collectingData();
 }
 
+Container::Container(const QJsonObject &object, QObject *parent)
+    : QObject(parent)
+    , m_model(parent->property("model").value<PSceneModel>())
+{
+    deserialize(object);
+}
+
 void Container::collectingData()
 {
     int countElements = cgt::sdkGetCount(m_id);
@@ -44,6 +51,19 @@ QVariantMap Container::serialize()
     container.insert("Elements", elements);
 
     return container;
+}
+
+void Container::deserialize(const QJsonObject &object)
+{
+    const auto data = object["Data"].toObject();
+    m_id = data["id"].toVariant().toUInt();
+    m_model->addContainerToMap(this);
+    m_name = data["name"].toString();
+
+    const auto elements = object["Elements"].toArray();
+    for(const auto e : elements){
+       addElement(new Element(e.toObject(), this));
+    }
 }
 
 quintptr Container::getId() const

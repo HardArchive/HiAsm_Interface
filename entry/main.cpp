@@ -79,6 +79,7 @@ void initLogger()
 //Служебные переменные
 static QLibrary codegen;
 static SceneModel *sceneModel = nullptr;
+//static SceneModel *sceneModel2 = nullptr;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 {
@@ -120,6 +121,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     case DLL_PROCESS_DETACH: {
         qInfo() << "CODEGEN_PROCESS_DETACH";
         delete sceneModel;
+        //delete sceneModel2;
         codegen.unload();
         break;
     }
@@ -142,6 +144,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 
 #ifdef MODEL
     sceneModel = new SceneModel;
+    //sceneModel2 = new SceneModel(sceneModel->serialize());
 
     EmulateCgt::setSceneModel(sceneModel);
     cgt::setProxyCgt(EmulateCgt::getCgt());

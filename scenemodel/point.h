@@ -17,7 +17,7 @@ class Point: public QObject
 
 private:
     //Self
-    const quintptr m_id;
+    quintptr m_id{};
     PointTypes m_type{};
     DataTypes m_dataType{};
     uint m_index{};
@@ -35,6 +35,7 @@ private:
 
 public:
     explicit Point(quintptr id_point, QObject *parent);
+    explicit Point(const QJsonObject &object, QObject *parent);
 
 private:
     void collectingData();
@@ -42,6 +43,7 @@ private:
 public:
     //Serialize
     QVariantMap serialize();
+    void deserialize(const QJsonObject &object);
 
     //Self
     quintptr getId() const;

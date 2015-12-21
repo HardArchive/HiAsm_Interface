@@ -19,7 +19,7 @@ class Property: public QObject
 
 private:
     //Self
-    const quintptr m_id;
+    quintptr m_id{};
     QString m_name;
     DataTypes m_type{};
     bool m_isDefProp{};
@@ -35,6 +35,7 @@ private:
 
 public:
     explicit Property(quintptr id_prop, QObject *parent);
+    explicit Property(const QJsonObject &object, QObject *parent);
 
 private:
     void collectingData();
@@ -42,6 +43,7 @@ private:
 public:
     //Serialize
     QVariantMap serialize();
+    void deserialize(const QJsonObject &object);
 
     //Self
     quintptr getId() const;

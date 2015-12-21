@@ -19,6 +19,13 @@ Point::Point(quintptr id_point, QObject *parent)
     collectingData();
 }
 
+Point::Point(const QJsonObject &object, QObject *parent)
+    : QObject(parent)
+    , m_model(parent->property("model").value<PSceneModel>())
+{
+    deserialize(object);
+}
+
 void Point::collectingData()
 {
     m_type = cgt::ptGetType(m_id);
@@ -45,6 +52,21 @@ QVariantMap Point::serialize()
     data.insert("RLinkPoint", m_RLinkPoint);
 
     return data;
+}
+
+void Point::deserialize(const QJsonObject &object)
+{
+    m_id = object["id"].toVariant().toUInt();
+    m_model->addPointToMap(this);
+
+    m_type = PointTypes(object["type"].toInt());
+    m_dataType = DataTypes(object["dataType"].toInt());
+    m_index = object["index"].toVariant().toUInt();
+    m_name = object["name"].toString();
+    m_dpeName = object["dpeName"].toString();
+    m_info = object["info"].toString();
+    m_linkPoint = object["linkPoint"].toVariant().toUInt();
+    m_RLinkPoint = object["RLinkPoint"].toVariant().toUInt();
 }
 
 quintptr Point::getId() const

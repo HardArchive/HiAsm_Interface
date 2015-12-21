@@ -17,7 +17,7 @@ class Element: public QObject
 
 private:
     //Self
-    const quintptr m_id;
+    quintptr m_id{};
     quintptr m_userData{};
     ElementClass m_classIndex{};
     ElementFlgs m_flags{};
@@ -51,6 +51,7 @@ private:
 
 public:
     explicit Element(quintptr id_element, QObject *parent);
+    explicit Element(const QJsonObject &object, QObject *parent);
 
 private:
     void collectingData();
@@ -58,6 +59,7 @@ private:
 public:
     //Serialize
     QVariantMap serialize();
+    void deserialize(const QJsonObject &object);
 
     //Self
     quintptr getId() const;

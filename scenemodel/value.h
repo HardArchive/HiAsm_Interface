@@ -27,9 +27,13 @@ public:
                    const QString &name = QString(),
                    DataTypes arrayType = data_null);
 
+    explicit Value(const QJsonObject &object);
+
+
 public:
     //Serialize
     QVariantMap serialize();
+    void deserialize(const QJsonObject &object);
 
     //Self
     void setId(quintptr id);

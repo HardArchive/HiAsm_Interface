@@ -25,7 +25,7 @@ private:
     MapValues m_mapValues;
 
     //Container
-    PContainer m_container;
+    PContainer m_container{};
 
     //Property
     SharedValue m_propArrayValue;
@@ -43,6 +43,7 @@ private:
 
 public:
     explicit SceneModel(QObject *parent = 0);
+    explicit SceneModel(const QJsonDocument &doc, QObject *parent = 0);
     virtual ~SceneModel();
 
 private:
@@ -53,6 +54,7 @@ private:
 public:
     //Serialize
     QJsonDocument serialize();
+    void deserialize(const QJsonDocument &doc);
 
     //Model
     PSceneModel getModel();

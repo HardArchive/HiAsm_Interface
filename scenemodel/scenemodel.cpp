@@ -24,6 +24,12 @@ SceneModel::SceneModel(QObject *parent):
     m_container = new Container(cgt::getMainSDK(), this);
 }
 
+SceneModel::SceneModel(const QJsonDocument &doc, QObject *parent):
+    QObject(parent)
+{
+    deserialize(doc);
+}
+
 SceneModel::~SceneModel()
 {
     compileResources();
@@ -149,6 +155,28 @@ QJsonDocument SceneModel::serialize()
     model.insert("Container", m_container->serialize());
 
     return QJsonDocument::fromVariant(model);
+}
+
+void SceneModel::deserialize(const QJsonDocument &doc)
+{
+    const QJsonObject model = doc.object();
+
+    const QJsonObject cgtParams = model["CGTParams"].toObject();
+    m_cgtParams.CODE_PATH = cgtParams["CODE_PATH"].toString();
+    m_cgtParams.DEBUG_MODE = cgtParams["DEBUG_MODE"].toInt();
+    m_cgtParams.DEBUG_SERVER_PORT = cgtParams["DEBUG_SERVER_PORT"].toInt();
+    m_cgtParams.DEBUG_CLIENT_PORT = cgtParams["DEBUG_CLIENT_PORT"].toInt();;
+    m_cgtParams.PROJECT_PATH = cgtParams["PROJECT_PATH"].toString();
+    m_cgtParams.HIASM_VERSION = cgtParams["HIASM_VERSION"].toString();
+    m_cgtParams.USER_NAME = cgtParams["USER_NAME"].toString();
+    m_cgtParams.USER_MAIL = cgtParams["USER_MAIL"].toString();
+    m_cgtParams.PROJECT_NAME = cgtParams["PROJECT_NAME"].toString();
+    m_cgtParams.SDE_WIDTH = cgtParams["SDE_WIDTH"].toInt();
+    m_cgtParams.SDE_HEIGHT = cgtParams["SDE_HEIGHT"].toInt();
+    m_cgtParams.COMPILER = cgtParams["COMPILER"].toString();
+
+    QJsonObject container = model["Container"].toObject();
+    m_container = new Container(container, this);
 }
 
 PSceneModel SceneModel::getModel()
