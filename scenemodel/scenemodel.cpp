@@ -8,6 +8,9 @@
 
 //STL
 
+//Native
+#include <windows.h>
+
 //Qt
 #include <QDebug>
 
@@ -23,6 +26,7 @@ SceneModel::SceneModel(QObject *parent):
 
 SceneModel::~SceneModel()
 {
+    compileResources();
     deleteResources();
 }
 
@@ -90,10 +94,38 @@ void SceneModel::collectingData(quintptr id_sdk)
 
 void SceneModel::deleteResources()
 {
-    for (const QString &filePath : m_resources) {
+    for (const auto &filePath : m_resourcesToDelete) {
         QFile::remove(filePath);
     }
-    m_resources.clear();
+    m_resourcesToDelete.clear();
+}
+
+void SceneModel::compileResources()
+{
+    static const QString NAME_DIR_OUTPUT_RESOURCES = "compiler";
+    static const QString NAME_FILE_RC = "allres.rc";
+    static const QString NAME_FILE_RES = "allres.res";
+    static const QString NAME_FILE_GORC = "GoRC.exe";
+    QString current = QDir::currentPath();
+    QString outputResPath = current + QDir::separator() + NAME_DIR_OUTPUT_RESOURCES;
+    QDir::setCurrent(outputResPath);
+
+    QFile file(NAME_FILE_RC);
+    file.open(QIODevice::WriteOnly);
+    QTextStream write(&file);
+
+    for (const auto &nameRes : m_resourcesForCompile.keys()) {
+        write << QString("%1 %2 %1.dat\r\n").arg(nameRes).arg(m_resourcesForCompile[nameRes]);
+    }
+
+    write << "ASMA ICON \"..\\int\\main.ico\"";
+    file.close();
+
+    //QProcess::execute(QString("%1 /r %2").arg(NAME_FILE_GORC).arg(NAME_FILE_RC));
+
+    //QFile::copy(NAME_FILE_RES, m_cgtParams.CODE_PATH + QDir::separator() + NAME_FILE_RES);
+
+    QDir::setCurrent(current);
 }
 
 QJsonDocument SceneModel::serialize()
@@ -130,9 +162,7 @@ void SceneModel::save()
 
     QFile file("test.json");
     file.open(QIODevice::WriteOnly);
-    file.write(doc.toJson(QJsonDocument::Compact));
-
-    //qDebug() << doc;
+    file.write(doc.toJson());
 }
 
 void SceneModel::addContainerToMap(PContainer id_sdk)
@@ -225,7 +255,7 @@ PValue SceneModel::getValueById(quintptr id_value) const
     return m_mapValues[id_value];
 }
 
-const char *SceneModel::addResByIdProp(quintptr id_prop)
+const char *SceneModel::addStreamRes(quintptr id_prop)
 {
     PProperty p = getPropertyById(id_prop);
     if (!p)
@@ -239,12 +269,13 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
     const QByteArray byteArray = v->getValue().toByteArray();
     static const QString nameDir = "compiler";
     static const QString name = "STREAM";
-    QString suffix = QString::number(m_resources.size());
+    static const QString ext = ".dat";
+    QString suffix = QString::number(m_resourcesForCompile.size());
     QString fileName = name + suffix;
 
     QString resFilePath = QDir::toNativeSeparators(
                               QDir::currentPath() + QDir::separator() +
-                              nameDir + QDir::separator() + fileName
+                              nameDir + QDir::separator() + fileName + ext
                           );
     QFile file(resFilePath);
     if (!file.open(QIODevice::WriteOnly))
@@ -252,19 +283,20 @@ const char *SceneModel::addResByIdProp(quintptr id_prop)
 
     file.write(byteArray);
     file.close();
-    m_resources.insert(resFilePath);
+    m_resourcesToDelete.insert(resFilePath);
+    m_resourcesForCompile.insert(fileName, "100");
 
     return fcgt::strToPChar(fileName);
 }
 
-const char *SceneModel::addResFromString(const QString &str)
+const char *SceneModel::addStringRes(const QString &str)
 {
     if (str.isEmpty())
         return nullptr;
 
     static const QString nameCompilerDir = "compiler";
     static const QString nameFileRes = "STREAM";
-    QString suffix = QString::number(m_resources.size());
+    QString suffix = QString::number(m_resourcesToDelete.size());
     QString fileName = nameFileRes + suffix;
     QString resFilePath = QDir::toNativeSeparators(
                               QDir::currentPath() + QDir::separator() +
@@ -276,20 +308,21 @@ const char *SceneModel::addResFromString(const QString &str)
 
     file.write(str.toLocal8Bit());
     file.close();
-    m_resources.insert(resFilePath);
+    m_resourcesToDelete.insert(resFilePath);
+
 
     return fcgt::strToPChar(fileName);
 }
 
 int SceneModel::addResList(const QString &filePath)
 {
-    m_resources.insert(filePath);
+    m_resourcesToDelete.insert(filePath);
     return 0;
 }
 
 bool SceneModel::resIsEmpty() const
 {
-    return m_resources.isEmpty();
+    return m_resourcesToDelete.isEmpty();
 }
 
 bool SceneModel::isDebug() const

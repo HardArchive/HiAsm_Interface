@@ -31,7 +31,8 @@ private:
     SharedValue m_propArrayValue;
 
     //Resource
-    QSet<QString> m_resources;
+    QSet<QString> m_resourcesToDelete;
+    QMap<QString, QString> m_resourcesForCompile;
 
     //Параметры CGT
     bool m_isDebug{};
@@ -47,6 +48,7 @@ public:
 private:
     void collectingData(quintptr id_sdk);
     void deleteResources();
+    void compileResources();
 
 public:
     //Serialize
@@ -84,8 +86,9 @@ public:
     PValue getValueById(quintptr id_value) const;
 
     //Resource
-    const char *addResByIdProp(quintptr id_prop);
-    const char *addResFromString(const QString &str);
+    const char *addStreamRes(quintptr id_prop);
+    const char *addStringRes(const QString &str);
+
     int addResList(const QString &filePath);
     bool resIsEmpty() const;
 
