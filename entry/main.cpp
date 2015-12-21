@@ -144,7 +144,12 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 
 #ifdef MODEL
     sceneModel = new SceneModel;
-    sceneModel2 = new SceneModel(sceneModel->serialize());
+    const QJsonDocument doc = sceneModel->serialize();
+    QFile file("test.json");
+    file.open(QIODevice::WriteOnly);
+    file.write(doc.toJson());
+    file.close();
+    sceneModel2 = new SceneModel(doc);
 
     EmulateCgt::setSceneModel(sceneModel2);
     cgt::setProxyCgt(EmulateCgt::getCgt());
