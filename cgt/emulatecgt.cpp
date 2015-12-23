@@ -13,7 +13,7 @@
 
 namespace EmulateCgt
 {
-#define EXPORT static __stdcall
+#define EXPORT __stdcall
 
     //ru Храним указатель на модель данных
     static SceneModel *m_model = nullptr;

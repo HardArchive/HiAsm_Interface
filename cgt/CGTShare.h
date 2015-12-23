@@ -9,7 +9,7 @@
 #include <QtCore>
 #include <QBitArray>
 
-//!!! ========== Поддерживается только HiAsm 4, пакет RTCG ==========
+//!!! ========== Поддерживается только HiAsm 4, пакет Windows ==========
 
 //!ru Флаги элемента
 enum ElementFlags {

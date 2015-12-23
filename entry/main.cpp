@@ -135,21 +135,18 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #ifdef MODEL
     sceneModel = new SceneModel;
     sceneModel->initializeFromCgt();
-    //sceneModel2 = new SceneModel;
-    //sceneModel2->deserialize(sceneModel->serialize());
-
     EmulateCgt::setSceneModel(sceneModel);
-    cgt::setProxyCgt(EmulateCgt::getCgt());
+    params.cgt = EmulateCgt::getCgt();
 #endif
 
 #ifdef PROXY_MODEL
     ProxyCgt::setProxiedCgt(EmulateCgt::getCgt());
-    cgt::setProxyCgt(ProxyCgt::getCgt());
+    params.cgt = ProxyCgt::getCgt();
 #endif
 
 #ifdef PROXY_ORIGINAL
     ProxyCgt::setProxiedCgt(cgt::getOriginalCgt());
-    cgt::setProxyCgt(ProxyCgt::getCgt());
+    params.cgt = ProxyCgt::getCgt();
 #endif
 
     int res = FBuildProcessProc(params);

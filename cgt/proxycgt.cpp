@@ -10,7 +10,7 @@
 namespace ProxyCgt
 {
     //Дефайны
-#define EXPORT static __stdcall
+#define EXPORT __stdcall
 #define PRINT_FUNC_INFO qInfo("  Call: %s", Q_FUNC_INFO);
 #define PRINT_RESULT(X) qInfo() << qUtf8Printable(QString("  Return: %1").arg(X));
 
