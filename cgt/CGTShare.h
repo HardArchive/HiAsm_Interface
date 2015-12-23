@@ -332,9 +332,9 @@ typedef int(*t_buildPrepareProc)(void *params);
 typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
 typedef int(*t_checkVersionProc)(const THiAsmVersion &params);
 
-extern t_buildPrepareProc FBuildPrepareProc;
-extern t_buildProcessProc FBuildProcessProc;
-extern t_checkVersionProc FCheckVersionProc;
+extern t_buildPrepareProc buildPrepareProcLib;
+extern t_buildProcessProc buildProcessProcLib;
+extern t_checkVersionProc checkVersionProcLib;
 
 struct TCodeGenTools {
 #define CALLBACK __stdcall

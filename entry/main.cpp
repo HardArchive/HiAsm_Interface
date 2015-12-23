@@ -102,9 +102,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
             qCritical("%s library is not loaded.", qUtf8Printable(nameOriginal));
 
         //ru Определение прототипов функций проксируемого кодогенератора
-        FBuildPrepareProc = reinterpret_cast<t_buildPrepareProc>(codegen.resolve("buildPrepareProc"));
-        FBuildProcessProc = reinterpret_cast<t_buildProcessProc>(codegen.resolve("buildProcessProc"));
-        FCheckVersionProc = reinterpret_cast<t_checkVersionProc>(codegen.resolve("CheckVersionProc"));
+        buildPrepareProcLib = reinterpret_cast<t_buildPrepareProc>(codegen.resolve("buildPrepareProc"));
+        buildProcessProcLib = reinterpret_cast<t_buildProcessProc>(codegen.resolve("buildProcessProc"));
+        checkVersionProcLib = reinterpret_cast<t_checkVersionProc>(codegen.resolve("CheckVersionProc"));
         break;
     }
 
@@ -124,7 +124,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 DLLEXPORT int buildPrepareProc(void *params)
 {
     Q_UNUSED(params)
-    return FBuildPrepareProc(params);
+    return buildPrepareProcLib(params);
 }
 
 DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
@@ -149,7 +149,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     params.cgt = ProxyCgt::getCgt();
 #endif
 
-    int res = FBuildProcessProc(params);
+    int res = buildProcessProcLib(params);
     PRINT_RESULT(CgResultMap[res]);
 
     return res;
@@ -159,7 +159,7 @@ DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
 {
     PRINT_FUNC_INFO
     qInfo("Arg1: %d.%d.%d", params.major, params.minor, params.build);
-    int res = FCheckVersionProc(params);
+    int res = checkVersionProcLib(params);
     PRINT_RESULT(res);
     return res;
 }
