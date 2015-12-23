@@ -20,16 +20,6 @@
 #define PRINT_FUNC_INFO qInfo("Call: %s", Q_FUNC_INFO);
 #define PRINT_RESULT(X) qInfo().noquote() << "Return:" << X;
 
-//Типы функций
-typedef int(*t_buildPrepareProc)(void *params);
-typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
-typedef int(*t_CheckVersionProc)(const THiAsmVersion &params);
-
-//Объявление прототипов функций оригинального кодогенератора
-static t_buildPrepareProc original_buildPrepareProc;
-static t_buildProcessProc original_buildProcessProc;
-static t_CheckVersionProc original_CheckVersionProc;
-
 //Переопределение вывода отладочных сообщений
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -79,7 +69,6 @@ void initLogger()
 //Служебные переменные
 static QLibrary codegen;
 static SceneModel *sceneModel = nullptr;
-static SceneModel *sceneModel2 = nullptr;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 {
@@ -112,16 +101,15 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
             qCritical("%s library is not loaded.", qUtf8Printable(nameOriginal));
 
         //ru Определение прототипов функций проксируемого кодогенератора
-        original_buildPrepareProc = reinterpret_cast<t_buildPrepareProc>(codegen.resolve("buildPrepareProc"));
-        original_buildProcessProc = reinterpret_cast<t_buildProcessProc>(codegen.resolve("buildProcessProc"));
-        original_CheckVersionProc = reinterpret_cast<t_CheckVersionProc>(codegen.resolve("CheckVersionProc"));
+        FBuildPrepareProc = reinterpret_cast<t_buildPrepareProc>(codegen.resolve("buildPrepareProc"));
+        FBuildProcessProc = reinterpret_cast<t_buildProcessProc>(codegen.resolve("buildProcessProc"));
+        FCheckVersionProc = reinterpret_cast<t_checkVersionProc>(codegen.resolve("CheckVersionProc"));
         break;
     }
 
     case DLL_PROCESS_DETACH: {
         qInfo() << "CODEGEN_PROCESS_DETACH";
         delete sceneModel;
-        delete sceneModel2;
         codegen.unload();
         break;
     }
@@ -144,14 +132,9 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 
 #ifdef MODEL
     sceneModel = new SceneModel;
-    const QJsonDocument doc = sceneModel->serialize();
-    QFile file("test.json");
-    file.open(QIODevice::WriteOnly);
-    file.write(doc.toJson());
-    file.close();
-    sceneModel2 = new SceneModel(doc);
+    sceneModel->initializeFromCgt();
 
-    EmulateCgt::setSceneModel(sceneModel2);
+    EmulateCgt::setSceneModel(sceneModel);
     cgt::setProxyCgt(EmulateCgt::getCgt());
 #endif
 
@@ -165,7 +148,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     cgt::setProxyCgt(ProxyCgt::getCgt());
 #endif
 
-    int res = original_buildProcessProc(params);
+    int res = FBuildProcessProc(params);
     PRINT_RESULT(CgResultMap[res]);
 
     return res;
@@ -175,7 +158,7 @@ DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
 {
     PRINT_FUNC_INFO
     qInfo("Arg1: %d.%d.%d", params.major, params.minor, params.build);
-    int res = original_CheckVersionProc(params);
+    int res = FCheckVersionProc(params);
     PRINT_RESULT(res);
     return res;
 }

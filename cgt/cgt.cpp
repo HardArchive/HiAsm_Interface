@@ -55,7 +55,7 @@ namespace fcgt
         return eClass == CI_PolyMulti;
     }
 
-    const char *strToPChar(const QString &str)
+    const char *strToCString(const QString &str)
     {
         char *buf = new char[uint(str.size() + 1)];
         strcpy(buf, str.toStdString().c_str());
@@ -66,10 +66,11 @@ namespace fcgt
 
 namespace cgt
 {
-//!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
-static TBuildProcessRec *m_buildProcess;
-static PCodeGenTools m_origCgt{};
-static PCodeGenTools m_cgt{};
+    //!~~~~~~~~~~~~~~~~~~~~~ служебные функции ~~~~~~~~~~~~~~~~~~~~~~~
+    static TBuildProcessRec *m_buildProcess;
+    static PCodeGenTools m_origCgt{};
+    static PCodeGenTools m_cgt{};
+
     static quintptr m_sdk{};
 
     //ru Инициализация параметров
@@ -398,36 +399,30 @@ static PCodeGenTools m_cgt{};
         return m_cgt->elGetData(e);
     }
 
-
     void elSetData(quintptr e, quintptr data)
     {
         m_cgt->elSetData(e, data);
     }
-
 
     DataTypes ptGetDataType(quintptr p)
     {
         return m_cgt->ptGetDataType(p);
     }
 
-
     quintptr elGetParent(quintptr e)
     {
         return m_cgt->elGetParent(e);
     }
-
 
     int elGetPropertyListCount(quintptr e)
     {
         return m_cgt->elGetPropertyListCount(e);
     }
 
-
     quintptr elGetPropertyListItem(quintptr e, int i)
     {
         return m_cgt->elGetPropertyListItem(e, i);
     }
-
 
     const char *plGetName(quintptr p)
     {
@@ -528,5 +523,4 @@ static PCodeGenTools m_cgt{};
     {
         return m_cgt->propSaveToFile(p, fileName);
     }
-
 }
