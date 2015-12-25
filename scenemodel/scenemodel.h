@@ -17,6 +17,9 @@ class SceneModel: public QObject
     Q_DISABLE_COPY(SceneModel)
 
 private:
+    //CGT
+    PCodeGenTools m_cgt{};
+
     //Map
     MapContainers m_mapContainers;
     MapElements m_mapElements;
@@ -48,6 +51,7 @@ private:
 
 private:
     Q_PROPERTY(PSceneModel model READ getModel)
+    Q_PROPERTY(PCodeGenTools cgt READ getCgt)
 
 public:
     explicit SceneModel(QObject *parent = 0);
@@ -63,9 +67,12 @@ public:
 
     //Model
     PSceneModel getModel();
-    void initializeFromCgt();
+    void initFromCgt(PCodeGenTools cgt, quintptr idMainSDK);
     bool saveModel(const QString &filePath);
     bool loadModel(const QString &filePath);
+
+    //CGT
+    PCodeGenTools getCgt();
 
     //Map
     void addContainerToMap(PContainer id_sdk);

@@ -310,8 +310,7 @@ extern t_buildStopProc buildStopProc;
  * Описание интерфейса библиотеки CodeGen.
  *
 */
-
-struct TCodeGenTools;
+class TCodeGenTools;
 typedef TCodeGenTools *PCodeGenTools;
 
 struct THiAsmVersion {
@@ -571,3 +570,5 @@ struct TCodeGenTools {
     //[deprecated]
     CALLBACK int (*propSaveToFile)(quintptr p, const char *fileName);
 };
+
+Q_DECLARE_METATYPE(PCodeGenTools)

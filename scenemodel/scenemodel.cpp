@@ -28,8 +28,8 @@ SceneModel::~SceneModel()
 
 void SceneModel::collectingData(quintptr id_sdk)
 {
-    m_isDebug = cgt::isDebug(id_sdk);
-    quintptr id_element = cgt::sdkGetElement(id_sdk, 0);
+    m_isDebug = m_cgt->isDebug(id_sdk);
+    quintptr id_element = m_cgt->sdkGetElement(id_sdk, 0);
 
     //ru Тут мощная магия, однако;D
     int iBuf{};
@@ -37,54 +37,54 @@ void SceneModel::collectingData(quintptr id_sdk)
 
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
-    cgt::GetParam(PARAM_CODE_PATH, buf.data());
+    m_cgt->GetParam(PARAM_CODE_PATH, buf.data());
     m_codePath = QString::fromLocal8Bit(buf);
 
-    cgt::GetParam(PARAM_DEBUG_MODE, &iBuf);
+    m_cgt->GetParam(PARAM_DEBUG_MODE, &iBuf);
     m_debugMode = iBuf;
 
-    cgt::GetParam(PARAM_DEBUG_SERVER_PORT, &iBuf);
+    m_cgt->GetParam(PARAM_DEBUG_SERVER_PORT, &iBuf);
     m_debugServerPort = iBuf;
 
-    cgt::GetParam(PARAM_DEBUG_CLIENT_PORT, &iBuf);
+    m_cgt->GetParam(PARAM_DEBUG_CLIENT_PORT, &iBuf);
     m_debugClientPort = iBuf;
 
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
-    cgt::GetParam(PARAM_PROJECT_PATH, buf.data());
+    m_cgt->GetParam(PARAM_PROJECT_PATH, buf.data());
     m_projectPath = QString::fromLocal8Bit(buf);
 
     const char f[] = "%mj.%mn.%bl";
     char *tmpBuf = new char[strlen(f) + 1];
     strcpy(tmpBuf, f);
-    cgt::GetParam(PARAM_HIASM_VERSION, tmpBuf);
+    m_cgt->GetParam(PARAM_HIASM_VERSION, tmpBuf);
     m_hiasmVersion = QString::fromLatin1(tmpBuf);
     delete[] tmpBuf;
 
     buf.fill('\0');
-    cgt::GetParam(PARAM_USER_NAME, buf.data());
+    m_cgt->GetParam(PARAM_USER_NAME, buf.data());
     m_userName = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
-    cgt::GetParam(PARAM_USER_MAIL, buf.data());
+    m_cgt->GetParam(PARAM_USER_MAIL, buf.data());
     m_userMail = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
-    cgt::GetParam(PARAM_PROJECT_NAME, buf.data());
+    m_cgt->GetParam(PARAM_PROJECT_NAME, buf.data());
     m_projectName = QString::fromLocal8Bit(buf);
 
     uint tmpW[1] = {reinterpret_cast<uint>(id_element)};
-    cgt::GetParam(PARAM_SDE_WIDTH, tmpW);
+    m_cgt->GetParam(PARAM_SDE_WIDTH, tmpW);
     m_sdeWidth = tmpW[0];
 
     uint tmpH[1] = {reinterpret_cast<uint>(id_element)};
-    cgt::GetParam(PARAM_SDE_HEIGHT, tmpH);
+    m_cgt->GetParam(PARAM_SDE_HEIGHT, tmpH);
     m_sdeHeight = tmpH[0];
 
     buf.fill('\0');
     reinterpret_cast<quintptr *>(buf.data())[0] = id_element;
-    cgt::GetParam(PARAM_COMPILER, buf.data());
+    m_cgt->GetParam(PARAM_COMPILER, buf.data());
     m_compiler = QString::fromLocal8Bit(buf);
 }
 
@@ -138,13 +138,15 @@ PSceneModel SceneModel::getModel()
     return this;
 }
 
-void SceneModel::initializeFromCgt()
+void SceneModel::initFromCgt(PCodeGenTools cgt, quintptr idMainSDK)
 {
+    m_cgt = cgt;
+
     //ru Собираем данные о среде
-    collectingData(cgt::getMainSDK());
+    collectingData(idMainSDK);
 
     //ru Запуск процесса сборка данных о схеме
-    m_container = new Container(cgt::getMainSDK(), this);
+    m_container = new Container(idMainSDK, this);
 }
 
 bool SceneModel::saveModel(const QString &filePath)
@@ -167,6 +169,11 @@ bool SceneModel::loadModel(const QString &filePath)
 
     deserialize(QJsonDocument::fromJson(file.readAll()));
     return true;
+}
+
+PCodeGenTools SceneModel::getCgt()
+{
+    return m_cgt;
 }
 
 void SceneModel::addContainerToMap(PContainer id_sdk)

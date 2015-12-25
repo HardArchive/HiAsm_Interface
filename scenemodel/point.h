@@ -27,11 +27,15 @@ private:
     quintptr m_linkPoint{};
     quintptr m_RLinkPoint{};
 
+    //CGT
+    PCodeGenTools m_cgt{};
+
     //Model
-    PSceneModel const m_model;
+    PSceneModel m_model{};
 
 private:
     Q_PROPERTY(PSceneModel model READ getModel)
+    Q_PROPERTY(PCodeGenTools cgt READ getCgt)
 
 public:
     explicit Point(quintptr id_point, QObject *parent);
@@ -72,6 +76,9 @@ public:
 
     void setRLinkPoint(quintptr RLinkPoint);
     quintptr getRLinkPoint() const;
+
+    //CGT
+    PCodeGenTools getCgt();
 
     //Model
     PSceneModel getModel();

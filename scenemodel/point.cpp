@@ -13,6 +13,7 @@
 Point::Point(quintptr id_point, QObject *parent)
     : QObject(parent)
     , m_id(id_point)
+    , m_cgt(parent->property("cgt").value<PCodeGenTools>())
     , m_model(parent->property("model").value<PSceneModel>())
 {
     m_model->addPointToMap(this);
@@ -21,6 +22,7 @@ Point::Point(quintptr id_point, QObject *parent)
 
 Point::Point(const QJsonObject &object, QObject *parent)
     : QObject(parent)
+    , m_cgt(parent->property("cgt").value<PCodeGenTools>())
     , m_model(parent->property("model").value<PSceneModel>())
 {
     deserialize(object);
@@ -28,14 +30,14 @@ Point::Point(const QJsonObject &object, QObject *parent)
 
 void Point::collectingData()
 {
-    m_type = cgt::ptGetType(m_id);
-    m_dataType = cgt::ptGetDataType(m_id);
-    m_index = cgt::ptGetIndex(m_id);
-    m_name = QString::fromLocal8Bit(cgt::ptGetName(m_id));
-    m_dpeName = QString::fromLocal8Bit(cgt::pt_dpeGetName(m_id));
-    m_info = QString::fromLocal8Bit(cgt::ptGetInfo(m_id));
-    m_linkPoint = cgt::ptGetLinkPoint(m_id);
-    m_RLinkPoint = cgt::ptGetRLinkPoint(m_id);
+    m_type = m_cgt->ptGetType(m_id);
+    m_dataType = m_cgt->ptGetDataType(m_id);
+    m_index = m_cgt->ptGetIndex(m_id);
+    m_name = QString::fromLocal8Bit(m_cgt->ptGetName(m_id));
+    m_dpeName = QString::fromLocal8Bit(m_cgt->pt_dpeGetName(m_id));
+    m_info = QString::fromLocal8Bit(m_cgt->ptGetInfo(m_id));
+    m_linkPoint = m_cgt->ptGetLinkPoint(m_id);
+    m_RLinkPoint = m_cgt->ptGetRLinkPoint(m_id);
 }
 
 QVariantMap Point::serialize()
@@ -157,6 +159,11 @@ void Point::setRLinkPoint(quintptr RLinkPoint)
 quintptr Point::getRLinkPoint() const
 {
     return m_RLinkPoint;
+}
+
+PCodeGenTools Point::getCgt()
+{
+    return m_cgt;
 }
 
 PSceneModel Point::getModel()

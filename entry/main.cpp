@@ -131,16 +131,12 @@ DLLEXPORT int buildPrepareProc(void *params)
 DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 {
     PRINT_FUNC_INFO
-    cgt::init(params);
 
 #ifdef MODEL
     sceneModel = new SceneModel;
-    sceneModel->initializeFromCgt();
-    sceneModel->saveModel("test.json");
+    sceneModel->initFromCgt(params.cgt, params.sdk);
 
-    sceneModel2 = new SceneModel;
-    sceneModel2->loadModel("test.json");
-    EmulateCgt::setSceneModel(sceneModel2);
+    EmulateCgt::setSceneModel(sceneModel);
     params.cgt = EmulateCgt::getCgt();
 #endif
 
@@ -150,7 +146,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #endif
 
 #ifdef PROXY_ORIGINAL
-    ProxyCgt::setProxiedCgt(cgt::getOriginalCgt());
+    ProxyCgt::setProxiedCgt(params.cgt);
     params.cgt = ProxyCgt::getCgt();
 #endif
 
