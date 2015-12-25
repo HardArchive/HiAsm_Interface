@@ -110,6 +110,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
     case DLL_PROCESS_DETACH: {
         qInfo() << "CODEGEN_PROCESS_DETACH";
+
         delete sceneModel;
         delete sceneModel2;
         codegen.unload();
@@ -135,7 +136,11 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #ifdef MODEL
     sceneModel = new SceneModel;
     sceneModel->initializeFromCgt();
-    EmulateCgt::setSceneModel(sceneModel);
+    sceneModel->saveModel("test.json");
+
+    sceneModel2 = new SceneModel;
+    sceneModel2->loadModel("test.json");
+    EmulateCgt::setSceneModel(sceneModel2);
     params.cgt = EmulateCgt::getCgt();
 #endif
 

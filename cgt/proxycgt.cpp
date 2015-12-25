@@ -427,6 +427,9 @@ namespace ProxyCgt
     EXPORT int GetParam(CgtParams index, void *value)
     {
         PRINT_FUNC_INFO
+        if (index > 12)
+            index = PARAM_DEBUG_MODE;
+
         int res = m_cgt->GetParam(index, value);
 
         switch (index) {
@@ -494,7 +497,7 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         const char *res = m_cgt->arrItemName(id_value, index);
-        printArgs({id_value, index});
+        printArgs({id(id_value), index});
         PRINT_RESULT(str(res))
 
         return res;
@@ -503,7 +506,7 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         const quintptr res = m_cgt->arrItemData(id_value, index);
-        printArgs({id_value, index});
+        printArgs({id(id_value), index});
         PRINT_RESULT(id(res))
 
         return res;

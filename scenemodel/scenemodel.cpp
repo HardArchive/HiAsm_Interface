@@ -22,7 +22,8 @@ SceneModel::SceneModel(QObject *parent):
 
 SceneModel::~SceneModel()
 {
-
+    compileResources();
+    deleteResources();
 }
 
 void SceneModel::collectingData(quintptr id_sdk)
@@ -120,7 +121,7 @@ void SceneModel::deserialize(const QJsonDocument &doc)
     m_debugServerPort = cgtParams["DEBUG_SERVER_PORT"].toInt();
     m_debugClientPort = cgtParams["DEBUG_CLIENT_PORT"].toInt();;
     m_projectPath = cgtParams["PROJECT_PATH"].toString();
-    m_hiasmVersion= cgtParams["HIASM_VERSION"].toString();
+    m_hiasmVersion = cgtParams["HIASM_VERSION"].toString();
     m_userName = cgtParams["USER_NAME"].toString();
     m_userMail = cgtParams["USER_MAIL"].toString();
     m_projectName = cgtParams["PROJECT_NAME"].toString();
@@ -246,16 +247,6 @@ PProperty SceneModel::getPropertyById(quintptr id_prop) const
     return m_mapProperties[id_prop];
 }
 
-void SceneModel::setPropArrayValue(const SharedValue &value)
-{
-    m_propArrayValue = value;
-}
-
-const SharedValue &SceneModel::getPropArrayValue()
-{
-    return m_propArrayValue;
-}
-
 PPoint SceneModel::getPointById(quintptr id_point) const
 {
     return m_mapPoints[id_point];
@@ -273,9 +264,9 @@ const char *SceneModel::addStreamRes(quintptr id_prop)
         return nullptr;
 
     static const QString nameDir = "compiler";
-    static const QString ext = ".dat";
     QString nameTypeRes;
     QString fileName;
+    QString ext;
     const PValue v = p->getValue();
     switch (p->getType()) {
     case data_icon: {
@@ -284,11 +275,13 @@ const char *SceneModel::addStreamRes(quintptr id_prop)
 
         nameTypeRes = "ICON";
         fileName = "ICON";
+        ext = ".ico";
         break;
     }
     case data_stream: {
         nameTypeRes = "100";
         fileName = "STREAM";
+        ext = ".dat";
         break;
     }
     case data_bitmap: {
@@ -297,6 +290,7 @@ const char *SceneModel::addStreamRes(quintptr id_prop)
 
         nameTypeRes = "BITMAP";
         fileName = "BITMAP";
+        ext = ".bmp";
         break;
     }
     case data_jpeg:
@@ -372,8 +366,10 @@ void SceneModel::compileResources()
     file.open(QIODevice::WriteOnly);
     QTextStream write(&file);
 
-    for (const auto &nameRes : m_resourcesForCompile.keys()) {
-        write << QString("%1 %2 %1.dat\r\n").arg(nameRes).arg(m_resourcesForCompile[nameRes]);
+    for (const auto &fullFileNameRes : m_resourcesForCompile.keys()) {
+        QFileInfo file(fullFileNameRes);
+
+        write << QString("%1 %2 %3\r\n").arg(file.baseName()).arg(m_resourcesForCompile[fullFileNameRes]).arg(fullFileNameRes);
     }
 
     write << "ASMA ICON \"..\\int\\main.ico\"";
