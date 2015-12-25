@@ -111,6 +111,11 @@ QJsonDocument SceneModel::serialize()
     return QJsonDocument::fromVariant(model);
 }
 
+PCodeGenTools SceneModel::getCgt()
+{
+    return m_cgt;
+}
+
 void SceneModel::deserialize(const QJsonDocument &doc)
 {
     const QJsonObject model = doc.object();
@@ -169,11 +174,6 @@ bool SceneModel::loadModel(const QString &filePath)
 
     deserialize(QJsonDocument::fromJson(file.readAll()));
     return true;
-}
-
-PCodeGenTools SceneModel::getCgt()
-{
-    return m_cgt;
 }
 
 void SceneModel::addContainerToMap(PContainer id_sdk)

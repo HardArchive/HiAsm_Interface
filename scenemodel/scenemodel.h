@@ -50,8 +50,8 @@ private:
     QString m_compiler;
 
 private:
-    Q_PROPERTY(PSceneModel model READ getModel)
     Q_PROPERTY(PCodeGenTools cgt READ getCgt)
+    Q_PROPERTY(PSceneModel model READ getModel)
 
 public:
     explicit SceneModel(QObject *parent = 0);
@@ -65,14 +65,14 @@ public:
     QJsonDocument serialize();
     void deserialize(const QJsonDocument &doc);
 
+    //CGT
+    PCodeGenTools getCgt();
+
     //Model
     PSceneModel getModel();
     void initFromCgt(PCodeGenTools cgt, quintptr idMainSDK);
     bool saveModel(const QString &filePath);
     bool loadModel(const QString &filePath);
-
-    //CGT
-    PCodeGenTools getCgt();
 
     //Map
     void addContainerToMap(PContainer id_sdk);

@@ -737,7 +737,7 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         quintptr res = m_cgt->propGetLinkedElementInfo(id_element, id_prop, info);
-        printArgs({id(id_element), id(id_prop), info});
+        printArgs({id(id_element), id(id_prop), str(info)});
         PRINT_RESULT(id(res))
 
         return 0;
@@ -808,7 +808,7 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         int res = m_cgt->resSetPref(pref);
-        printArgs({pref});
+        printArgs({str(pref)});
         PRINT_RESULT(res)
 
         return res;
@@ -817,7 +817,7 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         int res = m_cgt->_Error(line, id_element, text);
-        printArgs({line, id(id_element), text});
+        printArgs({line, id(id_element), str(text)});
         PRINT_RESULT(res)
 
         return res;
@@ -835,7 +835,7 @@ namespace ProxyCgt
     {
         PRINT_FUNC_INFO
         int res = m_cgt->propSaveToFile(id_prop, fileName);
-        printArgs({id(id_prop), fileName});
+        printArgs({id(id_prop), str(fileName)});
         PRINT_RESULT(res)
 
         return res;
