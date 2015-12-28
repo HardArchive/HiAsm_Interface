@@ -1,4 +1,4 @@
-//Project
+﻿//Project
 #include "element.h"
 #include "container.h"
 #include "point.h"
@@ -9,6 +9,23 @@
 //STL
 
 //Qt
+
+
+Element::Element(const QString &name, quintptr id_element, int X, int Y, QObject *parent)
+    : QObject(parent)
+    , m_id(id_element)
+    , m_posX(X)
+    , m_posY(Y)
+    , m_model(parent->property("model").value<PSceneModel>())
+{
+    m_model->addElementToMap(this);
+
+    PPackage package = m_model->getPackage();
+    const SharedConfElement conf = package->getElementByName(name);
+
+
+}
+
 Element::Element(quintptr id_element, QObject *parent)
     : QObject(parent)
     , m_id(id_element)
@@ -21,7 +38,6 @@ Element::Element(quintptr id_element, QObject *parent)
 
 Element::Element(const QJsonObject &object, QObject *parent)
     : QObject(parent)
-    , m_cgt(parent->property("cgt").value<PCodeGenTools>())
     , m_model(parent->property("model").value<PSceneModel>())
 {
     deserialize(object);
@@ -137,7 +153,7 @@ void Element::deserialize(const QJsonObject &object)
     const auto properties = object["Properties"].toArray();
     const auto points = object["Points"].toArray();
 
-    m_id = data["id"].toVariant().toUInt();
+    m_id = data["id"].toVariant().value<quintptr>();
     m_model->addElementToMap(this);
 
     //m_userData = data["userData"].toVariant().toUInt();
@@ -145,7 +161,7 @@ void Element::deserialize(const QJsonObject &object)
     m_flags = ElementFlgs(data["flags"].toInt());
     m_group = data["group"].toInt();
     m_linkIs = data["linkIs"].toBool();
-    m_linkMain = data["linkMain"].toVariant().toUInt();
+    m_linkMain = data["linkMain"].toVariant().value<quintptr>();
     m_posX = data["posX"].toInt();
     m_posY = data["posY"].toInt();
     m_sizeW = data["sizeW"].toInt();
@@ -162,8 +178,8 @@ void Element::deserialize(const QJsonObject &object)
     for (const auto p : properties) {
         addProperty(new Property(p.toObject(), this));
     }
-    for(const auto p : points){
-       addPoint(new Point(p.toObject(), this));
+    for (const auto p : points) {
+        addPoint(new Point(p.toObject(), this));
     }
 }
 
@@ -337,7 +353,7 @@ PSceneModel Element::getModel()
     return m_model;
 }
 
-size_t Element::getCountContainers() const
+int Element::getCountContainers() const
 {
     return m_containers.size();
 }
@@ -387,7 +403,7 @@ void Element::removeContainer(uint index)
     m_containers.remove(index);
 }
 
-size_t Element::getCountPoints() const
+int Element::getCountPoints() const
 {
     return m_points.size();
 }
@@ -440,7 +456,7 @@ void Element::removePoint(uint index)
     m_points.remove(index);
 }
 
-size_t Element::getCountProps() const
+int Element::getCountProps() const
 {
     return m_properties.size();
 }

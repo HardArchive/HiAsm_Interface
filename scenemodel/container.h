@@ -33,6 +33,7 @@ private:
     Q_PROPERTY(PCodeGenTools cgt READ getCgt)
 
 public:
+    explicit Container(QObject *parent);
     explicit Container(quintptr id_sdk, QObject *parent);
     explicit Container(const QJsonObject &object, QObject *parent);
 
@@ -57,7 +58,7 @@ public:
     PSceneModel getModel() const;
 
     //Element
-    size_t getCountElements() const;
+    int getCountElements() const;
     PElement getElementByIndex(uint index) const;
     quintptr getIdElementByIndex(uint index) const;
     PElement getElementByName(const QString &name) const;

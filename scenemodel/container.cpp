@@ -1,4 +1,4 @@
-//Project
+﻿//Project
 #include "container.h"
 #include "element.h"
 #include "scenemodel.h"
@@ -7,6 +7,14 @@
 //STL
 
 //Qt
+
+Container::Container(QObject *parent)
+    : QObject(parent)
+    , m_model(parent->property("model").value<PSceneModel>())
+{
+    m_id = m_model->genId();
+    m_model->addContainerToMap(this);
+}
 
 Container::Container(quintptr id_sdk, QObject *parent)
     : QObject(parent)
@@ -20,7 +28,6 @@ Container::Container(quintptr id_sdk, QObject *parent)
 
 Container::Container(const QJsonObject &object, QObject *parent)
     : QObject(parent)
-    , m_cgt(parent->property("cgt").value<PCodeGenTools>())
     , m_model(parent->property("model").value<PSceneModel>())
 {
     deserialize(object);
@@ -58,13 +65,13 @@ QVariantMap Container::serialize()
 void Container::deserialize(const QJsonObject &object)
 {
     const auto data = object["Data"].toObject();
-    m_id = data["id"].toVariant().toUInt();
+    m_id = data["id"].toVariant().value<quintptr>();
     m_model->addContainerToMap(this);
     m_name = data["name"].toString();
 
     const auto elements = object["Elements"].toArray();
-    for(const auto e : elements){
-       addElement(new Element(e.toObject(), this));
+    for (const auto e : elements) {
+        addElement(new Element(e.toObject(), this));
     }
 }
 
@@ -98,7 +105,7 @@ void Container::setName(const QString &name)
     m_name = name;
 }
 
-size_t Container::getCountElements() const
+int Container::getCountElements() const
 {
     return m_elements.size();
 }

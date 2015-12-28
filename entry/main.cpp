@@ -7,6 +7,7 @@
 #include "logger.h"
 
 //NATIVE
+#include <windows.h>
 
 //STL
 
@@ -20,51 +21,6 @@
 #define PRINT_FUNC_INFO qInfo("Call: %s", Q_FUNC_INFO);
 #define PRINT_RESULT(X) qInfo().noquote() << "Return:" << X;
 
-//Переопределение вывода отладочных сообщений
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    Q_UNUSED(context)
-
-    QByteArray message = msg.toLocal8Bit();
-    switch (type) {
-    case QtDebugMsg:
-        LOG(DEBUG) << message.constData();
-        break;
-    case QtInfoMsg:
-        LOG(INFO) << message.constData();
-        break;
-    case QtWarningMsg:
-        LOG(WARNING) << message.constData();
-        break;
-    case QtCriticalMsg:
-        LOG(ERROR) << message.constData();
-        break;
-    case QtFatalMsg:
-        LOG(FATAL) << message.constData();
-        abort();
-    }
-}
-
-INITIALIZE_EASYLOGGINGPP
-void initLogger()
-{
-    QDir makeLogDir;
-    makeLogDir.mkdir("logs");
-    el::Configurations conf;
-    conf.setGlobally(el::ConfigurationType::Filename, "logs/%datetime.log");
-    //conf.setGlobally(el::ConfigurationType::Format, "%datetime{%h:%m:%s.%z}:%levshort: %msg");
-    conf.setGlobally(el::ConfigurationType::Format, "%msg");
-    el::Logger *defaultLogger = el::Loggers::getLogger("default");
-    defaultLogger->configure(conf);
-    el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);
-    el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
-    el::Loggers::addFlag(el::LoggingFlag::LogDetailedCrashReason);
-    el::Loggers::addFlag(el::LoggingFlag::DisableApplicationAbortOnFatalLog);
-    el::Loggers::addFlag(el::LoggingFlag::DisablePerformanceTrackingCheckpointComparison);
-    el::Loggers::addFlag(el::LoggingFlag::DisableVModules);
-    el::Loggers::addFlag(el::LoggingFlag::DisableVModulesExtensions);
-    qInstallMessageHandler(myMessageOutput);
-}
 
 //Служебные переменные
 static QLibrary codegen;
@@ -78,7 +34,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
     switch (reason) {
     case DLL_PROCESS_ATTACH: {
         //ru Инициализация логгера
-        initLogger();
+        logger::initialize();
+
         qInfo() << "CODEGEN_PROCESS_ATTACH";
 
         //ru Вычисляем путь к оригинальному кодогенератору относительно текущего модуля (hModule)
@@ -135,6 +92,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 #ifdef MODEL
     sceneModel = new SceneModel;
     sceneModel->initFromCgt(params.cgt, params.sdk);
+    sceneModel->saveModel("test.json");
 
     EmulateCgt::setSceneModel(sceneModel);
     params.cgt = EmulateCgt::getCgt();
@@ -159,8 +117,8 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
 DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
 {
     PRINT_FUNC_INFO
-    qInfo("Arg1: %d.%d.%d", params.major, params.minor, params.build);
+    qInfo().noquote() << QString("Arg1: %1.%2.%3").arg(params.major).arg(params.minor).arg(params.build);
     int res = checkVersionProcLib(params);
-    PRINT_RESULT(res);
+    PRINT_RESULT(CgResultMap[res]);
     return res;
 }

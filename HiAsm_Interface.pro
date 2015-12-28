@@ -15,13 +15,14 @@ DESTDIR += $$HIASM_PACKAGES/delphi
 #ru Подключаем ProxyCgt
 #DEFINES += PROXYCGT
 
-SOURCES += $$files("*.cpp", true)
-HEADERS += $$files("*.h", true)
+SOURCES += $$files("cgt/*.cpp", true)
+HEADERS += $$files("cgt/*.h", true)
+SOURCES += $$files("scenemodel/*.cpp", true)
+HEADERS += $$files("scenemodel/*.h", true)
+SOURCES += $$files("entry/*.cpp", true)
+HEADERS += $$files("entry/*.h", true)
+SOURCES += $$files("package/*.cpp", true)
+HEADERS += $$files("package/*.h", true)
 
-#Параметры логгера
-DEFINES += ELPP_QT_LOGGING \
-           ELPP_STL_LOGGING \
-           ELPP_STRICT_SIZE_CHECK \
-           ELPP_THREAD_SAFE \
-           ELPP_MULTI_LOGGER_SUPPORT \
-           ELPP_NO_DEFAULT_LOG_FILE
+#Подключаем логгер
+include(logger/logger.pri)

@@ -4,6 +4,7 @@
 #include "types.h"
 #include "value.h"
 #include "cgt/CGTShare.h"
+#include "package/packagemanager.h"
 
 //STL
 
@@ -20,6 +21,12 @@ private:
     //CGT
     PCodeGenTools m_cgt{};
 
+    //Model
+    quintptr m_genId = 1;
+
+    //Package
+    PPackage m_package;
+
     //Map
     MapContainers m_mapContainers;
     MapElements m_mapElements;
@@ -31,6 +38,7 @@ private:
     PContainer m_container{};
 
     //Resource
+    const QString m_resourcesDir = "resources";
     QSet<QString> m_resourcesToDelete;
     QMap<QString, QString> m_resourcesForCompile;
 
@@ -69,10 +77,15 @@ public:
     PCodeGenTools getCgt();
 
     //Model
+    quintptr genId();
     PSceneModel getModel();
     void initFromCgt(PCodeGenTools cgt, quintptr idMainSDK);
     bool saveModel(const QString &filePath);
     bool loadModel(const QString &filePath);
+    bool loadFromSha(const QString &filePath, PackageManager &manager);
+
+    //Package
+    PPackage getPackage();
 
     //Map
     void addContainerToMap(PContainer id_sdk);
@@ -83,7 +96,7 @@ public:
 
     //Container
     PContainer getContainerById(quintptr id_sdk) const;
-    size_t getCountElementsInContainer(quintptr id_sdk) const;
+    int getCountElementsInContainer(quintptr id_sdk) const;
     quintptr getIdRootContainer() const;
 
     //Element
@@ -150,6 +163,7 @@ public:
 
     QString getCompiler() const;
     void setCompiler(const QString &compiler);
+
 };
 
 Q_DECLARE_METATYPE(PSceneModel)

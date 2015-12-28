@@ -24,13 +24,12 @@ Property::Property(quintptr id_prop, QObject *parent)
 
 Property::Property(const QJsonObject &object, QObject *parent)
     : QObject(parent)
-    , m_cgt(parent->property("cgt").value<PCodeGenTools>())
     , m_model(parent->property("model").value<PSceneModel>())
 {
     deserialize(object);
 }
 
-Property::Property(quintptr id, DataTypes type, const QVariant &data, const QString &name)
+Property::Property(quintptr id, DataType type, const QVariant &data, const QString &name)
 {
     m_id = id;
     m_type = type;
@@ -67,7 +66,7 @@ void Property::collectingData()
         break;
     }
     case data_data: {
-        const DataTypes dataType = m_cgt->dtType(id_value);
+        const DataType dataType = m_cgt->dtType(id_value);
         switch (dataType) {
         case data_int:
             setValue(id_value, m_type, m_cgt->dtInt(id_value), QString(), dataType);
@@ -113,7 +112,7 @@ void Property::collectingData()
     }
     case data_array: {
         int arrCount = m_cgt->arrCount(id_value);
-        DataTypes arrItemType = m_cgt->arrType(id_value);
+        DataType arrItemType = m_cgt->arrType(id_value);
         Values arrayItems;
 
         for (int i = 0; i < arrCount; ++i) {
@@ -185,11 +184,11 @@ QVariantMap Property::serialize()
 
 void Property::deserialize(const QJsonObject &object)
 {
-    m_id = object["id"].toVariant().toUInt();
+    m_id = object["id"].toVariant().value<quintptr>();
     m_model->addPropertyToMap(this);
 
     m_name = object["name"].toString();
-    m_type = DataTypes(object["type"].toInt());
+    m_type = DataType(object["type"].toInt());
     m_isDefProp = object["isDefProp"].toBool();
     m_value.deserialize(object["value"].toObject());
     m_model->addValueToMap(&m_value);
@@ -210,12 +209,12 @@ QString Property::getName() const
     return m_name;
 }
 
-void Property::setType(DataTypes type)
+void Property::setType(DataType type)
 {
     m_type = type;
 }
 
-DataTypes Property::getType() const
+DataType Property::getType() const
 {
     return m_type;
 }
@@ -230,7 +229,7 @@ bool Property::getIsDefProp() const
     return m_isDefProp;
 }
 
-void Property::setValue(quintptr id, DataTypes type, const QVariant &data, const QString &name, DataTypes arrayType)
+void Property::setValue(quintptr id, DataType type, const QVariant &data, const QString &name, DataType arrayType)
 {
     m_value.setId(id);
     m_value.setType(type);

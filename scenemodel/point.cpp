@@ -1,4 +1,4 @@
-//Project
+﻿//Project
 #include "point.h"
 #include "container.h"
 #include "element.h"
@@ -22,7 +22,6 @@ Point::Point(quintptr id_point, QObject *parent)
 
 Point::Point(const QJsonObject &object, QObject *parent)
     : QObject(parent)
-    , m_cgt(parent->property("cgt").value<PCodeGenTools>())
     , m_model(parent->property("model").value<PSceneModel>())
 {
     deserialize(object);
@@ -58,17 +57,17 @@ QVariantMap Point::serialize()
 
 void Point::deserialize(const QJsonObject &object)
 {
-    m_id = object["id"].toVariant().toUInt();
+    m_id = object["id"].toVariant().value<quintptr>();
     m_model->addPointToMap(this);
 
-    m_type = PointTypes(object["type"].toInt());
-    m_dataType = DataTypes(object["dataType"].toInt());
+    m_type = PointType(object["type"].toInt());
+    m_dataType = DataType(object["dataType"].toInt());
     m_index = object["index"].toVariant().toUInt();
     m_name = object["name"].toString();
     m_dpeName = object["dpeName"].toString();
     m_info = object["info"].toString();
-    m_linkPoint = object["linkPoint"].toVariant().toUInt();
-    m_RLinkPoint = object["RLinkPoint"].toVariant().toUInt();
+    m_linkPoint = object["linkPoint"].toVariant().value<quintptr>();
+    m_RLinkPoint = object["RLinkPoint"].toVariant().value<quintptr>();
 }
 
 quintptr Point::getId() const
@@ -81,22 +80,22 @@ PElement Point::getParent() const
     return qobject_cast<PElement>(parent());
 }
 
-void Point::setType(PointTypes type)
+void Point::setType(PointType type)
 {
     m_type = type;
 }
 
-PointTypes Point::getType() const
+PointType Point::getType() const
 {
     return m_type;
 }
 
-void Point::setDataType(DataTypes dataType)
+void Point::setDataType(DataType dataType)
 {
     m_dataType = dataType;
 }
 
-DataTypes Point::getDataType() const
+DataType Point::getDataType() const
 {
     return m_dataType;
 }

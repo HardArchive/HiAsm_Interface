@@ -45,7 +45,7 @@ enum ElementFlags {
 typedef QFlags<ElementFlags> ElementFlgs;
 
 //!ru Типы точек
-enum PointTypes {
+enum PointType {
     //ru Метод
     pt_Work = 1,
 
@@ -58,7 +58,7 @@ enum PointTypes {
     //ru Данные
     pt_Data
 };
-const static QMap<int, QString> PointTypesMap{
+const static QMap<int, QString> PointTypeMap{
     {pt_Work, "pt_Work"},
     {pt_Event, "pt_Event"},
     {pt_Var, "pt_Var"},
@@ -66,7 +66,7 @@ const static QMap<int, QString> PointTypesMap{
 };
 
 //!ru Типы данных
-enum DataTypes {
+enum DataType {
     data_null = 0,
     data_int,
     data_str,
@@ -91,7 +91,7 @@ enum DataTypes {
     data_flags,
     data_object
 };
-const static QMap<int, QString> DataTypesMap{
+const static QMap<int, QString> DataTypeMap{
     {data_null, "data_null"},
     {data_int, "data_int"},
     {data_str, "data_str"},
@@ -327,9 +327,9 @@ struct TBuildProcessRec {
     explicit TBuildProcessRec(PCodeGenTools _cgt, quintptr _sdk) : cgt(_cgt), sdk(_sdk) {}
 };
 
-typedef int(*t_buildPrepareProc)(void *params);
-typedef int(*t_buildProcessProc)(TBuildProcessRec &params);
-typedef int(*t_checkVersionProc)(const THiAsmVersion &params);
+typedef CgResult(*t_buildPrepareProc)(void *params);
+typedef CgResult(*t_buildProcessProc)(TBuildProcessRec &params);
+typedef CgResult(*t_checkVersionProc)(const THiAsmVersion &params);
 
 extern t_buildPrepareProc buildPrepareProcLib;
 extern t_buildProcessProc buildProcessProcLib;
@@ -393,7 +393,7 @@ struct TCodeGenTools {
     //ru без учета точек разрыва и хабов.
     CALLBACK quintptr(*ptGetRLinkPoint)(quintptr p);
     //ru Возвращает тип точек(константы PointTypes).
-    CALLBACK PointTypes(*ptGetType)(quintptr p);
+    CALLBACK PointType(*ptGetType)(quintptr p);
     //ru Возвращает имя точки.
     CALLBACK const char *(*ptGetName)(quintptr p);
     //ru Возвращает ID элемента, которому принадлежит точка.
@@ -404,7 +404,7 @@ struct TCodeGenTools {
     CALLBACK const char *(*pt_dpeGetName)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ свойства элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип свойства.
-    CALLBACK DataTypes(*propGetType)(quintptr prop);
+    CALLBACK DataType(*propGetType)(quintptr prop);
     //ru Возвращает имя свойства.
     CALLBACK const char *(*propGetName)(quintptr prop);
     //ru Возвращает значение свойства в виде указателя на данные.
@@ -457,7 +457,7 @@ struct TCodeGenTools {
     //ru Возвращает количество элементов в массиве.
     CALLBACK int (*arrCount)(quintptr a);
     //ru Возвращает тип элементов в массиве.
-    CALLBACK DataTypes(*arrType)(quintptr a);
+    CALLBACK DataType(*arrType)(quintptr a);
     //ru Возвращает имя элемента с индексом Index.
     CALLBACK const char *(*arrItemName)(quintptr a, int Index);
     //ru Возвращает значение элемента с индексом Index
@@ -471,7 +471,7 @@ struct TCodeGenTools {
     CALLBACK int (*isDebug)(quintptr e);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ работа с данными ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных.
-    CALLBACK DataTypes(*dtType)(quintptr d);
+    CALLBACK DataType(*dtType)(quintptr d);
     //ru Возвращает данные в формате: строка в стиле C.
     CALLBACK const char *(*dtStr)(quintptr d);
     //ru Возвращает данные в формате: целое число.
@@ -501,7 +501,7 @@ struct TCodeGenTools {
     CALLBACK void (*elSetData)(quintptr e, quintptr data);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ точки элемента ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает тип данных точки.
-    CALLBACK DataTypes(*ptGetDataType)(quintptr p);
+    CALLBACK DataType(*ptGetDataType)(quintptr p);
     //!~~~~~~~~~~~~~~~~~~~~~~~~ элемент ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //ru Возвращает ID родительского контейнера элемента.
     CALLBACK quintptr(*elGetParent)(quintptr e);
