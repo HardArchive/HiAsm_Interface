@@ -8,14 +8,6 @@
 
 //Qt
 
-Container::Container(QObject *parent)
-    : QObject(parent)
-    , m_model(parent->property("model").value<PSceneModel>())
-{
-    m_id = m_model->genId();
-    m_model->addContainerToMap(this);
-}
-
 Container::Container(quintptr id_sdk, QObject *parent)
     : QObject(parent)
     , m_id(id_sdk)
@@ -26,13 +18,6 @@ Container::Container(quintptr id_sdk, QObject *parent)
     collectingData();
 }
 
-Container::Container(const QJsonObject &object, QObject *parent)
-    : QObject(parent)
-    , m_model(parent->property("model").value<PSceneModel>())
-{
-    deserialize(object);
-}
-
 void Container::collectingData()
 {
     int countElements = m_cgt->sdkGetCount(m_id);
@@ -40,38 +25,9 @@ void Container::collectingData()
         quintptr id_element = m_cgt->sdkGetElement(m_id, i);
 
         //ru Добавляем элемент в контейнер
-        addElement(new Element(id_element, this));
-    }
-}
-
-QVariantMap Container::serialize()
-{
-    QVariantMap data;
-    data.insert("id", m_id);
-    data.insert("name", m_name);
-
-    QVariantList elements;
-    for (const PElement e : m_elements) {
-        elements.append(e->serialize());
-    }
-
-    QVariantMap container;
-    container.insert("Data", data);
-    container.insert("Elements", elements);
-
-    return container;
-}
-
-void Container::deserialize(const QJsonObject &object)
-{
-    const auto data = object["Data"].toObject();
-    m_id = data["id"].toVariant().value<quintptr>();
-    m_model->addContainerToMap(this);
-    m_name = data["name"].toString();
-
-    const auto elements = object["Elements"].toArray();
-    for (const auto e : elements) {
-        addElement(new Element(e.toObject(), this));
+        const QString name = QString::fromLatin1(m_cgt->elGetClassName(id_element));
+        const SharedConfElement conf = m_model->getConfElementByName(name);
+        addElement(new Element(id_element, conf, this));
     }
 }
 
@@ -151,9 +107,4 @@ PElement Container::addElement(PElement element)
 {
     m_elements.append(element);
     return element;
-}
-
-void Container::removeElement(uint index)
-{
-    m_elements.remove(index);
 }

@@ -81,11 +81,7 @@ namespace EmulateCgt
         if (!e)
             return false;
 
-        PProperty p = e->getPropertyByIndex(index);
-        if (!p)
-            return false;
-
-        return p->getIsDefProp();
+        return e->getIsDefPropByIndex(index);
     }
 
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
@@ -294,11 +290,7 @@ namespace EmulateCgt
     //ru Получаем индекс точки относительно точек того же типа.
     EXPORT int ptGetIndex(quintptr id_point)
     {
-        const PPoint p = m_model->getPointById(id_point);
-        if (!p)
-            return 0;
-
-        return p->getIndex();
+        return m_model->getIndexPointById(id_point);
     }
 
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).

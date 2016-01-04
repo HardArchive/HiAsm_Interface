@@ -24,7 +24,8 @@ private:
     //Model
     quintptr m_genId = 1;
 
-    //Package
+    //PackageManager
+    PPackageManager m_packageManager;
     PPackage m_package;
 
     //Map
@@ -62,17 +63,13 @@ private:
     Q_PROPERTY(PSceneModel model READ getModel)
 
 public:
-    explicit SceneModel(QObject *parent = 0);
+    explicit SceneModel(PPackageManager manager, QObject *parent = 0);
     virtual ~SceneModel();
 
 private:
     void collectingData(quintptr id_sdk);
 
 public:
-    //Serialize
-    QJsonDocument serialize();
-    void deserialize(const QJsonDocument &doc);
-
     //CGT
     PCodeGenTools getCgt();
 
@@ -80,11 +77,12 @@ public:
     quintptr genId();
     PSceneModel getModel();
     void initFromCgt(PCodeGenTools cgt, quintptr idMainSDK);
-    bool saveModel(const QString &filePath);
-    bool loadModel(const QString &filePath);
-    bool loadFromSha(const QString &filePath, PackageManager &manager);
+
+    //Conf
+    SharedConfElement getConfElementByName(const QString &name) const;
 
     //Package
+    bool loadPackage(const QString namePack);
     PPackage getPackage();
 
     //Map
@@ -109,6 +107,7 @@ public:
 
     //Point
     PPoint getPointById(quintptr id_point) const;
+    int getIndexPointById(quintptr id_point) const;
 
     //Value
     PValue getValueById(quintptr id_value) const;

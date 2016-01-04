@@ -22,13 +22,6 @@ Property::Property(quintptr id_prop, QObject *parent)
     collectingData();
 }
 
-Property::Property(const QJsonObject &object, QObject *parent)
-    : QObject(parent)
-    , m_model(parent->property("model").value<PSceneModel>())
-{
-    deserialize(object);
-}
-
 Property::Property(quintptr id, DataType type, const QVariant &data, const QString &name)
 {
     m_id = id;
@@ -170,28 +163,11 @@ void Property::collectingData()
     }
 }
 
-QVariantMap Property::serialize()
+void Property::loadConf(const SharedConfProp &conf)
 {
-    QVariantMap data;
-    data.insert("id", m_id);
-    data.insert("name", m_name);
-    data.insert("type", m_type);
-    data.insert("isDefProp", m_isDefProp);
-    data.insert("value", m_value.serialize());
-
-    return data;
-}
-
-void Property::deserialize(const QJsonObject &object)
-{
-    m_id = object["id"].toVariant().value<quintptr>();
-    m_model->addPropertyToMap(this);
-
-    m_name = object["name"].toString();
-    m_type = DataType(object["type"].toInt());
-    m_isDefProp = object["isDefProp"].toBool();
-    m_value.deserialize(object["value"].toObject());
-    m_model->addValueToMap(&m_value);
+    //m_name = m_conf->name;
+    //m_type = m_conf->type;
+    //m_value = m_conf->value;
 }
 
 quintptr Property::getId() const
@@ -217,16 +193,6 @@ void Property::setType(DataType type)
 DataType Property::getType() const
 {
     return m_type;
-}
-
-void Property::setIsDefProp(bool value)
-{
-    m_isDefProp = value;
-}
-
-bool Property::getIsDefProp() const
-{
-    return m_isDefProp;
 }
 
 void Property::setValue(quintptr id, DataType type, const QVariant &data, const QString &name, DataType arrayType)

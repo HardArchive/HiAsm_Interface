@@ -56,6 +56,10 @@ struct CompilerInfo {
 typedef QSharedPointer<CompilerInfo> SharedCompilerInfo;
 typedef QList<SharedCompilerInfo> ListCompilers;
 
+class PackageManager;
+typedef PackageManager *PPackageManager;
+
 class Package;
 typedef Package *PPackage;
 typedef QMap<QString, PPackage> Packages;
+

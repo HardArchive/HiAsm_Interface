@@ -225,9 +225,9 @@ void Package::setSuccess(bool success)
     m_success = success;
 }
 
-SharedConfElement Package::getElementByName(const QString &name)
+SharedConfElement Package::getElementByName(const QString &name) const
 {
-    for (const SharedConfElement conf :  m_confElements) {
+    for (const SharedConfElement conf : m_confElements) {
         if (QString::compare(conf->getName(), name, Qt::CaseInsensitive) == 0) {
             return conf;
         }

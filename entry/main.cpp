@@ -4,6 +4,7 @@
 #include "cgt/emulatecgt.h"
 #include "scenemodel/scenemodel.h"
 #include "scenemodel/element.h"
+#include "package/packagemanager.h"
 #include "logger.h"
 
 //NATIVE
@@ -20,7 +21,6 @@
 #define DLLEXPORT extern "C" __cdecl
 #define PRINT_FUNC_INFO qInfo("Call: %s", Q_FUNC_INFO);
 #define PRINT_RESULT(X) qInfo().noquote() << "Return:" << X;
-
 
 //Служебные переменные
 static QLibrary codegen;
@@ -88,9 +88,10 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     PRINT_FUNC_INFO
 
 #ifdef MODEL
-    sceneModel = new SceneModel;
+    PackageManager *manager = new PackageManager("Elements");
+    sceneModel = new SceneModel(manager);
+    sceneModel->loadPackage("delphi");
     sceneModel->initFromCgt(params.cgt, params.sdk);
-    sceneModel->saveModel("test.json");
 
     EmulateCgt::setSceneModel(sceneModel);
     params.cgt = EmulateCgt::getCgt();

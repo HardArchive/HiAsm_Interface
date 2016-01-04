@@ -56,6 +56,6 @@ public:
     void setSuccess(bool success);
 
     //Element
-    SharedConfElement getElementByName(const QString &name);
+    SharedConfElement getElementByName(const QString &name) const;
 
 };

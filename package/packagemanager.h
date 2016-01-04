@@ -15,13 +15,13 @@ class PackageManager : public QObject
     Q_OBJECT
 
 private:
-    const QString m_packagesDir = "packages";
-    QString m_pathPackages;
+    QString m_packagesDir;
+    QString m_packagesPath;
     Packages m_packages;
     bool m_sucess = true;
 
 public:
-    explicit PackageManager(QObject *parent = 0);
+    explicit PackageManager(const QString &packagesDir = QString("packages"), QObject *parent = 0);
 
 public:
     PPackage getPackage(const QString &namePack);

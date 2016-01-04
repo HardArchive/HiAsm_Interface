@@ -33,9 +33,7 @@ private:
     Q_PROPERTY(PCodeGenTools cgt READ getCgt)
 
 public:
-    explicit Container(QObject *parent);
     explicit Container(quintptr id_sdk, QObject *parent);
-    explicit Container(const QJsonObject &object, QObject *parent);
 
 private:
     void collectingData();
@@ -64,5 +62,5 @@ public:
     PElement getElementByName(const QString &name) const;
     quintptr getIdElementByName(const QString &name) const;
     PElement addElement(PElement element);
-    void removeElement(uint index);
+
 };

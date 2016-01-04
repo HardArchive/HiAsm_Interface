@@ -14,8 +14,9 @@
 //Qt
 #include <QDebug>
 
-SceneModel::SceneModel(QObject *parent)
+SceneModel::SceneModel(PPackageManager manager, QObject *parent)
     : QObject(parent)
+    , m_packageManager(manager)
 {
 
 }
@@ -88,54 +89,9 @@ void SceneModel::collectingData(quintptr id_sdk)
     m_compiler = QString::fromLocal8Bit(buf);
 }
 
-QJsonDocument SceneModel::serialize()
-{
-    QVariantMap cgtParams;
-    cgtParams.insert("CODE_PATH", m_codePath);
-    cgtParams.insert("DEBUG_MODE", m_debugMode);
-    cgtParams.insert("DEBUG_SERVER_PORT", m_debugServerPort);
-    cgtParams.insert("DEBUG_CLIENT_PORT", m_debugClientPort);
-    cgtParams.insert("PROJECT_PATH", m_projectPath);
-    cgtParams.insert("HIASM_VERSION", m_hiasmVersion);
-    cgtParams.insert("USER_NAME", m_userName);
-    cgtParams.insert("USER_MAIL", m_userMail);
-    cgtParams.insert("PROJECT_NAME", m_projectName);
-    cgtParams.insert("SDE_WIDTH", m_sdeWidth);
-    cgtParams.insert("SDE_HEIGHT", m_sdeHeight);
-    cgtParams.insert("COMPILER", m_compiler);
-
-    QVariantMap model;
-    model.insert("CGTParams", cgtParams);
-    model.insert("Container", m_container->serialize());
-
-    return QJsonDocument::fromVariant(model);
-}
-
 PCodeGenTools SceneModel::getCgt()
 {
     return m_cgt;
-}
-
-void SceneModel::deserialize(const QJsonDocument &doc)
-{
-    const QJsonObject model = doc.object();
-
-    const QJsonObject cgtParams = model["CGTParams"].toObject();
-    m_codePath = cgtParams["CODE_PATH"].toString();
-    m_debugMode = cgtParams["DEBUG_MODE"].toInt();
-    m_debugServerPort = cgtParams["DEBUG_SERVER_PORT"].toInt();
-    m_debugClientPort = cgtParams["DEBUG_CLIENT_PORT"].toInt();;
-    m_projectPath = cgtParams["PROJECT_PATH"].toString();
-    m_hiasmVersion = cgtParams["HIASM_VERSION"].toString();
-    m_userName = cgtParams["USER_NAME"].toString();
-    m_userMail = cgtParams["USER_MAIL"].toString();
-    m_projectName = cgtParams["PROJECT_NAME"].toString();
-    m_sdeWidth = cgtParams["SDE_WIDTH"].toInt();
-    m_sdeHeight = cgtParams["SDE_HEIGHT"].toInt();
-    m_compiler = cgtParams["COMPILER"].toString();
-
-    QJsonObject container = model["Container"].toObject();
-    m_container = new Container(container, this);
 }
 
 quintptr SceneModel::genId()
@@ -175,44 +131,18 @@ void SceneModel::initFromCgt(PCodeGenTools cgt, quintptr idMainSDK)
     m_container = new Container(idMainSDK, this);
 }
 
-bool SceneModel::saveModel(const QString &filePath)
+SharedConfElement SceneModel::getConfElementByName(const QString &name) const
 {
-    QJsonDocument doc = serialize();
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly))
-        return false;
-
-    file.write(doc.toJson());
-    file.close();
-    return true;
+    return m_package->getElementByName(name);
 }
 
-bool SceneModel::loadModel(const QString &filePath)
+bool SceneModel::loadPackage(const QString namePack)
 {
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly))
-        return false;
+    m_package = m_packageManager->getPackage(namePack);
+    if (m_package)
+        return true;
 
-    deserialize(QJsonDocument::fromJson(file.readAll()));
-    return true;
-}
-
-bool SceneModel::loadFromSha(const QString &filePath, PackageManager &manager)
-{
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly))
-        return false;
-
-    //file.readAll();
-
-    m_package = manager.getPackage("delphi");
-    if (!m_package)
-        return false;
-
-    m_container = new Container(this);
-    m_container->addElement(new Element("MainForm", 2953706, 21, 105, m_container));
-
-    return true;
+    return false;
 }
 
 PPackage SceneModel::getPackage()
@@ -301,6 +231,15 @@ PProperty SceneModel::getPropertyById(quintptr id_prop) const
 PPoint SceneModel::getPointById(quintptr id_point) const
 {
     return m_mapPoints[id_point];
+}
+
+int SceneModel::getIndexPointById(quintptr id_point) const
+{
+    const PPoint p = getPointById(id_point);
+    if (!p)
+        return 0;
+
+    return p->getParent()->getIndexPointById(id_point);
 }
 
 PValue SceneModel::getValueById(quintptr id_value) const

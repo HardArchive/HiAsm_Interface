@@ -10,10 +10,11 @@
 //Qt
 #include <QtCore>
 
-PackageManager::PackageManager(QObject *parent)
+PackageManager::PackageManager(const QString &packagesDir, QObject *parent)
     : QObject(parent)
+    , m_packagesDir(packagesDir)
 {
-    m_pathPackages = QDir::currentPath() + QDir::separator() + m_packagesDir;
+    m_packagesPath = QDir::currentPath() + QDir::separator() + m_packagesDir;
 }
 
 PPackage PackageManager::getPackage(const QString &namePack)
@@ -21,7 +22,7 @@ PPackage PackageManager::getPackage(const QString &namePack)
     if (m_packages.contains(namePack))
         return m_packages[namePack];
 
-    const QString pathPackage = m_pathPackages + QDir::separator() + namePack;
+    const QString pathPackage = m_packagesPath + QDir::separator() + namePack;
     PPackage pack = new Package(pathPackage, this);
     if (pack->getSuccess()) {
         m_packages.insert(namePack, pack);
