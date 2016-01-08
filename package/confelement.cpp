@@ -179,25 +179,25 @@ void ConfElement::addInheritableData(PPackage pack)
         m_sub = e->getSub();
         m_interface = e->getInterface();
 
-        inheritProps(e->getProperties());
+        inheritProps(e->getProps());
         inheritPoints(e->getPoints(), points);
         inheritPoints(e->getHiddenPoints(), hiddenPoints);
     }
 
-    inheritProps(m_properties);
+    inheritProps(m_props);
     inheritPoints(m_hiddenPoints, hiddenPoints);
     inheritPoints(m_points, points);
 
-    m_properties = props;
+    m_props = props;
     m_hiddenPoints = hiddenPoints;
     m_points = points;
 
     m_isInherited = true;
 }
 
-ListConfProps ConfElement::getProperties() const
+ListConfProps ConfElement::getProps() const
 {
-    return m_properties;
+    return m_props;
 }
 
 ListConfPoints ConfElement::getPoints() const
@@ -215,12 +215,25 @@ int ConfElement::getCountPoints() const
     return m_points.count();
 }
 
+int ConfElement::getCountProps() const
+{
+    return m_props.size();
+}
+
 SharedConfPoint ConfElement::getPointByIndex(uint index) const
 {
     if (index < uint(m_points.size()))
         return m_points[index];
     else
         return SharedConfPoint();
+}
+
+SharedConfProp ConfElement::getPropByIndex(uint index) const
+{
+    if (index < uint(m_props.size()))
+        return m_props[index];
+    else
+        return SharedConfProp();
 }
 
 ConfElement::ConfElement(const QString &pathConf)
@@ -353,6 +366,112 @@ void ConfElement::parseTypes(const QStringList &list)
     }
 }
 
+QVariant valueToVariant(QString data, DataType type)
+{
+    switch (type) {
+    case data_int:
+    case data_color:
+    case data_flags:
+    case data_comboEx:
+    case data_list: {
+        return data.toInt();
+    }
+    case data_real: {
+        return data.toDouble();
+    }
+    case data_str:
+    case data_script:
+    case data_code: {
+        return data;
+    }
+    case data_data: {
+
+    }
+    case data_combo: {
+
+    }
+    case data_icon: {
+
+    }
+    case data_stream:
+    case data_bitmap:
+    case data_jpeg:
+    case data_wave: {
+
+    }
+    case data_array: {
+
+    }
+    case data_font: {
+
+    }
+    case data_element: {
+
+    }
+    default:
+        return QVariant();
+    }
+}
+
+QVariant listValueToVariant(QString data, DataType type)
+{
+    switch (type) {
+    case data_int:
+    case data_color:
+    case data_flags: {
+        return data.toInt();
+    }
+    case data_real: {
+        return data.toDouble();
+    }
+    case data_str:
+    case data_list:
+    case data_comboEx:
+    case data_script:
+    case data_code: {
+        return data;
+    }
+    case data_data: {
+
+    }
+    case data_combo: {
+
+    }
+    case data_icon: {
+
+    }
+    case data_stream:
+    case data_bitmap:
+    case data_jpeg:
+    case data_wave: {
+
+    }
+    case data_array: {
+
+    }
+    case data_font: {
+
+    }
+    case data_element: {
+
+    }
+    default:
+        return QVariant();
+    }
+}
+
+QVariantList toVariantList(QString data, DataType type)
+{
+    const QStringList list = data.split(QLatin1Char(','), QString::SkipEmptyParts);
+
+    QVariantList varList;
+    for (const QString &s : list) {
+        varList.append(listValueToVariant(s, type));
+    }
+
+    return varList;
+}
+
 void ConfElement::parseProperties(const QStringList &list)
 {
     //##имя_группы=описание
@@ -409,14 +528,17 @@ void ConfElement::parseProperties(const QStringList &list)
                 prop->name = name;
                 prop->desc = desc;
                 prop->type = DataType(type.toInt());
-                prop->value = value;
-                prop->listValues = listValues.split(QLatin1Char(','), QString::SkipEmptyParts);
+                prop->value = valueToVariant(value, prop->type);
+
+                if (!listValues.isEmpty())
+                    prop->listValues = toVariantList(listValues, prop->type);
+
                 if (beginGroup)
                     prop->group = nameGroup;
                 prop->activated = activated;
                 prop->makePoint = makePoint;
 
-                m_properties << prop;
+                m_props << prop;
                 break;
             }
             const QChar &c = line[i];
@@ -496,8 +618,8 @@ void ConfElement::parsePoints(const QStringList &list)
         bool equalSign = false;
         uchar countPipe = 0;
 
-        const size_t outIndex = line.size();
-        for (size_t i = 0; i <= outIndex; ++i) {
+        const int outIndex = line.size();
+        for (int i = 0; i <= outIndex; ++i) {
             if (i == outIndex) {
                 SharedConfPoint point = SharedConfPoint::create();
                 point->name = name;

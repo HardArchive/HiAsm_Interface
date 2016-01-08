@@ -38,7 +38,15 @@ void Element::collectingData()
         addPoint(new Point(pointId, conf, this));
     }
 
-    /*
+    //ru Получаем информацию о свойствах
+    int countProps = m_conf->getCountProps();
+    for (int i = 0; i < countProps; ++i) {
+        quintptr propId = m_cgt->elGetProperty(m_id, i);
+
+        const SharedConfProp conf = m_conf->getPropByIndex(i);
+        addProperty(new Property(propId, conf, this));
+    }
+
     if (fcgt::isLink(m_flags))
         return;
 
@@ -66,7 +74,6 @@ void Element::collectingData()
             addContainer(new Container(id_sdk, this));
         }
     }
-    */
 }
 
 quintptr Element::getId() const

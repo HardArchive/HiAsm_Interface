@@ -120,15 +120,15 @@ PSceneModel SceneModel::getModel()
     return this;
 }
 
-void SceneModel::initFromCgt(PCodeGenTools cgt, quintptr idMainSDK)
+void SceneModel::initFromCgt(const TBuildProcessRec &rec)
 {
-    m_cgt = cgt;
+    m_cgt = rec.cgt;
 
     //ru Собираем данные о среде
-    collectingData(idMainSDK);
+    collectingData(rec.sdk);
 
-    //ru Запуск процесса сборка данных о схеме
-    m_container = new Container(idMainSDK, this);
+    //ru Собираем данные о схеме
+    m_container = new Container(rec.sdk, this);
 }
 
 SharedConfElement SceneModel::getConfElementByName(const QString &name) const

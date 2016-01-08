@@ -51,7 +51,7 @@ private:
     MapPropGroup m_group;
 
     //Properties
-    ListConfProps m_properties;
+    ListConfProps m_props;
 
     //Points
     ListConfPoints m_points;
@@ -111,12 +111,14 @@ public:
     //Inherits
     void addInheritableData(PPackage pack);
 
-    ListConfProps getProperties() const;
+    ListConfProps getProps() const;
     ListConfPoints getPoints() const;
     ListConfPoints getHiddenPoints() const;
 
     int getCountPoints() const;
+    int getCountProps() const;
     SharedConfPoint getPointByIndex(uint index) const;
+    SharedConfProp getPropByIndex(uint index) const;
 };
 typedef QSharedPointer<ConfElement> SharedConfElement;
 typedef QList<SharedConfElement> ListConfElements;

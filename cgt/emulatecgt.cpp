@@ -112,7 +112,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        return fcgt::strToCString(e->getClassName());
+        return fcgt::strToCString(e->getName());
     }
 
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.

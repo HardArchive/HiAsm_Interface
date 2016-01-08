@@ -2,6 +2,7 @@
 #include "container.h"
 #include "element.h"
 #include "scenemodel.h"
+#include "types.h"
 #include "cgt/cgt.h"
 
 //STL

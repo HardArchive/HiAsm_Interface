@@ -91,7 +91,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     PackageManager *manager = new PackageManager("Elements");
     sceneModel = new SceneModel(manager);
     sceneModel->loadPackage("delphi");
-    sceneModel->initFromCgt(params.cgt, params.sdk);
+    sceneModel->initFromCgt(params);
 
     EmulateCgt::setSceneModel(sceneModel);
     params.cgt = EmulateCgt::getCgt();

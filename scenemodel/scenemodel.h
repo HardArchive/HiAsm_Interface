@@ -76,7 +76,7 @@ public:
     //Model
     quintptr genId();
     PSceneModel getModel();
-    void initFromCgt(PCodeGenTools cgt, quintptr idMainSDK);
+    void initFromCgt(const TBuildProcessRec &rec);
 
     //Conf
     SharedConfElement getConfElementByName(const QString &name) const;

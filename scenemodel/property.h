@@ -20,14 +20,15 @@ class Property: public QObject
 private:
     //Self
     quintptr m_id{};
-    DataType m_type{};
-    QString m_name;
 
     //CGT
     PCodeGenTools m_cgt{};
 
     //Model
     PSceneModel m_model{};
+
+    //Conf
+    SharedConfProp m_conf;
 
     //Value
     Value m_value;
@@ -37,7 +38,7 @@ private:
     Q_PROPERTY(PCodeGenTools cgt READ getCgt)
 
 public:
-    explicit Property(quintptr id_prop, QObject *parent);
+    explicit Property(quintptr id_prop, const SharedConfProp &conf, QObject *parent);
     explicit Property(quintptr id = 0,
                       DataType type = data_null,
                       const QVariant &data = QVariant(),
@@ -54,7 +55,6 @@ public:
     void setName(const QString &name);
     QString getName() const;
 
-    void setType(DataType type);
     DataType getType() const;
 
     //Value

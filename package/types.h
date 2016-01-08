@@ -24,8 +24,8 @@ typedef QList<SharedConfPoint> ListConfPoints;
 struct ConfProp { //-V802
     QString name;
     QString desc;
-    QString value;
-    QStringList listValues;
+    QVariant value;
+    QVariantList listValues;
     QString group;
     DataType type{};
     bool makePoint = false;
