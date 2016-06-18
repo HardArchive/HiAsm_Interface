@@ -10,7 +10,6 @@
 
 //Qt
 
-
 Element::Element(quintptr id_element, const SharedConfElement &conf, QObject *parent)
     : QObject(parent)
     , m_id(id_element)
