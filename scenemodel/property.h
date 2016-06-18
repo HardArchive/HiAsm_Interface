@@ -65,6 +65,7 @@ public:
                   DataType arrayType = data_null);
 
     PValue getValue();
+    bool getIsDefProp();
     uchar toByte() const;
     int toInt() const;
     qreal toReal() const;

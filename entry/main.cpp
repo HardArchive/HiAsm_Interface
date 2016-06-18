@@ -1,11 +1,11 @@
 //Project
 #include "cgt/cgt.h"
-#include "cgt/proxycgt.h"
 #include "cgt/emulatecgt.h"
-#include "scenemodel/scenemodel.h"
-#include "scenemodel/element.h"
-#include "package/packagemanager.h"
+#include "cgt/proxycgt.h"
 #include "logger.h"
+#include "package/packagemanager.h"
+#include "scenemodel/element.h"
+#include "scenemodel/scenemodel.h"
 
 //NATIVE
 #include <windows.h>
@@ -13,9 +13,9 @@
 //STL
 
 //Qt
+#include <QCoreApplication>
 #include <QDebug>
 #include <QLibrary>
-#include <QCoreApplication>
 
 //Дефайны
 #define DLLEXPORT extern "C" __cdecl
@@ -24,7 +24,7 @@
 
 //Служебные переменные
 static QLibrary codegen;
-static SceneModel *sceneModel = nullptr;
+static SceneModel* sceneModel = nullptr;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 {
@@ -48,7 +48,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 
         //ru Загружаем оригинальную DLL в память
         if (!QFile::exists(pathOriginal)) {
-            qCritical("«%s» library not found!", qPrintable(nameOriginal));
+            qCritical("%s library not found!", qPrintable(nameOriginal));
             exit(0);
         }
         codegen.setFileName(pathOriginal);
@@ -77,24 +77,27 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved)
 }
 
 //Экспортируемые функции
-DLLEXPORT int buildPrepareProc(void *params)
+DLLEXPORT int buildPrepareProc(void* params)
 {
     Q_UNUSED(params)
     return buildPrepareProcLib(params);
 }
 
-DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
+DLLEXPORT int buildProcessProc(TBuildProcessRec& params)
 {
     PRINT_FUNC_INFO
 
 #ifdef MODEL
-    PackageManager *manager = new PackageManager("Elements");
+    PackageManager* manager = new PackageManager("Elements");
     sceneModel = new SceneModel(manager);
-    sceneModel->loadPackage("delphi");
-    sceneModel->initFromCgt(params);
-
-    EmulateCgt::setSceneModel(sceneModel);
-    params.cgt = EmulateCgt::getCgt();
+    if (!sceneModel->loadPackage("delphi")) {
+        qWarning("Failed to load package \"%s\".", "delphi");
+        return CG_BUILD_FAILED;
+    } else {
+        sceneModel->initFromCgt(params);
+        EmulateCgt::setSceneModel(sceneModel);
+        params.cgt = EmulateCgt::getCgt();
+    }
 #endif
 
 #ifdef PROXY_MODEL
@@ -113,7 +116,7 @@ DLLEXPORT int buildProcessProc(TBuildProcessRec &params)
     return res;
 }
 
-DLLEXPORT int CheckVersionProc(const THiAsmVersion &params)
+DLLEXPORT int CheckVersionProc(const THiAsmVersion& params)
 {
     PRINT_FUNC_INFO
     qInfo().noquote() << QString("Arg1: %1.%2.%3").arg(params.major).arg(params.minor).arg(params.build);

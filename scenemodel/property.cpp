@@ -198,6 +198,55 @@ PValue Property::getValue()
     return &m_value;
 }
 
+bool Property::getIsDefProp()
+{
+    switch (getType()) {
+    case data_int:
+    case data_color:
+    case data_flags: {
+
+    }
+    case data_real: {
+
+    }
+    case data_str:
+    case data_list:
+    case data_comboEx:
+    case data_script:
+    case data_code: {
+
+    }
+    case data_data: {
+
+    }
+    case data_combo: {
+
+    }
+    case data_icon: {
+
+    }
+    case data_stream:
+    case data_bitmap:
+    case data_jpeg:
+    case data_wave: {
+
+    }
+    case data_array: {
+
+    }
+    case data_font: {
+
+    }
+    case data_element: {
+
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
 uchar Property::toByte() const
 {
     return m_value.toByte();

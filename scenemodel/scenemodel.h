@@ -12,8 +12,7 @@
 #include <QObject>
 #include <QSet>
 
-class SceneModel: public QObject
-{
+class SceneModel : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(SceneModel)
 
@@ -162,7 +161,6 @@ public:
 
     QString getCompiler() const;
     void setCompiler(const QString &compiler);
-
 };
 
 Q_DECLARE_METATYPE(PSceneModel)

@@ -395,5 +395,9 @@ PProperty Element::addProperty(PProperty property)
 
 bool Element::getIsDefPropByIndex(uint index)
 {
-    return false; //TODO закончить реализацию getIsDefPropByIndex
+    PProperty p = getPropertyByIndex(index);
+    if (!p)
+        return false;
+
+    return p->getIsDefProp();
 }

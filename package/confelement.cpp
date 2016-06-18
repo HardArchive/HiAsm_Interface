@@ -525,6 +525,9 @@ void ConfElement::parseProperties(const QStringList &list)
                 }
 
                 SharedConfProp prop = SharedConfProp::create();
+                if(name == "HintManager"){
+                    qInfo() << "test";
+                }
                 prop->name = name;
                 prop->desc = desc;
                 prop->type = DataType(type.toInt());
