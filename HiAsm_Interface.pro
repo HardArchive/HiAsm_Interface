@@ -10,10 +10,10 @@ HIASM_PACKAGES = "C:/Users/Admin/AppData/Roaming/HiAsm_AltBuild/Elements"
 DESTDIR += $$HIASM_PACKAGES/delphi
 
 #ru Подключаем SceneModel
-#DEFINES += SCENEMODEL
+DEFINES += MODEL PROXY_MODEL
 
 #ru Подключаем ProxyCgt
-#DEFINES += PROXYCGT
+#DEFINES += PROXY_ORIGINAL #PROXYCGT
 
 SOURCES += $$files("cgt/*.cpp", true)
 HEADERS += $$files("cgt/*.h", true)
