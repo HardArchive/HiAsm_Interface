@@ -81,7 +81,11 @@ namespace EmulateCgt
         if (!e)
             return false;
 
-        return e->getIsDefPropByIndex(index);
+        PProperty p = e->getPropertyByIndex(index);
+        if (!p)
+            return false;
+
+        return p->getIsDefProp();
     }
 
     //ru Присваиваем элементу уникальное имя и возвращаем ID этого элемента.
@@ -112,7 +116,7 @@ namespace EmulateCgt
         if (!e)
             return nullptr;
 
-        return fcgt::strToCString(e->getName());
+        return fcgt::strToCString(e->getClassName());
     }
 
     //ru Возвращает водержимое поля Sub из конфигурационного INI-файла элемента.
@@ -290,7 +294,11 @@ namespace EmulateCgt
     //ru Получаем индекс точки относительно точек того же типа.
     EXPORT int ptGetIndex(quintptr id_point)
     {
-        return m_model->getIndexPointById(id_point);
+        const PPoint p = m_model->getPointById(id_point);
+        if (!p)
+            return 0;
+
+        return p->getIndex();
     }
 
     //ru Возвращает базовую часть имени динамической точки(для CI_DPElement).

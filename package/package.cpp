@@ -59,7 +59,7 @@ bool Package::loadPackageInfo()
     if (!info.isNull()) {
         const QJsonObject infoPackage = info.object();
         
-        //!ru Получаем информацию о проекте
+        //!ru Получаем информацию о пакете
         
         //ru Название пакета - обязательно заполнять.
         if (infoPackage.contains("name")) {
@@ -225,9 +225,9 @@ void Package::setSuccess(bool success)
     m_success = success;
 }
 
-SharedConfElement Package::getElementByName(const QString &name) const
+SharedConfElement Package::getElementByName(const QString &name)
 {
-    for (const SharedConfElement conf : m_confElements) {
+    for (const SharedConfElement conf :  m_confElements) {
         if (QString::compare(conf->getName(), name, Qt::CaseInsensitive) == 0) {
             return conf;
         }

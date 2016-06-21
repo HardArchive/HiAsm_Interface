@@ -24,8 +24,8 @@ typedef QList<SharedConfPoint> ListConfPoints;
 struct ConfProp { //-V802
     QString name;
     QString desc;
-    QVariant value;
-    QVariantList listValues;
+    QString value;
+    QStringList listValues;
     QString group;
     DataType type{};
     bool makePoint = false;
@@ -56,10 +56,6 @@ struct CompilerInfo {
 typedef QSharedPointer<CompilerInfo> SharedCompilerInfo;
 typedef QList<SharedCompilerInfo> ListCompilers;
 
-class PackageManager;
-typedef PackageManager *PPackageManager;
-
 class Package;
 typedef Package *PPackage;
 typedef QMap<QString, PPackage> Packages;
-

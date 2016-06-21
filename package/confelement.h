@@ -42,7 +42,7 @@ private:
     QString m_propIcon;
     QString m_view;
     QString m_tab;
-    QString m_interface;
+    QString m_interfaces;
 
     //Edit
     QString m_editClass;
@@ -51,7 +51,7 @@ private:
     MapPropGroup m_group;
 
     //Properties
-    ListConfProps m_props;
+    ListConfProps m_properties;
 
     //Points
     ListConfPoints m_points;
@@ -81,11 +81,11 @@ public:
     QString getMail() const;
     void setMail(const QString &mail);
 
-    QString getClassName() const;
+    QString getClass() const;
     void setClass(const QString &nameClass);
 
-    QStringList getInherit() const;
-    void setInherit(const QStringList &inherit);
+    QStringList getInherits() const;
+    void setInherits(const QStringList &inherit);
 
     QString getSub() const;
     void setSub(const QString &sub);
@@ -102,8 +102,8 @@ public:
     QString getTab() const;
     void setTab(const QString &tab);
 
-    QString getInterface() const;
-    void setInterface(const QString &interface);
+    QString getInterfaces() const;
+    void setInterfaces(const QString &interfaces);
 
     QString getEditClass() const;
     void setEditClass(const QString &editClass);
@@ -111,14 +111,9 @@ public:
     //Inherits
     void addInheritableData(PPackage pack);
 
-    ListConfProps getProps() const;
+    ListConfProps getProperties() const;
     ListConfPoints getPoints() const;
     ListConfPoints getHiddenPoints() const;
-
-    int getCountPoints() const;
-    int getCountProps() const;
-    SharedConfPoint getPointByIndex(uint index) const;
-    SharedConfProp getPropByIndex(uint index) const;
 };
 typedef QSharedPointer<ConfElement> SharedConfElement;
 typedef QList<SharedConfElement> ListConfElements;

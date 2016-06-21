@@ -49,7 +49,7 @@ void ConfElement::setMail(const QString &mail)
     m_mail = mail;
 }
 
-QString ConfElement::getClassName() const
+QString ConfElement::getClass() const
 {
     return m_class;
 }
@@ -59,12 +59,12 @@ void ConfElement::setClass(const QString &nameClass)
     m_class = nameClass;
 }
 
-QStringList ConfElement::getInherit() const
+QStringList ConfElement::getInherits() const
 {
     return m_inherit;
 }
 
-void ConfElement::setInherit(const QStringList &inherit)
+void ConfElement::setInherits(const QStringList &inherit)
 {
     m_inherit = inherit;
 }
@@ -119,14 +119,14 @@ void ConfElement::setTab(const QString &tab)
     m_tab = tab;
 }
 
-QString ConfElement::getInterface() const
+QString ConfElement::getInterfaces() const
 {
-    return m_interface;
+    return m_interfaces;
 }
 
-void ConfElement::setInterface(const QString &interface)
+void ConfElement::setInterfaces(const QString &interfaces)
 {
-    m_interface = interface;
+    m_interfaces = interfaces;
 }
 
 QString ConfElement::getEditClass() const
@@ -177,27 +177,27 @@ void ConfElement::addInheritableData(PPackage pack)
         e->addInheritableData(pack);
 
         m_sub = e->getSub();
-        m_interface = e->getInterface();
+        m_interfaces = e->getInterfaces();
 
-        inheritProps(e->getProps());
+        inheritProps(e->getProperties());
         inheritPoints(e->getPoints(), points);
         inheritPoints(e->getHiddenPoints(), hiddenPoints);
     }
 
-    inheritProps(m_props);
+    inheritProps(m_properties);
     inheritPoints(m_hiddenPoints, hiddenPoints);
     inheritPoints(m_points, points);
 
-    m_props = props;
+    m_properties = props;
     m_hiddenPoints = hiddenPoints;
     m_points = points;
 
     m_isInherited = true;
 }
 
-ListConfProps ConfElement::getProps() const
+ListConfProps ConfElement::getProperties() const
 {
-    return m_props;
+    return m_properties;
 }
 
 ListConfPoints ConfElement::getPoints() const
@@ -208,32 +208,6 @@ ListConfPoints ConfElement::getPoints() const
 ListConfPoints ConfElement::getHiddenPoints() const
 {
     return m_hiddenPoints;
-}
-
-int ConfElement::getCountPoints() const
-{
-    return m_points.count();
-}
-
-int ConfElement::getCountProps() const
-{
-    return m_props.size();
-}
-
-SharedConfPoint ConfElement::getPointByIndex(uint index) const
-{
-    if (index < uint(m_points.size()))
-        return m_points[index];
-    else
-        return SharedConfPoint();
-}
-
-SharedConfProp ConfElement::getPropByIndex(uint index) const
-{
-    if (index < uint(m_props.size()))
-        return m_props[index];
-    else
-        return SharedConfProp();
 }
 
 ConfElement::ConfElement(const QString &pathConf)
@@ -361,115 +335,9 @@ void ConfElement::parseTypes(const QStringList &list)
         } else if (sec0 == QLatin1String("tab")) {
             m_tab = sec1;
         } else if (sec0 == QLatin1String("interfaces")) {
-            m_interface = sec1;
+            m_interfaces = sec1;
         }
     }
-}
-
-QVariant valueToVariant(QString data, DataType type)
-{
-    switch (type) {
-    case data_int:
-    case data_color:
-    case data_flags:
-    case data_comboEx:
-    case data_list: {
-        return data.toInt();
-    }
-    case data_real: {
-        return data.toDouble();
-    }
-    case data_str:
-    case data_script:
-    case data_code: {
-        return data;
-    }
-    case data_data: {
-
-    }
-    case data_combo: {
-
-    }
-    case data_icon: {
-
-    }
-    case data_stream:
-    case data_bitmap:
-    case data_jpeg:
-    case data_wave: {
-
-    }
-    case data_array: {
-
-    }
-    case data_font: {
-
-    }
-    case data_element: {
-
-    }
-    default:
-        return QVariant();
-    }
-}
-
-QVariant listValueToVariant(QString data, DataType type)
-{
-    switch (type) {
-    case data_int:
-    case data_color:
-    case data_flags: {
-        return data.toInt();
-    }
-    case data_real: {
-        return data.toDouble();
-    }
-    case data_str:
-    case data_list:
-    case data_comboEx:
-    case data_script:
-    case data_code: {
-        return data;
-    }
-    case data_data: {
-
-    }
-    case data_combo: {
-
-    }
-    case data_icon: {
-
-    }
-    case data_stream:
-    case data_bitmap:
-    case data_jpeg:
-    case data_wave: {
-
-    }
-    case data_array: {
-
-    }
-    case data_font: {
-
-    }
-    case data_element: {
-
-    }
-    default:
-        return QVariant();
-    }
-}
-
-QVariantList toVariantList(QString data, DataType type)
-{
-    const QStringList list = data.split(QLatin1Char(','), QString::SkipEmptyParts);
-
-    QVariantList varList;
-    for (const QString &s : list) {
-        varList.append(listValueToVariant(s, type));
-    }
-
-    return varList;
 }
 
 void ConfElement::parseProperties(const QStringList &list)
@@ -525,23 +393,17 @@ void ConfElement::parseProperties(const QStringList &list)
                 }
 
                 SharedConfProp prop = SharedConfProp::create();
-                if(name == "HintManager"){
-                    qInfo() << "test";
-                }
                 prop->name = name;
                 prop->desc = desc;
                 prop->type = DataType(type.toInt());
-                prop->value = valueToVariant(value, prop->type);
-
-                if (!listValues.isEmpty())
-                    prop->listValues = toVariantList(listValues, prop->type);
-
+                prop->value = value;
+                prop->listValues = listValues.split(QLatin1Char(','), QString::SkipEmptyParts);
                 if (beginGroup)
                     prop->group = nameGroup;
                 prop->activated = activated;
                 prop->makePoint = makePoint;
 
-                m_props << prop;
+                m_properties << prop;
                 break;
             }
             const QChar &c = line[i];
@@ -621,8 +483,8 @@ void ConfElement::parsePoints(const QStringList &list)
         bool equalSign = false;
         uchar countPipe = 0;
 
-        const int outIndex = line.size();
-        for (int i = 0; i <= outIndex; ++i) {
+        const size_t outIndex = line.size();
+        for (size_t i = 0; i <= outIndex; ++i) {
             if (i == outIndex) {
                 SharedConfPoint point = SharedConfPoint::create();
                 point->name = name;

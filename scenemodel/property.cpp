@@ -12,20 +12,28 @@
 #include <QDebug>
 #include <QUuid>
 
-Property::Property(quintptr id_prop, const SharedConfProp &conf, QObject *parent)
+Property::Property(quintptr id_prop, QObject *parent)
     : QObject(parent)
     , m_id(id_prop)
     , m_cgt(parent->property("cgt").value<PCodeGenTools>())
     , m_model(parent->property("model").value<PSceneModel>())
-    , m_conf(conf)
 {
     m_model->addPropertyToMap(this);
     collectingData();
 }
 
+Property::Property(const QJsonObject &object, QObject *parent)
+    : QObject(parent)
+    , m_model(parent->property("model").value<PSceneModel>())
+{
+    deserialize(object);
+}
+
 Property::Property(quintptr id, DataType type, const QVariant &data, const QString &name)
 {
     m_id = id;
+    m_type = type;
+    m_name = name;
     m_value.setId(id);
     m_value.setType(type);
     m_value.setValue(data);
@@ -34,18 +42,19 @@ Property::Property(quintptr id, DataType type, const QVariant &data, const QStri
 
 void Property::collectingData()
 {
-    DataType type = m_conf->type;
+    m_name = QString::fromLocal8Bit(m_cgt->propGetName(m_id));
+    m_type = m_cgt->propGetType(m_id);
     quintptr id_value = m_cgt->propGetValue(m_id);
 
-    switch (type) {
+    switch (m_type) {
     case data_int:
     case data_color:
     case data_flags: {
-        setValue(id_value, type, m_cgt->propToInteger(m_id));
+        setValue(id_value, m_type, m_cgt->propToInteger(m_id));
         break;
     }
     case data_real: {
-        setValue(id_value, type, m_cgt->propToReal(m_id));
+        setValue(id_value, m_type, m_cgt->propToReal(m_id));
         break;
     }
     case data_str:
@@ -53,29 +62,29 @@ void Property::collectingData()
     case data_list:
     case data_script:
     case data_code: {
-        setValue(id_value, type, QString::fromLocal8Bit(m_cgt->propToString(m_id)));
+        setValue(id_value, m_type, QString::fromLocal8Bit(m_cgt->propToString(m_id)));
         break;
     }
     case data_data: {
         const DataType dataType = m_cgt->dtType(id_value);
         switch (dataType) {
         case data_int:
-            setValue(id_value, type, m_cgt->dtInt(id_value), QString(), dataType);
+            setValue(id_value, m_type, m_cgt->dtInt(id_value), QString(), dataType);
             break;
         case data_str:
-            setValue(id_value, type, m_cgt->dtStr(id_value), QString(), dataType);
+            setValue(id_value, m_type, m_cgt->dtStr(id_value), QString(), dataType);
             break;
         case data_real:
-            setValue(id_value, type, m_cgt->dtReal(id_value), QString(), dataType);
+            setValue(id_value, m_type, m_cgt->dtReal(id_value), QString(), dataType);
             break;
         default:
-            setValue(id_value, type);
+            setValue(id_value, m_type);
             break;
         }
         break;
     }
     case data_combo: {
-        setValue(id_value, type, m_cgt->propToByte(m_id));
+        setValue(id_value, m_type, m_cgt->propToByte(m_id));
         break;
     }
     case data_icon: {
@@ -94,7 +103,7 @@ void Property::collectingData()
         QFile file(filePath);
         if (file.size()) {
             file.open(QIODevice::ReadOnly);
-            setValue(id_value, type, file.readAll());
+            setValue(id_value, m_type, file.readAll());
             file.close();
         }
         file.remove();
@@ -127,7 +136,7 @@ void Property::collectingData()
             arrayItems.append(SharedValue::create(1, arrItemType, data, name));
         }
 
-        setValue(id_value, type, QVariant::fromValue(arrayItems), QString(), arrItemType);
+        setValue(id_value, m_type, QVariant::fromValue(arrayItems), QString(), arrItemType);
         break;
     }
     case data_font: {
@@ -138,7 +147,7 @@ void Property::collectingData()
         font->color = m_cgt->fntColor(id_value);
         font->charset = m_cgt->fntCharSet(id_value);
 
-        setValue(id_value, type, QVariant::fromValue(font));
+        setValue(id_value, m_type, QVariant::fromValue(font));
         break;
     }
     case data_element: {
@@ -153,7 +162,7 @@ void Property::collectingData()
             elementInfo->id = linkedElement;
             elementInfo->interface = QString::fromLocal8Bit(buf);
 
-            setValue(id_value, type, QVariant::fromValue(elementInfo));
+            setValue(id_value, m_type, QVariant::fromValue(elementInfo));
         }
         break;
     }
@@ -161,11 +170,28 @@ void Property::collectingData()
     }
 }
 
-void Property::loadConf(const SharedConfProp &conf)
+QVariantMap Property::serialize()
 {
-    //m_name = m_conf->name;
-    //m_type = m_conf->type;
-    //m_value = m_conf->value;
+    QVariantMap data;
+    data.insert("id", m_id);
+    data.insert("name", m_name);
+    data.insert("type", m_type);
+    data.insert("isDefProp", m_isDefProp);
+    data.insert("value", m_value.serialize());
+
+    return data;
+}
+
+void Property::deserialize(const QJsonObject &object)
+{
+    m_id = object["id"].toVariant().value<quintptr>();
+    m_model->addPropertyToMap(this);
+
+    m_name = object["name"].toString();
+    m_type = DataType(object["type"].toInt());
+    m_isDefProp = object["isDefProp"].toBool();
+    m_value.deserialize(object["value"].toObject());
+    m_model->addValueToMap(&m_value);
 }
 
 quintptr Property::getId() const
@@ -173,14 +199,34 @@ quintptr Property::getId() const
     return m_id;
 }
 
+void Property::setName(const QString &name)
+{
+    m_name = name;
+}
+
 QString Property::getName() const
 {
-    return m_conf->name;
+    return m_name;
+}
+
+void Property::setType(DataType type)
+{
+    m_type = type;
 }
 
 DataType Property::getType() const
 {
-    return m_conf->type;
+    return m_type;
+}
+
+void Property::setIsDefProp(bool value)
+{
+    m_isDefProp = value;
+}
+
+bool Property::getIsDefProp() const
+{
+    return m_isDefProp;
 }
 
 void Property::setValue(quintptr id, DataType type, const QVariant &data, const QString &name, DataType arrayType)
@@ -196,55 +242,6 @@ void Property::setValue(quintptr id, DataType type, const QVariant &data, const 
 PValue Property::getValue()
 {
     return &m_value;
-}
-
-bool Property::getIsDefProp()
-{
-    switch (getType()) {
-    case data_int:
-    case data_color:
-    case data_flags: {
-
-    }
-    case data_real: {
-
-    }
-    case data_str:
-    case data_list:
-    case data_comboEx:
-    case data_script:
-    case data_code: {
-
-    }
-    case data_data: {
-
-    }
-    case data_combo: {
-
-    }
-    case data_icon: {
-
-    }
-    case data_stream:
-    case data_bitmap:
-    case data_jpeg:
-    case data_wave: {
-
-    }
-    case data_array: {
-
-    }
-    case data_font: {
-
-    }
-    case data_element: {
-
-    }
-    default:
-        break;
-    }
-
-    return false;
 }
 
 uchar Property::toByte() const
