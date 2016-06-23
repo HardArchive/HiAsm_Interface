@@ -10,7 +10,6 @@
 
 //Qt
 
-
 Element::Element(const QString &name, quintptr id_element, int X, int Y, QObject *parent)
     : QObject(parent)
     , m_id(id_element)
@@ -22,8 +21,6 @@ Element::Element(const QString &name, quintptr id_element, int X, int Y, QObject
 
     PPackage package = m_model->getPackage();
     const SharedConfElement conf = package->getElementByName(name);
-
-
 }
 
 Element::Element(quintptr id_element, QObject *parent)
@@ -106,7 +103,7 @@ QVariantMap Element::serialize()
 {
     QVariantMap data;
     data.insert("id", m_id);
-    //data.insert("userData", m_userData);
+    data.insert("userData", m_userData);
     data.insert("classIndex", m_classIndex);
     data.insert("flags", int(m_flags));
     data.insert("group", m_group);
@@ -138,10 +135,15 @@ QVariantMap Element::serialize()
     }
 
     QVariantMap element;
-    element.insert("Data", data);
-    element.insert("Containers", containers);
-    element.insert("Points", points);
-    element.insert("Properties", properties);
+
+    if (!data.isEmpty())
+        element.insert("Data", data);
+    if (!containers.isEmpty())
+        element.insert("Containers", containers);
+    if (!points.isEmpty())
+        element.insert("Points", points);
+    if (!properties.isEmpty())
+        element.insert("Properties", properties);
 
     return element;
 }

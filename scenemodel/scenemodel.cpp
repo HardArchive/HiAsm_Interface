@@ -22,7 +22,6 @@ SceneModel::SceneModel(PPackageManager package, QObject *parent)
 
 SceneModel::~SceneModel()
 {
-
 }
 
 void SceneModel::collectingData(quintptr id_sdk)
