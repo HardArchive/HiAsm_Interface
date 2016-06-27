@@ -117,13 +117,11 @@ PCodeGenTools SceneModel::getCgt()
 void SceneModel::deserialize(const QJsonDocument &doc)
 {
     const QJsonObject model = doc.object();
-
     const QJsonObject cgtParams = model["CGTParams"].toObject();
     m_codePath = cgtParams["CODE_PATH"].toString();
     m_debugMode = cgtParams["DEBUG_MODE"].toInt();
     m_debugServerPort = cgtParams["DEBUG_SERVER_PORT"].toInt();
     m_debugClientPort = cgtParams["DEBUG_CLIENT_PORT"].toInt();
-    ;
     m_projectPath = cgtParams["PROJECT_PATH"].toString();
     m_hiasmVersion = cgtParams["HIASM_VERSION"].toString();
     m_userName = cgtParams["USER_NAME"].toString();

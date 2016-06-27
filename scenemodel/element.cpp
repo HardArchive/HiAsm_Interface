@@ -103,7 +103,7 @@ QVariantMap Element::serialize()
 {
     QVariantMap data;
     data.insert("id", m_id);
-    data.insert("userData", m_userData);
+    //data.insert("userData", m_userData);
     data.insert("classIndex", m_classIndex);
     data.insert("flags", int(m_flags));
     data.insert("group", m_group);
@@ -135,7 +135,6 @@ QVariantMap Element::serialize()
     }
 
     QVariantMap element;
-
     if (!data.isEmpty())
         element.insert("Data", data);
     if (!containers.isEmpty())

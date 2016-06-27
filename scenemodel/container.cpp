@@ -56,8 +56,10 @@ QVariantMap Container::serialize()
     }
 
     QVariantMap container;
-    container.insert("Data", data);
-    container.insert("Elements", elements);
+    if (!data.isEmpty())
+        container.insert("Data", data);
+    if (!elements.isEmpty())
+        container.insert("Elements", elements);
 
     return container;
 }
