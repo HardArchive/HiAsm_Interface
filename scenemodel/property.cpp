@@ -34,6 +34,7 @@ Property::Property(quintptr id, DataType type, const QVariant &data, const QStri
     m_id = id;
     m_type = type;
     m_name = name;
+    m_value.setId(id);
     m_value.setType(type);
     m_value.setValue(data);
     m_value.setName(name);
@@ -49,11 +50,11 @@ void Property::collectingData()
     case data_int:
     case data_color:
     case data_flags: {
-        setValue(m_type, m_cgt->propToInteger(m_id));
+        setValue(id_value, m_type, m_cgt->propToInteger(m_id));
         break;
     }
     case data_real: {
-        setValue(m_type, m_cgt->propToReal(m_id));
+        setValue(id_value, m_type, m_cgt->propToReal(m_id));
         break;
     }
     case data_str:
@@ -61,29 +62,29 @@ void Property::collectingData()
     case data_list:
     case data_script:
     case data_code: {
-        setValue(m_type, QString::fromLocal8Bit(m_cgt->propToString(m_id)));
+        setValue(id_value, m_type, QString::fromLocal8Bit(m_cgt->propToString(m_id)));
         break;
     }
     case data_data: {
         const DataType dataType = m_cgt->dtType(id_value);
         switch (dataType) {
         case data_int:
-            setValue(m_type, m_cgt->dtInt(id_value), QString(), dataType);
+            setValue(id_value, m_type, m_cgt->dtInt(id_value), QString(), dataType);
             break;
         case data_str:
-            setValue(m_type, m_cgt->dtStr(id_value), QString(), dataType);
+            setValue(id_value, m_type, m_cgt->dtStr(id_value), QString(), dataType);
             break;
         case data_real:
-            setValue(m_type, m_cgt->dtReal(id_value), QString(), dataType);
+            setValue(id_value, m_type, m_cgt->dtReal(id_value), QString(), dataType);
             break;
         default:
-            setValue(m_type);
+            setValue(id_value, m_type);
             break;
         }
         break;
     }
     case data_combo: {
-        setValue(m_type, m_cgt->propToByte(m_id));
+        setValue(id_value, m_type, m_cgt->propToByte(m_id));
         break;
     }
     case data_icon: {
@@ -102,7 +103,7 @@ void Property::collectingData()
         QFile file(filePath);
         if (file.size()) {
             file.open(QIODevice::ReadOnly);
-            setValue(m_type, file.readAll());
+            setValue(id_value, m_type, file.readAll());
             file.close();
         }
         file.remove();
@@ -129,14 +130,13 @@ void Property::collectingData()
             case data_real:
                 data = m_cgt->propToReal(id_prop);
                 break;
-            default:
-                break;
+            default: break;
             }
 
-            arrayItems.append(SharedValue::create(arrItemType, data, name));
+            arrayItems.append(SharedValue::create(1, arrItemType, data, name));
         }
 
-        setValue(m_type, QVariant::fromValue(arrayItems), QString(), arrItemType);
+        setValue(id_value, m_type, QVariant::fromValue(arrayItems), QString(), arrItemType);
         break;
     }
     case data_font: {
@@ -147,7 +147,7 @@ void Property::collectingData()
         font->color = m_cgt->fntColor(id_value);
         font->charset = m_cgt->fntCharSet(id_value);
 
-        setValue(m_type, QVariant::fromValue(font));
+        setValue(id_value, m_type, QVariant::fromValue(font));
         break;
     }
     case data_element: {
@@ -162,12 +162,11 @@ void Property::collectingData()
             elementInfo->id = linkedElement;
             elementInfo->interface = QString::fromLocal8Bit(buf);
 
-            setValue(m_type, QVariant::fromValue(elementInfo));
+            setValue(id_value, m_type, QVariant::fromValue(elementInfo));
         }
         break;
     }
-    default:
-        break;
+    default: break;
     }
 }
 
@@ -192,7 +191,7 @@ void Property::deserialize(const QJsonObject &object)
     m_type = DataType(object["type"].toInt());
     m_isDefProp = object["isDefProp"].toBool();
     m_value.deserialize(object["value"].toObject());
-    m_model->addValueToMap(m_id, &m_value);
+    m_model->addValueToMap(&m_value);
 }
 
 quintptr Property::getId() const
@@ -230,13 +229,14 @@ bool Property::getIsDefProp() const
     return m_isDefProp;
 }
 
-void Property::setValue(DataType type, const QVariant &data, const QString &name, DataType arrayType)
+void Property::setValue(quintptr id, DataType type, const QVariant &data, const QString &name, DataType arrayType)
 {
+    m_value.setId(id);
     m_value.setType(type);
     m_value.setValue(data);
     m_value.setName(name);
     m_value.setSubType(arrayType);
-    m_model->addValueToMap(m_id, &m_value);
+    m_model->addValueToMap(&m_value);
 }
 
 PValue Property::getValue()

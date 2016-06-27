@@ -6,12 +6,15 @@
 
 //Qt
 
-Value::Value(DataType type, const QVariant &value, const QString &name, DataType subType)
-    : m_type(type)
-    , m_value(value)
-    , m_name(name)
-    , m_subType(subType)
+
+Value::Value(quintptr id_value, DataType type, const QVariant &value, const QString &name, DataType subType):
+    m_id(id_value),
+    m_type(type),
+    m_value(value),
+    m_name(name),
+    m_subType(subType)
 {
+
 }
 
 Value::Value(const QJsonObject &object)
@@ -22,6 +25,7 @@ Value::Value(const QJsonObject &object)
 QVariantMap Value::serialize()
 {
     QVariantMap data;
+    data.insert("id", m_id);
     data.insert("name", m_name);
     data.insert("type", m_type);
     data.insert("subType", m_subType);
@@ -89,6 +93,7 @@ QVariantMap Value::serialize()
 
 void Value::deserialize(const QJsonObject &object)
 {
+    m_id = object["id"].toVariant().value<quintptr>();
     m_type = DataType(object["type"].toInt());
     m_name = object["name"].toString();
     m_subType = DataType(object["subType"].toInt());
@@ -150,11 +155,10 @@ void Value::deserialize(const QJsonObject &object)
             case data_real:
                 data = item["value"].toVariant().toReal();
                 break;
-            default:
-                break;
+            default: break;
             }
 
-            arrayItem.append(SharedValue::create(m_subType, data, name));
+            arrayItem.append(SharedValue::create(0, m_subType, data, name));
         }
 
         m_value = QVariant::fromValue(arrayItem);
@@ -184,7 +188,18 @@ void Value::deserialize(const QJsonObject &object)
     default: {
         m_value = object["value"].toVariant();
     }
+
     }
+}
+
+void Value::setId(quintptr id)
+{
+    m_id = id;
+}
+
+quintptr Value::getId() const
+{
+    return m_id;
 }
 
 void Value::setType(DataType type)
