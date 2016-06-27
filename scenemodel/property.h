@@ -65,8 +65,7 @@ public:
     bool getIsDefProp() const;
 
     //Value
-    void setValue(quintptr id = 0,
-                  DataType type = data_null,
+    void setValue(DataType type = data_null,
                   const QVariant &data = QVariant(),
                   const QString &name = QString(),
                   DataType arrayType = data_null);

@@ -21,7 +21,8 @@ private:
     PCodeGenTools m_cgt{};
 
     //Model
-    quintptr m_genId = 1;
+    uint64_t m_genId = 1;
+    uint64_t m_genValueId = 1;
 
     //Package
     PPackage m_package{};
@@ -94,7 +95,7 @@ public:
     void addElementToMap(PElement id_element);
     void addPropertyToMap(PProperty id_prop);
     void addPointToMap(PPoint id_point);
-    void addValueToMap(PValue value);
+    void addValueToMap(uint64_t id_prop, PValue value);
 
     //Container
     PContainer getContainerById(quintptr id_sdk) const;

@@ -255,10 +255,10 @@ void SceneModel::addPointToMap(PPoint id_point)
         m_mapPoints.insert(id_point->getId(), id_point);
 }
 
-void SceneModel::addValueToMap(PValue value)
+void SceneModel::addValueToMap(uint64_t id_prop, PValue value)
 {
     if (value)
-        m_mapValues.insert(value->getId(), value);
+        m_mapValues.insert(id_prop, value);
 }
 
 PContainer SceneModel::getContainerById(quintptr id_sdk) const
