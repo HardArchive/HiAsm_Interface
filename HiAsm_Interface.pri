@@ -4,6 +4,9 @@ QT += core
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
+SOURCES += $$files($$PWD/"entry/*.cpp", true)
+HEADERS += $$files($$PWD/"entry/*.h", true)
+
 SOURCES += $$files($$PWD/"cgt/*.cpp", true)
 HEADERS += $$files($$PWD/"cgt/*.h", true)
 SOURCES += $$files($$PWD/"scenemodel/*.cpp", true)

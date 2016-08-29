@@ -9,26 +9,20 @@
 #include <QObject>
 #include <QVariant>
 
-class Value
-{
+class Value {
 
 private:
     //Self
-    quintptr m_id;
     DataType m_type = data_null;
     QVariant m_value;
     QString m_name;
     DataType m_subType = data_null;
 
 public:
-    explicit Value(quintptr id_value = 0,
-                   DataType type = data_null,
-                   const QVariant &value = QVariant(),
-                   const QString &name = QString(),
-                   DataType subType = data_null);
+    explicit Value(DataType type = data_null, const QVariant &value = QVariant(),
+        const QString &name = QString(), DataType subType = data_null);
 
     explicit Value(const QJsonObject &object);
-
 
 public:
     //Serialize
@@ -36,8 +30,6 @@ public:
     void deserialize(const QJsonObject &object);
 
     //Self
-    void setId(quintptr id);
-    quintptr getId() const;
     void setType(DataType type);
     DataType getType() const;
     void setName(const QString &name);
@@ -68,14 +60,14 @@ public:
 
     //Array
     int getArraySize() const;
-    SharedValue getArrayItemByIndex(uint index) const;
+    PValue getArrayItemByIndex(uint index) const;
     QString getArrayItemName(uint index) const;
 
     //Font
-    SharedValueFont toFont() const;
+    PValueFont toFont() const;
 
     //LinkedElementInfo
-    const SharedLinkedElementInfo toLinkedElementInfo() const;
+    PLinkedElementInfo toLinkedElementInfo() const;
 };
 
 Q_DECLARE_METATYPE(Values)
