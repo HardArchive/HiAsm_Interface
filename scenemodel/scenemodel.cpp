@@ -72,11 +72,11 @@ void SceneModel::collectingData(qintptr id_sdk)
     m_cgt->GetParam(PARAM_PROJECT_NAME, buf.data());
     m_projectName = QString::fromLocal8Bit(buf);
 
-    qintptr tmpW[1] = { reinterpret_cast<qintptr>(id_element) };
+    int tmpW[1] = { reinterpret_cast<int>(id_element) };
     m_cgt->GetParam(PARAM_SDE_WIDTH, tmpW);
     m_sdeWidth = tmpW[0];
 
-    qintptr tmpH[1] = { reinterpret_cast<qintptr>(id_element) };
+    int tmpH[1] = { reinterpret_cast<int>(id_element) };
     m_cgt->GetParam(PARAM_SDE_HEIGHT, tmpH);
     m_sdeHeight = tmpH[0];
 
@@ -135,22 +135,17 @@ void SceneModel::deserialize(const QJsonDocument &doc)
     m_container = new Container(container, this);
 }
 
-qintptr SceneModel::genId()
+int SceneModel::genId()
 {
-    while (true) {
-        ++m_genId;
-        if (m_mapContainers.contains(m_genId))
-            continue;
-        if (m_mapElements.contains(m_genId))
-            continue;
-        if (m_mapProperties.contains(m_genId))
-            continue;
-        if (m_mapPoints.contains(m_genId))
-            continue;
-        if (m_mapValues.contains(m_genId))
-            continue;
+    int lastId = m_mapContainers.count() + m_mapElements.count() + m_mapValues.count() + 1;
 
-        break;
+    while (true) {
+        if (m_mapContainers.contains(m_genId)
+            or m_mapElements.contains(m_genId)
+            or m_mapValues.contains(m_genId))
+            ++lastId;
+        else
+            break;
     }
 
     return m_genId;

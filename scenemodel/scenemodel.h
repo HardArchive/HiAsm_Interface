@@ -77,7 +77,7 @@ public:
     PCodeGenTools getCgt();
 
     //Model
-    qintptr genId();
+    int genId();
     PSceneModel getModel();
     void initFromCgt(PCodeGenTools cgt, qintptr idMainSDK);
     bool saveModel(const QString &filePath);
