@@ -142,6 +142,22 @@ bool SceneModel::saveModel(const QString &filePath)
     return true;
 }
 
+bool SceneModel::loadFromSha(const QString &filePath)
+{
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly))
+        return false;
+
+    //file.readAll();
+
+    loadPackage("delphi");
+
+    m_container = new Container(this);
+    m_container->addElement(new Element("MainForm", 2953706, 21, 105, m_container));
+
+    return true;
+}
+
 void SceneModel::setPackage(Package *package)
 {
     m_package = package;

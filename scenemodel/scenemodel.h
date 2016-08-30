@@ -75,6 +75,7 @@ public:
     SceneModel *getModel();
     void initFromCgt(TCodeGenTools *cgt, qintptr idMainSDK);
     bool saveModel(const QString &filePath);
+    bool loadFromSha(const QString &filePath);
 
     //Package
     void setPackage(Package *package);
