@@ -9,8 +9,7 @@
 //Qt
 #include <QtCore>
 
-class ConfElement
-{
+class ConfElement {
     enum TypeSection {
         ts_undefine,
         ts_abouts,
@@ -109,7 +108,7 @@ public:
     void setEditClass(const QString &editClass);
 
     //Inherits
-    void addInheritableData(PPackage pack);
+    void addInheritableData(Package *pack);
 
     ListConfProps getProperties() const;
     ListConfPoints getPoints() const;

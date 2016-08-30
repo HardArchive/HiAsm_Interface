@@ -3,8 +3,7 @@
 //Project
 #include "cgt/CGTShare.h"
 #include "package/packagemanager.h"
-#include "types.h"
-#include "value.h"
+#include "property.h"
 
 //STL
 
@@ -12,30 +11,27 @@
 #include <QObject>
 #include <QSet>
 
+class Container;
+class Element;
+
 class SceneModel : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(SceneModel)
 
 private:
     //CGT
-    PCodeGenTools m_cgt{};
-
-    //Model
-    qintptr m_genId = 1;
+    TCodeGenTools *m_cgt{};
 
     //Package
-    PPackage m_package{};
-    PPackageManager m_packageManager{};
+    Package *m_package{};
+    PackageManager *m_packageManager{};
 
     //Map
-    MapContainers m_mapContainers;
-    MapElements m_mapElements;
-    MapProperties m_mapProperties;
-    MapPoints m_mapPoints;
-    MapValues m_mapValues;
+    QMap<qintptr, Container *> m_mapContainers;
+    QMap<qintptr, Element *> m_mapElements;
 
     //Container
-    PContainer m_container{};
+    Container *m_container{};
 
     //Resource
     const QString m_resourcesDir = "resources";
@@ -44,11 +40,11 @@ private:
 
     //Параметры CGT
     bool m_isDebug{};
-    int m_debugMode = false;
-    int m_debugServerPort = 120;
-    int m_debugClientPort = 121;
-    int m_sdeWidth = 0;
-    int m_sdeHeight = 0;
+    qint32 m_debugMode = false;
+    qint32 m_debugServerPort = 120;
+    qint32 m_debugClientPort = 121;
+    qint32 m_sdeWidth = 0;
+    qint32 m_sdeHeight = 0;
     QString m_hiasmVersion = "4.5.186";
     QString m_userName;
     QString m_userMail;
@@ -58,11 +54,11 @@ private:
     QString m_compiler;
 
 private:
-    Q_PROPERTY(PCodeGenTools cgt READ getCgt)
-    Q_PROPERTY(PSceneModel model READ getModel)
+    Q_PROPERTY(TCodeGenTools *cgt READ getCgt)
+    Q_PROPERTY(SceneModel *model READ getModel)
 
 public:
-    explicit SceneModel(PPackageManager package, QObject *parent = 0);
+    explicit SceneModel(PackageManager *package, QObject *parent = 0);
     virtual ~SceneModel();
 
 private:
@@ -71,57 +67,41 @@ private:
 public:
     //Serialization
     QJsonDocument serialize();
-    void deserialize(const QJsonDocument &doc);
 
     //CGT
-    PCodeGenTools getCgt();
+    TCodeGenTools *getCgt();
 
     //Model
-    int genId();
-    PSceneModel getModel();
-    void initFromCgt(PCodeGenTools cgt, qintptr idMainSDK);
+    SceneModel *getModel();
+    void initFromCgt(TCodeGenTools *cgt, qintptr idMainSDK);
     bool saveModel(const QString &filePath);
-    bool loadModel(const QString &filePath);
-    bool loadFromSha(const QString &filePath);
 
     //Package
-    void setPackage(PPackage package);
-    PPackage getPackage();
+    void setPackage(Package *package);
+    Package *getPackage();
     bool loadPackage(const QString &name);
 
     //Map
-    void addContainerToMap(PContainer id_sdk);
-    void addElementToMap(PElement id_element);
-    void addPropertyToMap(PProperty id_prop);
-    void addPointToMap(PPoint id_point);
-    void addValueToMap(qintptr id, PValue value);
+    void addContainerToMap(Container *id_sdk);
+    void addElementToMap(Element *id_element);
 
     //Container
-    PContainer getContainerById(qintptr id_sdk) const;
-    int getCountElementsInContainer(qintptr id_sdk) const;
+    Container *getContainerById(qintptr id_sdk) const;
+    qint32 getCountElementsInContainer(qintptr id_sdk) const;
     qintptr getIdRootContainer() const;
 
     //Element
-    PElement getElementById(qintptr id_element) const;
-    PElement getElementFromSDKByIndex(qintptr id_sdk, int index) const;
-    qintptr getIdElementFromSDKByIndex(qintptr id_sdk, int index) const;
-
-    //Property
-    PProperty getPropertyById(qintptr id_prop) const;
-
-    //Point
-    PPoint getPointById(qintptr id_point) const;
-
-    //Value
-    PValue getValueById(qintptr id_value) const;
+    Element *getElementById(qintptr id_element) const;
+    Element *getElementFromSDKByIndex(qintptr id_sdk, qint32 index) const;
+    qintptr getIdElementFromSDKByIndex(qintptr id_sdk, qint32 index) const;
 
     //Resource
-    const char *addStreamRes(qintptr id_prop);
+    const char *addStreamRes(Property *id_prop);
     const char *addStringRes(const QString &str);
     void deleteResources();
     void compileResources();
 
-    int addResList(const QString &filePath);
+    qint32 addResList(const QString &filePath);
     bool resIsEmpty() const;
 
     //Параметры CGT
@@ -130,20 +110,20 @@ public:
     bool getIsDebug() const;
     void setIsDebug(bool isDebug);
 
-    int getDebugMode() const;
-    void setDebugMode(int debugMode);
+    qint32 getDebugMode() const;
+    void setDebugMode(qint32 debugMode);
 
-    int getDebugServerPort() const;
-    void setDebugServerPort(int debugServerPort);
+    qint32 getDebugServerPort() const;
+    void setDebugServerPort(qint32 debugServerPort);
 
-    int getDebugClientPort() const;
-    void setDebugClientPort(int debugClientPort);
+    qint32 getDebugClientPort() const;
+    void setDebugClientPort(qint32 debugClientPort);
 
-    int getSdeWidth() const;
-    void setSdeWidth(int sdeWidth);
+    qint32 getSdeWidth() const;
+    void setSdeWidth(qint32 sdeWidth);
 
-    int getSdeHeight() const;
-    void setSdeHeight(int sdeHeight);
+    qint32 getSdeHeight() const;
+    void setSdeHeight(qint32 sdeHeight);
 
     QString getCodePath() const;
     void setCodePath(const QString &codePath);
@@ -167,4 +147,4 @@ public:
     void setCompiler(const QString &compiler);
 };
 
-Q_DECLARE_METATYPE(PSceneModel)
+Q_DECLARE_METATYPE(SceneModel *)
