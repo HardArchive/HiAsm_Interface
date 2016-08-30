@@ -150,9 +150,9 @@ bool SceneModel::loadFromSha(const QString &filePath)
 
     //file.readAll();
 
-    if (!loadPackage("delphi")) {
-        return false;
-    }
+    //if (!loadPackage("delphi")) {
+    //    return false;
+    //}
 
     m_container = new Container(this);
     m_container->addElement(new Element("MainForm", 2953706, 21, 105, m_container));

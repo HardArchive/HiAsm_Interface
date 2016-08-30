@@ -20,7 +20,7 @@ Element::Element(const QString &name, qint32 id_element, qint32 X, qint32 Y, QOb
     m_model->addElementToMap(this);
 
     Package *package = m_model->getPackage();
-    const SharedConfElement conf = package->getElementByName(name);
+    m_conf = package->getElementByName(name);
 }
 
 Element::Element(qint32 id_element, QObject *parent)

@@ -67,7 +67,7 @@ private:
 public:
     qint32 getId()
     {
-
+        return 0;
     }
 
     //Serialization

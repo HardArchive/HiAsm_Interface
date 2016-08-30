@@ -2,6 +2,7 @@
 
 //Project
 #include "cgt/CGTShare.h"
+#include "package/confelement.h"
 
 //STL
 
@@ -36,6 +37,7 @@ private:
     QString m_interface;
     QString m_inherit;
     QString m_infSub;
+    SharedConfElement m_conf;
 
     //CGT
     TCodeGenTools *m_cgt{};
@@ -54,7 +56,7 @@ private:
 
 private:
     Q_PROPERTY(SceneModel *model READ getModel)
-    Q_PROPERTY(TCodeGenTools * cgt READ getCgt)
+    Q_PROPERTY(TCodeGenTools *cgt READ getCgt)
 
 public:
     explicit Element(const QString &name, qint32 id_element, qint32 X, qint32 Y, QObject *parent);
@@ -117,7 +119,7 @@ public:
     QString getInfSub() const;
 
     //CGT
-    TCodeGenTools * getCgt();
+    TCodeGenTools *getCgt();
 
     //Model
     SceneModel *getModel();
