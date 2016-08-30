@@ -66,4 +66,3 @@ public:
     //LinkedElementInfo
     SharedLinkedElementInfo toLinkedElementInfo() const;
 };
-

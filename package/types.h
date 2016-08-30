@@ -25,7 +25,7 @@ struct ConfProp { //-V802
     QString name;
     QString desc;
     QString value;
-    QStringList listValues;
+    QStringList valueList;
     QString group;
     DataType type{};
     bool makePoint = false;

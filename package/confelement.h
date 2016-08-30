@@ -10,6 +10,7 @@
 #include <QtCore>
 
 class ConfElement {
+public:
     enum TypeSection {
         ts_undefine,
         ts_abouts,
@@ -50,11 +51,11 @@ private:
     MapPropGroup m_group;
 
     //Properties
-    ListConfProps m_properties;
+    ListConfProps m_propList;
 
     //Points
-    ListConfPoints m_points;
-    ListConfPoints m_hiddenPoints;
+    ListConfPoints m_pointList;
+    ListConfPoints m_hiddenPointList;
 
 public:
     explicit ConfElement(const QString &pathConf);

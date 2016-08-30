@@ -184,30 +184,30 @@ void ConfElement::addInheritableData(Package *pack)
         inheritPoints(e->getHiddenPoints(), hiddenPoints);
     }
 
-    inheritProps(m_properties);
-    inheritPoints(m_hiddenPoints, hiddenPoints);
-    inheritPoints(m_points, points);
+    inheritProps(m_propList);
+    inheritPoints(m_hiddenPointList, hiddenPoints);
+    inheritPoints(m_pointList, points);
 
-    m_properties = props;
-    m_hiddenPoints = hiddenPoints;
-    m_points = points;
+    m_propList = props;
+    m_hiddenPointList = hiddenPoints;
+    m_pointList = points;
 
     m_isInherited = true;
 }
 
 ListConfProps ConfElement::getProperties() const
 {
-    return m_properties;
+    return m_propList;
 }
 
 ListConfPoints ConfElement::getPoints() const
 {
-    return m_points;
+    return m_pointList;
 }
 
 ListConfPoints ConfElement::getHiddenPoints() const
 {
-    return m_hiddenPoints;
+    return m_hiddenPointList;
 }
 
 ConfElement::ConfElement(const QString &pathConf)
@@ -396,13 +396,13 @@ void ConfElement::parseProperties(const QStringList &list)
                 prop->desc = desc;
                 prop->type = DataType(type.toInt());
                 prop->value = value;
-                prop->listValues = listValues.split(QLatin1Char(','), QString::SkipEmptyParts);
+                prop->valueList = listValues.split(QLatin1Char(','), QString::SkipEmptyParts);
                 if (beginGroup)
                     prop->group = nameGroup;
                 prop->activated = activated;
                 prop->makePoint = makePoint;
 
-                m_properties << prop;
+                m_propList << prop;
                 break;
             }
             const QChar &c = line[i];
@@ -493,9 +493,9 @@ void ConfElement::parsePoints(const QStringList &list)
                 point->dataType = DataType(dataType.toInt());
 
                 if (hidden)
-                    m_hiddenPoints << point;
+                    m_hiddenPointList << point;
                 else
-                    m_points << point;
+                    m_pointList << point;
 
                 break;
             }
