@@ -55,7 +55,6 @@ public:
 
     void setType(DataType type);
     DataType getType() const;
-
     bool getIsDefProp() const;
 
     //Value
