@@ -20,13 +20,13 @@ class Element : public QObject {
 
 private:
     //Self
-    qintptr m_id{};
-    qintptr m_userData{};
+    qint32 m_id{};
+    qint32 m_userData{};
     ElementClass m_classIndex{};
     ElementFlgs m_flags{};
     qint32 m_group{};
     bool m_linkIs{};
-    qintptr m_linkMain{};
+    qint32 m_linkMain{};
     qint32 m_posX{};
     qint32 m_posY{};
     qint32 m_sizeW{};
@@ -57,8 +57,8 @@ private:
     Q_PROPERTY(TCodeGenTools * cgt READ getCgt)
 
 public:
-    explicit Element(const QString &name, qintptr id_element, qint32 X, qint32 Y, QObject *parent);
-    explicit Element(qintptr id_element, QObject *parent);
+    explicit Element(const QString &name, qint32 id_element, qint32 X, qint32 Y, QObject *parent);
+    explicit Element(qint32 id_element, QObject *parent);
 
 private:
     void collectingData();
@@ -72,7 +72,7 @@ public:
     Container *getParent() const;
 
     void setUserData(qint32 userData);
-    qintptr getUserData() const;
+    qint32 getUserData() const;
 
     void setClassIndex(ElementClass classIndex);
     ElementClass getClassIndex();
@@ -86,8 +86,8 @@ public:
     void setLinkIs(bool linkIs);
     bool getLinkIs() const;
 
-    void setLinkMain(qintptr linkMain);
-    qintptr getLinkMain() const;
+    void setLinkMain(qint32 linkMain);
+    qint32 getLinkMain() const;
 
     void setPosX(qint32 posX);
     qint32 getPosX() const;

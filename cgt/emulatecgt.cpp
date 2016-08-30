@@ -493,7 +493,7 @@ EXPORT Property *arrGetItem(Value *array, qint32 index)
     if (!array)
         return nullptr;
 
-    const Value *arrValue = array->getArrayItemByIndex(index);
+    const SharedValue arrValue = array->getArrayItemByIndex(index);
     if (arrValue) {
         Property *prop = new Property(arrValue->getType(), arrValue->getValue(), arrValue->getName());
 

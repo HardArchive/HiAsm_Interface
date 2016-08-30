@@ -33,7 +33,7 @@ void Property::collectingData(qint32 idProp)
 {
     m_name = QString::fromLocal8Bit(m_cgt->propGetName(idProp));
     m_type = m_cgt->propGetType(idProp);
-    qintptr id_value = m_cgt->propGetValue(idProp);
+    qint32 id_value = m_cgt->propGetValue(idProp);
 
     switch (m_type) {
     case data_int:
@@ -105,7 +105,7 @@ void Property::collectingData(qint32 idProp)
         Values arrayItems;
 
         for (qint32 i = 0; i < arrCount; ++i) {
-            const qintptr id_prop = m_cgt->arrGetItem(id_value, i);
+            const qint32 id_prop = m_cgt->arrGetItem(id_value, i);
 
             QString name = QString::fromLocal8Bit(m_cgt->arrItemName(id_value, i));
             QVariant data;
@@ -123,7 +123,7 @@ void Property::collectingData(qint32 idProp)
                 break;
             }
 
-            arrayItems.append(new Value(arrItemType, data, name));
+            arrayItems.append(SharedValue::create(arrItemType, data, name));
         }
 
         setValue(m_type, QVariant::fromValue(arrayItems), QString(), arrItemType);
@@ -146,7 +146,7 @@ void Property::collectingData(qint32 idProp)
             return;
 
         char buf[PATH_MAX];
-        qintptr linkedElement = m_cgt->propGetLinkedElementInfo(e->getId(), idProp, buf);
+        qint32 linkedElement = m_cgt->propGetLinkedElementInfo(e->getId(), idProp, buf);
         if (linkedElement) {
             SharedLinkedElementInfo elementInfo = SharedLinkedElementInfo::create();
             elementInfo->id = linkedElement;

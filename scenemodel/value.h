@@ -57,8 +57,8 @@ public:
 
     //Array
     qint32 getArraySize() const;
-    Value *getArrayItemByIndex(uint index) const;
-    QString getArrayItemName(uint index) const;
+    SharedValue getArrayItemByIndex(int index) const;
+    QString getArrayItemName(int index) const;
 
     //Font
     SharedValueFont toFont() const;
@@ -67,5 +67,3 @@ public:
     SharedLinkedElementInfo toLinkedElementInfo() const;
 };
 
-typedef QVector<Value *> Values;
-Q_DECLARE_METATYPE(Values)

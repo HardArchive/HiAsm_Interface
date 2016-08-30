@@ -45,7 +45,7 @@ struct ProjectInfo {
     QString make;
 };
 typedef QSharedPointer<ProjectInfo> SharedProjectInfo;
-typedef QList<SharedProjectInfo> ListProjects;
+typedef QList<SharedProjectInfo> ProjectList;
 
 struct CompilerInfo {
     QString name;
@@ -54,7 +54,7 @@ struct CompilerInfo {
     QString ext;
 };
 typedef QSharedPointer<CompilerInfo> SharedCompilerInfo;
-typedef QList<SharedCompilerInfo> ListCompilers;
+typedef QList<SharedCompilerInfo> CompilerList;
 
 class Package;
 typedef QMap<QString, Package *> Packages;

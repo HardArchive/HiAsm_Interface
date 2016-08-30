@@ -46,7 +46,7 @@ QVariantMap Value::serialize() const
     }
     case data_array: {
         QVariantList array;
-        for (const Value *v : m_value.value<Values>()) {
+        for (const SharedValue v : m_value.value<Values>()) {
             array.append(v->serialize());
         }
 
@@ -167,21 +167,21 @@ DataType Value::getSubType() const
     return m_subType;
 }
 
-Value *Value::getArrayItemByIndex(uint index) const
+SharedValue Value::getArrayItemByIndex(int index) const
 {
     if (!m_value.canConvert<Values>())
-        return nullptr;
+        return SharedValue();
 
     const Values arrayValues = m_value.value<Values>();
-    if (index < uint(arrayValues.size()))
+    if (index < arrayValues.size())
         return arrayValues[index];
 
-    return nullptr;
+    return SharedValue();
 }
 
-QString Value::getArrayItemName(uint index) const
+QString Value::getArrayItemName(int index) const
 {
-    const Value *arrValue = getArrayItemByIndex(index);
+    const SharedValue arrValue = getArrayItemByIndex(index);
     if (!arrValue)
         return QString();
 

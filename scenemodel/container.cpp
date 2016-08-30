@@ -8,7 +8,7 @@
 
 //Qt
 
-Container::Container(qintptr id_sdk, QObject *parent)
+Container::Container(qint32 id_sdk, QObject *parent)
     : QObject(parent)
     , m_id(id_sdk)
     , m_cgt(parent->property("cgt").value<TCodeGenTools *>())
@@ -18,11 +18,19 @@ Container::Container(qintptr id_sdk, QObject *parent)
     collectingData();
 }
 
+Container::Container(QObject *parent)
+    : QObject(parent)
+    , m_cgt(parent->property("cgt").value<TCodeGenTools *>())
+    , m_model(parent->property("model").value<SceneModel *>())
+{
+
+}
+
 void Container::collectingData()
 {
     qint32 countElements = m_cgt->sdkGetCount(m_id);
     for (qint32 i = 0; i < countElements; ++i) {
-        qintptr id_element = m_cgt->sdkGetElement(m_id, i);
+        qint32 id_element = m_cgt->sdkGetElement(m_id, i);
 
         //ru Добавляем элемент в контейнер
         addElement(new Element(id_element, this));

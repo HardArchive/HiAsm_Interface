@@ -33,13 +33,13 @@ private:
     bool m_success = false; //Информация успешно загружена
 
     //Compiler
-    ListCompilers m_compilers; //Массив компиляторов
+    CompilerList m_compilerList; //Массив компиляторов
 
     //Project
-    ListProjects m_projects; //Массив проектов
+    ProjectList m_projectList; //Массив проектов
 
     //Compiler
-    ListConfElements m_confElements; //Массив компиляторов
+    ConfElementList m_confElementList; //Массив компиляторов
 
 public:
     explicit Package(const QString &packagePath, QObject *parent = 0);

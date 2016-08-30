@@ -24,17 +24,17 @@ SceneModel::~SceneModel()
 {
 }
 
-void SceneModel::collectingData(qintptr id_sdk)
+void SceneModel::collectingData(qint32 id_sdk)
 {
     m_isDebug = m_cgt->isDebug(id_sdk);
-    qintptr id_element = m_cgt->sdkGetElement(id_sdk, 0);
+    qint32 id_element = m_cgt->sdkGetElement(id_sdk, 0);
 
     //ru Тут мощная магия, однако;D
     qint32 iBuf{};
     QByteArray buf("", 512);
 
     buf.fill('\0');
-    reinterpret_cast<qintptr *>(buf.data())[0] = id_element; //-V206
+    reinterpret_cast<qint32 *>(buf.data())[0] = id_element; //-V206
     m_cgt->GetParam(PARAM_CODE_PATH, buf.data());
     m_codePath = QString::fromLocal8Bit(buf);
 
@@ -48,7 +48,7 @@ void SceneModel::collectingData(qintptr id_sdk)
     m_debugClientPort = iBuf;
 
     buf.fill('\0');
-    reinterpret_cast<qintptr *>(buf.data())[0] = id_element; //-V206
+    reinterpret_cast<qint32 *>(buf.data())[0] = id_element; //-V206
     m_cgt->GetParam(PARAM_PROJECT_PATH, buf.data());
     m_projectPath = QString::fromLocal8Bit(buf);
 
@@ -68,7 +68,7 @@ void SceneModel::collectingData(qintptr id_sdk)
     m_userMail = QString::fromLocal8Bit(buf);
 
     buf.fill('\0');
-    reinterpret_cast<qintptr *>(buf.data())[0] = id_element; //-V206
+    reinterpret_cast<qint32 *>(buf.data())[0] = id_element; //-V206
     m_cgt->GetParam(PARAM_PROJECT_NAME, buf.data());
     m_projectName = QString::fromLocal8Bit(buf);
 
@@ -81,7 +81,7 @@ void SceneModel::collectingData(qintptr id_sdk)
     m_sdeHeight = tmpH[0];
 
     buf.fill('\0');
-    reinterpret_cast<qintptr *>(buf.data())[0] = id_element; //-V206
+    reinterpret_cast<qint32 *>(buf.data())[0] = id_element; //-V206
     m_cgt->GetParam(PARAM_COMPILER, buf.data());
     m_compiler = QString::fromLocal8Bit(buf);
 }
@@ -119,7 +119,7 @@ SceneModel *SceneModel::getModel()
     return this;
 }
 
-void SceneModel::initFromCgt(TCodeGenTools *cgt, qintptr idMainSDK)
+void SceneModel::initFromCgt(TCodeGenTools *cgt, qint32 idMainSDK)
 {
     m_cgt = cgt;
 
@@ -150,7 +150,9 @@ bool SceneModel::loadFromSha(const QString &filePath)
 
     //file.readAll();
 
-    loadPackage("delphi");
+    if (!loadPackage("delphi")) {
+        return false;
+    }
 
     m_container = new Container(this);
     m_container->addElement(new Element("MainForm", 2953706, 21, 105, m_container));
@@ -191,12 +193,12 @@ void SceneModel::addElementToMap(Element *id_element)
         m_mapElements.insert(id_element->getId(), id_element);
 }
 
-Container *SceneModel::getContainerById(qintptr id_sdk) const
+Container *SceneModel::getContainerById(qint32 id_sdk) const
 {
     return m_mapContainers[id_sdk];
 }
 
-qint32 SceneModel::getCountElementsInContainer(qintptr id_sdk) const
+qint32 SceneModel::getCountElementsInContainer(qint32 id_sdk) const
 {
     const Container *c = getContainerById(id_sdk);
     if (!c)
@@ -205,7 +207,7 @@ qint32 SceneModel::getCountElementsInContainer(qintptr id_sdk) const
     return c->getCountElements();
 }
 
-qintptr SceneModel::getIdRootContainer() const
+qint32 SceneModel::getIdRootContainer() const
 {
     if (!m_container)
         return 0;
@@ -213,12 +215,12 @@ qintptr SceneModel::getIdRootContainer() const
     return m_container->getId();
 }
 
-Element *SceneModel::getElementById(qintptr id_element) const
+Element *SceneModel::getElementById(qint32 id_element) const
 {
     return m_mapElements[id_element];
 }
 
-Element *SceneModel::getElementFromSDKByIndex(qintptr id_sdk, qint32 index) const
+Element *SceneModel::getElementFromSDKByIndex(qint32 id_sdk, qint32 index) const
 {
     const Container *c = getContainerById(id_sdk);
     if (!c)
@@ -226,7 +228,7 @@ Element *SceneModel::getElementFromSDKByIndex(qintptr id_sdk, qint32 index) cons
     return c->getElementByIndex(index);
 }
 
-qintptr SceneModel::getIdElementFromSDKByIndex(qintptr id_sdk, qint32 index) const
+qint32 SceneModel::getIdElementFromSDKByIndex(qint32 id_sdk, qint32 index) const
 {
     const Container *c = getContainerById(id_sdk);
     if (!c)

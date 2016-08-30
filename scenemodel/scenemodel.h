@@ -27,8 +27,8 @@ private:
     PackageManager *m_packageManager{};
 
     //Map
-    QMap<qintptr, Container *> m_mapContainers;
-    QMap<qintptr, Element *> m_mapElements;
+    QMap<qint32, Container *> m_mapContainers;
+    QMap<qint32, Element *> m_mapElements;
 
     //Container
     Container *m_container{};
@@ -62,9 +62,14 @@ public:
     virtual ~SceneModel();
 
 private:
-    void collectingData(qintptr id_sdk);
+    void collectingData(qint32 id_sdk);
 
 public:
+    qint32 getId()
+    {
+
+    }
+
     //Serialization
     QJsonDocument serialize();
 
@@ -73,7 +78,7 @@ public:
 
     //Model
     SceneModel *getModel();
-    void initFromCgt(TCodeGenTools *cgt, qintptr idMainSDK);
+    void initFromCgt(TCodeGenTools *cgt, qint32 idMainSDK);
     bool saveModel(const QString &filePath);
     bool loadFromSha(const QString &filePath);
 
@@ -87,14 +92,14 @@ public:
     void addElementToMap(Element *id_element);
 
     //Container
-    Container *getContainerById(qintptr id_sdk) const;
-    qint32 getCountElementsInContainer(qintptr id_sdk) const;
-    qintptr getIdRootContainer() const;
+    Container *getContainerById(qint32 id_sdk) const;
+    qint32 getCountElementsInContainer(qint32 id_sdk) const;
+    qint32 getIdRootContainer() const;
 
     //Element
-    Element *getElementById(qintptr id_element) const;
-    Element *getElementFromSDKByIndex(qintptr id_sdk, qint32 index) const;
-    qintptr getIdElementFromSDKByIndex(qintptr id_sdk, qint32 index) const;
+    Element *getElementById(qint32 id_element) const;
+    Element *getElementFromSDKByIndex(qint32 id_sdk, qint32 index) const;
+    qint32 getIdElementFromSDKByIndex(qint32 id_sdk, qint32 index) const;
 
     //Resource
     const char *addStreamRes(Property *id_prop);

@@ -10,7 +10,7 @@
 
 //Qt
 
-Element::Element(const QString &name, qintptr id_element, qint32 X, qint32 Y, QObject *parent)
+Element::Element(const QString &name, qint32 id_element, qint32 X, qint32 Y, QObject *parent)
     : QObject(parent)
     , m_id(id_element)
     , m_posX(X)
@@ -23,7 +23,7 @@ Element::Element(const QString &name, qintptr id_element, qint32 X, qint32 Y, QO
     const SharedConfElement conf = package->getElementByName(name);
 }
 
-Element::Element(qintptr id_element, QObject *parent)
+Element::Element(qint32 id_element, QObject *parent)
     : QObject(parent)
     , m_id(id_element)
     , m_cgt(parent->property("cgt").value<TCodeGenTools *>())
@@ -52,13 +52,13 @@ void Element::collectingData()
 
     //ru Получаем информацию о точках
     for (qint32 i = 0; i < ptCount; ++i) {
-        qintptr pointId = m_cgt->elGetPt(m_id, i);
+        qint32 pointId = m_cgt->elGetPt(m_id, i);
         addPoint(new Point(pointId, this));
     }
 
     //ru Получаем информацию о свойствах
     for (qint32 i = 0; i < propCount; ++i) {
-        qintptr propId = m_cgt->elGetProperty(m_id, i);
+        qint32 propId = m_cgt->elGetProperty(m_id, i);
         addProperty(new Property(propId, this));
     }
 
@@ -74,7 +74,7 @@ void Element::collectingData()
 
             for (qint32 i = 0; i < countContainers; ++i) {
                 //ru Получаем ID контейнера
-                qintptr id_sdk = m_cgt->elGetSDKByIndex(m_id, i);
+                qint32 id_sdk = m_cgt->elGetSDKByIndex(m_id, i);
                 QString name = QString::fromLocal8Bit(m_cgt->elGetSDKName(id_sdk, i));
 
                 //ru Добавляем контейнер в элемент
@@ -83,7 +83,7 @@ void Element::collectingData()
         } else { //ru Элемент содержит обычный контейнер
 
             //ru Получаем ID контейнера элемента
-            qintptr id_sdk = m_cgt->elGetSDK(m_id);
+            qint32 id_sdk = m_cgt->elGetSDK(m_id);
 
             //ru Добавляем контейнер в элемент
             addContainer(new Container(id_sdk, this));
@@ -154,7 +154,7 @@ void Element::setUserData(qint32 userData)
     m_userData = userData;
 }
 
-qintptr Element::getUserData() const
+qint32 Element::getUserData() const
 {
     return m_userData;
 }
@@ -199,12 +199,12 @@ bool Element::getLinkIs() const
     return m_linkIs;
 }
 
-void Element::setLinkMain(qintptr linkMain)
+void Element::setLinkMain(qint32 linkMain)
 {
     m_linkMain = linkMain;
 }
 
-qintptr Element::getLinkMain() const
+qint32 Element::getLinkMain() const
 {
     return m_linkMain;
 }

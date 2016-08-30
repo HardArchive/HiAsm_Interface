@@ -96,7 +96,7 @@ bool Package::loadPackageInfo()
             SharedCompilerInfo compiler = SharedCompilerInfo::create();
 
             //ru Добавляем проект в массив проектов текущего пакета.
-            m_compilers.append(compiler);
+            m_compilerList.append(compiler);
 
             //ru Название проекта - обязательно заполнять.
             if (object.contains("name")) {
@@ -136,7 +136,7 @@ bool Package::loadPackageInfo()
             SharedProjectInfo project = SharedProjectInfo::create();
 
             //ru Добавляем проект в массив проектов текущего пакета.
-            m_projects.append(project);
+            m_projectList.append(project);
 
             //ru Название проекта - обязательно заполнять.
             if (object.contains("name")) {
@@ -201,7 +201,7 @@ bool Package::loadElements()
     }
 
     for (const QFileInfo &element : listElements) {
-        m_confElements << SharedConfElement::create(element.filePath());
+        m_confElementList << SharedConfElement::create(element.filePath());
     }
 
     return true;
@@ -209,7 +209,7 @@ bool Package::loadElements()
 
 void Package::addInheritableData()
 {
-    for (SharedConfElement &conf : m_confElements) {
+    for (SharedConfElement &conf : m_confElementList) {
         conf->addInheritableData(this);
     }
 }
@@ -226,7 +226,7 @@ void Package::setSuccess(bool success)
 
 SharedConfElement Package::getElementByName(const QString &name)
 {
-    for (const SharedConfElement conf : m_confElements) {
+    for (const SharedConfElement conf : m_confElementList) {
         if (QString::compare(conf->getName(), name, Qt::CaseInsensitive) == 0) {
             return conf;
         }

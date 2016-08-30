@@ -17,7 +17,7 @@ class Container : public QObject {
 
 private:
     //Self
-    qintptr m_id{};
+    qint32 m_id{};
     QString m_name;
 
     //CGT
@@ -34,7 +34,8 @@ private:
     Q_PROPERTY(TCodeGenTools *cgt READ getCgt)
 
 public:
-    explicit Container(qintptr id_sdk, QObject *parent);
+    explicit Container(qint32 id_sdk, QObject *parent);
+    explicit Container(QObject *parent);
 
 private:
     void collectingData();

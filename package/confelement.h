@@ -115,4 +115,4 @@ public:
     ListConfPoints getHiddenPoints() const;
 };
 typedef QSharedPointer<ConfElement> SharedConfElement;
-typedef QList<SharedConfElement> ListConfElements;
+typedef QList<SharedConfElement> ConfElementList;

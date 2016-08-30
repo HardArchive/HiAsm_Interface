@@ -313,10 +313,10 @@ struct THiAsmVersion {
 
 struct TBuildProcessRec {
     TCodeGenTools *cgt{};
-    qintptr sdk{};
+    qint32 sdk{};
     void *result{};
 
-    explicit TBuildProcessRec(TCodeGenTools *_cgt, qintptr _sdk)
+    explicit TBuildProcessRec(TCodeGenTools *_cgt, qint32 _sdk)
         : cgt(_cgt)
         , sdk(_sdk)
     {
