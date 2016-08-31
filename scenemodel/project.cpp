@@ -23,8 +23,10 @@ bool Project::load()
 
 void Project::parse()
 {
+    int i = 0;
     for (const QString &s : m_fileContent) {
-        qInfo() << getLineType(s);
+        ++i;
+        qInfo() << i << ":" << getLineType(s);
     }
 }
 
@@ -36,9 +38,10 @@ Project::LineType Project::getLineType(const QString &str)
     QString OpenBlock = "*{*";
     QString CloseBlock = "*}*";
     QString Link = "*link(*)";
-    QString Prop = "*=*";
     QString Point = "*Point(*)";
     QString Hint = "*@Hint=*";
+    QString AddHint = "*AddHint(*";
+    QString Prop = "*=*";
     QString BEGIN_SDK = "*BEGIN_SDK";
     QString END_SDK = "*END_SDK";
 
@@ -62,12 +65,14 @@ Project::LineType Project::getLineType(const QString &str)
         return LineType::CloseBlock;
     if (checkPattern(Link))
         return LineType::Link;
-    if (checkPattern(Prop))
-        return LineType::Prop;
     if (checkPattern(Point))
         return LineType::Point;
     if (checkPattern(Hint))
         return LineType::Hint;
+    if (checkPattern(AddHint))
+        return LineType::AddHint;
+    if (checkPattern(Prop))
+        return LineType::Prop;
     if (checkPattern(BEGIN_SDK))
         return LineType::BEGIN_SDK;
     if (checkPattern(END_SDK))

@@ -14,9 +14,10 @@ public:
         OpenBlock,
         CloseBlock,
         Link,
-        Prop,
         Point,
         Hint,
+        AddHint,
+        Prop,
         BEGIN_SDK,
         END_SDK
     };
