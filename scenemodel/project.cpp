@@ -32,50 +32,33 @@ void Project::parse()
 
 Project::LineType Project::getLineType(const QString &str)
 {
-    QString Make = "*Make(*)";
-    QString Ver = "*ver(*)";
-    QString Add = "*Add(*)";
-    QString OpenBlock = "*{*";
-    QString CloseBlock = "*}*";
-    QString Link = "*link(*)";
-    QString Point = "*Point(*)";
-    QString Hint = "*@Hint=*";
-    QString AddHint = "*AddHint(*";
-    QString Prop = "*=*";
-    QString BEGIN_SDK = "*BEGIN_SDK";
-    QString END_SDK = "*END_SDK";
-
-    QString temp;
-    bool skipSpace = false;
-
     auto checkPattern = [&](const QString &pattern) {
-        QRegExp regExp(pattern, Qt::CaseSensitive, QRegExp::Wildcard);
-        return regExp.exactMatch(str);
+        return QRegExp(pattern, Qt::CaseSensitive, QRegExp::Wildcard).exactMatch(str);
     };
 
-    if (checkPattern(Make))
+    if (checkPattern("*Make(*)"))
         return LineType::Make;
-    if (checkPattern(Ver))
+    if (checkPattern("*ver(*)"))
         return LineType::Ver;
-    if (checkPattern(Add))
+    if (checkPattern("*Add(*)"))
         return LineType::Add;
-    if (checkPattern(OpenBlock))
+    if (checkPattern("*{*"))
         return LineType::OpenBlock;
-    if (checkPattern(CloseBlock))
+    if (checkPattern("*}*"))
         return LineType::CloseBlock;
-    if (checkPattern(Link))
+    if (checkPattern("*link(*)"))
         return LineType::Link;
-    if (checkPattern(Point))
+    if (checkPattern("*Point(*)"))
         return LineType::Point;
-    if (checkPattern(Hint))
+    if (checkPattern("*@Hint=*"))
         return LineType::Hint;
-    if (checkPattern(AddHint))
+    if (checkPattern("*AddHint(*"))
         return LineType::AddHint;
-    if (checkPattern(Prop))
+    if (checkPattern("*=*"))
         return LineType::Prop;
-    if (checkPattern(BEGIN_SDK))
+    if (checkPattern("*BEGIN_SDK"))
         return LineType::BEGIN_SDK;
-    if (checkPattern(END_SDK))
+    if (checkPattern("*END_SDK"))
         return LineType::END_SDK;
 
     return LineType::Undefined;
