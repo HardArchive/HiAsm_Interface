@@ -32,8 +32,9 @@ void Project::parse()
 
 Project::LineType Project::getLineType(const QString &str)
 {
+    const QString &&trimmed = str.trimmed();
     auto checkPattern = [&](const QString &pattern) {
-        return QRegExp(pattern, Qt::CaseSensitive, QRegExp::Wildcard).exactMatch(str);
+        return QRegExp(pattern, Qt::CaseSensitive, QRegExp::Wildcard).exactMatch(trimmed);
     };
 
     if (checkPattern("*Make(*)"))
@@ -60,6 +61,7 @@ Project::LineType Project::getLineType(const QString &str)
         return LineType::BEGIN_SDK;
     if (checkPattern("*END_SDK"))
         return LineType::END_SDK;
+    if (str.)
 
-    return LineType::Undefined;
+        return LineType::Undefined;
 }
