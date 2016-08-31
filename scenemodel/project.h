@@ -4,6 +4,24 @@
 
 class Project : public QObject {
     Q_OBJECT
+
+public:
+    enum LineType {
+        Undefined,
+        Make,
+        Ver,
+        Add,
+        OpenBlock,
+        CloseBlock,
+        Link,
+        Prop,
+        Point,
+        Hint,
+        BEGIN_SDK,
+        END_SDK
+    };
+    Q_ENUM(LineType)
+
 public:
     explicit Project(const QString &filePath, QObject *parent = 0);
 
@@ -15,4 +33,5 @@ private:
 private:
     bool load();
     void parse();
+    LineType getLineType(const QString &str);
 };
