@@ -5,7 +5,6 @@
 #include "element.h"
 #include "point.h"
 #include "property.h"
-#include "project.h"
 
 //STL
 
@@ -73,11 +72,11 @@ void SceneModel::collectingData(qint32 id_sdk)
     m_cgt->GetParam(PARAM_PROJECT_NAME, buf.data());
     m_projectName = QString::fromLocal8Bit(buf);
 
-    qint32 tmpW[1] = { reinterpret_cast<qint32>(id_element) };
+    qint32 tmpW[1] = {reinterpret_cast<qint32>(id_element)};
     m_cgt->GetParam(PARAM_SDE_WIDTH, tmpW);
     m_sdeWidth = tmpW[0];
 
-    qint32 tmpH[1] = { reinterpret_cast<qint32>(id_element) };
+    qint32 tmpH[1] = {reinterpret_cast<qint32>(id_element)};
     m_cgt->GetParam(PARAM_SDE_HEIGHT, tmpH);
     m_sdeHeight = tmpH[0];
 
@@ -145,7 +144,7 @@ bool SceneModel::saveModel(const QString &filePath)
 
 bool SceneModel::loadFromSha(const QString &filePath)
 {
-    new Project(filePath);
+    //new Project(filePath);
 
     //m_container = new Container(this);
     //m_container->addElement(new Element("MainForm", 2953706, 21, 105, m_container));
