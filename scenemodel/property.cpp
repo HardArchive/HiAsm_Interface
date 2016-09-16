@@ -196,9 +196,14 @@ DataType Property::getType() const
     return m_type;
 }
 
+void Property::setIsDefProp(bool value)
+{
+    m_isDefProp = value;
+}
+
 bool Property::getIsDefProp() const
 {
-    return false; //TODO доработать
+    return m_isDefProp;
 }
 
 void Property::setValue(DataType type, const QVariant &data, const QString &name, DataType arrayType)
