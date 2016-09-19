@@ -49,7 +49,7 @@ ElementFlags EXPORT elGetFlag(qint32 id_element)
 {
     const Element *e = m_model->getElementById(id_element);
     if (!e)
-        return ELEMENT_FLG_IS_FREEZE;
+        return 0;
 
     return e->getFlags();
 }
