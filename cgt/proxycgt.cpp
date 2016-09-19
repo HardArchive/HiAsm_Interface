@@ -7,9 +7,6 @@
 #include <QDebug>
 #include <QFlags>
 
-namespace ProxyCgt
-{
-//Дефайны
 #define EXPORT __stdcall
 #define PRINT_FUNC_INFO qInfo("  Call: %s", Q_FUNC_INFO);
 #define PRINT_RESULT(X) qInfo().noquote() << "  Return:" << X;
@@ -22,7 +19,7 @@ namespace ProxyCgt
 static TCodeGenTools *m_cgt = nullptr;
 
 //Служебные функции
-void printArgs(const std::initializer_list<QVariant> &args)
+static void printArgs(const std::initializer_list<QVariant> &args)
 {
     uint numArg = 1;
     for (const QVariant &v : args) {
@@ -30,7 +27,7 @@ void printArgs(const std::initializer_list<QVariant> &args)
         ++numArg;
     }
 }
-void printParamArgs(CgtParams index, const QVariant &value)
+static void printParamArgs(CgtParams index, const QVariant &value)
 {
     qInfo("  Arg1: %s", qUtf8Printable(CgtParamsMap[index])); //-V108
     if (value.type() == QVariant::String) {
@@ -42,7 +39,7 @@ void printParamArgs(CgtParams index, const QVariant &value)
 
 //~~~~~~~~~~~~~~~~~ Проксированные функции ~~~~~~~~~~~~~~~~~~~
 
-qint32 EXPORT sdkGetCount(qint32 id_sdk)
+static qint32 EXPORT sdkGetCount(qint32 id_sdk)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->sdkGetCount(id_sdk);
@@ -51,7 +48,7 @@ qint32 EXPORT sdkGetCount(qint32 id_sdk)
 
     return res;
 }
-qint32 EXPORT sdkGetElement(qint32 id_sdk, qint32 index)
+static qint32 EXPORT sdkGetElement(qint32 id_sdk, qint32 index)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->sdkGetElement(id_sdk, index);
@@ -60,7 +57,7 @@ qint32 EXPORT sdkGetElement(qint32 id_sdk, qint32 index)
 
     return res;
 }
-qint32 EXPORT sdkGetElementName(qint32 id_sdk, char *name)
+static qint32 EXPORT sdkGetElementName(qint32 id_sdk, char *name)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->sdkGetElementName(id_sdk, name);
@@ -69,7 +66,7 @@ qint32 EXPORT sdkGetElementName(qint32 id_sdk, char *name)
 
     return res;
 }
-ElementFlags EXPORT elGetFlag(qint32 id_element)
+static ElementFlags EXPORT elGetFlag(qint32 id_element)
 {
     PRINT_FUNC_INFO
     ElementFlags res = m_cgt->elGetFlag(id_element);
@@ -78,7 +75,7 @@ ElementFlags EXPORT elGetFlag(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elGetPropCount(qint32 id_element)
+static qint32 EXPORT elGetPropCount(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetPropCount(id_element);
@@ -87,7 +84,7 @@ qint32 EXPORT elGetPropCount(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elGetProperty(qint32 id_element, qint32 index)
+static qint32 EXPORT elGetProperty(qint32 id_element, qint32 index)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetProperty(id_element, index);
@@ -96,7 +93,7 @@ qint32 EXPORT elGetProperty(qint32 id_element, qint32 index)
 
     return res;
 }
-bool EXPORT elIsDefProp(qint32 id_element, qint32 index)
+static bool EXPORT elIsDefProp(qint32 id_element, qint32 index)
 {
     PRINT_FUNC_INFO
     bool res = m_cgt->elIsDefProp(id_element, index);
@@ -105,7 +102,7 @@ bool EXPORT elIsDefProp(qint32 id_element, qint32 index)
 
     return res;
 }
-qint32 EXPORT elSetCodeName(qint32 id_element, const char *name)
+static qint32 EXPORT elSetCodeName(qint32 id_element, const char *name)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elSetCodeName(id_element, name);
@@ -114,7 +111,7 @@ qint32 EXPORT elSetCodeName(qint32 id_element, const char *name)
 
     return res;
 }
-const char *EXPORT elGetCodeName(qint32 id_element)
+static const char *EXPORT elGetCodeName(qint32 id_element)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->elGetCodeName(id_element);
@@ -123,7 +120,7 @@ const char *EXPORT elGetCodeName(qint32 id_element)
 
     return res;
 }
-const char *EXPORT elGetClassName(qint32 id_element)
+static const char *EXPORT elGetClassName(qint32 id_element)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->elGetClassName(id_element);
@@ -132,7 +129,7 @@ const char *EXPORT elGetClassName(qint32 id_element)
 
     return res;
 }
-const char *EXPORT elGetInfSub(qint32 id_element)
+static const char *EXPORT elGetInfSub(qint32 id_element)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->elGetInfSub(id_element);
@@ -141,7 +138,7 @@ const char *EXPORT elGetInfSub(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elGetPtCount(qint32 id_element)
+static qint32 EXPORT elGetPtCount(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetPtCount(id_element);
@@ -150,7 +147,7 @@ qint32 EXPORT elGetPtCount(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elGetPt(qint32 id_element, qint32 index)
+static qint32 EXPORT elGetPt(qint32 id_element, qint32 index)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetPt(id_element, index);
@@ -159,7 +156,7 @@ qint32 EXPORT elGetPt(qint32 id_element, qint32 index)
 
     return res;
 }
-qint32 EXPORT elGetPtName(qint32 id_element, const char *name)
+static qint32 EXPORT elGetPtName(qint32 id_element, const char *name)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetPtName(id_element, name);
@@ -168,7 +165,7 @@ qint32 EXPORT elGetPtName(qint32 id_element, const char *name)
 
     return res;
 }
-ElementClass EXPORT elGetClassIndex(qint32 id_element)
+static ElementClass EXPORT elGetClassIndex(qint32 id_element)
 {
     PRINT_FUNC_INFO
     ElementClass res = m_cgt->elGetClassIndex(id_element);
@@ -177,7 +174,7 @@ ElementClass EXPORT elGetClassIndex(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elGetSDK(qint32 id_element)
+static qint32 EXPORT elGetSDK(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetSDK(id_element);
@@ -186,7 +183,7 @@ qint32 EXPORT elGetSDK(qint32 id_element)
 
     return res;
 }
-bool EXPORT elLinkIs(qint32 id_element)
+static bool EXPORT elLinkIs(qint32 id_element)
 {
     PRINT_FUNC_INFO
     bool res = m_cgt->elLinkIs(id_element);
@@ -195,7 +192,7 @@ bool EXPORT elLinkIs(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elLinkMain(qint32 id_element)
+static qint32 EXPORT elLinkMain(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elLinkMain(id_element);
@@ -204,19 +201,19 @@ qint32 EXPORT elLinkMain(qint32 id_element)
 
     return res;
 }
-void EXPORT elGetPos(qint32 id_element, qint32 &X, qint32 &Y)
+static void EXPORT elGetPos(qint32 id_element, qint32 &X, qint32 &Y)
 {
     PRINT_FUNC_INFO
     m_cgt->elGetPos(id_element, X, Y);
     printArgs({id(id_element), X, Y});
 }
-void EXPORT elGetSize(qint32 id_element, qint32 &W, qint32 &H)
+static void EXPORT elGetSize(qint32 id_element, qint32 &W, qint32 &H)
 {
     PRINT_FUNC_INFO
     m_cgt->elGetSize(id_element, W, H);
     printArgs({id(id_element), W, H});
 }
-qint32 EXPORT elGetEID(qint32 id_point)
+static qint32 EXPORT elGetEID(qint32 id_point)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetEID(id_point);
@@ -225,7 +222,7 @@ qint32 EXPORT elGetEID(qint32 id_point)
 
     return res;
 }
-qint32 EXPORT ptGetLinkPoint(qint32 id_point)
+static qint32 EXPORT ptGetLinkPoint(qint32 id_point)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->ptGetLinkPoint(id_point);
@@ -234,7 +231,7 @@ qint32 EXPORT ptGetLinkPoint(qint32 id_point)
 
     return res;
 }
-qint32 EXPORT ptGetRLinkPoint(qint32 id_point)
+static qint32 EXPORT ptGetRLinkPoint(qint32 id_point)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->ptGetRLinkPoint(id_point);
@@ -243,7 +240,7 @@ qint32 EXPORT ptGetRLinkPoint(qint32 id_point)
 
     return res;
 }
-PointType EXPORT ptGetType(qint32 id_point)
+static PointType EXPORT ptGetType(qint32 id_point)
 {
     PRINT_FUNC_INFO
     PointType res = m_cgt->ptGetType(id_point);
@@ -252,7 +249,7 @@ PointType EXPORT ptGetType(qint32 id_point)
 
     return res;
 }
-const char *EXPORT ptGetName(qint32 id_point)
+static const char *EXPORT ptGetName(qint32 id_point)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->ptGetName(id_point);
@@ -261,7 +258,7 @@ const char *EXPORT ptGetName(qint32 id_point)
 
     return res;
 }
-qint32 EXPORT ptGetParent(qint32 id_point)
+static qint32 EXPORT ptGetParent(qint32 id_point)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->ptGetParent(id_point);
@@ -270,7 +267,7 @@ qint32 EXPORT ptGetParent(qint32 id_point)
 
     return res;
 }
-qint32 EXPORT ptGetIndex(qint32 id_point)
+static qint32 EXPORT ptGetIndex(qint32 id_point)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->ptGetIndex(id_point);
@@ -279,7 +276,7 @@ qint32 EXPORT ptGetIndex(qint32 id_point)
 
     return res;
 }
-const char *EXPORT pt_dpeGetName(qint32 id_point)
+static const char *EXPORT pt_dpeGetName(qint32 id_point)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->pt_dpeGetName(id_point);
@@ -288,7 +285,7 @@ const char *EXPORT pt_dpeGetName(qint32 id_point)
 
     return res;
 }
-DataType EXPORT propGetType(qint32 id_prop)
+static DataType EXPORT propGetType(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     DataType res = m_cgt->propGetType(id_prop);
@@ -297,7 +294,7 @@ DataType EXPORT propGetType(qint32 id_prop)
 
     return res;
 }
-const char *EXPORT propGetName(qint32 id_prop)
+static const char *EXPORT propGetName(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->propGetName(id_prop);
@@ -306,7 +303,7 @@ const char *EXPORT propGetName(qint32 id_prop)
 
     return res;
 }
-qint32 EXPORT propGetValue(qint32 id_prop)
+static qint32 EXPORT propGetValue(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->propGetValue(id_prop);
@@ -315,7 +312,7 @@ qint32 EXPORT propGetValue(qint32 id_prop)
 
     return res;
 }
-uchar EXPORT propToByte(qint32 id_prop)
+static uchar EXPORT propToByte(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     uchar res = m_cgt->propToByte(id_prop);
@@ -324,7 +321,7 @@ uchar EXPORT propToByte(qint32 id_prop)
 
     return res;
 }
-qint32 EXPORT propToInteger(qint32 id_prop)
+static qint32 EXPORT propToInteger(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->propToInteger(id_prop);
@@ -333,7 +330,7 @@ qint32 EXPORT propToInteger(qint32 id_prop)
 
     return res;
 }
-qreal EXPORT propToReal(qint32 id_prop)
+static qreal EXPORT propToReal(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     qreal res = m_cgt->propToReal(id_prop);
@@ -342,7 +339,7 @@ qreal EXPORT propToReal(qint32 id_prop)
 
     return res;
 }
-const char *EXPORT propToString(qint32 id_prop)
+static const char *EXPORT propToString(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->propToString(id_prop);
@@ -351,7 +348,7 @@ const char *EXPORT propToString(qint32 id_prop)
 
     return res;
 }
-qint32 EXPORT resAddFile(const char *name)
+static qint32 EXPORT resAddFile(const char *name)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->resAddFile(name);
@@ -360,7 +357,7 @@ qint32 EXPORT resAddFile(const char *name)
 
     return res;
 }
-const char *EXPORT resAddIcon(qint32 id_prop)
+static const char *EXPORT resAddIcon(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->resAddIcon(id_prop);
@@ -369,7 +366,7 @@ const char *EXPORT resAddIcon(qint32 id_prop)
 
     return res;
 }
-const char *EXPORT resAddStr(const char *str)
+static const char *EXPORT resAddStr(const char *str)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->resAddStr(str);
@@ -378,7 +375,7 @@ const char *EXPORT resAddStr(const char *str)
 
     return res;
 }
-const char *EXPORT resAddStream(qint32 id_prop)
+static const char *EXPORT resAddStream(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->resAddStream(id_prop);
@@ -387,7 +384,7 @@ const char *EXPORT resAddStream(qint32 id_prop)
 
     return res;
 }
-const char *EXPORT resAddWave(qint32 id_prop)
+static const char *EXPORT resAddWave(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->resAddWave(id_prop);
@@ -396,7 +393,7 @@ const char *EXPORT resAddWave(qint32 id_prop)
 
     return res;
 }
-const char *EXPORT resAddBitmap(qint32 id_prop)
+static const char *EXPORT resAddBitmap(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->resAddBitmap(id_prop);
@@ -405,7 +402,7 @@ const char *EXPORT resAddBitmap(qint32 id_prop)
 
     return res;
 }
-const char *EXPORT resAddMenu(qint32 id_prop)
+static const char *EXPORT resAddMenu(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->resAddMenu(id_prop);
@@ -414,7 +411,7 @@ const char *EXPORT resAddMenu(qint32 id_prop)
 
     return res;
 }
-qint32 EXPORT _Debug(const char *text, qint32 color)
+static qint32 EXPORT _Debug(const char *text, qint32 color)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->_Debug(text, color);
@@ -423,7 +420,7 @@ qint32 EXPORT _Debug(const char *text, qint32 color)
 
     return res;
 }
-qint32 EXPORT GetParam(CgtParams index, void *value)
+static qint32 EXPORT GetParam(CgtParams index, void *value)
 {
     PRINT_FUNC_INFO
     if (index > 12)
@@ -474,7 +471,7 @@ qint32 EXPORT GetParam(CgtParams index, void *value)
 
     return res;
 }
-qint32 EXPORT arrCount(qint32 id_value)
+static qint32 EXPORT arrCount(qint32 id_value)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->arrCount(id_value);
@@ -483,7 +480,7 @@ qint32 EXPORT arrCount(qint32 id_value)
 
     return res;
 }
-DataType EXPORT arrType(qint32 id_value)
+static DataType EXPORT arrType(qint32 id_value)
 {
     PRINT_FUNC_INFO
     DataType res = m_cgt->arrType(id_value);
@@ -492,7 +489,7 @@ DataType EXPORT arrType(qint32 id_value)
 
     return res;
 }
-const char *EXPORT arrItemName(qint32 id_value, qint32 index)
+static const char *EXPORT arrItemName(qint32 id_value, qint32 index)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->arrItemName(id_value, index);
@@ -501,7 +498,7 @@ const char *EXPORT arrItemName(qint32 id_value, qint32 index)
 
     return res;
 }
-qint32 EXPORT arrItemData(qint32 id_value, qint32 index)
+static qint32 EXPORT arrItemData(qint32 id_value, qint32 index)
 {
     PRINT_FUNC_INFO
     const qint32 res = m_cgt->arrItemData(id_value, index);
@@ -510,7 +507,7 @@ qint32 EXPORT arrItemData(qint32 id_value, qint32 index)
 
     return res;
 }
-qint32 EXPORT arrGetItem(qint32 id_value, qint32 index)
+static qint32 EXPORT arrGetItem(qint32 id_value, qint32 index)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->arrGetItem(id_value, index);
@@ -519,7 +516,7 @@ qint32 EXPORT arrGetItem(qint32 id_value, qint32 index)
 
     return res;
 }
-qint32 EXPORT isDebug(qint32 id_element)
+static qint32 EXPORT isDebug(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->isDebug(id_element);
@@ -528,7 +525,7 @@ qint32 EXPORT isDebug(qint32 id_element)
 
     return res;
 }
-DataType EXPORT dtType(qint32 id_value)
+static DataType EXPORT dtType(qint32 id_value)
 {
     PRINT_FUNC_INFO
     DataType res = m_cgt->dtType(id_value);
@@ -537,7 +534,7 @@ DataType EXPORT dtType(qint32 id_value)
 
     return res;
 }
-const char *EXPORT dtStr(qint32 id_value)
+static const char *EXPORT dtStr(qint32 id_value)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->dtStr(id_value);
@@ -546,7 +543,7 @@ const char *EXPORT dtStr(qint32 id_value)
 
     return res;
 }
-qint32 EXPORT dtInt(qint32 id_value)
+static qint32 EXPORT dtInt(qint32 id_value)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->dtInt(id_value);
@@ -555,7 +552,7 @@ qint32 EXPORT dtInt(qint32 id_value)
 
     return res;
 }
-qreal EXPORT dtReal(qint32 id_value)
+static qreal EXPORT dtReal(qint32 id_value)
 {
     PRINT_FUNC_INFO
     qreal res = m_cgt->dtReal(id_value);
@@ -564,7 +561,7 @@ qreal EXPORT dtReal(qint32 id_value)
 
     return res;
 }
-const char *EXPORT fntName(qint32 id_value)
+static const char *EXPORT fntName(qint32 id_value)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->fntName(id_value);
@@ -573,7 +570,7 @@ const char *EXPORT fntName(qint32 id_value)
 
     return res;
 }
-qint32 EXPORT fntSize(qint32 id_value)
+static qint32 EXPORT fntSize(qint32 id_value)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->fntSize(id_value);
@@ -582,7 +579,7 @@ qint32 EXPORT fntSize(qint32 id_value)
 
     return res;
 }
-uchar EXPORT fntStyle(qint32 id_value)
+static uchar EXPORT fntStyle(qint32 id_value)
 {
     printArgs({id(id_value)});
     PRINT_FUNC_INFO
@@ -591,7 +588,7 @@ uchar EXPORT fntStyle(qint32 id_value)
 
     return res;
 }
-qint32 EXPORT fntColor(qint32 id_value)
+static qint32 EXPORT fntColor(qint32 id_value)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->fntColor(id_value);
@@ -600,7 +597,7 @@ qint32 EXPORT fntColor(qint32 id_value)
 
     return res;
 }
-uchar EXPORT fntCharSet(qint32 id_value)
+static uchar EXPORT fntCharSet(qint32 id_value)
 {
     PRINT_FUNC_INFO
     uchar res = m_cgt->fntCharSet(id_value);
@@ -609,7 +606,7 @@ uchar EXPORT fntCharSet(qint32 id_value)
 
     return res;
 }
-qint32 EXPORT elGetData(qint32 id_element)
+static qint32 EXPORT elGetData(qint32 id_element)
 {
     PRINT_FUNC_INFO
     const qint32 res = m_cgt->elGetData(id_element);
@@ -618,13 +615,13 @@ qint32 EXPORT elGetData(qint32 id_element)
 
     return res;
 }
-void EXPORT elSetData(qint32 id_element, qint32 data)
+static void EXPORT elSetData(qint32 id_element, qint32 data)
 {
     PRINT_FUNC_INFO
     m_cgt->elSetData(id_element, data);
     printArgs({id(id_element), p(data)});
 }
-DataType EXPORT ptGetDataType(qint32 id_point)
+static DataType EXPORT ptGetDataType(qint32 id_point)
 {
     PRINT_FUNC_INFO
     DataType res = m_cgt->ptGetDataType(id_point);
@@ -633,7 +630,7 @@ DataType EXPORT ptGetDataType(qint32 id_point)
 
     return res;
 }
-qint32 EXPORT elGetParent(qint32 id_element)
+static qint32 EXPORT elGetParent(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetParent(id_element);
@@ -642,7 +639,7 @@ qint32 EXPORT elGetParent(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elGetPropertyListCount(qint32 id_element)
+static qint32 EXPORT elGetPropertyListCount(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetPropertyListCount(id_element);
@@ -651,7 +648,7 @@ qint32 EXPORT elGetPropertyListCount(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT elGetPropertyListItem(qint32 id_element, qint32 index)
+static qint32 EXPORT elGetPropertyListItem(qint32 id_element, qint32 index)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetPropertyListItem(id_element, index);
@@ -660,7 +657,7 @@ qint32 EXPORT elGetPropertyListItem(qint32 id_element, qint32 index)
 
     return res;
 }
-const char *EXPORT plGetName(qint32 id_point)
+static const char *EXPORT plGetName(qint32 id_point)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->plGetName(id_point);
@@ -669,7 +666,7 @@ const char *EXPORT plGetName(qint32 id_point)
 
     return res;
 }
-const char *EXPORT plGetInfo(qint32 id_point)
+static const char *EXPORT plGetInfo(qint32 id_point)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->plGetInfo(id_point);
@@ -678,7 +675,7 @@ const char *EXPORT plGetInfo(qint32 id_point)
 
     return res;
 }
-const char *EXPORT plGetGroup(qint32 id_point)
+static const char *EXPORT plGetGroup(qint32 id_point)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->plGetGroup(id_point);
@@ -687,7 +684,7 @@ const char *EXPORT plGetGroup(qint32 id_point)
 
     return res;
 }
-qint32 EXPORT plGetProperty(qint32 id_point)
+static qint32 EXPORT plGetProperty(qint32 id_point)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->plGetProperty(id_point);
@@ -696,7 +693,7 @@ qint32 EXPORT plGetProperty(qint32 id_point)
 
     return res;
 }
-qint32 EXPORT plGetOwner(qint32 id_prop)
+static qint32 EXPORT plGetOwner(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->plGetOwner(id_prop);
@@ -705,7 +702,7 @@ qint32 EXPORT plGetOwner(qint32 id_prop)
 
     return res;
 }
-const char *EXPORT ptGetInfo(qint32 id_prop)
+static const char *EXPORT ptGetInfo(qint32 id_prop)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->ptGetInfo(id_prop);
@@ -714,7 +711,7 @@ const char *EXPORT ptGetInfo(qint32 id_prop)
 
     return res;
 }
-qint32 EXPORT propGetLinkedElement(qint32 id_prop, const char *propName)
+static qint32 EXPORT propGetLinkedElement(qint32 id_prop, const char *propName)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->propGetLinkedElement(id_prop, propName);
@@ -723,7 +720,7 @@ qint32 EXPORT propGetLinkedElement(qint32 id_prop, const char *propName)
 
     return res;
 }
-qint32 EXPORT propIsTranslate(qint32 id_element, qint32 id_prop)
+static qint32 EXPORT propIsTranslate(qint32 id_element, qint32 id_prop)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->propIsTranslate(id_element, id_prop);
@@ -732,7 +729,7 @@ qint32 EXPORT propIsTranslate(qint32 id_element, qint32 id_prop)
 
     return res;
 }
-qint32 EXPORT propGetLinkedElementInfo(qint32 id_element, qint32 id_prop, char *info)
+static qint32 EXPORT propGetLinkedElementInfo(qint32 id_element, qint32 id_prop, char *info)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->propGetLinkedElementInfo(id_element, id_prop, info);
@@ -741,7 +738,7 @@ qint32 EXPORT propGetLinkedElementInfo(qint32 id_element, qint32 id_prop, char *
 
     return 0;
 }
-qint32 EXPORT elGetSDKByIndex(qint32 id_element, qint32 index)
+static qint32 EXPORT elGetSDKByIndex(qint32 id_element, qint32 index)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetSDKByIndex(id_element, index);
@@ -750,7 +747,7 @@ qint32 EXPORT elGetSDKByIndex(qint32 id_element, qint32 index)
 
     return res;
 }
-qint32 EXPORT elGetSDKCount(qint32 id_element)
+static qint32 EXPORT elGetSDKCount(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetSDKCount(id_element);
@@ -759,7 +756,7 @@ qint32 EXPORT elGetSDKCount(qint32 id_element)
 
     return res;
 }
-const char *EXPORT elGetSDKName(qint32 id_element, qint32 index)
+static const char *EXPORT elGetSDKName(qint32 id_element, qint32 index)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->elGetSDKName(id_element, index);
@@ -768,7 +765,7 @@ const char *EXPORT elGetSDKName(qint32 id_element, qint32 index)
 
     return res;
 }
-qint32 EXPORT sdkGetParent(qint32 id_sdk)
+static qint32 EXPORT sdkGetParent(qint32 id_sdk)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->sdkGetParent(id_sdk);
@@ -777,7 +774,7 @@ qint32 EXPORT sdkGetParent(qint32 id_sdk)
 
     return res;
 }
-const char *EXPORT elGetInterface(qint32 id_element)
+static const char *EXPORT elGetInterface(qint32 id_element)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->elGetInterface(id_element);
@@ -786,7 +783,7 @@ const char *EXPORT elGetInterface(qint32 id_element)
 
     return res;
 }
-const char *EXPORT elGetInherit(qint32 id_element)
+static const char *EXPORT elGetInherit(qint32 id_element)
 {
     PRINT_FUNC_INFO
     const char *res = m_cgt->elGetInherit(id_element);
@@ -795,7 +792,7 @@ const char *EXPORT elGetInherit(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT resEmpty()
+static qint32 EXPORT resEmpty()
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->resEmpty();
@@ -803,7 +800,7 @@ qint32 EXPORT resEmpty()
 
     return res;
 }
-qint32 EXPORT resSetPref(const char *pref)
+static qint32 EXPORT resSetPref(const char *pref)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->resSetPref(pref);
@@ -812,7 +809,7 @@ qint32 EXPORT resSetPref(const char *pref)
 
     return res;
 }
-qint32 EXPORT _Error(qint32 line, qint32 id_element, const char *text)
+static qint32 EXPORT _Error(qint32 line, qint32 id_element, const char *text)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->_Error(line, id_element, text);
@@ -821,7 +818,7 @@ qint32 EXPORT _Error(qint32 line, qint32 id_element, const char *text)
 
     return res;
 }
-qint32 EXPORT elGetGroup(qint32 id_element)
+static qint32 EXPORT elGetGroup(qint32 id_element)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->elGetGroup(id_element);
@@ -830,7 +827,7 @@ qint32 EXPORT elGetGroup(qint32 id_element)
 
     return res;
 }
-qint32 EXPORT propSaveToFile(qint32 id_prop, const char *fileName)
+static qint32 EXPORT propSaveToFile(qint32 id_prop, const char *fileName)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->propSaveToFile(id_prop, fileName);
@@ -840,104 +837,103 @@ qint32 EXPORT propSaveToFile(qint32 id_prop, const char *fileName)
     return res;
 }
 
-static qintptr proxyCgt[]{
-    reinterpret_cast<qintptr>(sdkGetCount),
-    reinterpret_cast<qintptr>(sdkGetElement),
-    reinterpret_cast<qintptr>(sdkGetElementName),
-    reinterpret_cast<qintptr>(elGetFlag),
-    reinterpret_cast<qintptr>(elGetPropCount),
-    reinterpret_cast<qintptr>(elGetProperty),
-    reinterpret_cast<qintptr>(elIsDefProp),
-    reinterpret_cast<qintptr>(elSetCodeName),
-    reinterpret_cast<qintptr>(elGetCodeName),
-    reinterpret_cast<qintptr>(elGetClassName),
-    reinterpret_cast<qintptr>(elGetInfSub),
-    reinterpret_cast<qintptr>(elGetPtCount),
-    reinterpret_cast<qintptr>(elGetPt),
-    reinterpret_cast<qintptr>(elGetPtName),
-    reinterpret_cast<qintptr>(elGetClassIndex),
-    reinterpret_cast<qintptr>(elGetSDK),
-    reinterpret_cast<qintptr>(elLinkIs),
-    reinterpret_cast<qintptr>(elLinkMain),
-    reinterpret_cast<qintptr>(elGetPos),
-    reinterpret_cast<qintptr>(elGetSize),
-    reinterpret_cast<qintptr>(elGetEID),
-    reinterpret_cast<qintptr>(ptGetLinkPoint),
-    reinterpret_cast<qintptr>(ptGetRLinkPoint),
-    reinterpret_cast<qintptr>(ptGetType),
-    reinterpret_cast<qintptr>(ptGetName),
-    reinterpret_cast<qintptr>(ptGetParent),
-    reinterpret_cast<qintptr>(ptGetIndex),
-    reinterpret_cast<qintptr>(pt_dpeGetName),
-    reinterpret_cast<qintptr>(propGetType),
-    reinterpret_cast<qintptr>(propGetName),
-    reinterpret_cast<qintptr>(propGetValue),
-    reinterpret_cast<qintptr>(propToByte),
-    reinterpret_cast<qintptr>(propToInteger),
-    reinterpret_cast<qintptr>(propToReal),
-    reinterpret_cast<qintptr>(propToString),
-    reinterpret_cast<qintptr>(resAddFile),
-    reinterpret_cast<qintptr>(resAddIcon),
-    reinterpret_cast<qintptr>(resAddStr),
-    reinterpret_cast<qintptr>(resAddStream),
-    reinterpret_cast<qintptr>(resAddWave),
-    reinterpret_cast<qintptr>(resAddBitmap),
-    reinterpret_cast<qintptr>(resAddMenu),
-    reinterpret_cast<qintptr>(_Debug),
-    reinterpret_cast<qintptr>(GetParam),
-    reinterpret_cast<qintptr>(arrCount),
-    reinterpret_cast<qintptr>(arrType),
-    reinterpret_cast<qintptr>(arrItemName),
-    reinterpret_cast<qintptr>(arrItemData),
-    reinterpret_cast<qintptr>(arrGetItem),
-    reinterpret_cast<qintptr>(isDebug),
-    reinterpret_cast<qintptr>(dtType),
-    reinterpret_cast<qintptr>(dtStr),
-    reinterpret_cast<qintptr>(dtInt),
-    reinterpret_cast<qintptr>(dtReal),
-    reinterpret_cast<qintptr>(fntName),
-    reinterpret_cast<qintptr>(fntSize),
-    reinterpret_cast<qintptr>(fntStyle),
-    reinterpret_cast<qintptr>(fntColor),
-    reinterpret_cast<qintptr>(fntCharSet),
-    reinterpret_cast<qintptr>(elGetData),
-    reinterpret_cast<qintptr>(elSetData),
-    reinterpret_cast<qintptr>(ptGetDataType),
-    reinterpret_cast<qintptr>(elGetParent),
-    reinterpret_cast<qintptr>(elGetPropertyListCount),
-    reinterpret_cast<qintptr>(elGetPropertyListItem),
-    reinterpret_cast<qintptr>(plGetName),
-    reinterpret_cast<qintptr>(plGetInfo),
-    reinterpret_cast<qintptr>(plGetGroup),
-    reinterpret_cast<qintptr>(plGetProperty),
-    reinterpret_cast<qintptr>(plGetOwner),
-    reinterpret_cast<qintptr>(ptGetInfo),
-    reinterpret_cast<qintptr>(propGetLinkedElement),
-    reinterpret_cast<qintptr>(propIsTranslate),
-    reinterpret_cast<qintptr>(propGetLinkedElementInfo),
-    reinterpret_cast<qintptr>(elGetSDKByIndex),
-    reinterpret_cast<qintptr>(elGetSDKCount),
-    reinterpret_cast<qintptr>(elGetSDKName),
-    reinterpret_cast<qintptr>(sdkGetParent),
-    reinterpret_cast<qintptr>(elGetInterface),
-    reinterpret_cast<qintptr>(elGetInherit),
-    reinterpret_cast<qintptr>(resEmpty),
-    reinterpret_cast<qintptr>(resSetPref),
-    reinterpret_cast<qintptr>(_Error),
-    reinterpret_cast<qintptr>(elGetGroup),
-    reinterpret_cast<qintptr>(propSaveToFile),
+static void *proxyCgt[]{
+    reinterpret_cast<void *>(sdkGetCount),
+    reinterpret_cast<void *>(sdkGetElement),
+    reinterpret_cast<void *>(sdkGetElementName),
+    reinterpret_cast<void *>(elGetFlag),
+    reinterpret_cast<void *>(elGetPropCount),
+    reinterpret_cast<void *>(elGetProperty),
+    reinterpret_cast<void *>(elIsDefProp),
+    reinterpret_cast<void *>(elSetCodeName),
+    reinterpret_cast<void *>(elGetCodeName),
+    reinterpret_cast<void *>(elGetClassName),
+    reinterpret_cast<void *>(elGetInfSub),
+    reinterpret_cast<void *>(elGetPtCount),
+    reinterpret_cast<void *>(elGetPt),
+    reinterpret_cast<void *>(elGetPtName),
+    reinterpret_cast<void *>(elGetClassIndex),
+    reinterpret_cast<void *>(elGetSDK),
+    reinterpret_cast<void *>(elLinkIs),
+    reinterpret_cast<void *>(elLinkMain),
+    reinterpret_cast<void *>(elGetPos),
+    reinterpret_cast<void *>(elGetSize),
+    reinterpret_cast<void *>(elGetEID),
+    reinterpret_cast<void *>(ptGetLinkPoint),
+    reinterpret_cast<void *>(ptGetRLinkPoint),
+    reinterpret_cast<void *>(ptGetType),
+    reinterpret_cast<void *>(ptGetName),
+    reinterpret_cast<void *>(ptGetParent),
+    reinterpret_cast<void *>(ptGetIndex),
+    reinterpret_cast<void *>(pt_dpeGetName),
+    reinterpret_cast<void *>(propGetType),
+    reinterpret_cast<void *>(propGetName),
+    reinterpret_cast<void *>(propGetValue),
+    reinterpret_cast<void *>(propToByte),
+    reinterpret_cast<void *>(propToInteger),
+    reinterpret_cast<void *>(propToReal),
+    reinterpret_cast<void *>(propToString),
+    reinterpret_cast<void *>(resAddFile),
+    reinterpret_cast<void *>(resAddIcon),
+    reinterpret_cast<void *>(resAddStr),
+    reinterpret_cast<void *>(resAddStream),
+    reinterpret_cast<void *>(resAddWave),
+    reinterpret_cast<void *>(resAddBitmap),
+    reinterpret_cast<void *>(resAddMenu),
+    reinterpret_cast<void *>(_Debug),
+    reinterpret_cast<void *>(GetParam),
+    reinterpret_cast<void *>(arrCount),
+    reinterpret_cast<void *>(arrType),
+    reinterpret_cast<void *>(arrItemName),
+    reinterpret_cast<void *>(arrItemData),
+    reinterpret_cast<void *>(arrGetItem),
+    reinterpret_cast<void *>(isDebug),
+    reinterpret_cast<void *>(dtType),
+    reinterpret_cast<void *>(dtStr),
+    reinterpret_cast<void *>(dtInt),
+    reinterpret_cast<void *>(dtReal),
+    reinterpret_cast<void *>(fntName),
+    reinterpret_cast<void *>(fntSize),
+    reinterpret_cast<void *>(fntStyle),
+    reinterpret_cast<void *>(fntColor),
+    reinterpret_cast<void *>(fntCharSet),
+    reinterpret_cast<void *>(elGetData),
+    reinterpret_cast<void *>(elSetData),
+    reinterpret_cast<void *>(ptGetDataType),
+    reinterpret_cast<void *>(elGetParent),
+    reinterpret_cast<void *>(elGetPropertyListCount),
+    reinterpret_cast<void *>(elGetPropertyListItem),
+    reinterpret_cast<void *>(plGetName),
+    reinterpret_cast<void *>(plGetInfo),
+    reinterpret_cast<void *>(plGetGroup),
+    reinterpret_cast<void *>(plGetProperty),
+    reinterpret_cast<void *>(plGetOwner),
+    reinterpret_cast<void *>(ptGetInfo),
+    reinterpret_cast<void *>(propGetLinkedElement),
+    reinterpret_cast<void *>(propIsTranslate),
+    reinterpret_cast<void *>(propGetLinkedElementInfo),
+    reinterpret_cast<void *>(elGetSDKByIndex),
+    reinterpret_cast<void *>(elGetSDKCount),
+    reinterpret_cast<void *>(elGetSDKName),
+    reinterpret_cast<void *>(sdkGetParent),
+    reinterpret_cast<void *>(elGetInterface),
+    reinterpret_cast<void *>(elGetInherit),
+    reinterpret_cast<void *>(resEmpty),
+    reinterpret_cast<void *>(resSetPref),
+    reinterpret_cast<void *>(_Error),
+    reinterpret_cast<void *>(elGetGroup),
+    reinterpret_cast<void *>(propSaveToFile),
 };
 
 /*!  Служебные функции   */
 
-void setProxiedCgt(TCodeGenTools *cgt)
+void ProxyCgt::setProxiedCgt(TCodeGenTools *cgt)
 {
     m_cgt = cgt;
 }
 
 //Получаем массив указателей на функции
-TCodeGenTools *getCgt()
+TCodeGenTools *ProxyCgt::getCgt()
 {
-    return reinterpret_cast<TCodeGenTools *>(proxyCgt);
-}
+    return reinterpret_cast<TCodeGenTools*>(proxyCgt);
 }

@@ -1000,7 +1000,7 @@ void EmulateCgt::setSceneModel(SceneModel *model)
 }
 
 //Получаем массив указателей на функции
-void *EmulateCgt::getCgt()
+TCodeGenTools *EmulateCgt::getCgt()
 {
-    return reinterpret_cast<void *>(emulateCgt);
+    return reinterpret_cast<TCodeGenTools*>(emulateCgt);
 }

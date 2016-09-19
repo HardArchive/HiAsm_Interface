@@ -298,24 +298,17 @@ typedef qint32 (*TBuildStopProc)(TBuildRunRec &params);
  * Описание интерфейса библиотеки CodeGen.
  *
 */
-class TCodeGenTools;
-
 struct THiAsmVersion {
     qint32 major{};
     qint32 minor{};
     qint32 build{};
 };
 
+struct TCodeGenTools;
 struct TBuildProcessRec {
     TCodeGenTools *cgt{};
     qint32 sdk{};
     void *result{};
-
-    explicit TBuildProcessRec(TCodeGenTools *_cgt, qint32 _sdk)
-        : cgt(_cgt)
-        , sdk(_sdk)
-    {
-    }
 };
 
 typedef CgResult (*TBuildPrepareProc)(void *params);

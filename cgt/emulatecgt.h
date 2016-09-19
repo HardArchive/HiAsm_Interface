@@ -13,6 +13,6 @@ class EmulateCgt : public QObject
     Q_DISABLE_COPY(EmulateCgt)
 
 public:
-    void setSceneModel(SceneModel *model);
-    void *getCgt();
+    static void setSceneModel(SceneModel *model);
+    static TCodeGenTools *getCgt();
 };

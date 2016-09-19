@@ -7,8 +7,12 @@
 
 //Qt
 
-namespace ProxyCgt
+class ProxyCgt : public QObject
 {
-void setProxiedCgt(TCodeGenTools *cgt);
-TCodeGenTools *getCgt();
-}
+    Q_OBJECT
+    Q_DISABLE_COPY(ProxyCgt)
+
+public:
+    static void setProxiedCgt(TCodeGenTools *cgt);
+    static TCodeGenTools *getCgt();
+};
