@@ -46,7 +46,7 @@ QVariantMap Value::serialize() const
     }
     case data_array: {
         QVariantList array;
-        for (const SharedValue v : m_value.value<Values>()) {
+        for (const SharedValue &v : m_value.value<Values>()) {
             array.append(v->serialize());
         }
 
