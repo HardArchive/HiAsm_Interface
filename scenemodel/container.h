@@ -11,7 +11,8 @@
 class SceneModel;
 class Element;
 
-class Container : public QObject {
+class Container : public QObject
+{
     Q_OBJECT
     Q_DISABLE_COPY(Container)
 

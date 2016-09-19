@@ -22,9 +22,9 @@ Q_DECLARE_METATYPE(SharedLinkedElementInfo)
 
 struct ValueFont { //-V802
     QString name;
-    uint size{};
+    int size{};
+    int color{};
     uchar style{};
-    uint color{};
     uchar charset{};
 };
 typedef QSharedPointer<ValueFont> SharedValueFont;
