@@ -336,7 +336,7 @@ qint32 EXPORT propToInteger(qint32 id_prop)
 qreal EXPORT propToReal(qint32 id_prop)
 {
     PRINT_FUNC_INFO
-    float res = m_cgt->propToReal(id_prop);
+    qreal res = m_cgt->propToReal(id_prop);
     printArgs({id(id_prop)});
     PRINT_RESULT(res)
 
@@ -591,7 +591,7 @@ uchar EXPORT fntStyle(qint32 id_value)
 
     return res;
 }
-uint EXPORT fntColor(qint32 id_value)
+qint32 EXPORT fntColor(qint32 id_value)
 {
     PRINT_FUNC_INFO
     qint32 res = m_cgt->fntColor(id_value);

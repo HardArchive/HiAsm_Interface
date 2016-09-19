@@ -586,7 +586,7 @@ static uchar EXPORT fntStyle(Value *id_font)
     return font->style;
 }
 //ru Возвращает цвет шрифта.
-static uint EXPORT fntColor(Value *id_font)
+static qint32 EXPORT fntColor(Value *id_font)
 {
     if (!id_font)
         return 0;
