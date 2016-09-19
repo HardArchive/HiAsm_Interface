@@ -10,6 +10,7 @@
 class Value;
 typedef QSharedPointer<Value> SharedValue;
 Q_DECLARE_METATYPE(SharedValue)
+
 typedef QVector<SharedValue> Values;
 Q_DECLARE_METATYPE(Values)
 

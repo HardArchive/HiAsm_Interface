@@ -6,6 +6,7 @@
 #include "cgt/cgt.h"
 
 //STL
+#include <limits>
 
 //Qt
 #include <QTemporaryFile>

@@ -65,7 +65,7 @@ private:
     void collectingData(qint32 id_sdk);
 
 public:
-    qint32 getId()
+    qint32 genId()
     {
         return 0;
     }
