@@ -13,7 +13,7 @@
 #include <QStack>
 #include <QJsonDocument>
 
-class SHAModel : public QObject
+class SHALoader : public QObject
 {
     Q_OBJECT
 
@@ -49,8 +49,8 @@ private:
     SceneModel *m_model;
 
 public:
-    explicit SHAModel(const QString &filePath, SceneModel *model, QObject *parent = 0);
-    explicit SHAModel(QObject *parent = 0);
+    explicit SHALoader(const QString &filePath, SceneModel *model, QObject *parent = 0);
+    explicit SHALoader(SceneModel *model, QObject *parent = 0);
 
 public:
     bool loadSha();

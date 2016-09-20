@@ -5,7 +5,7 @@
 #include "element.h"
 #include "point.h"
 #include "property.h"
-#include "shamodel.h"
+#include "shaloader.h"
 
 //STL
 
@@ -145,9 +145,9 @@ bool SceneModel::saveModel(const QString &filePath)
 
 bool SceneModel::loadFromSha(const QString &filePath)
 {
-    SHAModel shaModel(filePath, this);
-    shaModel.loadSha();
-    return shaModel.parse();
+    SHALoader shaLoader(filePath, this);
+    shaLoader.loadSha();
+    return shaLoader.parse();
 }
 
 void SceneModel::setPackage(Package *package)

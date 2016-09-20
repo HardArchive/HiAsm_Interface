@@ -1,5 +1,5 @@
 //Project
-#include "shamodel.h"
+#include "shaloader.h"
 
 //STL
 
@@ -10,19 +10,20 @@
 #include <QStringList>
 #include <QtCore>
 
-SHAModel::SHAModel(const QString &filePath, SceneModel *model, QObject *parent)
+SHALoader::SHALoader(const QString &filePath, SceneModel *model, QObject *parent)
     : QObject(parent)
     , m_filePath(filePath)
     , m_model(model)
 {
 }
 
-SHAModel::SHAModel(QObject *parent)
+SHALoader::SHALoader(SceneModel *model, QObject *parent)
     : QObject(parent)
+    , m_model(model)
 {
 }
 
-bool SHAModel::loadSha()
+bool SHALoader::loadSha()
 {
     m_content.clear();
     QFile file(m_filePath);
@@ -38,7 +39,7 @@ bool SHAModel::loadSha()
     return true;
 }
 
-bool SHAModel::parse()
+bool SHALoader::parse()
 {
     parseHeader();
     parseElements();
@@ -46,28 +47,28 @@ bool SHAModel::parse()
     return false;
 }
 
-QString SHAModel::getFilePath() const
+QString SHALoader::getFilePath() const
 {
     return m_filePath;
 }
 
-void SHAModel::setFilePath(const QString &filePath)
+void SHALoader::setFilePath(const QString &filePath)
 {
     m_filePath = filePath;
 }
 
-SceneModel *SHAModel::getModel() const
+SceneModel *SHALoader::getModel() const
 {
     return m_model;
 }
 
-void SHAModel::setModel(SceneModel *model)
+void SHALoader::setModel(SceneModel *model)
 {
     m_model = model;
 }
 
-QString SHAModel::findBlock(const QString &line, const QString &beginTok,
-                            const QString &endTok)
+QString SHALoader::findBlock(const QString &line, const QString &beginTok,
+                             const QString &endTok)
 {
     const qint32 beginTokLen = beginTok.length();
     const auto begin = line.indexOf(beginTok);
@@ -76,9 +77,9 @@ QString SHAModel::findBlock(const QString &line, const QString &beginTok,
     return line.mid(begin + beginTokLen, count - beginTokLen);
 }
 
-QStringList SHAModel::findMultiBlock(QString &str, const QString &beginTok,
-                                     const QString &endTok, bool cutBlock,
-                                     bool removeTok)
+QStringList SHALoader::findMultiBlock(QString &str, const QString &beginTok,
+                                      const QString &endTok, bool cutBlock,
+                                      bool removeTok)
 {
     qint32 index = 0;
     QStringList list;
@@ -114,7 +115,7 @@ QStringList SHAModel::findMultiBlock(QString &str, const QString &beginTok,
     return list;
 }
 
-QPair<QString, QString> SHAModel::splitSLine(const QString &sline, const QChar &del, ParseType type)
+QPair<QString, QString> SHALoader::splitSLine(const QString &sline, const QChar &del, ParseType type)
 {
     QString first;
     QString second;
@@ -148,7 +149,7 @@ QPair<QString, QString> SHAModel::splitSLine(const QString &sline, const QChar &
     return {first, second};
 }
 
-QVariantMap SHAModel::linkToVariantMap(const QString &sline)
+QVariantMap SHALoader::linkToVariantMap(const QString &sline)
 {
     QVariantMap map;
     QStringList res;
@@ -179,7 +180,7 @@ QVariantMap SHAModel::linkToVariantMap(const QString &sline)
     return map;
 }
 
-QVariantMap SHAModel::propToVariantMap(const QString &sline)
+QVariantMap SHALoader::propToVariantMap(const QString &sline)
 {
     if (sline.isEmpty())
         return QVariantMap();
@@ -198,7 +199,7 @@ QVariantMap SHAModel::propToVariantMap(const QString &sline)
     return QVariantMap();
 }
 
-SHAModel::LineType SHAModel::getLineType(const QString &sline)
+SHALoader::LineType SHALoader::getLineType(const QString &sline)
 {
     auto checkPattern = [&sline](const QString &pattern) {
         return QRegExp(pattern, Qt::CaseSensitive, QRegExp::WildcardUnix)
@@ -250,7 +251,7 @@ SHAModel::LineType SHAModel::getLineType(const QString &sline)
     return LineType::Undefined;
 }
 
-SHAModel::LineType SHAModel::getLineType(const QStringList &content, int idx)
+SHALoader::LineType SHALoader::getLineType(const QStringList &content, int idx)
 {
     int size = content.size();
     if ((idx < 0) || (idx > (size - 1)))
@@ -259,7 +260,7 @@ SHAModel::LineType SHAModel::getLineType(const QStringList &content, int idx)
     return getLineType(content[idx]);
 }
 
-QVariantMap SHAModel::parseHeader()
+QVariantMap SHALoader::parseHeader()
 {
     QVariantMap header;
     for (const QString &line : m_content) {
@@ -273,17 +274,17 @@ QVariantMap SHAModel::parseHeader()
         case LineType::Add:
             return header;
         case LineType::Ignore:
-        case SHAModel::Null:
-        case SHAModel::Undefined:
-        case SHAModel::OpenBlock:
-        case SHAModel::CloseBlock:
-        case SHAModel::Link:
-        case SHAModel::Point:
-        case SHAModel::HideProp:
-        case SHAModel::Prop:
-        case SHAModel::BEGIN_SDK:
-        case SHAModel::END_SDK:
-        case SHAModel::Empty:
+        case SHALoader::Null:
+        case SHALoader::Undefined:
+        case SHALoader::OpenBlock:
+        case SHALoader::CloseBlock:
+        case SHALoader::Link:
+        case SHALoader::Point:
+        case SHALoader::HideProp:
+        case SHALoader::Prop:
+        case SHALoader::BEGIN_SDK:
+        case SHALoader::END_SDK:
+        case SHALoader::Empty:
             continue;
         }
     }
@@ -291,7 +292,7 @@ QVariantMap SHAModel::parseHeader()
     return header;
 }
 
-QVariantList SHAModel::parseElements(int begin, int _size, int *prev)
+QVariantList SHALoader::parseElements(int begin, int _size, int *prev)
 {
     QVariantList elementList;
     QVariantMap element;
@@ -374,14 +375,14 @@ QVariantList SHAModel::parseElements(int begin, int _size, int *prev)
             *prev = i + 1;
             return elementList;
         }
-        case SHAModel::Null:
-        case SHAModel::Undefined:
-        case SHAModel::Ignore:
-        case SHAModel::Make:
-        case SHAModel::Ver:
-        case SHAModel::OpenBlock:
-        case SHAModel::BEGIN_SDK:
-        case SHAModel::Empty:
+        case SHALoader::Null:
+        case SHALoader::Undefined:
+        case SHALoader::Ignore:
+        case SHALoader::Make:
+        case SHALoader::Ver:
+        case SHALoader::OpenBlock:
+        case SHALoader::BEGIN_SDK:
+        case SHALoader::Empty:
             continue;
         }
     }
