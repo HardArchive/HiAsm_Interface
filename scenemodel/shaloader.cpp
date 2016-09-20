@@ -57,16 +57,6 @@ void SHALoader::setFilePath(const QString &filePath)
     m_filePath = filePath;
 }
 
-SceneModel *SHALoader::getModel() const
-{
-    return m_model;
-}
-
-void SHALoader::setModel(SceneModel *model)
-{
-    m_model = model;
-}
-
 QString SHALoader::findBlock(const QString &line, const QString &beginTok,
                              const QString &endTok)
 {
@@ -260,19 +250,22 @@ SHALoader::LineType SHALoader::getLineType(const QStringList &content, int idx)
     return getLineType(content[idx]);
 }
 
-QVariantMap SHALoader::parseHeader()
+bool SHALoader::parseHeader()
 {
-    QVariantMap header;
+    bool state = false;
     for (const QString &line : m_content) {
         switch (getLineType(line)) {
-        case LineType::Make:
-            header.insert("package", findBlock(line, "Make(", ")"));
+        case LineType::Make: {
+            const QString pack = findBlock(line, "Make(", ")");
+            state = m_model->loadPackage(pack);
+
             continue;
+        }
         case LineType::Ver:
-            header.insert("version", findBlock(line, "ver(", ")"));
+            //header.insert("version", findBlock(line, "ver(", ")"));
             continue;
         case LineType::Add:
-            return header;
+            return state;
         case LineType::Ignore:
         case SHALoader::Null:
         case SHALoader::Undefined:
@@ -289,7 +282,7 @@ QVariantMap SHALoader::parseHeader()
         }
     }
 
-    return header;
+    return state;
 }
 
 QVariantList SHALoader::parseElements(int begin, int _size, int *prev)

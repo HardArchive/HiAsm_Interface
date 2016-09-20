@@ -57,8 +57,6 @@ public:
     bool parse();
     QString getFilePath() const;
     void setFilePath(const QString &filePath);
-    SceneModel *getModel() const;
-    void setModel(SceneModel *model);
 
 private:
     static QString findBlock(const QString &line, const QString &beginTok,
@@ -73,6 +71,6 @@ private:
 
     static LineType getLineType(const QString &sline);
     static LineType getLineType(const QStringList &content, int idx);
-    QVariantMap parseHeader();
+    bool parseHeader();
     QVariantList parseElements(int begin = 0, int _size = 0, int *prev = 0);
 };
